@@ -287,6 +287,15 @@ static bool8 MugshotTrainerPic_Init(struct Sprite *);
 static bool8 MugshotTrainerPic_Slide(struct Sprite *);
 static bool8 MugshotTrainerPic_SlideSlow(struct Sprite *);
 static bool8 MugshotTrainerPic_SlideOffscreen(struct Sprite *);
+static void Task_TppHost(u8);
+static bool8 TppHost_Init(struct Task *);
+static bool8 TppHost_WipeToBlack(struct Task *);
+static bool8 TppHost_SetGfx(struct Task *);
+static bool8 TppHost_PlaceInputs(struct Task *);
+static bool8 TppHost_RevealInputs(struct Task *);
+static bool8 TppHost_ScrollInputs(struct Task *);
+static bool8 TppHost_FadeOut(struct Task *);
+static bool8 TppHost_End(struct Task *);
 
 static s16 sDebug_RectangularSpiralData;
 static u8 sTestingTransitionId;
@@ -335,6 +344,8 @@ static const u32 sFrontierSquares_EmptyBg_Tileset[] = INCBIN_U32("graphics/battl
 static const u32 sFrontierSquares_Shrink1_Tileset[] = INCBIN_U32("graphics/battle_transitions/frontier_square_3.4bpp.lz");
 static const u32 sFrontierSquares_Shrink2_Tileset[] = INCBIN_U32("graphics/battle_transitions/frontier_square_4.4bpp.lz");
 static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transitions/frontier_squares.bin");
+static const u16 sTppHost_Palette[] = INCBIN_U16("graphics/battle_transitions/tpp_host.gbapal");
+static const u32 sTppHost_Tileset[] = INCBIN_U32("graphics/battle_transitions/tpp_host.4bpp.lz");
 
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
@@ -388,6 +399,7 @@ static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
     [B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ] = Task_FrontierCirclesCrossInSeq,
     [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesAsymmetricSpiralInSeq,
     [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesSymmetricSpiralInSeq,
+    [B_TRANSITION_TPPHOST] = Task_TppHost,
 };
 
 static const TransitionStateFunc sTaskHandlers[] =
@@ -4770,3 +4782,176 @@ static bool8 FrontierSquaresScroll_End(struct Task *task)
 #undef tScrollYDir
 #undef tScrollUpdateFlag
 #undef tSquareNum
+
+//-----------------------
+// B_TRANSITION_TPPHOST
+//-----------------------
+
+#define INPUT_TYPES (8)
+#define WINDOW_SPEED_UP (4)
+#define WINDOW_SPEED_DOWN (2)
+#define SCROLL_ACCELERATE_COUNT (24)
+#define MAX_SCROLL_SPEED (24)
+#define tOriginalBg0cnt data[1]
+#define tWindowBottom data[2]
+#define tPlacedRow data[3]
+#define tScrollPosition data[4]
+#define tScrollSpeed data[5]
+#define tScrollAccelerateCounter data[6]
+
+static const TransitionStateFunc sTppHost_Funcs[] = {
+    TppHost_Init,
+    TppHost_WipeToBlack,
+    TppHost_SetGfx,
+    TppHost_PlaceInputs,
+    TppHost_RevealInputs,
+    TppHost_ScrollInputs,
+    TppHost_FadeOut,
+    TppHost_End
+};
+
+static void Task_TppHost(u8 taskId)
+{
+    while (sTppHost_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+static bool8 TppHost_Init(struct Task *task)
+{
+    InitTransitionData();
+    ScanlineEffect_Clear();
+
+    REG_WININ = WININ_WIN0_ALL;
+    REG_WINOUT = WININ_WIN0_OBJ;
+    REG_WIN0V = DISPLAY_HEIGHT;
+    REG_WIN0H = DISPLAY_WIDTH;
+
+    task->tOriginalBg0cnt = REG_BG0CNT;
+    task->tWindowBottom = DISPLAY_HEIGHT;
+    task->tPlacedRow = 0;
+    task->tScrollPosition = 0;
+    task->tScrollSpeed = 2;
+    task->tScrollAccelerateCounter = SCROLL_ACCELERATE_COUNT;
+
+    task->tState++;
+    return FALSE;
+}
+
+static bool8 TppHost_WipeToBlack(struct Task *task)
+{
+    task->tWindowBottom -= WINDOW_SPEED_UP;
+
+    if (task->tWindowBottom > 0) {
+        REG_WIN0V = task->tWindowBottom & 0xFF;
+    } else {
+        REG_WIN0V = 0;
+        task->tState++;
+    }
+    return FALSE;
+}
+
+static bool8 TppHost_SetGfx(struct Task *task)
+{
+    u16 *tilemap, *tileset;
+
+    REG_WININ = WININ_WIN0_OBJ | WININ_WIN0_BG0;
+    REG_WINOUT = WININ_WIN0_OBJ;
+    // move BG0 below the OAMs
+    // other BGs are disabled so BG0 being below the rest doesn't matter
+    REG_BG0CNT = (REG_BG0CNT & 0xFB) | 0x03;
+    task->tWindowBottom = 0;
+
+    GetBg0TilesDst(&tilemap, &tileset);
+    LoadPalette(sTppHost_Palette, BG_PLTT_ID(15), sizeof(sTppHost_Palette));
+    LZ77UnCompVram(sTppHost_Tileset, tileset);
+
+    task->tState++;
+    return FALSE;
+}
+
+static bool8 TppHost_PlaceInputs(struct Task *task)
+{
+    s16 i;
+    u16 *tilemap, *tileset;
+    GetBg0TilesDst(&tilemap, &tileset);
+
+    for (i = 0; i < DISPLAY_TILE_WIDTH; i++)
+    {
+        SET_TILE(tilemap, task->tPlacedRow, i, Random() % INPUT_TYPES);
+    }
+
+    task->tPlacedRow += 1;
+    task->tWindowBottom += 1;
+    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
+    REG_BG0VOFS = task->tScrollPosition;
+    REG_WIN0V = task->tWindowBottom;
+
+    if (task->tPlacedRow >= 32)
+    {
+        task->tState++;
+    }
+    return FALSE;
+}
+
+static bool8 TppHost_RevealInputs(struct Task *task)
+{
+    task->tWindowBottom += WINDOW_SPEED_DOWN;
+    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
+    REG_BG0VOFS = task->tScrollPosition;
+    REG_WIN0V = task->tWindowBottom;
+
+    if (task->tWindowBottom >= DISPLAY_HEIGHT)
+    {
+        task->tState++;
+    }
+    return FALSE;
+}
+
+static bool8 TppHost_ScrollInputs(struct Task *task)
+{
+    task->tScrollAccelerateCounter--;
+    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
+    REG_BG0VOFS = task->tScrollPosition;
+
+    if (task->tScrollAccelerateCounter <= 0) {
+        task->tScrollSpeed += task->tScrollSpeed >> 1;
+        task->tScrollAccelerateCounter = SCROLL_ACCELERATE_COUNT;
+
+        if (task->tScrollSpeed > MAX_SCROLL_SPEED) {
+            task->tState++;
+        }
+    }
+
+    return FALSE;
+}
+
+static bool8 TppHost_FadeOut(struct Task *task)
+{
+    BeginNormalPaletteFade(PALETTES_OBJECTS | (1 << 15), 1, 0, 16, RGB_BLACK);
+    task->tState++;
+    return FALSE;
+}
+
+static bool8 TppHost_End(struct Task *task)
+{
+    if (!gPaletteFade.active)
+    {
+        DmaStop(0);
+        FadeScreenBlack();
+        DestroyTask(FindTaskIdByFunc(task->func));
+        REG_BG0CNT = task->tOriginalBg0cnt;
+        REG_BG0VOFS = 0;
+    }
+    return FALSE;
+}
+
+#undef INPUT_TYPES
+#undef WINDOW_SPEED_UP
+#undef WINDOW_SPEED_DOWN
+#undef SCROLL_ACCELERATE_COUNT
+#undef MAX_SCROLL_SPEED
+#undef tOriginalBg0cnt
+#undef tWindowBottom
+#undef tPlacedRow
+#undef tScrollPosition
+#undef tScrollSpeed
+#undef tScrollAccelerateCounter
