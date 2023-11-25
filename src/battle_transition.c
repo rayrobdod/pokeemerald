@@ -290,10 +290,9 @@ static bool8 MugshotTrainerPic_SlideOffscreen(struct Sprite *);
 static void Task_TppHost(u8);
 static bool8 TppHost_Init(struct Task *);
 static bool8 TppHost_WipeToBlack(struct Task *);
-static bool8 TppHost_SetGfx(struct Task *);
-static bool8 TppHost_PlaceInputs(struct Task *);
-static bool8 TppHost_RevealInputs(struct Task *);
-static bool8 TppHost_ScrollInputs(struct Task *);
+static bool8 TppHost_Main1(struct Task *);
+static bool8 TppHost_Main2(struct Task *);
+static bool8 TppHost_Main3(struct Task *);
 static bool8 TppHost_FadeOut(struct Task *);
 static bool8 TppHost_End(struct Task *);
 
@@ -4788,11 +4787,10 @@ static bool8 FrontierSquaresScroll_End(struct Task *task)
 //-----------------------
 
 #define INPUT_TYPES (8)
-#define WINDOW_SPEED_UP (4)
-#define WINDOW_SPEED_DOWN (2)
-#define SCROLL_ACCELERATE_COUNT (24)
-#define MAX_SCROLL_SPEED (24)
-#define tOriginalBg0cnt data[1]
+#define WINDOW_SPEED_DOWN (3)
+#define SCROLL_ACCELERATE_FIRST (24)
+#define SCROLL_ACCELERATE_REST (12)
+#define MAX_SCROLL_SPEED (20)
 #define tWindowBottom data[2]
 #define tPlacedRow data[3]
 #define tScrollPosition data[4]
@@ -4801,11 +4799,9 @@ static bool8 FrontierSquaresScroll_End(struct Task *task)
 
 static const TransitionStateFunc sTppHost_Funcs[] = {
     TppHost_Init,
-    TppHost_WipeToBlack,
-    TppHost_SetGfx,
-    TppHost_PlaceInputs,
-    TppHost_RevealInputs,
-    TppHost_ScrollInputs,
+    TppHost_Main1,
+    TppHost_Main2,
+    TppHost_Main3,
     TppHost_FadeOut,
     TppHost_End
 };
@@ -4817,48 +4813,23 @@ static void Task_TppHost(u8 taskId)
 
 static bool8 TppHost_Init(struct Task *task)
 {
+    u16 *tilemap, *tileset;
     InitTransitionData();
     ScanlineEffect_Clear();
 
-    REG_WININ = WININ_WIN0_ALL;
-    REG_WINOUT = WININ_WIN0_OBJ;
-    REG_WIN0V = DISPLAY_HEIGHT;
+    REG_WIN0V = 0;
     REG_WIN0H = DISPLAY_WIDTH;
+    REG_WININ = WININ_WIN0_OBJ | WININ_WIN0_BG0;
+    REG_WINOUT = WININ_WIN0_OBJ | WININ_WIN0_BG1 | WININ_WIN0_BG2 | WININ_WIN0_BG3;
+    // Place BG0 below the OAMs, and don't smash the data used by the other BGs
+    // BG0 being below the other BGs doesn't matter because BG0 and the other BGs aren't enabled at the same time
+    REG_BG0CNT = 0x180B;
 
-    task->tOriginalBg0cnt = REG_BG0CNT;
-    task->tWindowBottom = DISPLAY_HEIGHT;
+    task->tWindowBottom = 0;
     task->tPlacedRow = 0;
     task->tScrollPosition = 0;
     task->tScrollSpeed = 2;
-    task->tScrollAccelerateCounter = SCROLL_ACCELERATE_COUNT;
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 TppHost_WipeToBlack(struct Task *task)
-{
-    task->tWindowBottom -= WINDOW_SPEED_UP;
-
-    if (task->tWindowBottom > 0) {
-        REG_WIN0V = task->tWindowBottom & 0xFF;
-    } else {
-        REG_WIN0V = 0;
-        task->tState++;
-    }
-    return FALSE;
-}
-
-static bool8 TppHost_SetGfx(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    REG_WININ = WININ_WIN0_OBJ | WININ_WIN0_BG0;
-    REG_WINOUT = WININ_WIN0_OBJ;
-    // move BG0 below the OAMs
-    // other BGs are disabled so BG0 being below the rest doesn't matter
-    REG_BG0CNT = (REG_BG0CNT & 0xFB) | 0x03;
-    task->tWindowBottom = 0;
+    task->tScrollAccelerateCounter = SCROLL_ACCELERATE_FIRST;
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sTppHost_Palette, BG_PLTT_ID(15), sizeof(sTppHost_Palette));
@@ -4868,7 +4839,7 @@ static bool8 TppHost_SetGfx(struct Task *task)
     return FALSE;
 }
 
-static bool8 TppHost_PlaceInputs(struct Task *task)
+static void TppHost_PlaceInputs(struct Task *task)
 {
     s16 i;
     u16 *tilemap, *tileset;
@@ -4880,10 +4851,31 @@ static bool8 TppHost_PlaceInputs(struct Task *task)
     }
 
     task->tPlacedRow += 1;
-    task->tWindowBottom += 1;
+}
+
+static void TppHost_RevealInputs(struct Task *task)
+{
+    task->tWindowBottom += WINDOW_SPEED_DOWN;
+    REG_WIN0V = task->tWindowBottom;
+}
+
+static void TppHost_ScrollInputs(struct Task *task)
+{
+    task->tScrollAccelerateCounter--;
     task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
     REG_BG0VOFS = task->tScrollPosition;
-    REG_WIN0V = task->tWindowBottom;
+
+    if (task->tScrollAccelerateCounter <= 0) {
+        task->tScrollSpeed += task->tScrollSpeed >> 1;
+        task->tScrollAccelerateCounter = SCROLL_ACCELERATE_REST;
+    }
+}
+
+static bool8 TppHost_Main1(struct Task *task)
+{
+    TppHost_PlaceInputs(task);
+    TppHost_RevealInputs(task);
+    TppHost_ScrollInputs(task);
 
     if (task->tPlacedRow >= 32)
     {
@@ -4892,12 +4884,10 @@ static bool8 TppHost_PlaceInputs(struct Task *task)
     return FALSE;
 }
 
-static bool8 TppHost_RevealInputs(struct Task *task)
+static bool8 TppHost_Main2(struct Task *task)
 {
-    task->tWindowBottom += WINDOW_SPEED_DOWN;
-    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
-    REG_BG0VOFS = task->tScrollPosition;
-    REG_WIN0V = task->tWindowBottom;
+    TppHost_RevealInputs(task);
+    TppHost_ScrollInputs(task);
 
     if (task->tWindowBottom >= DISPLAY_HEIGHT)
     {
@@ -4906,21 +4896,13 @@ static bool8 TppHost_RevealInputs(struct Task *task)
     return FALSE;
 }
 
-static bool8 TppHost_ScrollInputs(struct Task *task)
+static bool8 TppHost_Main3(struct Task *task)
 {
-    task->tScrollAccelerateCounter--;
-    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
-    REG_BG0VOFS = task->tScrollPosition;
+    TppHost_ScrollInputs(task);
 
-    if (task->tScrollAccelerateCounter <= 0) {
-        task->tScrollSpeed += task->tScrollSpeed >> 1;
-        task->tScrollAccelerateCounter = SCROLL_ACCELERATE_COUNT;
-
-        if (task->tScrollSpeed > MAX_SCROLL_SPEED) {
-            task->tState++;
-        }
+    if (task->tScrollSpeed > MAX_SCROLL_SPEED) {
+        task->tState++;
     }
-
     return FALSE;
 }
 
@@ -4938,18 +4920,15 @@ static bool8 TppHost_End(struct Task *task)
         DmaStop(0);
         FadeScreenBlack();
         DestroyTask(FindTaskIdByFunc(task->func));
-        REG_BG0CNT = task->tOriginalBg0cnt;
-        REG_BG0VOFS = 0;
     }
     return FALSE;
 }
 
 #undef INPUT_TYPES
-#undef WINDOW_SPEED_UP
 #undef WINDOW_SPEED_DOWN
-#undef SCROLL_ACCELERATE_COUNT
+#undef SCROLL_ACCELERATE_FIRST
+#undef SCROLL_ACCELERATE_REST
 #undef MAX_SCROLL_SPEED
-#undef tOriginalBg0cnt
 #undef tWindowBottom
 #undef tPlacedRow
 #undef tScrollPosition
