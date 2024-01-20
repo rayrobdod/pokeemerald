@@ -1,0 +1,170 @@
+{
+  "label": "gEasyChatGroup_TrendySaying",
+  "words": [
+    {
+      "id": "EC_WORD_KTHX_BYE",
+      "text_label": "gEasyChatWord_KthxBye",
+      "text": "KTHX, BYE."
+    },
+    {
+      "id": "EC_WORD_YES_SIR_EXCL",
+      "text_label": "gEasyChatWord_YesSirExcl",
+      "text": "YES, SIR!"
+    },
+    {
+      "id": "EC_WORD_AVANT_GARDE",
+      "text_label": "gEasyChatWord_AvantGarde",
+      "text": "AVANT GARDE"
+    },
+    {
+      "id": "EC_WORD_COUPLE",
+      "text_label": "gEasyChatWord_Couple",
+      "text": "COUPLE"
+    },
+    {
+      "id": "EC_WORD_MUCH_OBLIGED",
+      "text_label": "gEasyChatWord_MuchObliged",
+      "text": "MUCH OBLIGED"
+    },
+    {
+      "id": "EC_WORD_YEEHAW_EXCL",
+      "text_label": "gEasyChatWord_YeehawExcl",
+      "text": "YEEHAW!"
+    },
+    {
+      "id": "EC_WORD_MEGA",
+      "text_label": "gEasyChatWord_Mega",
+      "text": "MEGA"
+    },
+    {
+      "id": "EC_WORD_1_HIT_KO_EXCL",
+      "text_label": "gEasyChatWord_1HitKOExcl",
+      "text": "1-HIT KO!"
+    },
+    {
+      "id": "EC_WORD_DESTINY",
+      "text_label": "gEasyChatWord_Destiny",
+      "text": "DESTINY"
+    },
+    {
+      "id": "EC_WORD_CANCEL",
+      "text_label": "gEasyChatWord_Cancel",
+      "text": "CANCEL"
+    },
+    {
+      "id": "EC_WORD_NEW",
+      "text_label": "gEasyChatWord_New",
+      "text": "NEW"
+    },
+    {
+      "id": "EC_WORD_FLATTEN",
+      "text_label": "gEasyChatWord_Flatten",
+      "text": "FLATTEN"
+    },
+    {
+      "id": "EC_WORD_KIDDING",
+      "text_label": "gEasyChatWord_Kidding",
+      "text": "KIDDING"
+    },
+    {
+      "id": "EC_WORD_LOSER",
+      "text_label": "gEasyChatWord_Loser",
+      "text": "LOSER"
+    },
+    {
+      "id": "EC_WORD_LOSING",
+      "text_label": "gEasyChatWord_Losing",
+      "text": "LOSING"
+    },
+    {
+      "id": "EC_WORD_HAPPENING",
+      "text_label": "gEasyChatWord_Happening",
+      "text": "HAPPENING"
+    },
+    {
+      "id": "EC_WORD_HIP_AND",
+      "text_label": "gEasyChatWord_HipAnd",
+      "text": "HIP AND"
+    },
+    {
+      "id": "EC_WORD_SHAKE",
+      "text_label": "gEasyChatWord_Shake",
+      "text": "SHAKE"
+    },
+    {
+      "id": "EC_WORD_SHADY",
+      "text_label": "gEasyChatWord_Shady",
+      "text": "SHADY"
+    },
+    {
+      "id": "EC_WORD_UPBEAT",
+      "text_label": "gEasyChatWord_Upbeat",
+      "text": "UPBEAT"
+    },
+    {
+      "id": "EC_WORD_MODERN",
+      "text_label": "gEasyChatWord_Modern",
+      "text": "MODERN"
+    },
+    {
+      "id": "EC_WORD_SMELL_YA",
+      "text_label": "gEasyChatWord_SmellYa",
+      "text": "SMELL YA"
+    },
+    {
+      "id": "EC_WORD_BANG",
+      "text_label": "gEasyChatWord_Bang",
+      "text": "BANG"
+    },
+    {
+      "id": "EC_WORD_KNOCKOUT",
+      "text_label": "gEasyChatWord_Knockout",
+      "text": "KNOCKOUT"
+    },
+    {
+      "id": "EC_WORD_HASSLE",
+      "text_label": "gEasyChatWord_Hassle",
+      "text": "HASSLE"
+    },
+    {
+      "id": "EC_WORD_WINNER",
+      "text_label": "gEasyChatWord_Winner",
+      "text": "WINNER"
+    },
+    {
+      "id": "EC_WORD_FEVER",
+      "text_label": "gEasyChatWord_Fever",
+      "text": "FEVER"
+    },
+    {
+      "id": "EC_WORD_WANNABE",
+      "text_label": "gEasyChatWord_Wannabe",
+      "text": "WANNABE"
+    },
+    {
+      "id": "EC_WORD_BABY",
+      "text_label": "gEasyChatWord_Baby",
+      "text": "BABY"
+    },
+    {
+      "id": "EC_WORD_HEART",
+      "text_label": "gEasyChatWord_Heart",
+      "text": "HEART"
+    },
+    {
+      "id": "EC_WORD_OLD",
+      "text_label": "gEasyChatWord_Old",
+      "text": "OLD"
+    },
+    {
+      "id": "EC_WORD_YOUNG",
+      "text_label": "gEasyChatWord_Young",
+      "text": "YOUNG"
+    },
+    {
+      "id": "EC_WORD_UGLY",
+      "text_label": "gEasyChatWord_Ugly",
+      "text": "UGLY"
+    }
+  ]
+}

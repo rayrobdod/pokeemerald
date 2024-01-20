@@ -1,0 +1,350 @@
+{
+  "label": "gEasyChatGroup_Feelings",
+  "words": [
+    {
+      "id": "EC_WORD_MEET",
+      "text_label": "gEasyChatWord_Meet",
+      "text": "MEET"
+    },
+    {
+      "id": "EC_WORD_PLAY",
+      "text_label": "gEasyChatWord_Play",
+      "text": "PLAY"
+    },
+    {
+      "id": "EC_WORD_HURRIED",
+      "text_label": "gEasyChatWord_Hurried",
+      "text": "HURRIED"
+    },
+    {
+      "id": "EC_WORD_GOES",
+      "text_label": "gEasyChatWord_Goes",
+      "text": "GOES"
+    },
+    {
+      "id": "EC_WORD_GIDDY",
+      "text_label": "gEasyChatWord_Giddy",
+      "text": "GIDDY"
+    },
+    {
+      "id": "EC_WORD_HAPPY",
+      "text_label": "gEasyChatWord_Happy",
+      "text": "HAPPY"
+    },
+    {
+      "id": "EC_WORD_HAPPINESS",
+      "text_label": "gEasyChatWord_Happiness",
+      "text": "HAPPINESS"
+    },
+    {
+      "id": "EC_WORD_EXCITE",
+      "text_label": "gEasyChatWord_Excite",
+      "text": "EXCITE"
+    },
+    {
+      "id": "EC_WORD_IMPORTANT",
+      "text_label": "gEasyChatWord_Important",
+      "text": "IMPORTANT"
+    },
+    {
+      "id": "EC_WORD_FUNNY",
+      "text_label": "gEasyChatWord_Funny",
+      "text": "FUNNY"
+    },
+    {
+      "id": "EC_WORD_GOT",
+      "text_label": "gEasyChatWord_Got",
+      "text": "GOT"
+    },
+    {
+      "id": "EC_WORD_GO_HOME",
+      "text_label": "gEasyChatWord_GoHome",
+      "text": "GO HOME"
+    },
+    {
+      "id": "EC_WORD_DISAPPOINTED",
+      "text_label": "gEasyChatWord_Disappointed",
+      "text": "DISAPPOINTED"
+    },
+    {
+      "id": "EC_WORD_DISAPPOINTS",
+      "text_label": "gEasyChatWord_Disappoints",
+      "text": "DISAPPOINTS"
+    },
+    {
+      "id": "EC_WORD_SAD",
+      "text_label": "gEasyChatWord_Sad",
+      "text": "SAD"
+    },
+    {
+      "id": "EC_WORD_TRY",
+      "text_label": "gEasyChatWord_Try",
+      "text": "TRY"
+    },
+    {
+      "id": "EC_WORD_TRIES",
+      "text_label": "gEasyChatWord_Tries",
+      "text": "TRIES"
+    },
+    {
+      "id": "EC_WORD_HEARS",
+      "text_label": "gEasyChatWord_Hears",
+      "text": "HEARS"
+    },
+    {
+      "id": "EC_WORD_THINK",
+      "text_label": "gEasyChatWord_Think",
+      "text": "THINK"
+    },
+    {
+      "id": "EC_WORD_HEAR",
+      "text_label": "gEasyChatWord_Hear",
+      "text": "HEAR"
+    },
+    {
+      "id": "EC_WORD_WANTS",
+      "text_label": "gEasyChatWord_Wants",
+      "text": "WANTS"
+    },
+    {
+      "id": "EC_WORD_MISHEARD",
+      "text_label": "gEasyChatWord_Misheard",
+      "text": "MISHEARD"
+    },
+    {
+      "id": "EC_WORD_DISLIKE",
+      "text_label": "gEasyChatWord_Dislike",
+      "text": "DISLIKE"
+    },
+    {
+      "id": "EC_WORD_ANGRY",
+      "text_label": "gEasyChatWord_Angry",
+      "text": "ANGRY"
+    },
+    {
+      "id": "EC_WORD_ANGER",
+      "text_label": "gEasyChatWord_Anger",
+      "text": "ANGER"
+    },
+    {
+      "id": "EC_WORD_SCARY",
+      "text_label": "gEasyChatWord_Scary",
+      "text": "SCARY"
+    },
+    {
+      "id": "EC_WORD_LONESOME",
+      "text_label": "gEasyChatWord_Lonesome",
+      "text": "LONESOME"
+    },
+    {
+      "id": "EC_WORD_DISAPPOINT",
+      "text_label": "gEasyChatWord_Disappoint",
+      "text": "DISAPPOINT"
+    },
+    {
+      "id": "EC_WORD_JOY",
+      "text_label": "gEasyChatWord_Joy",
+      "text": "JOY"
+    },
+    {
+      "id": "EC_WORD_GETS",
+      "text_label": "gEasyChatWord_Gets",
+      "text": "GETS"
+    },
+    {
+      "id": "EC_WORD_NEVER",
+      "text_label": "gEasyChatWord_Never",
+      "text": "NEVER"
+    },
+    {
+      "id": "EC_WORD_DARN",
+      "text_label": "gEasyChatWord_Darn",
+      "text": "DARN"
+    },
+    {
+      "id": "EC_WORD_DOWNCAST",
+      "text_label": "gEasyChatWord_Downcast",
+      "text": "DOWNCAST"
+    },
+    {
+      "id": "EC_WORD_INCREDIBLE",
+      "text_label": "gEasyChatWord_Incredible",
+      "text": "INCREDIBLE"
+    },
+    {
+      "id": "EC_WORD_LIKES",
+      "text_label": "gEasyChatWord_Likes",
+      "text": "LIKES"
+    },
+    {
+      "id": "EC_WORD_DISLIKES",
+      "text_label": "gEasyChatWord_Dislikes",
+      "text": "DISLIKES"
+    },
+    {
+      "id": "EC_WORD_BORING",
+      "text_label": "gEasyChatWord_Boring",
+      "text": "BORING"
+    },
+    {
+      "id": "EC_WORD_CARE",
+      "text_label": "gEasyChatWord_Care",
+      "text": "CARE"
+    },
+    {
+      "id": "EC_WORD_CARES",
+      "text_label": "gEasyChatWord_Cares",
+      "text": "CARES"
+    },
+    {
+      "id": "EC_WORD_ALL_RIGHT",
+      "text_label": "gEasyChatWord_AllRight",
+      "text": "ALL RIGHT"
+    },
+    {
+      "id": "EC_WORD_ADORE",
+      "text_label": "gEasyChatWord_Adore",
+      "text": "ADORE"
+    },
+    {
+      "id": "EC_WORD_DISASTER",
+      "text_label": "gEasyChatWord_Disaster",
+      "text": "DISASTER"
+    },
+    {
+      "id": "EC_WORD_ENJOY",
+      "text_label": "gEasyChatWord_Enjoy",
+      "text": "ENJOY"
+    },
+    {
+      "id": "EC_WORD_ENJOYS",
+      "text_label": "gEasyChatWord_Enjoys",
+      "text": "ENJOYS"
+    },
+    {
+      "id": "EC_WORD_EAT",
+      "text_label": "gEasyChatWord_Eat",
+      "text": "EAT"
+    },
+    {
+      "id": "EC_WORD_LACKING",
+      "text_label": "gEasyChatWord_Lacking",
+      "text": "LACKING"
+    },
+    {
+      "id": "EC_WORD_BAD",
+      "text_label": "gEasyChatWord_Bad",
+      "text": "BAD"
+    },
+    {
+      "id": "EC_WORD_HARD",
+      "text_label": "gEasyChatWord_Hard",
+      "text": "HARD"
+    },
+    {
+      "id": "EC_WORD_TERRIBLE",
+      "text_label": "gEasyChatWord_Terrible",
+      "text": "TERRIBLE"
+    },
+    {
+      "id": "EC_WORD_SHOULD",
+      "text_label": "gEasyChatWord_Should",
+      "text": "SHOULD"
+    },
+    {
+      "id": "EC_WORD_NICE",
+      "text_label": "gEasyChatWord_Nice",
+      "text": "NICE"
+    },
+    {
+      "id": "EC_WORD_DRINK",
+      "text_label": "gEasyChatWord_Drink",
+      "text": "DRINK"
+    },
+    {
+      "id": "EC_WORD_SURPRISE",
+      "text_label": "gEasyChatWord_Surprise",
+      "text": "SURPRISE"
+    },
+    {
+      "id": "EC_WORD_FEAR",
+      "text_label": "gEasyChatWord_Fear",
+      "text": "FEAR"
+    },
+    {
+      "id": "EC_WORD_WANT",
+      "text_label": "gEasyChatWord_Want",
+      "text": "WANT"
+    },
+    {
+      "id": "EC_WORD_WAIT",
+      "text_label": "gEasyChatWord_Wait",
+      "text": "WAIT"
+    },
+    {
+      "id": "EC_WORD_SATISFIED",
+      "text_label": "gEasyChatWord_Satisfied",
+      "text": "SATISFIED"
+    },
+    {
+      "id": "EC_WORD_SEE",
+      "text_label": "gEasyChatWord_See",
+      "text": "SEE"
+    },
+    {
+      "id": "EC_WORD_RARE",
+      "text_label": "gEasyChatWord_Rare",
+      "text": "RARE"
+    },
+    {
+      "id": "EC_WORD_NEGATIVE",
+      "text_label": "gEasyChatWord_Negative",
+      "text": "NEGATIVE"
+    },
+    {
+      "id": "EC_WORD_DONE",
+      "text_label": "gEasyChatWord_Done",
+      "text": "DONE"
+    },
+    {
+      "id": "EC_WORD_DANGER",
+      "text_label": "gEasyChatWord_Danger",
+      "text": "DANGER"
+    },
+    {
+      "id": "EC_WORD_DEFEATED",
+      "text_label": "gEasyChatWord_Defeated",
+      "text": "DEFEATED"
+    },
+    {
+      "id": "EC_WORD_BEAT",
+      "text_label": "gEasyChatWord_Beat",
+      "text": "BEAT"
+    },
+    {
+      "id": "EC_WORD_GREAT",
+      "text_label": "gEasyChatWord_Great",
+      "text": "GREAT"
+    },
+    {
+      "id": "EC_WORD_ROMANTIC",
+      "text_label": "gEasyChatWord_Romantic",
+      "text": "ROMANTIC"
+    },
+    {
+      "id": "EC_WORD_QUESTION",
+      "text_label": "gEasyChatWord_Question",
+      "text": "QUESTION"
+    },
+    {
+      "id": "EC_WORD_UNDERSTAND",
+      "text_label": "gEasyChatWord_Understand",
+      "text": "UNDERSTAND"
+    },
+    {
+      "id": "EC_WORD_UNDERSTANDS",
+      "text_label": "gEasyChatWord_Understands",
+      "text": "UNDERSTANDS"
+    }
+  ]
+}

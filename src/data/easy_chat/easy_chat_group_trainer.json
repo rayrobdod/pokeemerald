@@ -1,0 +1,146 @@
+{
+  "label": "gEasyChatGroup_Trainer",
+  "words": [
+    {
+      "id": "EC_WORD_I_CHOOSE_YOU",
+      "text_label": "gEasyChatWord_IChooseYou",
+      "text": "I CHOOSE YOU"
+    },
+    {
+      "id": "EC_WORD_GOTCHA",
+      "text_label": "gEasyChatWord_Gotcha",
+      "text": "GOTCHA"
+    },
+    {
+      "id": "EC_WORD_TRADE",
+      "text_label": "gEasyChatWord_Trade",
+      "text": "TRADE"
+    },
+    {
+      "id": "EC_WORD_SAPPHIRE",
+      "text_label": "gEasyChatWord_Sapphire",
+      "text": "SAPPHIRE"
+    },
+    {
+      "id": "EC_WORD_EVOLVE",
+      "text_label": "gEasyChatWord_Evolve",
+      "text": "EVOLVE"
+    },
+    {
+      "id": "EC_WORD_ENCYCLOPEDIA",
+      "text_label": "gEasyChatWord_Encyclopedia",
+      "text": "ENCYCLOPEDIA"
+    },
+    {
+      "id": "EC_WORD_NATURE",
+      "text_label": "gEasyChatWord_Nature",
+      "text": "NATURE"
+    },
+    {
+      "id": "EC_WORD_CENTER",
+      "text_label": "gEasyChatWord_Center",
+      "text": "CENTER"
+    },
+    {
+      "id": "EC_WORD_EGG",
+      "text_label": "gEasyChatWord_Egg",
+      "text": "EGG"
+    },
+    {
+      "id": "EC_WORD_LINK",
+      "text_label": "gEasyChatWord_Link",
+      "text": "LINK"
+    },
+    {
+      "id": "EC_WORD_SP_ABILITY",
+      "text_label": "gEasyChatWord_SpAbility",
+      "text": "SP. ABILITY"
+    },
+    {
+      "id": "EC_WORD_TRAINER",
+      "text_label": "gEasyChatWord_Trainer",
+      "text": "TRAINER"
+    },
+    {
+      "id": "EC_WORD_VERSION",
+      "text_label": "gEasyChatWord_Version",
+      "text": "VERSION"
+    },
+    {
+      "id": "EC_WORD_POKENAV",
+      "text_label": "gEasyChatWord_Pokenav",
+      "text": "POK\u00e9NAV"
+    },
+    {
+      "id": "EC_WORD_POKEMON",
+      "text_label": "gEasyChatWord_Pokemon",
+      "text": "POK\u00e9MON"
+    },
+    {
+      "id": "EC_WORD_GET",
+      "text_label": "gEasyChatWord_Get",
+      "text": "GET"
+    },
+    {
+      "id": "EC_WORD_POKEDEX",
+      "text_label": "gEasyChatWord_Pokedex",
+      "text": "POK\u00e9DEX"
+    },
+    {
+      "id": "EC_WORD_RUBY",
+      "text_label": "gEasyChatWord_Ruby",
+      "text": "RUBY"
+    },
+    {
+      "id": "EC_WORD_LEVEL",
+      "text_label": "gEasyChatWord_Level",
+      "text": "LEVEL"
+    },
+    {
+      "id": "EC_WORD_RED",
+      "text_label": "gEasyChatWord_Red",
+      "text": "RED",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_GREEN",
+      "text_label": "gEasyChatWord_Green",
+      "text": "GREEN",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_BAG",
+      "text_label": "gEasyChatWord_Bag",
+      "text": "BAG"
+    },
+    {
+      "id": "EC_WORD_FLAME",
+      "text_label": "gEasyChatWord_Flame",
+      "text": "FLAME",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_GOLD",
+      "text_label": "gEasyChatWord_Gold",
+      "text": "GOLD",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_LEAF",
+      "text_label": "gEasyChatWord_Leaf",
+      "text": "LEAF",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_SILVER",
+      "text_label": "gEasyChatWord_Silver",
+      "text": "SILVER",
+      "enabled": false
+    },
+    {
+      "id": "EC_WORD_EMERALD",
+      "text_label": "gEasyChatWord_Emerald",
+      "text": "EMERALD"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "label": "gEasyChatGroup_Battle",
+  "words": [
+    {
+      "id": "EC_WORD_MATCH_UP",
+      "text_label": "gEasyChatWord_MatchUp",
+      "text": "MATCH UP"
+    },
+    {
+      "id": "EC_WORD_GO",
+      "text_label": "gEasyChatWord_Go",
+      "text": "GO"
+    },
+    {
+      "id": "EC_WORD_NO_1",
+      "text_label": "gEasyChatWord_No1",
+      "text": "NO. 1"
+    },
+    {
+      "id": "EC_WORD_DECIDE",
+      "text_label": "gEasyChatWord_Decide",
+      "text": "DECIDE"
+    },
+    {
+      "id": "EC_WORD_LET_ME_WIN",
+      "text_label": "gEasyChatWord_LetMeWin",
+      "text": "LET ME WIN"
+    },
+    {
+      "id": "EC_WORD_WINS",
+      "text_label": "gEasyChatWord_Wins",
+      "text": "WINS"
+    },
+    {
+      "id": "EC_WORD_WIN",
+      "text_label": "gEasyChatWord_Win",
+      "text": "WIN"
+    },
+    {
+      "id": "EC_WORD_WON",
+      "text_label": "gEasyChatWord_Won",
+      "text": "WON"
+    },
+    {
+      "id": "EC_WORD_IF_I_WIN",
+      "text_label": "gEasyChatWord_IfIWin",
+      "text": "IF I WIN"
+    },
+    {
+      "id": "EC_WORD_WHEN_I_WIN",
+      "text_label": "gEasyChatWord_WhenIWin",
+      "text": "WHEN I WIN"
+    },
+    {
+      "id": "EC_WORD_CAN_T_WIN",
+      "text_label": "gEasyChatWord_CantWin",
+      "text": "CAN'T WIN"
+    },
+    {
+      "id": "EC_WORD_CAN_WIN",
+      "text_label": "gEasyChatWord_CanWin",
+      "text": "CAN WIN"
+    },
+    {
+      "id": "EC_WORD_NO_MATCH",
+      "text_label": "gEasyChatWord_NoMatch",
+      "text": "NO MATCH"
+    },
+    {
+      "id": "EC_WORD_SPIRIT",
+      "text_label": "gEasyChatWord_Spirit",
+      "text": "SPIRIT"
+    },
+    {
+      "id": "EC_WORD_DECIDED",
+      "text_label": "gEasyChatWord_Decided",
+      "text": "DECIDED"
+    },
+    {
+      "id": "EC_WORD_TRUMP_CARD",
+      "text_label": "gEasyChatWord_TrumpCard",
+      "text": "TRUMP CARD"
+    },
+    {
+      "id": "EC_WORD_TAKE_THAT",
+      "text_label": "gEasyChatWord_TakeThat",
+      "text": "TAKE THAT"
+    },
+    {
+      "id": "EC_WORD_COME_ON",
+      "text_label": "gEasyChatWord_ComeOn",
+      "text": "COME ON"
+    },
+    {
+      "id": "EC_WORD_ATTACK",
+      "text_label": "gEasyChatWord_Attack",
+      "text": "ATTACK"
+    },
+    {
+      "id": "EC_WORD_SURRENDER",
+      "text_label": "gEasyChatWord_Surrender",
+      "text": "SURRENDER"
+    },
+    {
+      "id": "EC_WORD_GUTSY",
+      "text_label": "gEasyChatWord_Gutsy",
+      "text": "GUTSY"
+    },
+    {
+      "id": "EC_WORD_TALENT",
+      "text_label": "gEasyChatWord_Talent",
+      "text": "TALENT"
+    },
+    {
+      "id": "EC_WORD_STRATEGY",
+      "text_label": "gEasyChatWord_Strategy",
+      "text": "STRATEGY"
+    },
+    {
+      "id": "EC_WORD_SMITE",
+      "text_label": "gEasyChatWord_Smite",
+      "text": "SMITE"
+    },
+    {
+      "id": "EC_WORD_MATCH",
+      "text_label": "gEasyChatWord_Match",
+      "text": "MATCH"
+    },
+    {
+      "id": "EC_WORD_VICTORY",
+      "text_label": "gEasyChatWord_Victory",
+      "text": "VICTORY"
+    },
+    {
+      "id": "EC_WORD_OFFENSIVE",
+      "text_label": "gEasyChatWord_Offensive",
+      "text": "OFFENSIVE"
+    },
+    {
+      "id": "EC_WORD_SENSE",
+      "text_label": "gEasyChatWord_Sense",
+      "text": "SENSE"
+    },
+    {
+      "id": "EC_WORD_VERSUS",
+      "text_label": "gEasyChatWord_Versus",
+      "text": "VERSUS"
+    },
+    {
+      "id": "EC_WORD_FIGHTS",
+      "text_label": "gEasyChatWord_Fights",
+      "text": "FIGHTS"
+    },
+    {
+      "id": "EC_WORD_POWER",
+      "text_label": "gEasyChatWord_Power",
+      "text": "POWER"
+    },
+    {
+      "id": "EC_WORD_CHALLENGE",
+      "text_label": "gEasyChatWord_Challenge",
+      "text": "CHALLENGE"
+    },
+    {
+      "id": "EC_WORD_STRONG",
+      "text_label": "gEasyChatWord_Strong",
+      "text": "STRONG"
+    },
+    {
+      "id": "EC_WORD_TOO_STRONG",
+      "text_label": "gEasyChatWord_TooStrong",
+      "text": "TOO STRONG"
+    },
+    {
+      "id": "EC_WORD_GO_EASY",
+      "text_label": "gEasyChatWord_GoEasy",
+      "text": "GO EASY"
+    },
+    {
+      "id": "EC_WORD_FOE",
+      "text_label": "gEasyChatWord_Foe",
+      "text": "FOE"
+    },
+    {
+      "id": "EC_WORD_GENIUS",
+      "text_label": "gEasyChatWord_Genius",
+      "text": "GENIUS"
+    },
+    {
+      "id": "EC_WORD_LEGEND",
+      "text_label": "gEasyChatWord_Legend",
+      "text": "LEGEND"
+    },
+    {
+      "id": "EC_WORD_ESCAPE",
+      "text_label": "gEasyChatWord_Escape",
+      "text": "ESCAPE"
+    },
+    {
+      "id": "EC_WORD_AIM",
+      "text_label": "gEasyChatWord_Aim",
+      "text": "AIM"
+    },
+    {
+      "id": "EC_WORD_BATTLE",
+      "text_label": "gEasyChatWord_Battle",
+      "text": "BATTLE"
+    },
+    {
+      "id": "EC_WORD_FIGHT",
+      "text_label": "gEasyChatWord_Fight",
+      "text": "FIGHT"
+    },
+    {
+      "id": "EC_WORD_RESUSCITATE",
+      "text_label": "gEasyChatWord_Resuscitate",
+      "text": "RESUSCITATE"
+    },
+    {
+      "id": "EC_WORD_POINTS",
+      "text_label": "gEasyChatWord_Points",
+      "text": "POINTS"
+    },
+    {
+      "id": "EC_WORD_SERIOUS",
+      "text_label": "gEasyChatWord_Serious",
+      "text": "SERIOUS"
+    },
+    {
+      "id": "EC_WORD_GIVE_UP",
+      "text_label": "gEasyChatWord_GiveUp",
+      "text": "GIVE UP"
+    },
+    {
+      "id": "EC_WORD_LOSS",
+      "text_label": "gEasyChatWord_Loss",
+      "text": "LOSS"
+    },
+    {
+      "id": "EC_WORD_IF_I_LOSE",
+      "text_label": "gEasyChatWord_IfILose",
+      "text": "IF I LOSE"
+    },
+    {
+      "id": "EC_WORD_LOST",
+      "text_label": "gEasyChatWord_Lost",
+      "text": "LOST"
+    },
+    {
+      "id": "EC_WORD_LOSE",
+      "text_label": "gEasyChatWord_Lose",
+      "text": "LOSE"
+    },
+    {
+      "id": "EC_WORD_GUARD",
+      "text_label": "gEasyChatWord_Guard",
+      "text": "GUARD"
+    },
+    {
+      "id": "EC_WORD_PARTNER",
+      "text_label": "gEasyChatWord_Partner",
+      "text": "PARTNER"
+    },
+    {
+      "id": "EC_WORD_REJECT",
+      "text_label": "gEasyChatWord_Reject",
+      "text": "REJECT"
+    },
+    {
+      "id": "EC_WORD_ACCEPT",
+      "text_label": "gEasyChatWord_Accept",
+      "text": "ACCEPT"
+    },
+    {
+      "id": "EC_WORD_INVINCIBLE",
+      "text_label": "gEasyChatWord_Invincible",
+      "text": "INVINCIBLE"
+    },
+    {
+      "id": "EC_WORD_RECEIVED",
+      "text_label": "gEasyChatWord_Received",
+      "text": "RECEIVED"
+    },
+    {
+      "id": "EC_WORD_EASY",
+      "text_label": "gEasyChatWord_Easy",
+      "text": "EASY"
+    },
+    {
+      "id": "EC_WORD_WEAK",
+      "text_label": "gEasyChatWord_Weak",
+      "text": "WEAK"
+    },
+    {
+      "id": "EC_WORD_TOO_WEAK",
+      "text_label": "gEasyChatWord_TooWeak",
+      "text": "TOO WEAK"
+    },
+    {
+      "id": "EC_WORD_PUSHOVER",
+      "text_label": "gEasyChatWord_Pushover",
+      "text": "PUSHOVER"
+    },
+    {
+      "id": "EC_WORD_LEADER",
+      "text_label": "gEasyChatWord_Leader",
+      "text": "LEADER"
+    },
+    {
+      "id": "EC_WORD_RULE",
+      "text_label": "gEasyChatWord_Rule",
+      "text": "RULE"
+    },
+    {
+      "id": "EC_WORD_MOVE",
+      "text_label": "gEasyChatWord_Move",
+      "text": "MOVE"
+    }
+  ]
+}

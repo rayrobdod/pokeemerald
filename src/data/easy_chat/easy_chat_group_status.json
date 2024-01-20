@@ -1,0 +1,550 @@
+{
+  "label": "gEasyChatGroup_Status",
+  "words": [
+    {
+      "id": "EC_WORD_DARK",
+      "text_label": "gEasyChatWord_Dark",
+      "text": "DARK"
+    },
+    {
+      "id": "EC_WORD_STENCH",
+      "text_label": "gEasyChatWord_Stench",
+      "text": "STENCH"
+    },
+    {
+      "id": "EC_WORD_THICK_FAT",
+      "text_label": "gEasyChatWord_ThickFat",
+      "text": "THICK FAT"
+    },
+    {
+      "id": "EC_WORD_RAIN_DISH",
+      "text_label": "gEasyChatWord_RainDish",
+      "text": "RAIN DISH"
+    },
+    {
+      "id": "EC_WORD_DRIZZLE",
+      "text_label": "gEasyChatWord_Drizzle",
+      "text": "DRIZZLE"
+    },
+    {
+      "id": "EC_WORD_ARENA_TRAP",
+      "text_label": "gEasyChatWord_ArenaTrap",
+      "text": "ARENA TRAP"
+    },
+    {
+      "id": "EC_WORD_INTIMIDATE",
+      "text_label": "gEasyChatWord_Intimidate",
+      "text": "INTIMIDATE"
+    },
+    {
+      "id": "EC_WORD_ROCK_HEAD",
+      "text_label": "gEasyChatWord_RockHead",
+      "text": "ROCK HEAD"
+    },
+    {
+      "id": "EC_WORD_COLOR",
+      "text_label": "gEasyChatWord_Color",
+      "text": "COLOR"
+    },
+    {
+      "id": "EC_WORD_ALT_COLOR",
+      "text_label": "gEasyChatWord_AltColor",
+      "text": "ALT. COLOR"
+    },
+    {
+      "id": "EC_WORD_ROCK",
+      "text_label": "gEasyChatWord_Rock",
+      "text": "ROCK"
+    },
+    {
+      "id": "EC_WORD_BEAUTIFUL",
+      "text_label": "gEasyChatWord_Beautiful",
+      "text": "BEAUTIFUL"
+    },
+    {
+      "id": "EC_WORD_BEAUTY",
+      "text_label": "gEasyChatWord_Beauty",
+      "text": "BEAUTY"
+    },
+    {
+      "id": "EC_WORD_AIR_LOCK",
+      "text_label": "gEasyChatWord_AirLock",
+      "text": "AIR LOCK"
+    },
+    {
+      "id": "EC_WORD_PSYCHIC",
+      "text_label": "gEasyChatWord_Psychic",
+      "text": "PSYCHIC"
+    },
+    {
+      "id": "EC_WORD_HYPER_CUTTER",
+      "text_label": "gEasyChatWord_HyperCutter",
+      "text": "HYPER CUTTER"
+    },
+    {
+      "id": "EC_WORD_FIGHTING",
+      "text_label": "gEasyChatWord_Fighting",
+      "text": "FIGHTING"
+    },
+    {
+      "id": "EC_WORD_SHADOW_TAG",
+      "text_label": "gEasyChatWord_ShadowTag",
+      "text": "SHADOW TAG"
+    },
+    {
+      "id": "EC_WORD_SMART",
+      "text_label": "gEasyChatWord_Smart",
+      "text": "SMART"
+    },
+    {
+      "id": "EC_WORD_SMARTNESS",
+      "text_label": "gEasyChatWord_Smartness",
+      "text": "SMARTNESS"
+    },
+    {
+      "id": "EC_WORD_SPEED_BOOST",
+      "text_label": "gEasyChatWord_SpeedBoost",
+      "text": "SPEED BOOST"
+    },
+    {
+      "id": "EC_WORD_COOL",
+      "text_label": "gEasyChatWord_Cool",
+      "text": "COOL"
+    },
+    {
+      "id": "EC_WORD_COOLNESS",
+      "text_label": "gEasyChatWord_Coolness",
+      "text": "COOLNESS"
+    },
+    {
+      "id": "EC_WORD_BATTLE_ARMOR",
+      "text_label": "gEasyChatWord_BattleArmor",
+      "text": "BATTLE ARMOR"
+    },
+    {
+      "id": "EC_WORD_CUTE",
+      "text_label": "gEasyChatWord_Cute",
+      "text": "CUTE"
+    },
+    {
+      "id": "EC_WORD_CUTENESS",
+      "text_label": "gEasyChatWord_Cuteness",
+      "text": "CUTENESS"
+    },
+    {
+      "id": "EC_WORD_STURDY",
+      "text_label": "gEasyChatWord_Sturdy",
+      "text": "STURDY"
+    },
+    {
+      "id": "EC_WORD_SUCTION_CUPS",
+      "text_label": "gEasyChatWord_SuctionCups",
+      "text": "SUCTION CUPS"
+    },
+    {
+      "id": "EC_WORD_GRASS",
+      "text_label": "gEasyChatWord_Grass",
+      "text": "GRASS"
+    },
+    {
+      "id": "EC_WORD_CLEAR_BODY",
+      "text_label": "gEasyChatWord_ClearBody",
+      "text": "CLEAR BODY"
+    },
+    {
+      "id": "EC_WORD_TORRENT",
+      "text_label": "gEasyChatWord_Torrent",
+      "text": "TORRENT"
+    },
+    {
+      "id": "EC_WORD_GHOST",
+      "text_label": "gEasyChatWord_Ghost",
+      "text": "GHOST"
+    },
+    {
+      "id": "EC_WORD_ICE",
+      "text_label": "gEasyChatWord_Ice",
+      "text": "ICE"
+    },
+    {
+      "id": "EC_WORD_GUTS",
+      "text_label": "gEasyChatWord_Guts",
+      "text": "GUTS"
+    },
+    {
+      "id": "EC_WORD_ROUGH_SKIN",
+      "text_label": "gEasyChatWord_RoughSkin",
+      "text": "ROUGH SKIN"
+    },
+    {
+      "id": "EC_WORD_SHELL_ARMOR",
+      "text_label": "gEasyChatWord_ShellArmor",
+      "text": "SHELL ARMOR"
+    },
+    {
+      "id": "EC_WORD_NATURAL_CURE",
+      "text_label": "gEasyChatWord_NaturalCure",
+      "text": "NATURAL CURE"
+    },
+    {
+      "id": "EC_WORD_DAMP",
+      "text_label": "gEasyChatWord_Damp",
+      "text": "DAMP"
+    },
+    {
+      "id": "EC_WORD_GROUND",
+      "text_label": "gEasyChatWord_Ground",
+      "text": "GROUND"
+    },
+    {
+      "id": "EC_WORD_LIMBER",
+      "text_label": "gEasyChatWord_Limber",
+      "text": "LIMBER"
+    },
+    {
+      "id": "EC_WORD_MAGNET_PULL",
+      "text_label": "gEasyChatWord_MagnetPull",
+      "text": "MAGNET PULL"
+    },
+    {
+      "id": "EC_WORD_WHITE_SMOKE",
+      "text_label": "gEasyChatWord_WhiteSmoke",
+      "text": "WHITE SMOKE"
+    },
+    {
+      "id": "EC_WORD_SYNCHRONIZE",
+      "text_label": "gEasyChatWord_Synchronize",
+      "text": "SYNCHRONIZE"
+    },
+    {
+      "id": "EC_WORD_OVERGROW",
+      "text_label": "gEasyChatWord_Overgrow",
+      "text": "OVERGROW"
+    },
+    {
+      "id": "EC_WORD_SWIFT_SWIM",
+      "text_label": "gEasyChatWord_SwiftSwim",
+      "text": "SWIFT SWIM"
+    },
+    {
+      "id": "EC_WORD_SAND_STREAM",
+      "text_label": "gEasyChatWord_SandStream",
+      "text": "SAND STREAM"
+    },
+    {
+      "id": "EC_WORD_SAND_VEIL",
+      "text_label": "gEasyChatWord_SandVeil",
+      "text": "SAND VEIL"
+    },
+    {
+      "id": "EC_WORD_KEEN_EYE",
+      "text_label": "gEasyChatWord_KeenEye",
+      "text": "KEEN EYE"
+    },
+    {
+      "id": "EC_WORD_INNER_FOCUS",
+      "text_label": "gEasyChatWord_InnerFocus",
+      "text": "INNER FOCUS"
+    },
+    {
+      "id": "EC_WORD_STATIC",
+      "text_label": "gEasyChatWord_Static",
+      "text": "STATIC"
+    },
+    {
+      "id": "EC_WORD_TYPE",
+      "text_label": "gEasyChatWord_Type",
+      "text": "TYPE"
+    },
+    {
+      "id": "EC_WORD_TOUGH",
+      "text_label": "gEasyChatWord_Tough",
+      "text": "TOUGH"
+    },
+    {
+      "id": "EC_WORD_TOUGHNESS",
+      "text_label": "gEasyChatWord_Toughness",
+      "text": "TOUGHNESS"
+    },
+    {
+      "id": "EC_WORD_SHED_SKIN",
+      "text_label": "gEasyChatWord_ShedSkin",
+      "text": "SHED SKIN"
+    },
+    {
+      "id": "EC_WORD_HUGE_POWER",
+      "text_label": "gEasyChatWord_HugePower",
+      "text": "HUGE POWER"
+    },
+    {
+      "id": "EC_WORD_VOLT_ABSORB",
+      "text_label": "gEasyChatWord_VoltAbsorb",
+      "text": "VOLT ABSORB"
+    },
+    {
+      "id": "EC_WORD_WATER_ABSORB",
+      "text_label": "gEasyChatWord_WaterAbsorb",
+      "text": "WATER ABSORB"
+    },
+    {
+      "id": "EC_WORD_ELECTRIC",
+      "text_label": "gEasyChatWord_Electric",
+      "text": "ELECTRIC"
+    },
+    {
+      "id": "EC_WORD_FORECAST",
+      "text_label": "gEasyChatWord_Forecast",
+      "text": "FORECAST"
+    },
+    {
+      "id": "EC_WORD_SERENE_GRACE",
+      "text_label": "gEasyChatWord_SereneGrace",
+      "text": "SERENE GRACE"
+    },
+    {
+      "id": "EC_WORD_POISON",
+      "text_label": "gEasyChatWord_Poison",
+      "text": "POISON"
+    },
+    {
+      "id": "EC_WORD_POISON_POINT",
+      "text_label": "gEasyChatWord_PoisonPoint",
+      "text": "POISON POINT"
+    },
+    {
+      "id": "EC_WORD_DRAGON",
+      "text_label": "gEasyChatWord_Dragon",
+      "text": "DRAGON"
+    },
+    {
+      "id": "EC_WORD_TRACE",
+      "text_label": "gEasyChatWord_Trace",
+      "text": "TRACE"
+    },
+    {
+      "id": "EC_WORD_OBLIVIOUS",
+      "text_label": "gEasyChatWord_Oblivious",
+      "text": "OBLIVIOUS"
+    },
+    {
+      "id": "EC_WORD_TRUANT",
+      "text_label": "gEasyChatWord_Truant",
+      "text": "TRUANT"
+    },
+    {
+      "id": "EC_WORD_RUN_AWAY",
+      "text_label": "gEasyChatWord_RunAway",
+      "text": "RUN AWAY"
+    },
+    {
+      "id": "EC_WORD_STICKY_HOLD",
+      "text_label": "gEasyChatWord_StickyHold",
+      "text": "STICKY HOLD"
+    },
+    {
+      "id": "EC_WORD_CLOUD_NINE",
+      "text_label": "gEasyChatWord_CloudNine",
+      "text": "CLOUD NINE"
+    },
+    {
+      "id": "EC_WORD_NORMAL",
+      "text_label": "gEasyChatWord_Normal",
+      "text": "NORMAL"
+    },
+    {
+      "id": "EC_WORD_STEEL",
+      "text_label": "gEasyChatWord_Steel",
+      "text": "STEEL"
+    },
+    {
+      "id": "EC_WORD_ILLUMINATE",
+      "text_label": "gEasyChatWord_Illuminate",
+      "text": "ILLUMINATE"
+    },
+    {
+      "id": "EC_WORD_EARLY_BIRD",
+      "text_label": "gEasyChatWord_EarlyBird",
+      "text": "EARLY BIRD"
+    },
+    {
+      "id": "EC_WORD_HUSTLE",
+      "text_label": "gEasyChatWord_Hustle",
+      "text": "HUSTLE"
+    },
+    {
+      "id": "EC_WORD_SHINE",
+      "text_label": "gEasyChatWord_Shine",
+      "text": "SHINE"
+    },
+    {
+      "id": "EC_WORD_FLYING",
+      "text_label": "gEasyChatWord_Flying",
+      "text": "FLYING"
+    },
+    {
+      "id": "EC_WORD_DROUGHT",
+      "text_label": "gEasyChatWord_Drought",
+      "text": "DROUGHT"
+    },
+    {
+      "id": "EC_WORD_LIGHTNINGROD",
+      "text_label": "gEasyChatWord_Lightningrod",
+      "text": "LIGHTNINGROD"
+    },
+    {
+      "id": "EC_WORD_COMPOUNDEYES",
+      "text_label": "gEasyChatWord_Compoundeyes",
+      "text": "COMPOUNDEYES"
+    },
+    {
+      "id": "EC_WORD_MARVEL_SCALE",
+      "text_label": "gEasyChatWord_MarvelScale",
+      "text": "MARVEL SCALE"
+    },
+    {
+      "id": "EC_WORD_WONDER_GUARD",
+      "text_label": "gEasyChatWord_WonderGuard",
+      "text": "WONDER GUARD"
+    },
+    {
+      "id": "EC_WORD_INSOMNIA",
+      "text_label": "gEasyChatWord_Insomnia",
+      "text": "INSOMNIA"
+    },
+    {
+      "id": "EC_WORD_LEVITATE",
+      "text_label": "gEasyChatWord_Levitate",
+      "text": "LEVITATE"
+    },
+    {
+      "id": "EC_WORD_PLUS",
+      "text_label": "gEasyChatWord_Plus",
+      "text": "PLUS"
+    },
+    {
+      "id": "EC_WORD_PRESSURE",
+      "text_label": "gEasyChatWord_Pressure",
+      "text": "PRESSURE"
+    },
+    {
+      "id": "EC_WORD_LIQUID_OOZE",
+      "text_label": "gEasyChatWord_LiquidOoze",
+      "text": "LIQUID OOZE"
+    },
+    {
+      "id": "EC_WORD_COLOR_CHANGE",
+      "text_label": "gEasyChatWord_ColorChange",
+      "text": "COLOR CHANGE"
+    },
+    {
+      "id": "EC_WORD_SOUNDPROOF",
+      "text_label": "gEasyChatWord_Soundproof",
+      "text": "SOUNDPROOF"
+    },
+    {
+      "id": "EC_WORD_EFFECT_SPORE",
+      "text_label": "gEasyChatWord_EffectSpore",
+      "text": "EFFECT SPORE"
+    },
+    {
+      "id": "EC_WORD_PKRS",
+      "text_label": "gEasyChatWord_Pkrs",
+      "text": "{PK}RS"
+    },
+    {
+      "id": "EC_WORD_FIRE",
+      "text_label": "gEasyChatWord_Fire",
+      "text": "FIRE"
+    },
+    {
+      "id": "EC_WORD_FLAME_BODY",
+      "text_label": "gEasyChatWord_FlameBody",
+      "text": "FLAME BODY"
+    },
+    {
+      "id": "EC_WORD_MINUS",
+      "text_label": "gEasyChatWord_Minus",
+      "text": "MINUS"
+    },
+    {
+      "id": "EC_WORD_OWN_TEMPO",
+      "text_label": "gEasyChatWord_OwnTempo",
+      "text": "OWN TEMPO"
+    },
+    {
+      "id": "EC_WORD_MAGMA_ARMOR",
+      "text_label": "gEasyChatWord_MagmaArmor",
+      "text": "MAGMA ARMOR"
+    },
+    {
+      "id": "EC_WORD_WATER",
+      "text_label": "gEasyChatWord_Water",
+      "text": "WATER"
+    },
+    {
+      "id": "EC_WORD_WATER_VEIL",
+      "text_label": "gEasyChatWord_WaterVeil",
+      "text": "WATER VEIL"
+    },
+    {
+      "id": "EC_WORD_BUG",
+      "text_label": "gEasyChatWord_Bug",
+      "text": "BUG"
+    },
+    {
+      "id": "EC_WORD_SWARM",
+      "text_label": "gEasyChatWord_Swarm",
+      "text": "SWARM"
+    },
+    {
+      "id": "EC_WORD_CUTE_CHARM",
+      "text_label": "gEasyChatWord_CuteCharm",
+      "text": "CUTE CHARM"
+    },
+    {
+      "id": "EC_WORD_IMMUNITY",
+      "text_label": "gEasyChatWord_Immunity",
+      "text": "IMMUNITY"
+    },
+    {
+      "id": "EC_WORD_BLAZE",
+      "text_label": "gEasyChatWord_Blaze",
+      "text": "BLAZE"
+    },
+    {
+      "id": "EC_WORD_PICKUP",
+      "text_label": "gEasyChatWord_Pickup",
+      "text": "PICKUP"
+    },
+    {
+      "id": "EC_WORD_PATTERN",
+      "text_label": "gEasyChatWord_Pattern",
+      "text": "PATTERN"
+    },
+    {
+      "id": "EC_WORD_FLASH_FIRE",
+      "text_label": "gEasyChatWord_FlashFire",
+      "text": "FLASH FIRE"
+    },
+    {
+      "id": "EC_WORD_VITAL_SPIRIT",
+      "text_label": "gEasyChatWord_VitalSpirit",
+      "text": "VITAL SPIRIT"
+    },
+    {
+      "id": "EC_WORD_CHLOROPHYLL",
+      "text_label": "gEasyChatWord_Chlorophyll",
+      "text": "CHLOROPHYLL"
+    },
+    {
+      "id": "EC_WORD_PURE_POWER",
+      "text_label": "gEasyChatWord_PurePower",
+      "text": "PURE POWER"
+    },
+    {
+      "id": "EC_WORD_SHIELD_DUST",
+      "text_label": "gEasyChatWord_ShieldDust",
+      "text": "SHIELD DUST"
+    }
+  ]
+}

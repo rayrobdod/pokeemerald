@@ -1,0 +1,185 @@
+{
+  "label": "gEasyChatGroup_Adjectives",
+  "words": [
+    {
+      "id": "EC_WORD_WANDERING",
+      "text_label": "gEasyChatWord_Wandering",
+      "text": "WANDERING"
+    },
+    {
+      "id": "EC_WORD_RICKETY",
+      "text_label": "gEasyChatWord_Rickety",
+      "text": "RICKETY"
+    },
+    {
+      "id": "EC_WORD_ROCK_SOLID",
+      "text_label": "gEasyChatWord_RockSolid",
+      "text": "ROCK-SOLID"
+    },
+    {
+      "id": "EC_WORD_HUNGRY",
+      "text_label": "gEasyChatWord_Hungry",
+      "text": "HUNGRY"
+    },
+    {
+      "id": "EC_WORD_TIGHT",
+      "text_label": "gEasyChatWord_Tight",
+      "text": "TIGHT"
+    },
+    {
+      "id": "EC_WORD_TICKLISH",
+      "text_label": "gEasyChatWord_Ticklish",
+      "text": "TICKLISH"
+    },
+    {
+      "id": "EC_WORD_TWIRLING",
+      "text_label": "gEasyChatWord_Twirling",
+      "text": "TWIRLING"
+    },
+    {
+      "id": "EC_WORD_SPIRALING",
+      "text_label": "gEasyChatWord_Spiraling",
+      "text": "SPIRALING"
+    },
+    {
+      "id": "EC_WORD_THIRSTY",
+      "text_label": "gEasyChatWord_Thirsty",
+      "text": "THIRSTY"
+    },
+    {
+      "id": "EC_WORD_LOLLING",
+      "text_label": "gEasyChatWord_Lolling",
+      "text": "LOLLING"
+    },
+    {
+      "id": "EC_WORD_SILKY",
+      "text_label": "gEasyChatWord_Silky",
+      "text": "SILKY"
+    },
+    {
+      "id": "EC_WORD_SADLY",
+      "text_label": "gEasyChatWord_Sadly",
+      "text": "SADLY"
+    },
+    {
+      "id": "EC_WORD_HOPELESS",
+      "text_label": "gEasyChatWord_Hopeless",
+      "text": "HOPELESS"
+    },
+    {
+      "id": "EC_WORD_USELESS",
+      "text_label": "gEasyChatWord_Useless",
+      "text": "USELESS"
+    },
+    {
+      "id": "EC_WORD_DROOLING",
+      "text_label": "gEasyChatWord_Drooling",
+      "text": "DROOLING"
+    },
+    {
+      "id": "EC_WORD_EXCITING",
+      "text_label": "gEasyChatWord_Exciting",
+      "text": "EXCITING"
+    },
+    {
+      "id": "EC_WORD_THICK",
+      "text_label": "gEasyChatWord_Thick",
+      "text": "THICK"
+    },
+    {
+      "id": "EC_WORD_SMOOTH",
+      "text_label": "gEasyChatWord_Smooth",
+      "text": "SMOOTH"
+    },
+    {
+      "id": "EC_WORD_SLIMY",
+      "text_label": "gEasyChatWord_Slimy",
+      "text": "SLIMY"
+    },
+    {
+      "id": "EC_WORD_THIN",
+      "text_label": "gEasyChatWord_Thin",
+      "text": "THIN"
+    },
+    {
+      "id": "EC_WORD_BREAK",
+      "text_label": "gEasyChatWord_Break",
+      "text": "BREAK"
+    },
+    {
+      "id": "EC_WORD_VORACIOUS",
+      "text_label": "gEasyChatWord_Voracious",
+      "text": "VORACIOUS"
+    },
+    {
+      "id": "EC_WORD_SCATTER",
+      "text_label": "gEasyChatWord_Scatter",
+      "text": "SCATTER"
+    },
+    {
+      "id": "EC_WORD_AWESOME",
+      "text_label": "gEasyChatWord_Awesome",
+      "text": "AWESOME"
+    },
+    {
+      "id": "EC_WORD_WIMPY",
+      "text_label": "gEasyChatWord_Wimpy",
+      "text": "WIMPY"
+    },
+    {
+      "id": "EC_WORD_WOBBLY",
+      "text_label": "gEasyChatWord_Wobbly",
+      "text": "WOBBLY"
+    },
+    {
+      "id": "EC_WORD_SHAKY",
+      "text_label": "gEasyChatWord_Shaky",
+      "text": "SHAKY"
+    },
+    {
+      "id": "EC_WORD_RIPPED",
+      "text_label": "gEasyChatWord_Ripped",
+      "text": "RIPPED"
+    },
+    {
+      "id": "EC_WORD_SHREDDED",
+      "text_label": "gEasyChatWord_Shredded",
+      "text": "SHREDDED"
+    },
+    {
+      "id": "EC_WORD_INCREASING",
+      "text_label": "gEasyChatWord_Increasing",
+      "text": "INCREASING"
+    },
+    {
+      "id": "EC_WORD_YET",
+      "text_label": "gEasyChatWord_Yet",
+      "text": "YET"
+    },
+    {
+      "id": "EC_WORD_DESTROYED",
+      "text_label": "gEasyChatWord_Destroyed",
+      "text": "DESTROYED"
+    },
+    {
+      "id": "EC_WORD_FIERY",
+      "text_label": "gEasyChatWord_Fiery",
+      "text": "FIERY"
+    },
+    {
+      "id": "EC_WORD_LOVEY_DOVEY",
+      "text_label": "gEasyChatWord_LoveyDovey",
+      "text": "LOVEY-DOVEY"
+    },
+    {
+      "id": "EC_WORD_HAPPILY",
+      "text_label": "gEasyChatWord_Happily",
+      "text": "HAPPILY"
+    },
+    {
+      "id": "EC_WORD_ANTICIPATION",
+      "text_label": "gEasyChatWord_Anticipation",
+      "text": "ANTICIPATION"
+    }
+  ]
+}

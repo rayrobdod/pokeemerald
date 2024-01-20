@@ -1,0 +1,395 @@
+{
+  "label": "gEasyChatGroup_Actions",
+  "words": [
+    {
+      "id": "EC_WORD_MEETS",
+      "text_label": "gEasyChatWord_Meets",
+      "text": "MEETS"
+    },
+    {
+      "id": "EC_WORD_CONCEDE",
+      "text_label": "gEasyChatWord_Concede",
+      "text": "CONCEDE"
+    },
+    {
+      "id": "EC_WORD_GIVE",
+      "text_label": "gEasyChatWord_Give",
+      "text": "GIVE"
+    },
+    {
+      "id": "EC_WORD_GIVES",
+      "text_label": "gEasyChatWord_Gives",
+      "text": "GIVES"
+    },
+    {
+      "id": "EC_WORD_PLAYED",
+      "text_label": "gEasyChatWord_Played",
+      "text": "PLAYED"
+    },
+    {
+      "id": "EC_WORD_PLAYS",
+      "text_label": "gEasyChatWord_Plays",
+      "text": "PLAYS"
+    },
+    {
+      "id": "EC_WORD_COLLECT",
+      "text_label": "gEasyChatWord_Collect",
+      "text": "COLLECT"
+    },
+    {
+      "id": "EC_WORD_WALKING",
+      "text_label": "gEasyChatWord_Walking",
+      "text": "WALKING"
+    },
+    {
+      "id": "EC_WORD_WALKS",
+      "text_label": "gEasyChatWord_Walks",
+      "text": "WALKS"
+    },
+    {
+      "id": "EC_WORD_SAYS",
+      "text_label": "gEasyChatWord_Says",
+      "text": "SAYS"
+    },
+    {
+      "id": "EC_WORD_WENT",
+      "text_label": "gEasyChatWord_Went",
+      "text": "WENT"
+    },
+    {
+      "id": "EC_WORD_SAID",
+      "text_label": "gEasyChatWord_Said",
+      "text": "SAID"
+    },
+    {
+      "id": "EC_WORD_WAKE_UP",
+      "text_label": "gEasyChatWord_WakeUp",
+      "text": "WAKE UP"
+    },
+    {
+      "id": "EC_WORD_WAKES_UP",
+      "text_label": "gEasyChatWord_WakesUp",
+      "text": "WAKES UP"
+    },
+    {
+      "id": "EC_WORD_ANGERS",
+      "text_label": "gEasyChatWord_Angers",
+      "text": "ANGERS"
+    },
+    {
+      "id": "EC_WORD_TEACH",
+      "text_label": "gEasyChatWord_Teach",
+      "text": "TEACH"
+    },
+    {
+      "id": "EC_WORD_TEACHES",
+      "text_label": "gEasyChatWord_Teaches",
+      "text": "TEACHES"
+    },
+    {
+      "id": "EC_WORD_PLEASE",
+      "text_label": "gEasyChatWord_Please",
+      "text": "PLEASE"
+    },
+    {
+      "id": "EC_WORD_LEARN",
+      "text_label": "gEasyChatWord_Learn",
+      "text": "LEARN"
+    },
+    {
+      "id": "EC_WORD_CHANGE",
+      "text_label": "gEasyChatWord_Change",
+      "text": "CHANGE"
+    },
+    {
+      "id": "EC_WORD_STORY",
+      "text_label": "gEasyChatWord_Story",
+      "text": "STORY"
+    },
+    {
+      "id": "EC_WORD_TRUST",
+      "text_label": "gEasyChatWord_Trust",
+      "text": "TRUST"
+    },
+    {
+      "id": "EC_WORD_LAVISH",
+      "text_label": "gEasyChatWord_Lavish",
+      "text": "LAVISH"
+    },
+    {
+      "id": "EC_WORD_LISTENS",
+      "text_label": "gEasyChatWord_Listens",
+      "text": "LISTENS"
+    },
+    {
+      "id": "EC_WORD_HEARING",
+      "text_label": "gEasyChatWord_Hearing",
+      "text": "HEARING"
+    },
+    {
+      "id": "EC_WORD_TRAINS",
+      "text_label": "gEasyChatWord_Trains",
+      "text": "TRAINS"
+    },
+    {
+      "id": "EC_WORD_CHOOSE",
+      "text_label": "gEasyChatWord_Choose",
+      "text": "CHOOSE"
+    },
+    {
+      "id": "EC_WORD_COME",
+      "text_label": "gEasyChatWord_Come",
+      "text": "COME"
+    },
+    {
+      "id": "EC_WORD_CAME",
+      "text_label": "gEasyChatWord_Came",
+      "text": "CAME"
+    },
+    {
+      "id": "EC_WORD_SEARCH",
+      "text_label": "gEasyChatWord_Search",
+      "text": "SEARCH"
+    },
+    {
+      "id": "EC_WORD_MAKE",
+      "text_label": "gEasyChatWord_Make",
+      "text": "MAKE"
+    },
+    {
+      "id": "EC_WORD_CAUSE",
+      "text_label": "gEasyChatWord_Cause",
+      "text": "CAUSE"
+    },
+    {
+      "id": "EC_WORD_KNOW",
+      "text_label": "gEasyChatWord_Know",
+      "text": "KNOW"
+    },
+    {
+      "id": "EC_WORD_KNOWS",
+      "text_label": "gEasyChatWord_Knows",
+      "text": "KNOWS"
+    },
+    {
+      "id": "EC_WORD_REFUSE",
+      "text_label": "gEasyChatWord_Refuse",
+      "text": "REFUSE"
+    },
+    {
+      "id": "EC_WORD_STORES",
+      "text_label": "gEasyChatWord_Stores",
+      "text": "STORES"
+    },
+    {
+      "id": "EC_WORD_BRAG",
+      "text_label": "gEasyChatWord_Brag",
+      "text": "BRAG"
+    },
+    {
+      "id": "EC_WORD_IGNORANT",
+      "text_label": "gEasyChatWord_Ignorant",
+      "text": "IGNORANT"
+    },
+    {
+      "id": "EC_WORD_THINKS",
+      "text_label": "gEasyChatWord_Thinks",
+      "text": "THINKS"
+    },
+    {
+      "id": "EC_WORD_BELIEVE",
+      "text_label": "gEasyChatWord_Believe",
+      "text": "BELIEVE"
+    },
+    {
+      "id": "EC_WORD_SLIDE",
+      "text_label": "gEasyChatWord_Slide",
+      "text": "SLIDE"
+    },
+    {
+      "id": "EC_WORD_EATS",
+      "text_label": "gEasyChatWord_Eats",
+      "text": "EATS"
+    },
+    {
+      "id": "EC_WORD_USE",
+      "text_label": "gEasyChatWord_Use",
+      "text": "USE"
+    },
+    {
+      "id": "EC_WORD_USES",
+      "text_label": "gEasyChatWord_Uses",
+      "text": "USES"
+    },
+    {
+      "id": "EC_WORD_USING",
+      "text_label": "gEasyChatWord_Using",
+      "text": "USING"
+    },
+    {
+      "id": "EC_WORD_COULDN_T",
+      "text_label": "gEasyChatWord_Couldnt",
+      "text": "COULDN'T"
+    },
+    {
+      "id": "EC_WORD_CAPABLE",
+      "text_label": "gEasyChatWord_Capable",
+      "text": "CAPABLE"
+    },
+    {
+      "id": "EC_WORD_DISAPPEAR",
+      "text_label": "gEasyChatWord_Disappear",
+      "text": "DISAPPEAR"
+    },
+    {
+      "id": "EC_WORD_APPEAR",
+      "text_label": "gEasyChatWord_Appear",
+      "text": "APPEAR"
+    },
+    {
+      "id": "EC_WORD_THROW",
+      "text_label": "gEasyChatWord_Throw",
+      "text": "THROW"
+    },
+    {
+      "id": "EC_WORD_WORRY",
+      "text_label": "gEasyChatWord_Worry",
+      "text": "WORRY"
+    },
+    {
+      "id": "EC_WORD_SLEPT",
+      "text_label": "gEasyChatWord_Slept",
+      "text": "SLEPT"
+    },
+    {
+      "id": "EC_WORD_SLEEP",
+      "text_label": "gEasyChatWord_Sleep",
+      "text": "SLEEP"
+    },
+    {
+      "id": "EC_WORD_RELEASE",
+      "text_label": "gEasyChatWord_Release",
+      "text": "RELEASE"
+    },
+    {
+      "id": "EC_WORD_DRINKS",
+      "text_label": "gEasyChatWord_Drinks",
+      "text": "DRINKS"
+    },
+    {
+      "id": "EC_WORD_RUNS",
+      "text_label": "gEasyChatWord_Runs",
+      "text": "RUNS"
+    },
+    {
+      "id": "EC_WORD_RUN",
+      "text_label": "gEasyChatWord_Run",
+      "text": "RUN"
+    },
+    {
+      "id": "EC_WORD_WORKS",
+      "text_label": "gEasyChatWord_Works",
+      "text": "WORKS"
+    },
+    {
+      "id": "EC_WORD_WORKING",
+      "text_label": "gEasyChatWord_Working",
+      "text": "WORKING"
+    },
+    {
+      "id": "EC_WORD_TALKING",
+      "text_label": "gEasyChatWord_Talking",
+      "text": "TALKING"
+    },
+    {
+      "id": "EC_WORD_TALK",
+      "text_label": "gEasyChatWord_Talk",
+      "text": "TALK"
+    },
+    {
+      "id": "EC_WORD_SINK",
+      "text_label": "gEasyChatWord_Sink",
+      "text": "SINK"
+    },
+    {
+      "id": "EC_WORD_SMACK",
+      "text_label": "gEasyChatWord_Smack",
+      "text": "SMACK"
+    },
+    {
+      "id": "EC_WORD_PRETEND",
+      "text_label": "gEasyChatWord_Pretend",
+      "text": "PRETEND"
+    },
+    {
+      "id": "EC_WORD_PRAISE",
+      "text_label": "gEasyChatWord_Praise",
+      "text": "PRAISE"
+    },
+    {
+      "id": "EC_WORD_OVERDO",
+      "text_label": "gEasyChatWord_Overdo",
+      "text": "OVERDO"
+    },
+    {
+      "id": "EC_WORD_SHOW",
+      "text_label": "gEasyChatWord_Show",
+      "text": "SHOW"
+    },
+    {
+      "id": "EC_WORD_LOOKS",
+      "text_label": "gEasyChatWord_Looks",
+      "text": "LOOKS"
+    },
+    {
+      "id": "EC_WORD_SEES",
+      "text_label": "gEasyChatWord_Sees",
+      "text": "SEES"
+    },
+    {
+      "id": "EC_WORD_SEEK",
+      "text_label": "gEasyChatWord_Seek",
+      "text": "SEEK"
+    },
+    {
+      "id": "EC_WORD_OWN",
+      "text_label": "gEasyChatWord_Own",
+      "text": "OWN"
+    },
+    {
+      "id": "EC_WORD_TAKE",
+      "text_label": "gEasyChatWord_Take",
+      "text": "TAKE"
+    },
+    {
+      "id": "EC_WORD_ALLOW",
+      "text_label": "gEasyChatWord_Allow",
+      "text": "ALLOW"
+    },
+    {
+      "id": "EC_WORD_FORGET",
+      "text_label": "gEasyChatWord_Forget",
+      "text": "FORGET"
+    },
+    {
+      "id": "EC_WORD_FORGETS",
+      "text_label": "gEasyChatWord_Forgets",
+      "text": "FORGETS"
+    },
+    {
+      "id": "EC_WORD_APPEARS",
+      "text_label": "gEasyChatWord_Appears",
+      "text": "APPEARS"
+    },
+    {
+      "id": "EC_WORD_FAINT",
+      "text_label": "gEasyChatWord_Faint",
+      "text": "FAINT"
+    },
+    {
+      "id": "EC_WORD_FAINTED",
+      "text_label": "gEasyChatWord_Fainted",
+      "text": "FAINTED"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "label": "gEasyChatGroup_Voices",
+  "words": [
+    {
+      "id": "EC_WORD_EXCL",
+      "text_label": "gEasyChatWord_Excl",
+      "text": "!"
+    },
+    {
+      "id": "EC_WORD_EXCL_EXCL",
+      "text_label": "gEasyChatWord_ExclExcl",
+      "text": "!!"
+    },
+    {
+      "id": "EC_WORD_QUES_EXCL",
+      "text_label": "gEasyChatWord_QuesExcl",
+      "text": "?!"
+    },
+    {
+      "id": "EC_WORD_QUES",
+      "text_label": "gEasyChatWord_Ques",
+      "text": "?"
+    },
+    {
+      "id": "EC_WORD_ELLIPSIS",
+      "text_label": "gEasyChatWord_Ellipsis",
+      "text": "\u2026"
+    },
+    {
+      "id": "EC_WORD_ELLIPSIS_EXCL",
+      "text_label": "gEasyChatWord_EllipsisExcl",
+      "text": "\u2026!"
+    },
+    {
+      "id": "EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS",
+      "text_label": "gEasyChatWord_EllipsisEllipsisEllipsis",
+      "text": "\u2026\u2026\u2026"
+    },
+    {
+      "id": "EC_WORD_DASH",
+      "text_label": "gEasyChatWord_Dash",
+      "text": "-"
+    },
+    {
+      "id": "EC_WORD_DASH_DASH_DASH",
+      "text_label": "gEasyChatWord_DashDashDash",
+      "text": "- - -"
+    },
+    {
+      "id": "EC_WORD_UH_OH",
+      "text_label": "gEasyChatWord_UhOh",
+      "text": "UH-OH"
+    },
+    {
+      "id": "EC_WORD_WAAAH",
+      "text_label": "gEasyChatWord_Waaah",
+      "text": "WAAAH"
+    },
+    {
+      "id": "EC_WORD_AHAHA",
+      "text_label": "gEasyChatWord_Ahaha",
+      "text": "AHAHA"
+    },
+    {
+      "id": "EC_WORD_OH_QUES",
+      "text_label": "gEasyChatWord_OhQues",
+      "text": "OH?"
+    },
+    {
+      "id": "EC_WORD_NOPE",
+      "text_label": "gEasyChatWord_Nope",
+      "text": "NOPE"
+    },
+    {
+      "id": "EC_WORD_URGH",
+      "text_label": "gEasyChatWord_Urgh",
+      "text": "URGH"
+    },
+    {
+      "id": "EC_WORD_HMM",
+      "text_label": "gEasyChatWord_Hmm",
+      "text": "HMM"
+    },
+    {
+      "id": "EC_WORD_WHOAH",
+      "text_label": "gEasyChatWord_Whoah",
+      "text": "WHOAH"
+    },
+    {
+      "id": "EC_WORD_WROOOAAR_EXCL",
+      "text_label": "gEasyChatWord_WroooaarExcl",
+      "text": "WROOOAAR!"
+    },
+    {
+      "id": "EC_WORD_WOW",
+      "text_label": "gEasyChatWord_Wow",
+      "text": "WOW"
+    },
+    {
+      "id": "EC_WORD_GIGGLE",
+      "text_label": "gEasyChatWord_Giggle",
+      "text": "GIGGLE"
+    },
+    {
+      "id": "EC_WORD_SIGH",
+      "text_label": "gEasyChatWord_Sigh",
+      "text": "SIGH"
+    },
+    {
+      "id": "EC_WORD_UNBELIEVABLE",
+      "text_label": "gEasyChatWord_Unbelievable",
+      "text": "UNBELIEVABLE"
+    },
+    {
+      "id": "EC_WORD_CRIES",
+      "text_label": "gEasyChatWord_Cries",
+      "text": "CRIES"
+    },
+    {
+      "id": "EC_WORD_AGREE",
+      "text_label": "gEasyChatWord_Agree",
+      "text": "AGREE"
+    },
+    {
+      "id": "EC_WORD_EH_QUES",
+      "text_label": "gEasyChatWord_EhQues",
+      "text": "EH?"
+    },
+    {
+      "id": "EC_WORD_CRY",
+      "text_label": "gEasyChatWord_Cry",
+      "text": "CRY"
+    },
+    {
+      "id": "EC_WORD_EHEHE",
+      "text_label": "gEasyChatWord_Ehehe",
+      "text": "EHEHE"
+    },
+    {
+      "id": "EC_WORD_OI_OI_OI",
+      "text_label": "gEasyChatWord_OiOiOi",
+      "text": "OI, OI, OI"
+    },
+    {
+      "id": "EC_WORD_OH_YEAH",
+      "text_label": "gEasyChatWord_OhYeah",
+      "text": "OH, YEAH"
+    },
+    {
+      "id": "EC_WORD_OH",
+      "text_label": "gEasyChatWord_Oh",
+      "text": "OH"
+    },
+    {
+      "id": "EC_WORD_OOPS",
+      "text_label": "gEasyChatWord_Oops",
+      "text": "OOPS"
+    },
+    {
+      "id": "EC_WORD_SHOCKED",
+      "text_label": "gEasyChatWord_Shocked",
+      "text": "SHOCKED"
+    },
+    {
+      "id": "EC_WORD_EEK",
+      "text_label": "gEasyChatWord_Eek",
+      "text": "EEK"
+    },
+    {
+      "id": "EC_WORD_GRAAAH",
+      "text_label": "gEasyChatWord_Graaah",
+      "text": "GRAAAH"
+    },
+    {
+      "id": "EC_WORD_GWAHAHAHA",
+      "text_label": "gEasyChatWord_Gwahahaha",
+      "text": "GWAHAHAHA"
+    },
+    {
+      "id": "EC_WORD_WAY",
+      "text_label": "gEasyChatWord_Way",
+      "text": "WAY"
+    },
+    {
+      "id": "EC_WORD_TCH",
+      "text_label": "gEasyChatWord_Tch",
+      "text": "TCH"
+    },
+    {
+      "id": "EC_WORD_HEHE",
+      "text_label": "gEasyChatWord_Hehe",
+      "text": "HEHE"
+    },
+    {
+      "id": "EC_WORD_HAH",
+      "text_label": "gEasyChatWord_Hah",
+      "text": "HAH"
+    },
+    {
+      "id": "EC_WORD_YUP",
+      "text_label": "gEasyChatWord_Yup",
+      "text": "YUP"
+    },
+    {
+      "id": "EC_WORD_HAHAHA",
+      "text_label": "gEasyChatWord_Hahaha",
+      "text": "HAHAHA"
+    },
+    {
+      "id": "EC_WORD_AIYEEH",
+      "text_label": "gEasyChatWord_Aiyeeh",
+      "text": "AIYEEH"
+    },
+    {
+      "id": "EC_WORD_HIYAH",
+      "text_label": "gEasyChatWord_Hiyah",
+      "text": "HIYAH"
+    },
+    {
+      "id": "EC_WORD_FUFUFU",
+      "text_label": "gEasyChatWord_Fufufu",
+      "text": "FUFUFU"
+    },
+    {
+      "id": "EC_WORD_LOL",
+      "text_label": "gEasyChatWord_Lol",
+      "text": "LOL"
+    },
+    {
+      "id": "EC_WORD_SNORT",
+      "text_label": "gEasyChatWord_Snort",
+      "text": "SNORT"
+    },
+    {
+      "id": "EC_WORD_HUMPH",
+      "text_label": "gEasyChatWord_Humph",
+      "text": "HUMPH"
+    },
+    {
+      "id": "EC_WORD_HEHEHE",
+      "text_label": "gEasyChatWord_Hehehe",
+      "text": "HEHEHE"
+    },
+    {
+      "id": "EC_WORD_HEH",
+      "text_label": "gEasyChatWord_Heh",
+      "text": "HEH"
+    },
+    {
+      "id": "EC_WORD_HOHOHO",
+      "text_label": "gEasyChatWord_Hohoho",
+      "text": "HOHOHO"
+    },
+    {
+      "id": "EC_WORD_UH_HUH",
+      "text_label": "gEasyChatWord_UhHuh",
+      "text": "UH-HUH"
+    },
+    {
+      "id": "EC_WORD_OH_DEAR",
+      "text_label": "gEasyChatWord_OhDear",
+      "text": "OH, DEAR"
+    },
+    {
+      "id": "EC_WORD_ARRGH",
+      "text_label": "gEasyChatWord_Arrgh",
+      "text": "ARRGH"
+    },
+    {
+      "id": "EC_WORD_MUFUFU",
+      "text_label": "gEasyChatWord_Mufufu",
+      "text": "MUFUFU"
+    },
+    {
+      "id": "EC_WORD_MMM",
+      "text_label": "gEasyChatWord_Mmm",
+      "text": "MMM"
+    },
+    {
+      "id": "EC_WORD_OH_KAY",
+      "text_label": "gEasyChatWord_OhKay",
+      "text": "OH-KAY"
+    },
+    {
+      "id": "EC_WORD_OKAY",
+      "text_label": "gEasyChatWord_Okay",
+      "text": "OKAY"
+    },
+    {
+      "id": "EC_WORD_LALALA",
+      "text_label": "gEasyChatWord_Lalala",
+      "text": "LALALA"
+    },
+    {
+      "id": "EC_WORD_YAY",
+      "text_label": "gEasyChatWord_Yay",
+      "text": "YAY"
+    },
+    {
+      "id": "EC_WORD_AWW",
+      "text_label": "gEasyChatWord_Aww",
+      "text": "AWW"
+    },
+    {
+      "id": "EC_WORD_WOWEE",
+      "text_label": "gEasyChatWord_Wowee",
+      "text": "WOWEE"
+    },
+    {
+      "id": "EC_WORD_GWAH",
+      "text_label": "gEasyChatWord_Gwah",
+      "text": "GWAH"
+    },
+    {
+      "id": "EC_WORD_WAHAHAHA",
+      "text_label": "gEasyChatWord_Wahahaha",
+      "text": "WAHAHAHA"
+    }
+  ]
+}

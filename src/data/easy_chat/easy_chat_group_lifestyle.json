@@ -1,0 +1,230 @@
+{
+  "label": "gEasyChatGroup_Lifestyle",
+  "words": [
+    {
+      "id": "EC_WORD_CHORES",
+      "text_label": "gEasyChatWord_Chores",
+      "text": "CHORES"
+    },
+    {
+      "id": "EC_WORD_HOME",
+      "text_label": "gEasyChatWord_Home",
+      "text": "HOME"
+    },
+    {
+      "id": "EC_WORD_MONEY",
+      "text_label": "gEasyChatWord_Money",
+      "text": "MONEY"
+    },
+    {
+      "id": "EC_WORD_ALLOWANCE",
+      "text_label": "gEasyChatWord_Allowance",
+      "text": "ALLOWANCE"
+    },
+    {
+      "id": "EC_WORD_BATH",
+      "text_label": "gEasyChatWord_Bath",
+      "text": "BATH"
+    },
+    {
+      "id": "EC_WORD_CONVERSATION",
+      "text_label": "gEasyChatWord_Conversation",
+      "text": "CONVERSATION"
+    },
+    {
+      "id": "EC_WORD_SCHOOL",
+      "text_label": "gEasyChatWord_School",
+      "text": "SCHOOL"
+    },
+    {
+      "id": "EC_WORD_COMMEMORATE",
+      "text_label": "gEasyChatWord_Commemorate",
+      "text": "COMMEMORATE"
+    },
+    {
+      "id": "EC_WORD_HABIT",
+      "text_label": "gEasyChatWord_Habit",
+      "text": "HABIT"
+    },
+    {
+      "id": "EC_WORD_GROUP",
+      "text_label": "gEasyChatWord_Group",
+      "text": "GROUP"
+    },
+    {
+      "id": "EC_WORD_WORD",
+      "text_label": "gEasyChatWord_Word",
+      "text": "WORD"
+    },
+    {
+      "id": "EC_WORD_STORE",
+      "text_label": "gEasyChatWord_Store",
+      "text": "STORE"
+    },
+    {
+      "id": "EC_WORD_SERVICE",
+      "text_label": "gEasyChatWord_Service",
+      "text": "SERVICE"
+    },
+    {
+      "id": "EC_WORD_WORK",
+      "text_label": "gEasyChatWord_Work",
+      "text": "WORK"
+    },
+    {
+      "id": "EC_WORD_SYSTEM",
+      "text_label": "gEasyChatWord_System",
+      "text": "SYSTEM"
+    },
+    {
+      "id": "EC_WORD_TRAIN",
+      "text_label": "gEasyChatWord_Train",
+      "text": "TRAIN"
+    },
+    {
+      "id": "EC_WORD_CLASS",
+      "text_label": "gEasyChatWord_Class",
+      "text": "CLASS"
+    },
+    {
+      "id": "EC_WORD_LESSONS",
+      "text_label": "gEasyChatWord_Lessons",
+      "text": "LESSONS"
+    },
+    {
+      "id": "EC_WORD_INFORMATION",
+      "text_label": "gEasyChatWord_Information",
+      "text": "INFORMATION"
+    },
+    {
+      "id": "EC_WORD_LIVING",
+      "text_label": "gEasyChatWord_Living",
+      "text": "LIVING"
+    },
+    {
+      "id": "EC_WORD_TEACHER",
+      "text_label": "gEasyChatWord_Teacher",
+      "text": "TEACHER"
+    },
+    {
+      "id": "EC_WORD_TOURNAMENT",
+      "text_label": "gEasyChatWord_Tournament",
+      "text": "TOURNAMENT"
+    },
+    {
+      "id": "EC_WORD_LETTER",
+      "text_label": "gEasyChatWord_Letter",
+      "text": "LETTER"
+    },
+    {
+      "id": "EC_WORD_EVENT",
+      "text_label": "gEasyChatWord_Event",
+      "text": "EVENT"
+    },
+    {
+      "id": "EC_WORD_DIGITAL",
+      "text_label": "gEasyChatWord_Digital",
+      "text": "DIGITAL"
+    },
+    {
+      "id": "EC_WORD_TEST",
+      "text_label": "gEasyChatWord_Test",
+      "text": "TEST"
+    },
+    {
+      "id": "EC_WORD_DEPT_STORE",
+      "text_label": "gEasyChatWord_DeptStore",
+      "text": "DEPT. STORE"
+    },
+    {
+      "id": "EC_WORD_TELEVISION",
+      "text_label": "gEasyChatWord_Television",
+      "text": "TELEVISION"
+    },
+    {
+      "id": "EC_WORD_PHONE",
+      "text_label": "gEasyChatWord_Phone",
+      "text": "PHONE"
+    },
+    {
+      "id": "EC_WORD_ITEM",
+      "text_label": "gEasyChatWord_Item",
+      "text": "ITEM"
+    },
+    {
+      "id": "EC_WORD_NAME",
+      "text_label": "gEasyChatWord_Name",
+      "text": "NAME"
+    },
+    {
+      "id": "EC_WORD_NEWS",
+      "text_label": "gEasyChatWord_News",
+      "text": "NEWS"
+    },
+    {
+      "id": "EC_WORD_POPULAR",
+      "text_label": "gEasyChatWord_Popular",
+      "text": "POPULAR"
+    },
+    {
+      "id": "EC_WORD_PARTY",
+      "text_label": "gEasyChatWord_Party",
+      "text": "PARTY"
+    },
+    {
+      "id": "EC_WORD_STUDY",
+      "text_label": "gEasyChatWord_Study",
+      "text": "STUDY"
+    },
+    {
+      "id": "EC_WORD_MACHINE",
+      "text_label": "gEasyChatWord_Machine",
+      "text": "MACHINE"
+    },
+    {
+      "id": "EC_WORD_MAIL",
+      "text_label": "gEasyChatWord_Mail",
+      "text": "MAIL"
+    },
+    {
+      "id": "EC_WORD_MESSAGE",
+      "text_label": "gEasyChatWord_Message",
+      "text": "MESSAGE"
+    },
+    {
+      "id": "EC_WORD_PROMISE",
+      "text_label": "gEasyChatWord_Promise",
+      "text": "PROMISE"
+    },
+    {
+      "id": "EC_WORD_DREAM",
+      "text_label": "gEasyChatWord_Dream",
+      "text": "DREAM"
+    },
+    {
+      "id": "EC_WORD_KINDERGARTEN",
+      "text_label": "gEasyChatWord_Kindergarten",
+      "text": "KINDERGARTEN"
+    },
+    {
+      "id": "EC_WORD_LIFE",
+      "text_label": "gEasyChatWord_Life",
+      "text": "LIFE"
+    },
+    {
+      "id": "EC_WORD_RADIO",
+      "text_label": "gEasyChatWord_Radio",
+      "text": "RADIO"
+    },
+    {
+      "id": "EC_WORD_RENTAL",
+      "text_label": "gEasyChatWord_Rental",
+      "text": "RENTAL"
+    },
+    {
+      "id": "EC_WORD_WORLD",
+      "text_label": "gEasyChatWord_World",
+      "text": "WORLD"
+    }
+  ]
+}

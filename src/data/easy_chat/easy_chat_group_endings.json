@@ -1,0 +1,350 @@
+{
+  "label": "gEasyChatGroup_Endings",
+  "words": [
+    {
+      "id": "EC_WORD_WILL",
+      "text_label": "gEasyChatWord_Will",
+      "text": "WILL"
+    },
+    {
+      "id": "EC_WORD_WILL_BE_HERE",
+      "text_label": "gEasyChatWord_WillBeHere",
+      "text": "WILL BE HERE"
+    },
+    {
+      "id": "EC_WORD_OR",
+      "text_label": "gEasyChatWord_Or",
+      "text": "OR"
+    },
+    {
+      "id": "EC_WORD_TIMES",
+      "text_label": "gEasyChatWord_Times",
+      "text": "TIMES"
+    },
+    {
+      "id": "EC_WORD_WONDER",
+      "text_label": "gEasyChatWord_Wonder",
+      "text": "WONDER"
+    },
+    {
+      "id": "EC_WORD_IS_IT_QUES",
+      "text_label": "gEasyChatWord_IsItQues",
+      "text": "IS IT?"
+    },
+    {
+      "id": "EC_WORD_BE",
+      "text_label": "gEasyChatWord_Be",
+      "text": "BE"
+    },
+    {
+      "id": "EC_WORD_GIMME",
+      "text_label": "gEasyChatWord_Gimme",
+      "text": "GIMME"
+    },
+    {
+      "id": "EC_WORD_COULD",
+      "text_label": "gEasyChatWord_Could",
+      "text": "COULD"
+    },
+    {
+      "id": "EC_WORD_LIKELY_TO",
+      "text_label": "gEasyChatWord_LikelyTo",
+      "text": "LIKELY TO"
+    },
+    {
+      "id": "EC_WORD_WOULD",
+      "text_label": "gEasyChatWord_Would",
+      "text": "WOULD"
+    },
+    {
+      "id": "EC_WORD_IS",
+      "text_label": "gEasyChatWord_Is",
+      "text": "IS"
+    },
+    {
+      "id": "EC_WORD_ISN_T_IT_QUES",
+      "text_label": "gEasyChatWord_IsntItQues",
+      "text": "ISN'T IT?"
+    },
+    {
+      "id": "EC_WORD_LET_S",
+      "text_label": "gEasyChatWord_Lets",
+      "text": "LET'S"
+    },
+    {
+      "id": "EC_WORD_OTHER",
+      "text_label": "gEasyChatWord_Other",
+      "text": "OTHER"
+    },
+    {
+      "id": "EC_WORD_ARE",
+      "text_label": "gEasyChatWord_Are",
+      "text": "ARE"
+    },
+    {
+      "id": "EC_WORD_WAS",
+      "text_label": "gEasyChatWord_Was",
+      "text": "WAS"
+    },
+    {
+      "id": "EC_WORD_WERE",
+      "text_label": "gEasyChatWord_Were",
+      "text": "WERE"
+    },
+    {
+      "id": "EC_WORD_THOSE",
+      "text_label": "gEasyChatWord_Those",
+      "text": "THOSE"
+    },
+    {
+      "id": "EC_WORD_ISN_T",
+      "text_label": "gEasyChatWord_Isnt",
+      "text": "ISN'T"
+    },
+    {
+      "id": "EC_WORD_WON_T",
+      "text_label": "gEasyChatWord_Wont",
+      "text": "WON'T"
+    },
+    {
+      "id": "EC_WORD_CAN_T",
+      "text_label": "gEasyChatWord_Cant",
+      "text": "CAN'T"
+    },
+    {
+      "id": "EC_WORD_CAN",
+      "text_label": "gEasyChatWord_Can",
+      "text": "CAN"
+    },
+    {
+      "id": "EC_WORD_DON_T",
+      "text_label": "gEasyChatWord_Dont",
+      "text": "DON'T"
+    },
+    {
+      "id": "EC_WORD_DO",
+      "text_label": "gEasyChatWord_Do",
+      "text": "DO"
+    },
+    {
+      "id": "EC_WORD_DOES",
+      "text_label": "gEasyChatWord_Does",
+      "text": "DOES"
+    },
+    {
+      "id": "EC_WORD_WHOM",
+      "text_label": "gEasyChatWord_Whom",
+      "text": "WHOM"
+    },
+    {
+      "id": "EC_WORD_WHICH",
+      "text_label": "gEasyChatWord_Which",
+      "text": "WHICH"
+    },
+    {
+      "id": "EC_WORD_WASN_T",
+      "text_label": "gEasyChatWord_Wasnt",
+      "text": "WASN'T"
+    },
+    {
+      "id": "EC_WORD_WEREN_T",
+      "text_label": "gEasyChatWord_Werent",
+      "text": "WEREN'T"
+    },
+    {
+      "id": "EC_WORD_HAVE",
+      "text_label": "gEasyChatWord_Have",
+      "text": "HAVE"
+    },
+    {
+      "id": "EC_WORD_HAVEN_T",
+      "text_label": "gEasyChatWord_Havent",
+      "text": "HAVEN'T"
+    },
+    {
+      "id": "EC_WORD_A",
+      "text_label": "gEasyChatWord_A",
+      "text": "A"
+    },
+    {
+      "id": "EC_WORD_AN",
+      "text_label": "gEasyChatWord_An",
+      "text": "AN"
+    },
+    {
+      "id": "EC_WORD_NOT",
+      "text_label": "gEasyChatWord_Not",
+      "text": "NOT"
+    },
+    {
+      "id": "EC_WORD_THERE",
+      "text_label": "gEasyChatWord_There",
+      "text": "THERE"
+    },
+    {
+      "id": "EC_WORD_OK_QUES",
+      "text_label": "gEasyChatWord_OkQues",
+      "text": "OK?"
+    },
+    {
+      "id": "EC_WORD_SO",
+      "text_label": "gEasyChatWord_So",
+      "text": "SO"
+    },
+    {
+      "id": "EC_WORD_MAYBE",
+      "text_label": "gEasyChatWord_Maybe",
+      "text": "MAYBE"
+    },
+    {
+      "id": "EC_WORD_ABOUT",
+      "text_label": "gEasyChatWord_About",
+      "text": "ABOUT"
+    },
+    {
+      "id": "EC_WORD_OVER",
+      "text_label": "gEasyChatWord_Over",
+      "text": "OVER"
+    },
+    {
+      "id": "EC_WORD_IT",
+      "text_label": "gEasyChatWord_It",
+      "text": "IT"
+    },
+    {
+      "id": "EC_WORD_ALL",
+      "text_label": "gEasyChatWord_All",
+      "text": "ALL"
+    },
+    {
+      "id": "EC_WORD_FOR",
+      "text_label": "gEasyChatWord_For",
+      "text": "FOR"
+    },
+    {
+      "id": "EC_WORD_ON",
+      "text_label": "gEasyChatWord_On",
+      "text": "ON"
+    },
+    {
+      "id": "EC_WORD_OFF",
+      "text_label": "gEasyChatWord_Off",
+      "text": "OFF"
+    },
+    {
+      "id": "EC_WORD_AS",
+      "text_label": "gEasyChatWord_As",
+      "text": "AS"
+    },
+    {
+      "id": "EC_WORD_TO",
+      "text_label": "gEasyChatWord_To",
+      "text": "TO"
+    },
+    {
+      "id": "EC_WORD_WITH",
+      "text_label": "gEasyChatWord_With",
+      "text": "WITH"
+    },
+    {
+      "id": "EC_WORD_BETTER",
+      "text_label": "gEasyChatWord_Better",
+      "text": "BETTER"
+    },
+    {
+      "id": "EC_WORD_EVER",
+      "text_label": "gEasyChatWord_Ever",
+      "text": "EVER"
+    },
+    {
+      "id": "EC_WORD_SINCE",
+      "text_label": "gEasyChatWord_Since",
+      "text": "SINCE"
+    },
+    {
+      "id": "EC_WORD_OF",
+      "text_label": "gEasyChatWord_Of",
+      "text": "OF"
+    },
+    {
+      "id": "EC_WORD_BELONGS_TO",
+      "text_label": "gEasyChatWord_BelongsTo",
+      "text": "BELONGS TO"
+    },
+    {
+      "id": "EC_WORD_AT",
+      "text_label": "gEasyChatWord_At",
+      "text": "AT"
+    },
+    {
+      "id": "EC_WORD_IN",
+      "text_label": "gEasyChatWord_In",
+      "text": "IN"
+    },
+    {
+      "id": "EC_WORD_OUT",
+      "text_label": "gEasyChatWord_Out",
+      "text": "OUT"
+    },
+    {
+      "id": "EC_WORD_TOO",
+      "text_label": "gEasyChatWord_Too",
+      "text": "TOO"
+    },
+    {
+      "id": "EC_WORD_LIKE",
+      "text_label": "gEasyChatWord_Like",
+      "text": "LIKE"
+    },
+    {
+      "id": "EC_WORD_DID",
+      "text_label": "gEasyChatWord_Did",
+      "text": "DID"
+    },
+    {
+      "id": "EC_WORD_DIDN_T",
+      "text_label": "gEasyChatWord_Didnt",
+      "text": "DIDN'T"
+    },
+    {
+      "id": "EC_WORD_DOESN_T",
+      "text_label": "gEasyChatWord_Doesnt",
+      "text": "DOESN'T"
+    },
+    {
+      "id": "EC_WORD_WITHOUT",
+      "text_label": "gEasyChatWord_Without",
+      "text": "WITHOUT"
+    },
+    {
+      "id": "EC_WORD_AFTER",
+      "text_label": "gEasyChatWord_After",
+      "text": "AFTER"
+    },
+    {
+      "id": "EC_WORD_BEFORE",
+      "text_label": "gEasyChatWord_Before",
+      "text": "BEFORE"
+    },
+    {
+      "id": "EC_WORD_WHILE",
+      "text_label": "gEasyChatWord_While",
+      "text": "WHILE"
+    },
+    {
+      "id": "EC_WORD_THAN",
+      "text_label": "gEasyChatWord_Than",
+      "text": "THAN"
+    },
+    {
+      "id": "EC_WORD_ONCE",
+      "text_label": "gEasyChatWord_Once",
+      "text": "ONCE"
+    },
+    {
+      "id": "EC_WORD_ANYWHERE",
+      "text_label": "gEasyChatWord_Anywhere",
+      "text": "ANYWHERE"
+    }
+  ]
+}

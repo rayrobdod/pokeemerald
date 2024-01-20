@@ -1,0 +1,380 @@
+{
+  "label": "gEasyChatGroup_People",
+  "words": [
+    {
+      "id": "EC_WORD_OPPONENT",
+      "text_label": "gEasyChatWord_Opponent",
+      "text": "OPPONENT"
+    },
+    {
+      "id": "EC_WORD_I",
+      "text_label": "gEasyChatWord_I",
+      "text": "I"
+    },
+    {
+      "id": "EC_WORD_YOU",
+      "text_label": "gEasyChatWord_You",
+      "text": "YOU"
+    },
+    {
+      "id": "EC_WORD_YOURS",
+      "text_label": "gEasyChatWord_Yours",
+      "text": "YOURS"
+    },
+    {
+      "id": "EC_WORD_SON",
+      "text_label": "gEasyChatWord_Son",
+      "text": "SON"
+    },
+    {
+      "id": "EC_WORD_YOUR",
+      "text_label": "gEasyChatWord_Your",
+      "text": "YOUR"
+    },
+    {
+      "id": "EC_WORD_YOU_RE",
+      "text_label": "gEasyChatWord_Youre",
+      "text": "YOU'RE"
+    },
+    {
+      "id": "EC_WORD_YOU_VE",
+      "text_label": "gEasyChatWord_Youve",
+      "text": "YOU'VE"
+    },
+    {
+      "id": "EC_WORD_MOTHER",
+      "text_label": "gEasyChatWord_Mother",
+      "text": "MOTHER"
+    },
+    {
+      "id": "EC_WORD_GRANDFATHER",
+      "text_label": "gEasyChatWord_Grandfather",
+      "text": "GRANDFATHER"
+    },
+    {
+      "id": "EC_WORD_UNCLE",
+      "text_label": "gEasyChatWord_Uncle",
+      "text": "UNCLE"
+    },
+    {
+      "id": "EC_WORD_FATHER",
+      "text_label": "gEasyChatWord_Father",
+      "text": "FATHER"
+    },
+    {
+      "id": "EC_WORD_BOY",
+      "text_label": "gEasyChatWord_Boy",
+      "text": "BOY"
+    },
+    {
+      "id": "EC_WORD_ADULT",
+      "text_label": "gEasyChatWord_Adult",
+      "text": "ADULT"
+    },
+    {
+      "id": "EC_WORD_BROTHER",
+      "text_label": "gEasyChatWord_Brother",
+      "text": "BROTHER"
+    },
+    {
+      "id": "EC_WORD_SISTER",
+      "text_label": "gEasyChatWord_Sister",
+      "text": "SISTER"
+    },
+    {
+      "id": "EC_WORD_GRANDMOTHER",
+      "text_label": "gEasyChatWord_Grandmother",
+      "text": "GRANDMOTHER"
+    },
+    {
+      "id": "EC_WORD_AUNT",
+      "text_label": "gEasyChatWord_Aunt",
+      "text": "AUNT"
+    },
+    {
+      "id": "EC_WORD_PARENT",
+      "text_label": "gEasyChatWord_Parent",
+      "text": "PARENT"
+    },
+    {
+      "id": "EC_WORD_MAN",
+      "text_label": "gEasyChatWord_Man",
+      "text": "MAN"
+    },
+    {
+      "id": "EC_WORD_ME",
+      "text_label": "gEasyChatWord_Me",
+      "text": "ME"
+    },
+    {
+      "id": "EC_WORD_GIRL",
+      "text_label": "gEasyChatWord_Girl",
+      "text": "GIRL"
+    },
+    {
+      "id": "EC_WORD_BABE",
+      "text_label": "gEasyChatWord_Babe",
+      "text": "BABE"
+    },
+    {
+      "id": "EC_WORD_FAMILY",
+      "text_label": "gEasyChatWord_Family",
+      "text": "FAMILY"
+    },
+    {
+      "id": "EC_WORD_HER",
+      "text_label": "gEasyChatWord_Her",
+      "text": "HER"
+    },
+    {
+      "id": "EC_WORD_HIM",
+      "text_label": "gEasyChatWord_Him",
+      "text": "HIM"
+    },
+    {
+      "id": "EC_WORD_HE",
+      "text_label": "gEasyChatWord_He",
+      "text": "HE"
+    },
+    {
+      "id": "EC_WORD_PLACE",
+      "text_label": "gEasyChatWord_Place",
+      "text": "PLACE"
+    },
+    {
+      "id": "EC_WORD_DAUGHTER",
+      "text_label": "gEasyChatWord_Daughter",
+      "text": "DAUGHTER"
+    },
+    {
+      "id": "EC_WORD_HIS",
+      "text_label": "gEasyChatWord_His",
+      "text": "HIS"
+    },
+    {
+      "id": "EC_WORD_HE_S",
+      "text_label": "gEasyChatWord_Hes",
+      "text": "HE'S"
+    },
+    {
+      "id": "EC_WORD_AREN_T",
+      "text_label": "gEasyChatWord_Arent",
+      "text": "AREN'T"
+    },
+    {
+      "id": "EC_WORD_SIBLINGS",
+      "text_label": "gEasyChatWord_Siblings",
+      "text": "SIBLINGS"
+    },
+    {
+      "id": "EC_WORD_KID",
+      "text_label": "gEasyChatWord_Kid",
+      "text": "KID"
+    },
+    {
+      "id": "EC_WORD_CHILDREN",
+      "text_label": "gEasyChatWord_Children",
+      "text": "CHILDREN"
+    },
+    {
+      "id": "EC_WORD_MR",
+      "text_label": "gEasyChatWord_Mr",
+      "text": "MR."
+    },
+    {
+      "id": "EC_WORD_MRS",
+      "text_label": "gEasyChatWord_Mrs",
+      "text": "MRS."
+    },
+    {
+      "id": "EC_WORD_MYSELF",
+      "text_label": "gEasyChatWord_Myself",
+      "text": "MYSELF"
+    },
+    {
+      "id": "EC_WORD_I_WAS",
+      "text_label": "gEasyChatWord_IWas",
+      "text": "I WAS"
+    },
+    {
+      "id": "EC_WORD_TO_ME",
+      "text_label": "gEasyChatWord_ToMe",
+      "text": "TO ME"
+    },
+    {
+      "id": "EC_WORD_MY",
+      "text_label": "gEasyChatWord_My",
+      "text": "MY"
+    },
+    {
+      "id": "EC_WORD_I_AM",
+      "text_label": "gEasyChatWord_IAm",
+      "text": "I AM"
+    },
+    {
+      "id": "EC_WORD_I_VE",
+      "text_label": "gEasyChatWord_Ive",
+      "text": "I'VE"
+    },
+    {
+      "id": "EC_WORD_WHO",
+      "text_label": "gEasyChatWord_Who",
+      "text": "WHO"
+    },
+    {
+      "id": "EC_WORD_SOMEONE",
+      "text_label": "gEasyChatWord_Someone",
+      "text": "SOMEONE"
+    },
+    {
+      "id": "EC_WORD_WHO_WAS",
+      "text_label": "gEasyChatWord_WhoWas",
+      "text": "WHO WAS"
+    },
+    {
+      "id": "EC_WORD_TO_WHOM",
+      "text_label": "gEasyChatWord_ToWhom",
+      "text": "TO WHOM"
+    },
+    {
+      "id": "EC_WORD_WHOSE",
+      "text_label": "gEasyChatWord_Whose",
+      "text": "WHOSE"
+    },
+    {
+      "id": "EC_WORD_WHO_IS",
+      "text_label": "gEasyChatWord_WhoIs",
+      "text": "WHO IS"
+    },
+    {
+      "id": "EC_WORD_IT_S",
+      "text_label": "gEasyChatWord_Its",
+      "text": "IT'S"
+    },
+    {
+      "id": "EC_WORD_LADY",
+      "text_label": "gEasyChatWord_Lady",
+      "text": "LADY"
+    },
+    {
+      "id": "EC_WORD_FRIEND",
+      "text_label": "gEasyChatWord_Friend",
+      "text": "FRIEND"
+    },
+    {
+      "id": "EC_WORD_ALLY",
+      "text_label": "gEasyChatWord_Ally",
+      "text": "ALLY"
+    },
+    {
+      "id": "EC_WORD_PERSON",
+      "text_label": "gEasyChatWord_Person",
+      "text": "PERSON"
+    },
+    {
+      "id": "EC_WORD_DUDE",
+      "text_label": "gEasyChatWord_Dude",
+      "text": "DUDE"
+    },
+    {
+      "id": "EC_WORD_THEY",
+      "text_label": "gEasyChatWord_They",
+      "text": "THEY"
+    },
+    {
+      "id": "EC_WORD_THEY_WERE",
+      "text_label": "gEasyChatWord_TheyWere",
+      "text": "THEY WERE"
+    },
+    {
+      "id": "EC_WORD_TO_THEM",
+      "text_label": "gEasyChatWord_ToThem",
+      "text": "TO THEM"
+    },
+    {
+      "id": "EC_WORD_THEIR",
+      "text_label": "gEasyChatWord_Their",
+      "text": "THEIR"
+    },
+    {
+      "id": "EC_WORD_THEY_RE",
+      "text_label": "gEasyChatWord_Theyre",
+      "text": "THEY'RE"
+    },
+    {
+      "id": "EC_WORD_THEY_VE",
+      "text_label": "gEasyChatWord_Theyve",
+      "text": "THEY'VE"
+    },
+    {
+      "id": "EC_WORD_WE",
+      "text_label": "gEasyChatWord_We",
+      "text": "WE"
+    },
+    {
+      "id": "EC_WORD_BEEN",
+      "text_label": "gEasyChatWord_Been",
+      "text": "BEEN"
+    },
+    {
+      "id": "EC_WORD_TO_US",
+      "text_label": "gEasyChatWord_ToUs",
+      "text": "TO US"
+    },
+    {
+      "id": "EC_WORD_OUR",
+      "text_label": "gEasyChatWord_Our",
+      "text": "OUR"
+    },
+    {
+      "id": "EC_WORD_WE_RE",
+      "text_label": "gEasyChatWord_WeRe",
+      "text": "WE'RE"
+    },
+    {
+      "id": "EC_WORD_RIVAL",
+      "text_label": "gEasyChatWord_Rival",
+      "text": "RIVAL"
+    },
+    {
+      "id": "EC_WORD_WE_VE",
+      "text_label": "gEasyChatWord_Weve",
+      "text": "WE'VE"
+    },
+    {
+      "id": "EC_WORD_WOMAN",
+      "text_label": "gEasyChatWord_Woman",
+      "text": "WOMAN"
+    },
+    {
+      "id": "EC_WORD_SHE",
+      "text_label": "gEasyChatWord_She",
+      "text": "SHE"
+    },
+    {
+      "id": "EC_WORD_SHE_WAS",
+      "text_label": "gEasyChatWord_SheWas",
+      "text": "SHE WAS"
+    },
+    {
+      "id": "EC_WORD_TO_HER",
+      "text_label": "gEasyChatWord_ToHer",
+      "text": "TO HER"
+    },
+    {
+      "id": "EC_WORD_HERS",
+      "text_label": "gEasyChatWord_Hers",
+      "text": "HERS"
+    },
+    {
+      "id": "EC_WORD_SHE_IS",
+      "text_label": "gEasyChatWord_SheIs",
+      "text": "SHE IS"
+    },
+    {
+      "id": "EC_WORD_SOME",
+      "text_label": "gEasyChatWord_Some",
+      "text": "SOME"
+    }
+  ]
+}

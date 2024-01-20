@@ -1,0 +1,350 @@
+{
+  "label": "gEasyChatGroup_Conditions",
+  "words": [
+    {
+      "id": "EC_WORD_HOT",
+      "text_label": "gEasyChatWord_Hot",
+      "text": "HOT"
+    },
+    {
+      "id": "EC_WORD_EXISTS",
+      "text_label": "gEasyChatWord_Exists",
+      "text": "EXISTS"
+    },
+    {
+      "id": "EC_WORD_EXCESS",
+      "text_label": "gEasyChatWord_Excess",
+      "text": "EXCESS"
+    },
+    {
+      "id": "EC_WORD_APPROVED",
+      "text_label": "gEasyChatWord_Approved",
+      "text": "APPROVED"
+    },
+    {
+      "id": "EC_WORD_HAS",
+      "text_label": "gEasyChatWord_Has",
+      "text": "HAS"
+    },
+    {
+      "id": "EC_WORD_GOOD",
+      "text_label": "gEasyChatWord_Good",
+      "text": "GOOD"
+    },
+    {
+      "id": "EC_WORD_LESS",
+      "text_label": "gEasyChatWord_Less",
+      "text": "LESS"
+    },
+    {
+      "id": "EC_WORD_MOMENTUM",
+      "text_label": "gEasyChatWord_Momentum",
+      "text": "MOMENTUM"
+    },
+    {
+      "id": "EC_WORD_GOING",
+      "text_label": "gEasyChatWord_Going",
+      "text": "GOING"
+    },
+    {
+      "id": "EC_WORD_WEIRD",
+      "text_label": "gEasyChatWord_Weird",
+      "text": "WEIRD"
+    },
+    {
+      "id": "EC_WORD_BUSY",
+      "text_label": "gEasyChatWord_Busy",
+      "text": "BUSY"
+    },
+    {
+      "id": "EC_WORD_TOGETHER",
+      "text_label": "gEasyChatWord_Together",
+      "text": "TOGETHER"
+    },
+    {
+      "id": "EC_WORD_FULL",
+      "text_label": "gEasyChatWord_Full",
+      "text": "FULL"
+    },
+    {
+      "id": "EC_WORD_ABSENT",
+      "text_label": "gEasyChatWord_Absent",
+      "text": "ABSENT"
+    },
+    {
+      "id": "EC_WORD_BEING",
+      "text_label": "gEasyChatWord_Being",
+      "text": "BEING"
+    },
+    {
+      "id": "EC_WORD_NEED",
+      "text_label": "gEasyChatWord_Need",
+      "text": "NEED"
+    },
+    {
+      "id": "EC_WORD_TASTY",
+      "text_label": "gEasyChatWord_Tasty",
+      "text": "TASTY"
+    },
+    {
+      "id": "EC_WORD_SKILLED",
+      "text_label": "gEasyChatWord_Skilled",
+      "text": "SKILLED"
+    },
+    {
+      "id": "EC_WORD_NOISY",
+      "text_label": "gEasyChatWord_Noisy",
+      "text": "NOISY"
+    },
+    {
+      "id": "EC_WORD_BIG",
+      "text_label": "gEasyChatWord_Big",
+      "text": "BIG"
+    },
+    {
+      "id": "EC_WORD_LATE",
+      "text_label": "gEasyChatWord_Late",
+      "text": "LATE"
+    },
+    {
+      "id": "EC_WORD_CLOSE",
+      "text_label": "gEasyChatWord_Close",
+      "text": "CLOSE"
+    },
+    {
+      "id": "EC_WORD_DOCILE",
+      "text_label": "gEasyChatWord_Docile",
+      "text": "DOCILE"
+    },
+    {
+      "id": "EC_WORD_AMUSING",
+      "text_label": "gEasyChatWord_Amusing",
+      "text": "AMUSING"
+    },
+    {
+      "id": "EC_WORD_ENTERTAINING",
+      "text_label": "gEasyChatWord_Entertaining",
+      "text": "ENTERTAINING"
+    },
+    {
+      "id": "EC_WORD_PERFECTION",
+      "text_label": "gEasyChatWord_Perfection",
+      "text": "PERFECTION"
+    },
+    {
+      "id": "EC_WORD_PRETTY",
+      "text_label": "gEasyChatWord_Pretty",
+      "text": "PRETTY"
+    },
+    {
+      "id": "EC_WORD_HEALTHY",
+      "text_label": "gEasyChatWord_Healthy",
+      "text": "HEALTHY"
+    },
+    {
+      "id": "EC_WORD_EXCELLENT",
+      "text_label": "gEasyChatWord_Excellent",
+      "text": "EXCELLENT"
+    },
+    {
+      "id": "EC_WORD_UPSIDE_DOWN",
+      "text_label": "gEasyChatWord_UpsideDown",
+      "text": "UPSIDE DOWN"
+    },
+    {
+      "id": "EC_WORD_COLD",
+      "text_label": "gEasyChatWord_Cold",
+      "text": "COLD"
+    },
+    {
+      "id": "EC_WORD_REFRESHING",
+      "text_label": "gEasyChatWord_Refreshing",
+      "text": "REFRESHING"
+    },
+    {
+      "id": "EC_WORD_UNAVOIDABLE",
+      "text_label": "gEasyChatWord_Unavoidable",
+      "text": "UNAVOIDABLE"
+    },
+    {
+      "id": "EC_WORD_MUCH",
+      "text_label": "gEasyChatWord_Much",
+      "text": "MUCH"
+    },
+    {
+      "id": "EC_WORD_OVERWHELMING",
+      "text_label": "gEasyChatWord_Overwhelming",
+      "text": "OVERWHELMING"
+    },
+    {
+      "id": "EC_WORD_FABULOUS",
+      "text_label": "gEasyChatWord_Fabulous",
+      "text": "FABULOUS"
+    },
+    {
+      "id": "EC_WORD_ELSE",
+      "text_label": "gEasyChatWord_Else",
+      "text": "ELSE"
+    },
+    {
+      "id": "EC_WORD_EXPENSIVE",
+      "text_label": "gEasyChatWord_Expensive",
+      "text": "EXPENSIVE"
+    },
+    {
+      "id": "EC_WORD_CORRECT",
+      "text_label": "gEasyChatWord_Correct",
+      "text": "CORRECT"
+    },
+    {
+      "id": "EC_WORD_IMPOSSIBLE",
+      "text_label": "gEasyChatWord_Impossible",
+      "text": "IMPOSSIBLE"
+    },
+    {
+      "id": "EC_WORD_SMALL",
+      "text_label": "gEasyChatWord_Small",
+      "text": "SMALL"
+    },
+    {
+      "id": "EC_WORD_DIFFERENT",
+      "text_label": "gEasyChatWord_Different",
+      "text": "DIFFERENT"
+    },
+    {
+      "id": "EC_WORD_TIRED",
+      "text_label": "gEasyChatWord_Tired",
+      "text": "TIRED"
+    },
+    {
+      "id": "EC_WORD_SKILL",
+      "text_label": "gEasyChatWord_Skill",
+      "text": "SKILL"
+    },
+    {
+      "id": "EC_WORD_TOP",
+      "text_label": "gEasyChatWord_Top",
+      "text": "TOP"
+    },
+    {
+      "id": "EC_WORD_NON_STOP",
+      "text_label": "gEasyChatWord_NonStop",
+      "text": "NON-STOP"
+    },
+    {
+      "id": "EC_WORD_PREPOSTEROUS",
+      "text_label": "gEasyChatWord_Preposterous",
+      "text": "PREPOSTEROUS"
+    },
+    {
+      "id": "EC_WORD_NONE",
+      "text_label": "gEasyChatWord_None",
+      "text": "NONE"
+    },
+    {
+      "id": "EC_WORD_NOTHING",
+      "text_label": "gEasyChatWord_Nothing",
+      "text": "NOTHING"
+    },
+    {
+      "id": "EC_WORD_NATURAL",
+      "text_label": "gEasyChatWord_Natural",
+      "text": "NATURAL"
+    },
+    {
+      "id": "EC_WORD_BECOMES",
+      "text_label": "gEasyChatWord_Becomes",
+      "text": "BECOMES"
+    },
+    {
+      "id": "EC_WORD_LUKEWARM",
+      "text_label": "gEasyChatWord_Lukewarm",
+      "text": "LUKEWARM"
+    },
+    {
+      "id": "EC_WORD_FAST",
+      "text_label": "gEasyChatWord_Fast",
+      "text": "FAST"
+    },
+    {
+      "id": "EC_WORD_LOW",
+      "text_label": "gEasyChatWord_Low",
+      "text": "LOW"
+    },
+    {
+      "id": "EC_WORD_AWFUL",
+      "text_label": "gEasyChatWord_Awful",
+      "text": "AWFUL"
+    },
+    {
+      "id": "EC_WORD_ALONE",
+      "text_label": "gEasyChatWord_Alone",
+      "text": "ALONE"
+    },
+    {
+      "id": "EC_WORD_BORED",
+      "text_label": "gEasyChatWord_Bored",
+      "text": "BORED"
+    },
+    {
+      "id": "EC_WORD_SECRET",
+      "text_label": "gEasyChatWord_Secret",
+      "text": "SECRET"
+    },
+    {
+      "id": "EC_WORD_MYSTERY",
+      "text_label": "gEasyChatWord_Mystery",
+      "text": "MYSTERY"
+    },
+    {
+      "id": "EC_WORD_LACKS",
+      "text_label": "gEasyChatWord_Lacks",
+      "text": "LACKS"
+    },
+    {
+      "id": "EC_WORD_BEST",
+      "text_label": "gEasyChatWord_Best",
+      "text": "BEST"
+    },
+    {
+      "id": "EC_WORD_LOUSY",
+      "text_label": "gEasyChatWord_Lousy",
+      "text": "LOUSY"
+    },
+    {
+      "id": "EC_WORD_MISTAKE",
+      "text_label": "gEasyChatWord_Mistake",
+      "text": "MISTAKE"
+    },
+    {
+      "id": "EC_WORD_KIND",
+      "text_label": "gEasyChatWord_Kind",
+      "text": "KIND"
+    },
+    {
+      "id": "EC_WORD_WELL",
+      "text_label": "gEasyChatWord_Well",
+      "text": "WELL"
+    },
+    {
+      "id": "EC_WORD_WEAKENED",
+      "text_label": "gEasyChatWord_Weakened",
+      "text": "WEAKENED"
+    },
+    {
+      "id": "EC_WORD_SIMPLE",
+      "text_label": "gEasyChatWord_Simple",
+      "text": "SIMPLE"
+    },
+    {
+      "id": "EC_WORD_SEEMS",
+      "text_label": "gEasyChatWord_Seems",
+      "text": "SEEMS"
+    },
+    {
+      "id": "EC_WORD_BADLY",
+      "text_label": "gEasyChatWord_Badly",
+      "text": "BADLY"
+    }
+  ]
+}

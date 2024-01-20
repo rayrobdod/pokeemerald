@@ -1,0 +1,230 @@
+{
+  "label": "gEasyChatGroup_Time",
+  "words": [
+    {
+      "id": "EC_WORD_FALL",
+      "text_label": "gEasyChatWord_Fall",
+      "text": "FALL"
+    },
+    {
+      "id": "EC_WORD_MORNING",
+      "text_label": "gEasyChatWord_Morning",
+      "text": "MORNING"
+    },
+    {
+      "id": "EC_WORD_TOMORROW",
+      "text_label": "gEasyChatWord_Tomorrow",
+      "text": "TOMORROW"
+    },
+    {
+      "id": "EC_WORD_LAST",
+      "text_label": "gEasyChatWord_Last",
+      "text": "LAST"
+    },
+    {
+      "id": "EC_WORD_DAY",
+      "text_label": "gEasyChatWord_Day",
+      "text": "DAY"
+    },
+    {
+      "id": "EC_WORD_SOMETIME",
+      "text_label": "gEasyChatWord_Sometime",
+      "text": "SOMETIME"
+    },
+    {
+      "id": "EC_WORD_ALWAYS",
+      "text_label": "gEasyChatWord_Always",
+      "text": "ALWAYS"
+    },
+    {
+      "id": "EC_WORD_CURRENT",
+      "text_label": "gEasyChatWord_Current",
+      "text": "CURRENT"
+    },
+    {
+      "id": "EC_WORD_FOREVER",
+      "text_label": "gEasyChatWord_Forever",
+      "text": "FOREVER"
+    },
+    {
+      "id": "EC_WORD_DAYS",
+      "text_label": "gEasyChatWord_Days",
+      "text": "DAYS"
+    },
+    {
+      "id": "EC_WORD_END",
+      "text_label": "gEasyChatWord_End",
+      "text": "END"
+    },
+    {
+      "id": "EC_WORD_TUESDAY",
+      "text_label": "gEasyChatWord_Tuesday",
+      "text": "TUESDAY"
+    },
+    {
+      "id": "EC_WORD_YESTERDAY",
+      "text_label": "gEasyChatWord_Yesterday",
+      "text": "YESTERDAY"
+    },
+    {
+      "id": "EC_WORD_TODAY",
+      "text_label": "gEasyChatWord_Today",
+      "text": "TODAY"
+    },
+    {
+      "id": "EC_WORD_FRIDAY",
+      "text_label": "gEasyChatWord_Friday",
+      "text": "FRIDAY"
+    },
+    {
+      "id": "EC_WORD_MONDAY",
+      "text_label": "gEasyChatWord_Monday",
+      "text": "MONDAY"
+    },
+    {
+      "id": "EC_WORD_LATER",
+      "text_label": "gEasyChatWord_Later",
+      "text": "LATER"
+    },
+    {
+      "id": "EC_WORD_EARLIER",
+      "text_label": "gEasyChatWord_Earlier",
+      "text": "EARLIER"
+    },
+    {
+      "id": "EC_WORD_ANOTHER",
+      "text_label": "gEasyChatWord_Another",
+      "text": "ANOTHER"
+    },
+    {
+      "id": "EC_WORD_TIME",
+      "text_label": "gEasyChatWord_Time",
+      "text": "TIME"
+    },
+    {
+      "id": "EC_WORD_FINISH",
+      "text_label": "gEasyChatWord_Finish",
+      "text": "FINISH"
+    },
+    {
+      "id": "EC_WORD_WEDNESDAY",
+      "text_label": "gEasyChatWord_Wednesday",
+      "text": "WEDNESDAY"
+    },
+    {
+      "id": "EC_WORD_SOON",
+      "text_label": "gEasyChatWord_Soon",
+      "text": "SOON"
+    },
+    {
+      "id": "EC_WORD_START",
+      "text_label": "gEasyChatWord_Start",
+      "text": "START"
+    },
+    {
+      "id": "EC_WORD_MONTH",
+      "text_label": "gEasyChatWord_Month",
+      "text": "MONTH"
+    },
+    {
+      "id": "EC_WORD_STOP",
+      "text_label": "gEasyChatWord_Stop",
+      "text": "STOP"
+    },
+    {
+      "id": "EC_WORD_NOW",
+      "text_label": "gEasyChatWord_Now",
+      "text": "NOW"
+    },
+    {
+      "id": "EC_WORD_FINAL",
+      "text_label": "gEasyChatWord_Final",
+      "text": "FINAL"
+    },
+    {
+      "id": "EC_WORD_NEXT",
+      "text_label": "gEasyChatWord_Next",
+      "text": "NEXT"
+    },
+    {
+      "id": "EC_WORD_AGE",
+      "text_label": "gEasyChatWord_Age",
+      "text": "AGE"
+    },
+    {
+      "id": "EC_WORD_SATURDAY",
+      "text_label": "gEasyChatWord_Saturday",
+      "text": "SATURDAY"
+    },
+    {
+      "id": "EC_WORD_SUMMER",
+      "text_label": "gEasyChatWord_Summer",
+      "text": "SUMMER"
+    },
+    {
+      "id": "EC_WORD_SUNDAY",
+      "text_label": "gEasyChatWord_Sunday",
+      "text": "SUNDAY"
+    },
+    {
+      "id": "EC_WORD_BEGINNING",
+      "text_label": "gEasyChatWord_Beginning",
+      "text": "BEGINNING"
+    },
+    {
+      "id": "EC_WORD_SPRING",
+      "text_label": "gEasyChatWord_Spring",
+      "text": "SPRING"
+    },
+    {
+      "id": "EC_WORD_DAYTIME",
+      "text_label": "gEasyChatWord_Daytime",
+      "text": "DAYTIME"
+    },
+    {
+      "id": "EC_WORD_WINTER",
+      "text_label": "gEasyChatWord_Winter",
+      "text": "WINTER"
+    },
+    {
+      "id": "EC_WORD_DAILY",
+      "text_label": "gEasyChatWord_Daily",
+      "text": "DAILY"
+    },
+    {
+      "id": "EC_WORD_OLDEN",
+      "text_label": "gEasyChatWord_Olden",
+      "text": "OLDEN"
+    },
+    {
+      "id": "EC_WORD_ALMOST",
+      "text_label": "gEasyChatWord_Almost",
+      "text": "ALMOST"
+    },
+    {
+      "id": "EC_WORD_NEARLY",
+      "text_label": "gEasyChatWord_Nearly",
+      "text": "NEARLY"
+    },
+    {
+      "id": "EC_WORD_THURSDAY",
+      "text_label": "gEasyChatWord_Thursday",
+      "text": "THURSDAY"
+    },
+    {
+      "id": "EC_WORD_NIGHTTIME",
+      "text_label": "gEasyChatWord_Nighttime",
+      "text": "NIGHTTIME"
+    },
+    {
+      "id": "EC_WORD_NIGHT",
+      "text_label": "gEasyChatWord_Night",
+      "text": "NIGHT"
+    },
+    {
+      "id": "EC_WORD_WEEK",
+      "text_label": "gEasyChatWord_Week",
+      "text": "WEEK"
+    }
+  ]
+}

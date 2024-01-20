@@ -1,0 +1,215 @@
+{
+  "label": "gEasyChatGroup_Greetings",
+  "words": [
+    {
+      "id": "EC_WORD_THANKS",
+      "text_label": "gEasyChatWord_Thanks",
+      "text": "THANKS"
+    },
+    {
+      "id": "EC_WORD_YES",
+      "text_label": "gEasyChatWord_Yes",
+      "text": "YES"
+    },
+    {
+      "id": "EC_WORD_HERE_GOES",
+      "text_label": "gEasyChatWord_HereGoes",
+      "text": "HERE GOES"
+    },
+    {
+      "id": "EC_WORD_HERE_I_COME",
+      "text_label": "gEasyChatWord_HereICome",
+      "text": "HERE I COME"
+    },
+    {
+      "id": "EC_WORD_HERE_IT_IS",
+      "text_label": "gEasyChatWord_HereItIs",
+      "text": "HERE IT IS"
+    },
+    {
+      "id": "EC_WORD_YEAH",
+      "text_label": "gEasyChatWord_Yeah",
+      "text": "YEAH"
+    },
+    {
+      "id": "EC_WORD_WELCOME",
+      "text_label": "gEasyChatWord_Welcome",
+      "text": "WELCOME"
+    },
+    {
+      "id": "EC_WORD_OI",
+      "text_label": "gEasyChatWord_Oi",
+      "text": "OI"
+    },
+    {
+      "id": "EC_WORD_HOW_DO",
+      "text_label": "gEasyChatWord_HowDo",
+      "text": "HOW DO"
+    },
+    {
+      "id": "EC_WORD_CONGRATS",
+      "text_label": "gEasyChatWord_Congrats",
+      "text": "CONGRATS"
+    },
+    {
+      "id": "EC_WORD_GIVE_ME",
+      "text_label": "gEasyChatWord_GiveMe",
+      "text": "GIVE ME"
+    },
+    {
+      "id": "EC_WORD_SORRY",
+      "text_label": "gEasyChatWord_Sorry",
+      "text": "SORRY"
+    },
+    {
+      "id": "EC_WORD_APOLOGIZE",
+      "text_label": "gEasyChatWord_Apologize",
+      "text": "APOLOGIZE"
+    },
+    {
+      "id": "EC_WORD_FORGIVE",
+      "text_label": "gEasyChatWord_Forgive",
+      "text": "FORGIVE"
+    },
+    {
+      "id": "EC_WORD_HEY_THERE",
+      "text_label": "gEasyChatWord_HeyThere",
+      "text": "HEY, THERE"
+    },
+    {
+      "id": "EC_WORD_HELLO",
+      "text_label": "gEasyChatWord_Hello",
+      "text": "HELLO"
+    },
+    {
+      "id": "EC_WORD_GOOD_BYE",
+      "text_label": "gEasyChatWord_GoodBye",
+      "text": "GOOD-BYE"
+    },
+    {
+      "id": "EC_WORD_THANK_YOU",
+      "text_label": "gEasyChatWord_ThankYou",
+      "text": "THANK YOU"
+    },
+    {
+      "id": "EC_WORD_I_VE_ARRIVED",
+      "text_label": "gEasyChatWord_IveArrived",
+      "text": "I'VE ARRIVED"
+    },
+    {
+      "id": "EC_WORD_PARDON",
+      "text_label": "gEasyChatWord_Pardon",
+      "text": "PARDON"
+    },
+    {
+      "id": "EC_WORD_EXCUSE",
+      "text_label": "gEasyChatWord_Excuse",
+      "text": "EXCUSE"
+    },
+    {
+      "id": "EC_WORD_SEE_YA",
+      "text_label": "gEasyChatWord_SeeYa",
+      "text": "SEE YA"
+    },
+    {
+      "id": "EC_WORD_EXCUSE_ME",
+      "text_label": "gEasyChatWord_ExcuseMe",
+      "text": "EXCUSE ME"
+    },
+    {
+      "id": "EC_WORD_WELL_THEN",
+      "text_label": "gEasyChatWord_WellThen",
+      "text": "WELL, THEN"
+    },
+    {
+      "id": "EC_WORD_GO_AHEAD",
+      "text_label": "gEasyChatWord_GoAhead",
+      "text": "GO AHEAD"
+    },
+    {
+      "id": "EC_WORD_APPRECIATE",
+      "text_label": "gEasyChatWord_Appreciate",
+      "text": "APPRECIATE"
+    },
+    {
+      "id": "EC_WORD_HEY_QUES",
+      "text_label": "gEasyChatWord_HeyQues",
+      "text": "HEY?"
+    },
+    {
+      "id": "EC_WORD_WHAT_S_UP_QUES",
+      "text_label": "gEasyChatWord_WhatsUpQues",
+      "text": "WHAT'S UP?"
+    },
+    {
+      "id": "EC_WORD_HUH_QUES",
+      "text_label": "gEasyChatWord_HuhQues",
+      "text": "HUH?"
+    },
+    {
+      "id": "EC_WORD_NO",
+      "text_label": "gEasyChatWord_No",
+      "text": "NO"
+    },
+    {
+      "id": "EC_WORD_HI",
+      "text_label": "gEasyChatWord_Hi",
+      "text": "HI"
+    },
+    {
+      "id": "EC_WORD_YEAH_YEAH",
+      "text_label": "gEasyChatWord_YeahYeah",
+      "text": "YEAH, YEAH"
+    },
+    {
+      "id": "EC_WORD_BYE_BYE",
+      "text_label": "gEasyChatWord_ByeBye",
+      "text": "BYE-BYE"
+    },
+    {
+      "id": "EC_WORD_MEET_YOU",
+      "text_label": "gEasyChatWord_MeetYou",
+      "text": "MEET YOU"
+    },
+    {
+      "id": "EC_WORD_HEY",
+      "text_label": "gEasyChatWord_Hey",
+      "text": "HEY"
+    },
+    {
+      "id": "EC_WORD_SMELL",
+      "text_label": "gEasyChatWord_Smell",
+      "text": "SMELL"
+    },
+    {
+      "id": "EC_WORD_LISTENING",
+      "text_label": "gEasyChatWord_Listening",
+      "text": "LISTENING"
+    },
+    {
+      "id": "EC_WORD_HOO_HAH",
+      "text_label": "gEasyChatWord_HooHah",
+      "text": "HOO-HAH"
+    },
+    {
+      "id": "EC_WORD_YAHOO",
+      "text_label": "gEasyChatWord_Yahoo",
+      "text": "YAHOO"
+    },
+    {
+      "id": "EC_WORD_YO",
+      "text_label": "gEasyChatWord_Yo",
+      "text": "YO"
+    },
+    {
+      "id": "EC_WORD_COME_OVER",
+      "text_label": "gEasyChatWord_ComeOver",
+      "text": "COME OVER"
+    },
+    {
+      "id": "EC_WORD_COUNT_ON",
+      "text_label": "gEasyChatWord_CountOn",
+      "text": "COUNT ON"
+    }
+  ]
+}

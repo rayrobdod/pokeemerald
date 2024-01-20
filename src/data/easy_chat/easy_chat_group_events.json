@@ -1,0 +1,150 @@
+{
+  "label": "gEasyChatGroup_Events",
+  "words": [
+    {
+      "id": "EC_WORD_APPEAL",
+      "text_label": "gEasyChatWord_Appeal",
+      "text": "APPEAL"
+    },
+    {
+      "id": "EC_WORD_EVENTS",
+      "text_label": "gEasyChatWord_Events",
+      "text": "EVENTS"
+    },
+    {
+      "id": "EC_WORD_STAY_AT_HOME",
+      "text_label": "gEasyChatWord_StayAtHome",
+      "text": "STAY-AT-HOME"
+    },
+    {
+      "id": "EC_WORD_BERRY",
+      "text_label": "gEasyChatWord_Berry",
+      "text": "BERRY"
+    },
+    {
+      "id": "EC_WORD_CONTEST",
+      "text_label": "gEasyChatWord_Contest",
+      "text": "CONTEST"
+    },
+    {
+      "id": "EC_WORD_MC",
+      "text_label": "gEasyChatWord_Mc",
+      "text": "MC"
+    },
+    {
+      "id": "EC_WORD_JUDGE",
+      "text_label": "gEasyChatWord_Judge",
+      "text": "JUDGE"
+    },
+    {
+      "id": "EC_WORD_SUPER",
+      "text_label": "gEasyChatWord_Super",
+      "text": "SUPER"
+    },
+    {
+      "id": "EC_WORD_STAGE",
+      "text_label": "gEasyChatWord_Stage",
+      "text": "STAGE"
+    },
+    {
+      "id": "EC_WORD_HALL_OF_FAME",
+      "text_label": "gEasyChatWord_HallOfFame",
+      "text": "HALL OF FAME"
+    },
+    {
+      "id": "EC_WORD_EVOLUTION",
+      "text_label": "gEasyChatWord_Evolution",
+      "text": "EVOLUTION"
+    },
+    {
+      "id": "EC_WORD_HYPER",
+      "text_label": "gEasyChatWord_Hyper",
+      "text": "HYPER"
+    },
+    {
+      "id": "EC_WORD_BATTLE_TOWER",
+      "text_label": "gEasyChatWord_BattleTower",
+      "text": "BATTLE TOWER"
+    },
+    {
+      "id": "EC_WORD_LEADERS",
+      "text_label": "gEasyChatWord_Leaders",
+      "text": "LEADERS"
+    },
+    {
+      "id": "EC_WORD_BATTLE_ROOM",
+      "text_label": "gEasyChatWord_BattleRoom",
+      "text": "BATTLE ROOM"
+    },
+    {
+      "id": "EC_WORD_HIDDEN",
+      "text_label": "gEasyChatWord_Hidden",
+      "text": "HIDDEN"
+    },
+    {
+      "id": "EC_WORD_SECRET_BASE",
+      "text_label": "gEasyChatWord_SecretBase",
+      "text": "SECRET BASE"
+    },
+    {
+      "id": "EC_WORD_BLEND",
+      "text_label": "gEasyChatWord_Blend",
+      "text": "BLEND"
+    },
+    {
+      "id": "EC_WORD_POKEBLOCK",
+      "text_label": "gEasyChatWord_POKEBLOCK",
+      "text": "{POKEBLOCK}"
+    },
+    {
+      "id": "EC_WORD_MASTER",
+      "text_label": "gEasyChatWord_Master",
+      "text": "MASTER"
+    },
+    {
+      "id": "EC_WORD_RANK",
+      "text_label": "gEasyChatWord_Rank",
+      "text": "RANK"
+    },
+    {
+      "id": "EC_WORD_RIBBON",
+      "text_label": "gEasyChatWord_Ribbon",
+      "text": "RIBBON"
+    },
+    {
+      "id": "EC_WORD_CRUSH",
+      "text_label": "gEasyChatWord_Crush",
+      "text": "CRUSH"
+    },
+    {
+      "id": "EC_WORD_DIRECT",
+      "text_label": "gEasyChatWord_Direct",
+      "text": "DIRECT"
+    },
+    {
+      "id": "EC_WORD_TOWER",
+      "text_label": "gEasyChatWord_Tower",
+      "text": "TOWER"
+    },
+    {
+      "id": "EC_WORD_UNION",
+      "text_label": "gEasyChatWord_Union",
+      "text": "UNION"
+    },
+    {
+      "id": "EC_WORD_ROOM",
+      "text_label": "gEasyChatWord_Room",
+      "text": "ROOM"
+    },
+    {
+      "id": "EC_WORD_WIRELESS",
+      "text_label": "gEasyChatWord_Wireless",
+      "text": "WIRELESS"
+    },
+    {
+      "id": "EC_WORD_FRONTIER",
+      "text_label": "gEasyChatWord_Frontier",
+      "text": "FRONTIER"
+    }
+  ]
+}

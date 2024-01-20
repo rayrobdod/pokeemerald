@@ -1,0 +1,275 @@
+{
+  "label": "gEasyChatGroup_Hobbies",
+  "words": [
+    {
+      "id": "EC_WORD_IDOL",
+      "text_label": "gEasyChatWord_Idol",
+      "text": "IDOL"
+    },
+    {
+      "id": "EC_WORD_ANIME",
+      "text_label": "gEasyChatWord_Anime",
+      "text": "ANIME"
+    },
+    {
+      "id": "EC_WORD_SONG",
+      "text_label": "gEasyChatWord_Song",
+      "text": "SONG"
+    },
+    {
+      "id": "EC_WORD_MOVIE",
+      "text_label": "gEasyChatWord_Movie",
+      "text": "MOVIE"
+    },
+    {
+      "id": "EC_WORD_SWEETS",
+      "text_label": "gEasyChatWord_Sweets",
+      "text": "SWEETS"
+    },
+    {
+      "id": "EC_WORD_CHAT",
+      "text_label": "gEasyChatWord_Chat",
+      "text": "CHAT"
+    },
+    {
+      "id": "EC_WORD_CHILD_S_PLAY",
+      "text_label": "gEasyChatWord_ChildsPlay",
+      "text": "CHILD'S PLAY"
+    },
+    {
+      "id": "EC_WORD_TOYS",
+      "text_label": "gEasyChatWord_Toys",
+      "text": "TOYS"
+    },
+    {
+      "id": "EC_WORD_MUSIC",
+      "text_label": "gEasyChatWord_Music",
+      "text": "MUSIC"
+    },
+    {
+      "id": "EC_WORD_CARDS",
+      "text_label": "gEasyChatWord_Cards",
+      "text": "CARDS"
+    },
+    {
+      "id": "EC_WORD_SHOPPING",
+      "text_label": "gEasyChatWord_Shopping",
+      "text": "SHOPPING"
+    },
+    {
+      "id": "EC_WORD_CAMERA",
+      "text_label": "gEasyChatWord_Camera",
+      "text": "CAMERA"
+    },
+    {
+      "id": "EC_WORD_VIEWING",
+      "text_label": "gEasyChatWord_Viewing",
+      "text": "VIEWING"
+    },
+    {
+      "id": "EC_WORD_SPECTATOR",
+      "text_label": "gEasyChatWord_Spectator",
+      "text": "SPECTATOR"
+    },
+    {
+      "id": "EC_WORD_GOURMET",
+      "text_label": "gEasyChatWord_Gourmet",
+      "text": "GOURMET"
+    },
+    {
+      "id": "EC_WORD_GAME",
+      "text_label": "gEasyChatWord_Game",
+      "text": "GAME"
+    },
+    {
+      "id": "EC_WORD_RPG",
+      "text_label": "gEasyChatWord_Rpg",
+      "text": "RPG"
+    },
+    {
+      "id": "EC_WORD_COLLECTION",
+      "text_label": "gEasyChatWord_Collection",
+      "text": "COLLECTION"
+    },
+    {
+      "id": "EC_WORD_COMPLETE",
+      "text_label": "gEasyChatWord_Complete",
+      "text": "COMPLETE"
+    },
+    {
+      "id": "EC_WORD_MAGAZINE",
+      "text_label": "gEasyChatWord_Magazine",
+      "text": "MAGAZINE"
+    },
+    {
+      "id": "EC_WORD_WALK",
+      "text_label": "gEasyChatWord_Walk",
+      "text": "WALK"
+    },
+    {
+      "id": "EC_WORD_BIKE",
+      "text_label": "gEasyChatWord_Bike",
+      "text": "BIKE"
+    },
+    {
+      "id": "EC_WORD_HOBBY",
+      "text_label": "gEasyChatWord_Hobby",
+      "text": "HOBBY"
+    },
+    {
+      "id": "EC_WORD_SPORTS",
+      "text_label": "gEasyChatWord_Sports",
+      "text": "SPORTS"
+    },
+    {
+      "id": "EC_WORD_SOFTWARE",
+      "text_label": "gEasyChatWord_Software",
+      "text": "SOFTWARE"
+    },
+    {
+      "id": "EC_WORD_SONGS",
+      "text_label": "gEasyChatWord_Songs",
+      "text": "SONGS"
+    },
+    {
+      "id": "EC_WORD_DIET",
+      "text_label": "gEasyChatWord_Diet",
+      "text": "DIET"
+    },
+    {
+      "id": "EC_WORD_TREASURE",
+      "text_label": "gEasyChatWord_Treasure",
+      "text": "TREASURE"
+    },
+    {
+      "id": "EC_WORD_TRAVEL",
+      "text_label": "gEasyChatWord_Travel",
+      "text": "TRAVEL"
+    },
+    {
+      "id": "EC_WORD_DANCE",
+      "text_label": "gEasyChatWord_Dance",
+      "text": "DANCE"
+    },
+    {
+      "id": "EC_WORD_CHANNEL",
+      "text_label": "gEasyChatWord_Channel",
+      "text": "CHANNEL"
+    },
+    {
+      "id": "EC_WORD_MAKING",
+      "text_label": "gEasyChatWord_Making",
+      "text": "MAKING"
+    },
+    {
+      "id": "EC_WORD_FISHING",
+      "text_label": "gEasyChatWord_Fishing",
+      "text": "FISHING"
+    },
+    {
+      "id": "EC_WORD_DATE",
+      "text_label": "gEasyChatWord_Date",
+      "text": "DATE"
+    },
+    {
+      "id": "EC_WORD_DESIGN",
+      "text_label": "gEasyChatWord_Design",
+      "text": "DESIGN"
+    },
+    {
+      "id": "EC_WORD_LOCOMOTIVE",
+      "text_label": "gEasyChatWord_Locomotive",
+      "text": "LOCOMOTIVE"
+    },
+    {
+      "id": "EC_WORD_PLUSH_DOLL",
+      "text_label": "gEasyChatWord_PlushDoll",
+      "text": "PLUSH DOLL"
+    },
+    {
+      "id": "EC_WORD_PC",
+      "text_label": "gEasyChatWord_Pc",
+      "text": "PC"
+    },
+    {
+      "id": "EC_WORD_FLOWERS",
+      "text_label": "gEasyChatWord_Flowers",
+      "text": "FLOWERS"
+    },
+    {
+      "id": "EC_WORD_HERO",
+      "text_label": "gEasyChatWord_Hero",
+      "text": "HERO"
+    },
+    {
+      "id": "EC_WORD_NAP",
+      "text_label": "gEasyChatWord_Nap",
+      "text": "NAP"
+    },
+    {
+      "id": "EC_WORD_HEROINE",
+      "text_label": "gEasyChatWord_Heroine",
+      "text": "HEROINE"
+    },
+    {
+      "id": "EC_WORD_FASHION",
+      "text_label": "gEasyChatWord_Fashion",
+      "text": "FASHION"
+    },
+    {
+      "id": "EC_WORD_ADVENTURE",
+      "text_label": "gEasyChatWord_Adventure",
+      "text": "ADVENTURE"
+    },
+    {
+      "id": "EC_WORD_BOARD",
+      "text_label": "gEasyChatWord_Board",
+      "text": "BOARD"
+    },
+    {
+      "id": "EC_WORD_BALL",
+      "text_label": "gEasyChatWord_Ball",
+      "text": "BALL"
+    },
+    {
+      "id": "EC_WORD_BOOK",
+      "text_label": "gEasyChatWord_Book",
+      "text": "BOOK"
+    },
+    {
+      "id": "EC_WORD_FESTIVAL",
+      "text_label": "gEasyChatWord_Festival",
+      "text": "FESTIVAL"
+    },
+    {
+      "id": "EC_WORD_COMICS",
+      "text_label": "gEasyChatWord_Comics",
+      "text": "COMICS"
+    },
+    {
+      "id": "EC_WORD_HOLIDAY",
+      "text_label": "gEasyChatWord_Holiday",
+      "text": "HOLIDAY"
+    },
+    {
+      "id": "EC_WORD_PLANS",
+      "text_label": "gEasyChatWord_Plans",
+      "text": "PLANS"
+    },
+    {
+      "id": "EC_WORD_TRENDY",
+      "text_label": "gEasyChatWord_Trendy",
+      "text": "TRENDY"
+    },
+    {
+      "id": "EC_WORD_VACATION",
+      "text_label": "gEasyChatWord_Vacation",
+      "text": "VACATION"
+    },
+    {
+      "id": "EC_WORD_LOOK",
+      "text_label": "gEasyChatWord_Look",
+      "text": "LOOK"
+    }
+  ]
+}
