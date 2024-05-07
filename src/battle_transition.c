@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_transition.h"
 #include "battle_transition_frontier.h"
+#include "battle_transition_shared.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_object_movement.h"
@@ -29,9 +30,6 @@
 
 #define B_TRANS_DMA_FLAGS (1 | ((DMA_SRC_INC | DMA_DEST_FIXED | DMA_REPEAT | DMA_16BIT | DMA_START_HBLANK | DMA_ENABLE) << 16))
 
-// Used by each transition task to determine which of its functions to call
-#define tState          data[0]
-
 // Below are data defines for InitBlackWipe and UpdateBlackWipe, for the TransitionData data array.
 // These will be re-used by any transitions that use these functions.
 #define tWipeStartX data[0]
@@ -45,12 +43,6 @@
 #define tWipeXDist  data[8]
 #define tWipeYDist  data[9]
 #define tWipeTemp   data[10]
-
-#define SET_TILE(ptr, posY, posX, tile) \
-{                                       \
-    u32 index = (posY) * 32 + posX;     \
-    ptr[index] = tile | (0xF0 << 8);    \
-}
 
 struct TransitionData
 {
@@ -83,9 +75,6 @@ struct RectangularSpiralLine
     s16 reboundPosition;
     bool8 outward;
 };
-
-typedef bool8 (*TransitionStateFunc)(struct Task *task);
-typedef bool8 (*TransitionSpriteCallback)(struct Sprite *sprite);
 
 static bool8 Transition_StartIntro(struct Task *);
 static bool8 Transition_WaitForIntro(struct Task *);
@@ -264,8 +253,6 @@ static void Mugshots_CreateTrainerPics(struct Task *);
 static void VBlankCB_Mugshots(void);
 static void VBlankCB_MugshotsFadeOut(void);
 static void HBlankCB_Mugshots(void);
-static void InitTransitionData(void);
-static void FadeScreenBlack(void);
 static void CreateIntroTask(s16, s16, s16, s16, s16);
 static void SetCircularMask(u16 *, s16, s16, s16);
 static void SetSinWave(s16 *, s16, s16, s16, s16, s16);
@@ -287,14 +274,6 @@ static bool8 MugshotTrainerPic_Init(struct Sprite *);
 static bool8 MugshotTrainerPic_Slide(struct Sprite *);
 static bool8 MugshotTrainerPic_SlideSlow(struct Sprite *);
 static bool8 MugshotTrainerPic_SlideOffscreen(struct Sprite *);
-static void Task_TppHost(u8);
-static bool8 TppHost_Init(struct Task *);
-static bool8 TppHost_WipeToBlack(struct Task *);
-static bool8 TppHost_Main1(struct Task *);
-static bool8 TppHost_Main2(struct Task *);
-static bool8 TppHost_Main3(struct Task *);
-static bool8 TppHost_FadeOut(struct Task *);
-static bool8 TppHost_End(struct Task *);
 
 static s16 sDebug_RectangularSpiralData;
 static u8 sTestingTransitionId;
@@ -343,8 +322,6 @@ static const u32 sFrontierSquares_EmptyBg_Tileset[] = INCBIN_U32("graphics/battl
 static const u32 sFrontierSquares_Shrink1_Tileset[] = INCBIN_U32("graphics/battle_transitions/frontier_square_3.4bpp.lz");
 static const u32 sFrontierSquares_Shrink2_Tileset[] = INCBIN_U32("graphics/battle_transitions/frontier_square_4.4bpp.lz");
 static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transitions/frontier_squares.bin");
-static const u16 sTppHost_Palette[] = INCBIN_U16("graphics/battle_transitions/tpp_host.gbapal");
-static const u32 sTppHost_Tileset[] = INCBIN_U32("graphics/battle_transitions/tpp_host.4bpp.lz");
 
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
@@ -4054,7 +4031,7 @@ static bool8 TransitionIntro_FadeFromGray(struct Task *task)
 // General transition functions
 //-----------------------------------
 
-static void InitTransitionData(void)
+void InitTransitionData(void)
 {
     memset(sTransitionData, 0, sizeof(*sTransitionData));
     GetCameraOffsetWithPan(&sTransitionData->cameraX, &sTransitionData->cameraY);
@@ -4086,7 +4063,7 @@ void GetBg0TilesDst(u16 **tilemap, u16 **tileset)
     *tileset = (u16 *)(BG_VRAM + charBase);
 }
 
-static void FadeScreenBlack(void)
+void FadeScreenBlack(void)
 {
     BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
 }
@@ -4781,156 +4758,3 @@ static bool8 FrontierSquaresScroll_End(struct Task *task)
 #undef tScrollYDir
 #undef tScrollUpdateFlag
 #undef tSquareNum
-
-//-----------------------
-// B_TRANSITION_TPPHOST
-//-----------------------
-
-#define INPUT_TYPES (8)
-#define WINDOW_SPEED_DOWN (3)
-#define SCROLL_ACCELERATE_FIRST (24)
-#define SCROLL_ACCELERATE_REST (12)
-#define MAX_SCROLL_SPEED (20)
-#define tWindowBottom data[2]
-#define tPlacedRow data[3]
-#define tScrollPosition data[4]
-#define tScrollSpeed data[5]
-#define tScrollAccelerateCounter data[6]
-
-static const TransitionStateFunc sTppHost_Funcs[] = {
-    TppHost_Init,
-    TppHost_Main1,
-    TppHost_Main2,
-    TppHost_Main3,
-    TppHost_FadeOut,
-    TppHost_End
-};
-
-static void Task_TppHost(u8 taskId)
-{
-    while (sTppHost_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
-}
-
-static bool8 TppHost_Init(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-    InitTransitionData();
-    ScanlineEffect_Clear();
-
-    REG_WIN0V = 0;
-    REG_WIN0H = DISPLAY_WIDTH;
-    REG_WININ = WININ_WIN0_OBJ | WININ_WIN0_BG0;
-    REG_WINOUT = WININ_WIN0_OBJ | WININ_WIN0_BG1 | WININ_WIN0_BG2 | WININ_WIN0_BG3;
-    // Place BG0 below the OAMs, and don't smash the data used by the other BGs
-    // BG0 being below the other BGs doesn't matter because BG0 and the other BGs aren't enabled at the same time
-    REG_BG0CNT = 0x180B;
-
-    task->tWindowBottom = 0;
-    task->tPlacedRow = 0;
-    task->tScrollPosition = 0;
-    task->tScrollSpeed = 2;
-    task->tScrollAccelerateCounter = SCROLL_ACCELERATE_FIRST;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sTppHost_Palette, BG_PLTT_ID(15), sizeof(sTppHost_Palette));
-    LZ77UnCompVram(sTppHost_Tileset, tileset);
-
-    task->tState++;
-    return FALSE;
-}
-
-static void TppHost_PlaceInputs(struct Task *task)
-{
-    s16 i;
-    u16 *tilemap, *tileset;
-    GetBg0TilesDst(&tilemap, &tileset);
-
-    for (i = 0; i < DISPLAY_TILE_WIDTH; i++)
-    {
-        SET_TILE(tilemap, task->tPlacedRow, i, Random() % INPUT_TYPES);
-    }
-
-    task->tPlacedRow += 1;
-}
-
-static void TppHost_RevealInputs(struct Task *task)
-{
-    task->tWindowBottom += WINDOW_SPEED_DOWN;
-    REG_WIN0V = task->tWindowBottom;
-}
-
-static void TppHost_ScrollInputs(struct Task *task)
-{
-    task->tScrollAccelerateCounter--;
-    task->tScrollPosition = (task->tScrollPosition + task->tScrollSpeed) & 0xFF;
-    REG_BG0VOFS = task->tScrollPosition;
-
-    if (task->tScrollAccelerateCounter <= 0) {
-        task->tScrollSpeed += task->tScrollSpeed >> 1;
-        task->tScrollAccelerateCounter = SCROLL_ACCELERATE_REST;
-    }
-}
-
-static bool8 TppHost_Main1(struct Task *task)
-{
-    TppHost_PlaceInputs(task);
-    TppHost_RevealInputs(task);
-    TppHost_ScrollInputs(task);
-
-    if (task->tPlacedRow >= 32)
-    {
-        task->tState++;
-    }
-    return FALSE;
-}
-
-static bool8 TppHost_Main2(struct Task *task)
-{
-    TppHost_RevealInputs(task);
-    TppHost_ScrollInputs(task);
-
-    if (task->tWindowBottom >= DISPLAY_HEIGHT)
-    {
-        task->tState++;
-    }
-    return FALSE;
-}
-
-static bool8 TppHost_Main3(struct Task *task)
-{
-    TppHost_ScrollInputs(task);
-
-    if (task->tScrollSpeed > MAX_SCROLL_SPEED) {
-        task->tState++;
-    }
-    return FALSE;
-}
-
-static bool8 TppHost_FadeOut(struct Task *task)
-{
-    BeginNormalPaletteFade(PALETTES_OBJECTS | (1 << 15), 1, 0, 16, RGB_BLACK);
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 TppHost_End(struct Task *task)
-{
-    if (!gPaletteFade.active)
-    {
-        DmaStop(0);
-        FadeScreenBlack();
-        DestroyTask(FindTaskIdByFunc(task->func));
-    }
-    return FALSE;
-}
-
-#undef INPUT_TYPES
-#undef WINDOW_SPEED_DOWN
-#undef SCROLL_ACCELERATE_FIRST
-#undef SCROLL_ACCELERATE_REST
-#undef MAX_SCROLL_SPEED
-#undef tWindowBottom
-#undef tPlacedRow
-#undef tScrollPosition
-#undef tScrollSpeed
-#undef tScrollAccelerateCounter
