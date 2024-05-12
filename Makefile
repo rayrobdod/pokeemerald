@@ -257,6 +257,7 @@ ifneq ($(MODERN),0)
 $(C_BUILDDIR)/berry_crush.o: override CFLAGS += -Wno-address-of-packed-member
 endif
 
+include concatinate_rules.mk
 include graphics_file_rules.mk
 include map_data_rules.mk
 include spritesheet_rules.mk

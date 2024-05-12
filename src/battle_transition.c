@@ -1,8 +1,8 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_transition.h"
-#include "battle_transition_frontier.h"
 #include "battle_transition_shared.h"
+#include "battle_transition_tasks.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_object_movement.h"
@@ -333,49 +333,7 @@ static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 // This task will call the functions that do the transition effects.
 static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 {
-    [B_TRANSITION_BLUR] = Task_Blur,
-    [B_TRANSITION_SWIRL] = Task_Swirl,
-    [B_TRANSITION_SHUFFLE] = Task_Shuffle,
-    [B_TRANSITION_BIG_POKEBALL] = Task_BigPokeball,
-    [B_TRANSITION_POKEBALLS_TRAIL] = Task_PokeballsTrail,
-    [B_TRANSITION_CLOCKWISE_WIPE] = Task_ClockwiseWipe,
-    [B_TRANSITION_RIPPLE] = Task_Ripple,
-    [B_TRANSITION_WAVE] = Task_Wave,
-    [B_TRANSITION_SLICE] = Task_Slice,
-    [B_TRANSITION_WHITE_BARS_FADE] = Task_WhiteBarsFade,
-    [B_TRANSITION_GRID_SQUARES] = Task_GridSquares,
-    [B_TRANSITION_ANGLED_WIPES] = Task_AngledWipes,
-    [B_TRANSITION_SIDNEY] = Task_Sidney,
-    [B_TRANSITION_PHOEBE] = Task_Phoebe,
-    [B_TRANSITION_GLACIA] = Task_Glacia,
-    [B_TRANSITION_DRAKE] = Task_Drake,
-    [B_TRANSITION_CHAMPION] = Task_Champion,
-    [B_TRANSITION_AQUA] = Task_Aqua,
-    [B_TRANSITION_MAGMA] = Task_Magma,
-    [B_TRANSITION_REGICE] = Task_Regice,
-    [B_TRANSITION_REGISTEEL] = Task_Registeel,
-    [B_TRANSITION_REGIROCK] = Task_Regirock,
-    [B_TRANSITION_KYOGRE] = Task_Kyogre,
-    [B_TRANSITION_GROUDON] = Task_Groudon,
-    [B_TRANSITION_RAYQUAZA] = Task_Rayquaza,
-    [B_TRANSITION_SHRED_SPLIT] = Task_ShredSplit,
-    [B_TRANSITION_BLACKHOLE] = Task_Blackhole,
-    [B_TRANSITION_BLACKHOLE_PULSATE] = Task_BlackholePulsate,
-    [B_TRANSITION_RECTANGULAR_SPIRAL] = Task_RectangularSpiral,
-    [B_TRANSITION_FRONTIER_LOGO_WIGGLE] = Task_FrontierLogoWiggle,
-    [B_TRANSITION_FRONTIER_LOGO_WAVE] = Task_FrontierLogoWave,
-    [B_TRANSITION_FRONTIER_SQUARES] = Task_FrontierSquares,
-    [B_TRANSITION_FRONTIER_SQUARES_SCROLL] = Task_FrontierSquaresScroll,
-    [B_TRANSITION_FRONTIER_SQUARES_SPIRAL] = Task_FrontierSquaresSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_MEET] = Task_FrontierCirclesMeet,
-    [B_TRANSITION_FRONTIER_CIRCLES_CROSS] = Task_FrontierCirclesCross,
-    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL] = Task_FrontierCirclesAsymmetricSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL] = Task_FrontierCirclesSymmetricSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_MEET_IN_SEQ] = Task_FrontierCirclesMeetInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ] = Task_FrontierCirclesCrossInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesAsymmetricSpiralInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesSymmetricSpiralInSeq,
-    [B_TRANSITION_TPPHOST] = Task_TppHost,
+    #include "battle_transition_tasks.inc"
 };
 
 static const TransitionStateFunc sTaskHandlers[] =

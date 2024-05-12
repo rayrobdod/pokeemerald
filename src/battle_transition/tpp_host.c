@@ -1,6 +1,7 @@
 #include "global.h"
-#include "battle_transition_shared.h"
 #include "battle_transition.h"
+#include "battle_transition_shared.h"
+#include "battle_transition_tasks/tpp_host.h"
 #include "palette.h"
 #include "random.h"
 #include "scanline_effect.h"
@@ -17,10 +18,6 @@ static bool8 TppHost_End(struct Task *);
 
 static const u16 sTppHost_Palette[] = INCBIN_U16("graphics/battle_transitions/tpp_host.gbapal");
 static const u32 sTppHost_Tileset[] = INCBIN_U32("graphics/battle_transitions/tpp_host.4bpp.lz");
-
-//-----------------------
-// B_TRANSITION_TPPHOST
-//-----------------------
 
 #define INPUT_TYPES (8)
 #define WINDOW_SPEED_DOWN (3)

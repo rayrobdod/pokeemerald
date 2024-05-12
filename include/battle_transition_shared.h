@@ -19,6 +19,4 @@ void InitTransitionData(void);
 void FadeScreenBlack(void);
 
 
-void Task_TppHost(u8);
-
 #endif // GUARD_BATTLE_TRANSITION_H
