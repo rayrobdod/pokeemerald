@@ -6,7 +6,7 @@ CFLAGS += $(shell pkg-config --cflags libpng)
 LIBS = -lpng -lz
 LDFLAGS += $(shell pkg-config --libs-only-L libpng)
 
-SRCS = main.c convert_png.c gfx.c jasc_pal.c lz.c rl.c util.c font.c huff.c
+SRCS = main.c convert_png.c gfx.c jasc_pal.c lz.c ril.c rl.c util.c font.c huff.c
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -19,10 +19,10 @@ endif
 all: gbagfx$(EXE)
 	@:
 
-gbagfx-debug$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h rl.h util.h font.h
+gbagfx-debug$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h ril.h rl.h util.h font.h
 	$(CC) $(CFLAGS) -DDEBUG $(SRCS) -o $@ $(LDFLAGS) $(LIBS)
 
-gbagfx$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h rl.h util.h font.h
+gbagfx$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h ril.h rl.h util.h font.h
 	$(CC) $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
