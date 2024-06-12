@@ -2,7 +2,7 @@
 #include "battle.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks.h"
+#include "battle_transition_tasks/_index.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_object_movement.h"
@@ -118,7 +118,6 @@ static void Task_FrontierLogoWave(u8);
 static void Task_FrontierSquares(u8);
 static void Task_FrontierSquaresScroll(u8);
 static void Task_FrontierSquaresSpiral(u8);
-static void VBlankCB_BattleTransition(void);
 static void VBlankCB_Swirl(void);
 static void HBlankCB_Swirl(void);
 static void VBlankCB_Shuffle(void);
@@ -254,11 +253,7 @@ static void VBlankCB_Mugshots(void);
 static void VBlankCB_MugshotsFadeOut(void);
 static void HBlankCB_Mugshots(void);
 static void CreateIntroTask(s16, s16, s16, s16, s16);
-static void SetCircularMask(u16 *, s16, s16, s16);
-static void SetSinWave(s16 *, s16, s16, s16, s16, s16);
-static void GetBg0TilemapDst(u16 **);
 static void InitBlackWipe(s16 *, s16, s16, s16, s16, s16, s16);
-static bool8 UpdateBlackWipe(s16 *, bool8, bool8);
 static void SetTrainerPicSlideDirection(s16, s16);
 static void IncrementTrainerPicState(s16);
 static s16 IsTrainerPicSlideDone(s16);
@@ -333,7 +328,7 @@ static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 // This task will call the functions that do the transition effects.
 static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 {
-    #include "battle_transition_tasks.inc"
+    #include "battle_transition_tasks_main/_index.h"
 };
 
 static const TransitionStateFunc sTaskHandlers[] =
@@ -3995,14 +3990,14 @@ void InitTransitionData(void)
     GetCameraOffsetWithPan(&sTransitionData->cameraX, &sTransitionData->cameraY);
 }
 
-static void VBlankCB_BattleTransition(void)
+void VBlankCB_BattleTransition(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
 }
 
-static void GetBg0TilemapDst(u16 **tileset)
+void GetBg0TilemapDst(u16 **tileset)
 {
     u16 charBase = REG_BG0CNT >> 2;
     charBase <<= 14;
@@ -4026,14 +4021,14 @@ void FadeScreenBlack(void)
     BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
 }
 
-static void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, s16 amplitude, s16 arrSize)
+void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, s16 amplitude, s16 arrSize)
 {
     u8 i;
     for (i = 0; arrSize > 0; arrSize--, i++, index += indexIncrementer)
         array[i] = sinAdd + Sin(index & 0xFF, amplitude);
 }
 
-static void SetCircularMask(u16 *buffer, s16 centerX, s16 centerY, s16 radius)
+void SetCircularMask(u16 *buffer, s16 centerX, s16 centerY, s16 radius)
 {
     s16 i;
 
@@ -4112,7 +4107,7 @@ static void InitBlackWipe(s16 *data, s16 startX, s16 startY, s16 endX, s16 endY,
     tWipeTemp = 0;
 }
 
-static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
+bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
 {
     u8 numFinished;
 

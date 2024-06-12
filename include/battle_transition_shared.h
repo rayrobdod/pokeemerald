@@ -16,7 +16,11 @@ typedef bool8 (*TransitionStateFunc)(struct Task *task);
 typedef bool8 (*TransitionSpriteCallback)(struct Sprite *sprite);
 
 void InitTransitionData(void);
+void VBlankCB_BattleTransition(void);
+void GetBg0TilemapDst(u16 **);
 void FadeScreenBlack(void);
-
+void SetSinWave(s16 *, s16, s16, s16, s16, s16);
+void SetCircularMask(u16 *, s16, s16, s16);
+bool8 UpdateBlackWipe(s16 *, bool8, bool8);
 
 #endif // GUARD_BATTLE_TRANSITION_H
