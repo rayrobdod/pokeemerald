@@ -1,0 +1,14 @@
+{{ doNotModifyHeader }}
+## for key, file in mugshots
+static const u32 sMugshotTiles_{{ removePrefix(key, "MUGSHOT_") }}[] = INCBIN_U32("{{ file }}.4bpp.lz");
+static const u16 sMugshotPalette_{{ removePrefix(key, "MUGSHOT_") }}[16] = INCBIN_U16("{{ file }}.gbapal");
+## endfor
+
+const struct Mugshot gMugshots[] = {
+## for key, file in mugshots
+    [{{key}} - 1] = {
+        .tiles = sMugshotTiles_{{ removePrefix(key, "MUGSHOT_") }},
+        .palette = sMugshotPalette_{{ removePrefix(key, "MUGSHOT_") }},
+    },
+## endfor
+};

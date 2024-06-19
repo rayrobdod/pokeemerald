@@ -1262,6 +1262,18 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrCmd_speakername(struct ScriptContext *ctx)
+{
+    gSpeakerName = (const u8 *)ScriptReadWord(ctx);
+    return FALSE;
+}
+
+bool8 ScrCmd_speakermugshot(struct ScriptContext *ctx)
+{
+    gSpeakerMugshot = ScriptReadByte(ctx);
+    return FALSE;
+}
+
 bool8 ScrCmd_message(struct ScriptContext *ctx)
 {
     const u8 *msg = (const u8 *)ScriptReadWord(ctx);

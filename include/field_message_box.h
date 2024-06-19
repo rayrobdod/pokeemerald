@@ -1,6 +1,8 @@
 #ifndef GUARD_FIELD_MESSAGE_BOX_H
 #define GUARD_FIELD_MESSAGE_BOX_H
 
+#include "constants/mugshots.h"
+
 enum
 {
     FIELD_MESSAGE_BOX_HIDDEN,
@@ -8,6 +10,9 @@ enum
     FIELD_MESSAGE_BOX_NORMAL,
     FIELD_MESSAGE_BOX_AUTO_SCROLL,
 };
+
+extern u8 gSpeakerMugshot;
+extern const u8* gSpeakerName;
 
 bool8 ShowFieldMessage(const u8 *message);
 bool8 ShowPokenavFieldMessage(const u8 *message);

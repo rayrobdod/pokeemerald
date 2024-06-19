@@ -7,6 +7,8 @@
 #include "field_message_box.h"
 
 static EWRAM_DATA u8 sFieldMessageBoxMode = 0;
+EWRAM_DATA u8 gSpeakerMugshot = MUGSHOT_NONE;
+EWRAM_DATA const u8* gSpeakerName = NULL;
 
 static void ExpandStringAndStartDrawFieldMessage(const u8 *, bool32);
 static void StartDrawFieldMessage(void);
@@ -33,7 +35,12 @@ static void Task_DrawFieldMessage(u8 taskId)
            task->tState++;
            break;
         case 1:
-           DrawDialogueFrame(0, TRUE);
+           if (gSpeakerMugshot != MUGSHOT_NONE)
+               DrawDialogueFrameWithNameAndMug(0, 1, 2, gSpeakerName, gSpeakerMugshot, TRUE);
+           else if (gSpeakerName != NULL)
+               DrawDialogueFrameWithName(0, 1, gSpeakerName, TRUE);
+           else
+               DrawDialogueFrame(0, TRUE);
            task->tState++;
            break;
         case 2:
@@ -133,6 +140,8 @@ void HideFieldMessageBox(void)
     DestroyTask_DrawFieldMessage();
     ClearDialogWindowAndFrame(0, TRUE);
     sFieldMessageBoxMode = FIELD_MESSAGE_BOX_HIDDEN;
+    gSpeakerName = NULL;
+    gSpeakerMugshot = MUGSHOT_NONE;
 }
 
 u8 GetFieldMessageBoxMode(void)

@@ -22,6 +22,9 @@
 #define MENU_INFO_ICON_BALL_RED  (NUMBER_OF_MON_TYPES + 6)
 #define MENU_INFO_ICON_BALL_BLUE (NUMBER_OF_MON_TYPES + 7)
 
+#define STD_WINDOW_NAMEPLATE_WIDTH 8
+#define STD_WINDOW_MUGSHOT_HEIGHT 8
+
 enum
 {
     SAVE_MENU_NAME,
@@ -48,6 +51,8 @@ void InitTextBoxGfxAndPrinters(void);
 u16 RunTextPrintersAndIsPrinter0Active(void);
 void LoadMessageBoxAndBorderGfx(void);
 void DrawDialogueFrame(u8 windowId, bool8 copyToVram);
+void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram);
+void DrawDialogueFrameWithNameAndMug(u8 windowId, u8 windowIdName, u8 windowIdMugshot, const u8 *speakerName, u8 speakerMugshot, bool8 copyToVram);
 void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram);
 u16 AddTextPrinterParameterized2(u8 windowId, u8 fontId, const u8 *str, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16), u8 fgColor, u8 bgColor, u8 shadowColor);
 void PrintPlayerNameOnWindow(u8, const u8 *, u16, u16);
