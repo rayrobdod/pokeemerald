@@ -18,3 +18,10 @@ $(DATA_SRC_SUBDIR)/mugshots.h: $(DATA_SRC_SUBDIR)/mugshots.json $(DATA_SRC_SUBDI
 	$(JSONPROC) $^ $@
 
 $(C_BUILDDIR)/mugshots.o: c_dep += $(DATA_SRC_SUBDIR)/mugshots.h
+
+# scaninc will not find these if data/mugshots.h has not been built yet
+# Cannot use the generated-include method since that requires jsonproc to be built first, and make
+#    will not attempt to build tools if it cannot read all included files.
+# Requires mugshots to be in the expected folder
+$(C_BUILDDIR)/mugshots.o: $(patsubst %.png,%.4bpp.lz,$(wildcard graphics/mugshots/*.png))
+$(C_BUILDDIR)/mugshots.o: $(patsubst %.png,%.gbapal,$(wildcard graphics/mugshots/*.png))
