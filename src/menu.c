@@ -242,7 +242,6 @@ static void FillDialogFrameNameWindow(u8 windowId, const u8 *speakerName, bool8 
     int i;
     int strWidth;
     int strOffset;
-    int bufferOffset;
     u8 nameBuffer[0x20];
 
     if (curveTopCorners)
