@@ -13,12 +13,12 @@ void GetBg0TilesDst(u16 **tilemap, u16 **tileset);
 extern const struct SpritePalette gSpritePalette_Pokeball;
 
 enum {
-    MUGSHOT_SIDNEY,
-    MUGSHOT_PHOEBE,
-    MUGSHOT_GLACIA,
-    MUGSHOT_DRAKE,
-    MUGSHOT_CHAMPION,
-    MUGSHOTS_COUNT
+    MUGSHOT_COLOR_PURPLE,
+    MUGSHOT_COLOR_GREEN,
+    MUGSHOT_COLOR_PINK,
+    MUGSHOT_COLOR_BLUE,
+    MUGSHOT_COLOR_YELLOW,
+    MUGSHOT_COLOR_COUNT
 };
 
 // IDs for GetSpecialBattleTransition
