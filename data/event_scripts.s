@@ -49,6 +49,7 @@
 #include "constants/songs.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/technique_manual_pages.h"
 #include "constants/trade.h"
 #include "constants/trainer_hill.h"
 #include "constants/trainers.h"

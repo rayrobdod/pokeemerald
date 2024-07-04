@@ -9,6 +9,7 @@
 #include "item_menu.h"
 #include "party_menu.h"
 #include "strings.h"
+#include "technique_manual.h"
 #include "load_save.h"
 #include "item_use.h"
 #include "battle_pyramid.h"

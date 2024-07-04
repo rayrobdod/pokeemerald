@@ -33,6 +33,7 @@
 #include "event_data.h"
 #include "pokemon_storage_system.h"
 #include "task.h"
+#include "technique_manual.h"
 #include "naming_screen.h"
 #include "battle_setup.h"
 #include "overworld.h"
@@ -6343,6 +6344,11 @@ static void Cmd_moveend(void)
             // If the Pokémon needs to keep track of move usage for its evolutions, do it
             if (originallyUsedMove != MOVE_NONE)
                 TryUpdateEvolutionTracker(EVO_LEVEL_MOVE_TWENTY_TIMES, 1, originallyUsedMove);
+            gBattleScripting.moveendState++;
+            break;
+        case MOVEEND_TM_SEEN_TRACKER:
+            if (originallyUsedMove != MOVE_NONE)
+                TmIncrementSeenStats(originallyUsedMove, gBattleMons[gBattlerAttacker].species);
             gBattleScripting.moveendState++;
             break;
         case MOVEEND_CLEAR_BITS: // Clear/Set bits for things like using a move for all targets and all hits.

@@ -59,6 +59,7 @@
 #include "string_util.h"
 #include "strings.h"
 #include "task.h"
+#include "technique_manual.h"
 #include "text.h"
 #include "text_window.h"
 #include "trade.h"
@@ -323,6 +324,7 @@ static void PartyMenuRemoveWindow(u8 *);
 static void CB2_SetUpExitToBattleScreen(void);
 static void Task_ClosePartyMenuAfterText(u8);
 static void TryTutorSelectedMon(u8);
+static void TryTechniqueManualSelectedMon(u8 taskId);
 static void TryGiveMailToSelectedMon(u8);
 static void TryGiveItemOrMailToSelectedMon(u8);
 static void SwitchSelectedMons(u8);
@@ -1125,6 +1127,11 @@ static bool8 DisplayPartyPokemonDataForMoveTutorOrEvolutionItem(u8 slot)
         gSpecialVar_Result = FALSE;
         DisplayPartyPokemonDataToTeachMove(slot, gSpecialVar_0x8005);
     }
+    else if (gPartyMenu.action == PARTY_ACTION_TECHNIQUE_MANUAL)
+    {
+        gSpecialVar_Result = FALSE;
+        DisplayPartyPokemonDataToTeachMove(slot, TmCurrentlySelectedMove());
+    }
     else
     {
         if (gPartyMenu.action != PARTY_ACTION_USE_ITEM)
@@ -1469,6 +1476,14 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
                 PlaySE(SE_SELECT);
                 PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
                 TryTutorSelectedMon(taskId);
+            }
+            break;
+        case PARTY_ACTION_TECHNIQUE_MANUAL:
+            if (IsSelectedMonNotEgg((u8 *)slotPtr))
+            {
+                PlaySE(SE_SELECT);
+                PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+                TryTechniqueManualSelectedMon(taskId);
             }
             break;
         case PARTY_ACTION_GIVE_MAILBOX_MAIL:
@@ -7737,5 +7752,49 @@ void IsLastMonThatKnowsSurf(void)
         }
         if (AnyStorageMonWithMove(move) != TRUE)
             gSpecialVar_Result = TRUE;
+    }
+}
+
+void CB2_ChooseMonToTeachFromTechniqueManual(void)
+{
+    InitPartyMenu(
+        PARTY_MENU_TYPE_FIELD,
+        PARTY_LAYOUT_SINGLE,
+        PARTY_ACTION_TECHNIQUE_MANUAL,
+        TRUE,
+        PARTY_MSG_TEACH_WHICH_MON,
+        Task_HandleChooseMonInput,
+        CB2_ReopenTechniqueManual);
+}
+
+static void TryTechniqueManualSelectedMon(u8 taskId)
+{
+    struct Pokemon *mon;
+
+    if (!gPaletteFade.active)
+    {
+        mon = &gPlayerParty[gPartyMenu.slotId];
+        GetMonNickname(mon, gStringVar1);
+        gPartyMenu.data1 = TmCurrentlySelectedMove();
+        StringCopy(gStringVar2, GetMoveName(gPartyMenu.data1));
+        gPartyMenu.learnMoveState = 2;
+        switch (CanTeachMove(mon, gPartyMenu.data1))
+        {
+        case CANNOT_LEARN_MOVE:
+            DisplayLearnMoveMessageAndClose(taskId, gText_PkmnCantLearnMove);
+            return;
+        case ALREADY_KNOWS_MOVE:
+            DisplayLearnMoveMessageAndClose(taskId, gText_PkmnAlreadyKnows);
+            return;
+        default:
+            if (GiveMoveToMon(mon, gPartyMenu.data1) != MON_HAS_MAX_MOVES)
+            {
+                Task_LearnedMove(taskId);
+                return;
+            }
+            break;
+        }
+        DisplayLearnMoveMessage(gText_PkmnNeedsToReplaceMove);
+        gTasks[taskId].func = Task_ReplaceMoveYesNo;
     }
 }

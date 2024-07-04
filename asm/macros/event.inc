@@ -1813,6 +1813,18 @@
 	_dynmultichoice \left, \top, \ignoreBPress, \maxBeforeScroll, \shouldSort, \initialSelected, \callbacks, NULL
 	.endm
 
+	@ Increments TM_COUNTER_BE_TUTORED counters for the specifed tm
+	.macro tmtutor tmindex:req
+	.byte 0xe5
+	.byte \tmindex
+	.endm
+
+	@ stores whether the tm has been mastered in comparisonResult to be used by goto_if, etc
+	.macro checktmmastered tmindex:req
+	.byte 0xe6
+	.byte \tmindex
+	.endm
+
 
 @ Supplementary
 
@@ -1939,6 +1951,26 @@
 
 	.macro call_if_not_defeated trainer:req, dest:req
 	checktrainerflag \trainer
+	call_if FALSE, \dest
+	.endm
+
+	.macro goto_if_tmmastered tmindex:req, dest:req
+	checktmmastered \tmindex
+	goto_if TRUE, \dest
+	.endm
+
+	.macro goto_if_not_tmmastered tmindex:req, dest:req
+	checktmmastered \tmindex
+	goto_if FALSE, \dest
+	.endm
+
+	.macro call_if_tmmastered tmindex:req, dest:req
+	checktmmastered \tmindex
+	call_if TRUE, \dest
+	.endm
+
+	.macro call_if_not_tmmastered tmindex:req, dest:req
+	checktmmastered \tmindex
 	call_if FALSE, \dest
 	.endm
 
@@ -2096,7 +2128,7 @@
 	setvar VAR_0x8002, \tryMultiple
 	special TrySpecialOverworldEvo
 	.endm
-	
+
 	.macro ai_vs_ai_battle trainer1:req, trainer2:req
 	setflag B_FLAG_AI_VS_AI_BATTLE
 	setvar VAR_0x8004, \trainer1

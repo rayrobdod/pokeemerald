@@ -16,6 +16,7 @@
 #include "constants/maps.h"
 #include "constants/pokemon.h"
 #include "constants/easy_chat.h"
+#include "constants/technique_manual.h"
 #include "constants/trainer_hill.h"
 #include "constants/items.h"
 #include "config/save.h"
@@ -164,8 +165,15 @@ struct UCoords32
     u32 y;
 };
 
+struct TechniqueManualRecords
+{
+    u16 species[TM_SPECIES_COUNT];
+    u8 counters[TM_COUNTERS_COUNT];
+};
+
 struct SaveBlock3
 {
+    struct TechniqueManualRecords techniqueManual[TM_COUNT];
 };
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;

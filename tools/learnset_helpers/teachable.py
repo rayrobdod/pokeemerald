@@ -15,6 +15,7 @@ def parse_mon_name(name):
     return re.sub(r'(?!^)([A-Z]+)', r'_\1', name).upper()
     
 tm_moves = []
+manual_moves = []
 tutor_moves = []
 
 # scan incs
@@ -37,6 +38,12 @@ with open("./include/constants/tms_hms.h", 'r') as file:
     for x in re.findall(r'F\((.*)\)', file.read()):
         if not 'MOVE_' + x in tm_moves:
             tm_moves.append('MOVE_' + x)
+
+# scan Technique Manual
+with open("./src/data/technique_manual.h", 'r') as file:
+    for x in re.findall(r'\.move = (MOVE_.*),', file.read()):
+        if not x in tm_moves:
+            manual_moves.append(x)
 
 # look up universal moves to exclude them
 universal_moves = []
@@ -133,6 +140,7 @@ for mon in list_of_mons:
     mon_parsed = parse_mon_name(mon)
     tm_learnset = []
     tutor_learnset = []
+    manual_learnset = []
     if mon_parsed == "NONE" or mon_parsed == "MEW":
         continue
     if not mon_parsed in compatibility_dict:
@@ -154,9 +162,19 @@ for mon in list_of_mons:
         if move in compatibility_dict[mon_parsed]:
             tutor_learnset.append(move)
             continue
+    for move in manual_moves:
+        if move in universal_moves:
+            continue
+        if move in manual_learnset:
+            continue
+        if move in compatibility_dict[mon_parsed]:
+            manual_learnset.append(move)
+            continue
     tm_learnset.sort()
     tutor_learnset.sort()
+    manual_learnset.sort()
     tm_learnset += tutor_learnset
+    tm_learnset += manual_learnset
     repl = "static const u16 s%sTeachableLearnset[] = {\n    " % mon
     if len(tm_learnset) > 0:
         repl += ",\n    ".join(tm_learnset) + ",\n    "
@@ -169,13 +187,14 @@ for mon in list_of_mons:
 # add/update header
 header = "//\n// DO NOT MODIFY THIS FILE! It is auto-generated from tools/learnset_helpers/teachable.py\n//\n\n"
 longest_move_name = 0
-for move in tm_moves + tutor_moves:
+for move in tm_moves + tutor_moves + manual_moves:
     if len(move) > longest_move_name:
         longest_move_name = len(move)
 longest_move_name += 2 # + 2 for a hyphen and a space
 
 universal_title = "Near-universal moves found in sUniversalMoves:"
 tmhm_title = "TM/HM moves found in \"include/constants/tms_hms.h\":"
+manual_title = "Technique Manual moves found in \"src/data/technique_manual.h\":"
 tutor_title = "Tutor moves found in map scripts:"
 
 if longest_move_name < len(universal_title):
@@ -192,6 +211,10 @@ def header_print(str):
 header += "// " + longest_move_name * "*" + " //\n"
 header_print(tmhm_title)
 for move in tm_moves:
+    header_print("- " + move)
+header += "// " + longest_move_name * "*" + " //\n"
+header_print(manual_title)
+for move in manual_moves:
     header_print("- " + move)
 header += "// " + longest_move_name * "*" + " //\n"
 header_print(tutor_title)

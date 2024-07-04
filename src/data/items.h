@@ -12626,4 +12626,20 @@ const struct Item gItemsInfo[] =
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
+
+// Novel items
+
+    [ITEM_TECHNIQUE_MANUAL] =
+    {
+        .name = _("MOVE MANUAL"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A manual for\n"
+            "recording move\n"
+            "information."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_TechniqueManual,
+    },
 };

@@ -1,0 +1,16 @@
+#ifndef GUARD_CONSTANTS_TECHNIQUE_PAGES_H
+#define GUARD_CONSTANTS_TECHNIQUE_PAGES_H
+
+
+#define TM_NONE 0xFF
+#define TM_TACKLE 0
+#define TM_POUND 1
+#define TM_THUNDER 2
+#define TM_SOLAR_BEAM 3
+#define TM_CHILLING_WATER 4
+#define TM_CUT 5
+
+#define TM_COUNT 6
+
+
+#endif

@@ -11,6 +11,7 @@ TYPESGFXDIR := graphics/types
 RAYQUAZAGFXDIR := graphics/rayquaza_scene
 ROULETTEGFXDIR := graphics/roulette
 SLOTMACHINEGFXDIR := graphics/slot_machine
+TMGFXDIR := graphics/technique_manual
 PKNAVGFXDIR := graphics/pokenav
 PKNAVOPTIONSGFXDIR := graphics/pokenav/options
 WALLPAPERGFXDIR := graphics/pokemon_storage/wallpapers
@@ -21,6 +22,8 @@ POKEDEXGFXDIR := graphics/pokedex
 STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/pokemon/spinda/spots
+
+TMGFXBUILDDIR := build/$(TMGFXDIR)
 
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy
 contest_types := cool beauty cute smart tough
@@ -436,6 +439,52 @@ $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.
 graphics/birch_speech/unused_beauty.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 822 -Wnum_tiles
 
+$(TMGFXBUILDDIR):
+	mkdir -p $(TMGFXBUILDDIR)
+
+$(TMGFXBUILDDIR)/background.gbapal : $(TMGFXDIR)/background.png | $(TMGFXBUILDDIR)
+	$(GFX) $< $@
+
+$(TMGFXBUILDDIR)/background_prefix.4bpp : $(TMGFXDIR)/background_prefix.png | $(TMGFXBUILDDIR)
+	$(GFX) $< $@
+
+$(TMGFXBUILDDIR)/background_1.4bpp &: $(TMGFXDIR)/background.png $(TMGFXBUILDDIR)/background.gbapal
+	$(FAMICONV) tiles \
+		--mode gba \
+		--in-image $< \
+		--in-palette $(TMGFXBUILDDIR)/background.gbapal \
+		--out-data $@
+
+$(TMGFXBUILDDIR)/background_2.4bpp: $(TMGFXBUILDDIR)/background_prefix.4bpp $(TMGFXBUILDDIR)/background_1.4bpp
+	@cat $^ >$@
+
+# The tiles in `tiles --in-data` are not deduplicated.
+# To deduplicate, the tiles must be turned into a png, and the png tiles can be deduplicated
+# If there were any duplicate tiles in the prefix, those would also be deduplicated, defeating the point of the prefix.
+
+$(TMGFXBUILDDIR)/background_2.png &: $(TMGFXBUILDDIR)/background_2.4bpp
+	$(FAMICONV) tiles \
+		--mode gba \
+		--in-data $< \
+		--out-image $@
+
+$(TMGFXBUILDDIR)/background.4bpp &: $(TMGFXBUILDDIR)/background_2.png
+	$(FAMICONV) tiles \
+		--mode gba \
+		--no-remap \
+		--in-image $< \
+		--out-data $@
+
+$(TMGFXBUILDDIR)/background.tilemap: \
+		$(TMGFXDIR)/background.png \
+		$(TMGFXBUILDDIR)/background.4bpp \
+		$(TMGFXBUILDDIR)/background.gbapal
+	$(FAMICONV) map \
+		--mode gba \
+		--in-image $< \
+		--in-tiles $(TMGFXBUILDDIR)/background.4bpp \
+		--in-palette $(TMGFXBUILDDIR)/background.gbapal \
+		--out-data $@
 
 
 ### Pokémon Storage System ###

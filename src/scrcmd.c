@@ -43,6 +43,7 @@
 #include "slot_machine.h"
 #include "sound.h"
 #include "string_util.h"
+#include "technique_manual.h"
 #include "text.h"
 #include "text_window.h"
 #include "trainer_see.h"
@@ -2408,4 +2409,18 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     DoWhiteFadeWarp();
     ResetInitialPlayerAvatarState();
     return TRUE;
+}
+
+bool8 ScrCmd_tmtutor(struct ScriptContext *ctx)
+{
+    u8 tmIndex = ScriptReadByte(ctx);
+    TmBeTutored(tmIndex);
+    return FALSE;
+}
+
+bool8 ScrCmd_checktmmastered(struct ScriptContext *ctx)
+{
+    u8 tmIndex = ScriptReadByte(ctx);
+    gSpecialVar_Result = TmIsMastered(tmIndex);
+    return FALSE;
 }
