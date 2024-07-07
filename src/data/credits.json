@@ -1,0 +1,756 @@
+{
+  "strings_order": [
+    "POKéMON EMERALD VERSION",
+    "Credits",
+    "Executive Director",
+    "Director",
+    "Art Director",
+    "Battle Director",
+    "Main Programmer",
+    "Battle System Programmers",
+    "Field System Programmer",
+    "Programmers",
+    "Main Graphic Designer",
+    "Graphic Designers",
+    "POKéMON Designers",
+    "Music Composition",
+    "Sound Effects & POKéMON Voices",
+    "Game Designers",
+    "Scenario Plot",
+    "Scenario",
+    "Script Designers",
+    "Map Designers",
+    "Map Data Designers",
+    "Parametric Designers",
+    "POKéDEX Text",
+    "Environment & Tool Programmers",
+    "NCL Product Testing",
+    "Special Thanks",
+    "Coordinators",
+    "Producers",
+    "Executive Producers",
+    "Information Supervisors",
+    "Task Managers",
+    "Braille Code Check",
+    "World Director",
+    "Battle Frontier Data",
+    "Support Programmers",
+    "Artwork",
+    "Lead Programmer",
+    "Lead Graphic Artist",
+    "Satoshi Tajiri",
+    "Junichi Masuda",
+    "Ken Sugimori",
+    "Shigeki Morimoto",
+    "Tetsuya Watanabe",
+    "Hisashi Sogabe",
+    "Sosuke Tamada",
+    "Akito Mori",
+    "Keita Kagaya",
+    "Yoshinori Matsuda",
+    "Hiroyuki Nakamura",
+    "Masao Taya",
+    "Satoshi Nohara",
+    "Tomomichi Ohta",
+    "Miyuki Iwasawa",
+    "Takenori Ohta",
+    "Hironobu Yoshida",
+    "Motofumi Fujiwara",
+    "Satoshi Ohta",
+    "Asuka Iwashita",
+    "Aimi Tomita",
+    "Takao Unno",
+    "Kanako Eo",
+    "Jun Okutani",
+    "Atsuko Nishida",
+    "Muneo Saito",
+    "Rena Yoshikawa",
+    "Go Ichinose",
+    "Morikazu Aoki",
+    "Koji Nishino",
+    "Kenji Matsushima",
+    "Tetsuji Ohta",
+    "Hitomi Sato",
+    "Takeshi Kawachimaru",
+    "Teruyuki Shimoyamada",
+    "Shigeru Ohmori",
+    "Tadashi Takahashi",
+    "Toshinobu Matsumiya",
+    "Akihito Tomisawa",
+    "Hiroki Enomoto",
+    "Kazuyuki Terada",
+    "Yuri Sakurai",
+    "Hiromi Sagawa",
+    "Kenji Tominaga",
+    "Yoshio Tajiri",
+    "Teiko Sasaki",
+    "Sachiko Hamano",
+    "Chie Matsumiya",
+    "Akiko Shinozaki",
+    "Astuko Fujii",
+    "Nozomu Saito",
+    "Kenkichi Toyama",
+    "Suguru Nakatsui",
+    "Yumi Funasaka",
+    "Naoko Yanase",
+    "NCL Super Mario Club",
+    "Atsushi Tada",
+    "Takahiro Ohnishi",
+    "Norihide Okamura",
+    "Hiro Nakamura",
+    "Hiroyuki Uesugi",
+    "Teruki Murakawa",
+    "Akira Kinashi",
+    "Michiko Takizawa",
+    "Makiko Takada",
+    "Takanao Kondo",
+    "Ai Mashima",
+    "Gakuji Nomoto",
+    "Takehiro Izushi",
+    "Hitoshi Yamagami",
+    "Kyoko Watanabe",
+    "Takao Nakano",
+    "Hiroyuki Jinnai",
+    "Hiroaki Tsuru",
+    "Tsunekaz Ishihara",
+    "Satoru Iwata",
+    "Kazuya Suyama",
+    "Satoshi Mitsuhara",
+    "Japan Braille Library",
+    "Tomotaka Komura",
+    "Mikiko Ohhashi",
+    "Daisuke Hoshino",
+    "Kenjiro Ito",
+    "Rui Kawaguchi",
+    "Shunsuke Kohori",
+    "Sachiko Nakamichi",
+    "Fujiko Nomura",
+    "Kazuki Yoshihara",
+    "Retsuji Nomoto",
+    "Azusa Tajima",
+    "Shusaku Egami",
+    "Package & Manual Illustration",
+    "English Version Coordinators",
+    "Translator",
+    "Text Editor",
+    "NCL Coordinator",
+    "Graphic Designer",
+    "NOA Product Testing",
+    "Hideyuki Nakajima",
+    "Hidenori Saeki",
+    "Yoko Watanabe",
+    "Sakae Kimura",
+    "Chiaki Shinkai",
+    "Seth McMahill",
+    "Nob Ogasawara",
+    "Teresa Lillygren",
+    "Kimiko Nakamichi",
+    "Souichi Yamamoto",
+    "Yuichiro Ito",
+    "Thomas Hertzog",
+    "Mika Kurosawa",
+    "National Federation of the Blind",
+    "Patricia A. Maurer",
+    "European Blind Union",
+    "Australian Braille Authority",
+    "Royal New Zealand Federation for the Blind",
+    "Motoyasu Tojima",
+    "Nicola Pratt-Barlow",
+    "Shellie Dow",
+    "Erik Johnson"
+  ],
+  "unused_entries": [
+    ["Battle Director", true, 10],
+    ["Main Programmer", true, 10],
+    ["Battle System Programmers", true, 8],
+    ["Field System Programmer", true, 7],
+    ["Programmers", true, 12],
+    ["Main Graphic Designer", true, 7],
+    ["Map Data Designers", true, 9],
+    ["Hiromi Sagawa", false, 11],
+    ["Yoshio Tajiri", false, 11],
+    ["Teiko Sasaki", false, 11],
+    ["Sachiko Hamano", false, 11],
+    ["Chie Matsumiya", false, 11],
+    ["Akiko Shinozaki", false, 11],
+    ["Astuko Fujii", false, 11],
+    ["Atsushi Tada", false, 11],
+    ["Ai Mashima", false, 11],
+    ["Takehiro Izushi", false, 11],
+    ["Kyoko Watanabe", false, 11],
+    ["Takao Nakano", false, 11],
+    ["Tomotaka Komura", false, 11]
+  ],
+  "pages": [
+    {
+      "label": "PAGE_TITLE",
+      "entries": [
+        null,
+        ["POKéMON EMERALD VERSION", true, 7],
+        ["Credits", true, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_DIRECTOR",
+      "entries": [
+        null,
+        ["Director", true, 12],
+        ["Shigeki Morimoto", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ART_DIRECTOR",
+      "entries": [
+        null,
+        ["Art Director", true, 10],
+        ["Ken Sugimori", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_WORLD_DIRECTOR",
+      "entries": [
+        null,
+        ["World Director", true, 10],
+        ["Junichi Masuda", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_LEAD_PROGRAMMER",
+      "entries": [
+        ["Lead Programmer", true, 10],
+        ["Hisashi Sogabe", false, 11],
+        ["Lead Graphic Artist", true, 9],
+        ["Motofumi Fujiwara", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PROGRAMMERS_1",
+      "entries": [
+        ["Programmers", true, 12],
+        ["Hisashi Sogabe", false, 11],
+        ["Tomomichi Ohta", false, 11],
+        ["Nozomu Saito", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PROGRAMMERS_2",
+      "entries": [
+        ["Programmers", true, 12],
+        ["Akito Mori", false, 11],
+        ["Hiroyuki Nakamura", false, 11],
+        ["Masao Taya", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PROGRAMMERS_3",
+      "entries": [
+        ["Programmers", true, 12],
+        ["Satoshi Nohara", false, 11],
+        ["Miyuki Iwasawa", false, 11],
+        ["Yoshinori Matsuda", false, 11],
+        ["Keita Kagaya", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_PROGRAMMERS_4",
+      "entries": [
+        ["Programmers", true, 12],
+        ["Tetsuya Watanabe", false, 11],
+        ["Sosuke Tamada", false, 11],
+        ["Takenori Ohta", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_GRAPHIC_DESIGNERS_1",
+      "entries": [
+        null,
+        ["Graphic Designers", true, 9],
+        ["Motofumi Fujiwara", false, 11],
+        ["Satoshi Ohta", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_GRAPHIC_DESIGNERS_2",
+      "entries": [
+        ["Graphic Designers", true, 9],
+        ["Kenkichi Toyama", false, 11],
+        ["Asuka Iwashita", false, 11],
+        ["Takao Unno", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_GRAPHIC_DESIGNERS_3",
+      "entries": [
+        ["Graphic Designers", true, 9],
+        ["Ken Sugimori", false, 11],
+        ["Hironobu Yoshida", false, 11],
+        ["Aimi Tomita", false, 11],
+        ["Kanako Eo", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_MUSIC_COMPOSITION",
+      "entries": [
+        ["Music Composition", true, 13],
+        ["Go Ichinose", false, 11],
+        ["Junichi Masuda", false, 11],
+        ["Morikazu Aoki", false, 11],
+        ["Hitomi Sato", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_SOUND_EFFECTS",
+      "entries": [
+        null,
+        ["Sound Effects & POKéMON Voices", true, 4],
+        ["Go Ichinose", false, 11],
+        ["Morikazu Aoki", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_GAME_DESIGNERS_1",
+      "entries": [
+        ["Game Designers", true, 11],
+        ["Shigeki Morimoto", false, 11],
+        ["Teruyuki Shimoyamada", false, 11],
+        ["Takeshi Kawachimaru", false, 11],
+        ["Akihito Tomisawa", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_GAME_DESIGNERS_2",
+      "entries": [
+        ["Game Designers", true, 11],
+        ["Suguru Nakatsui", false, 11],
+        ["Tetsuji Ohta", false, 11],
+        ["Hitomi Sato", false, 11],
+        ["Kenji Matsushima", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_GAME_DESIGNERS_3",
+      "entries": [
+        ["Game Designers", true, 11],
+        ["Junichi Masuda", false, 11],
+        ["Koji Nishino", false, 11],
+        ["Shigeru Ohmori", false, 11],
+        ["Tadashi Takahashi", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_SCENARIO_PLOT",
+      "entries": [
+        ["Scenario Plot", true, 11],
+        ["Akihito Tomisawa", false, 11],
+        ["Junichi Masuda", false, 11],
+        ["Koji Nishino", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SCENARIO",
+      "entries": [
+        ["Scenario", true, 13],
+        ["Akihito Tomisawa", false, 11],
+        ["Hitomi Sato", false, 11],
+        ["Toshinobu Matsumiya", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SCRIPT_DESIGNERS",
+      "entries": [
+        ["Script Designers", true, 10],
+        ["Tomomichi Ohta", false, 11],
+        ["Satoshi Nohara", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_MAP_DESIGNERS",
+      "entries": [
+        ["Map Designers", true, 11],
+        ["Suguru Nakatsui", false, 11],
+        ["Teruyuki Shimoyamada", false, 11],
+        ["Shigeru Ohmori", false, 11],
+        ["Tetsuji Ohta", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_BATTLE_FRONTIER_DATA",
+      "entries": [
+        null,
+        ["Battle Frontier Data", true, 8],
+        ["Tetsuji Ohta", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PARAMETRIC_DESIGNERS",
+      "entries": [
+        ["Parametric Designers", true, 9],
+        ["Teruyuki Shimoyamada", false, 11],
+        ["Shigeki Morimoto", false, 11],
+        ["Tetsuji Ohta", false, 11],
+        ["Koji Nishino", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_POKEDEX_TEXT",
+      "entries": [
+        null,
+        ["POKéDEX Text", true, 11],
+        ["Kenji Matsushima", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ENVIRONMENT_AND_TOOL_PROGRAMS_1",
+      "entries": [
+        ["Environment & Tool Programmers", true, 6],
+        ["Hisashi Sogabe", false, 11],
+        ["Sosuke Tamada", false, 11],
+        ["Hiroyuki Nakamura", false, 11],
+        ["Akito Mori", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_PKMN_DESIGNERS_1",
+      "entries": [
+        ["POKéMON Designers", true, 10],
+        ["Ken Sugimori", false, 11],
+        ["Motofumi Fujiwara", false, 11],
+        ["Shigeki Morimoto", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PKMN_DESIGNERS_2",
+      "entries": [
+        ["POKéMON Designers", true, 10],
+        ["Hironobu Yoshida", false, 11],
+        ["Satoshi Ohta", false, 11],
+        ["Asuka Iwashita", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PKMN_DESIGNERS_3",
+      "entries": [
+        ["POKéMON Designers", true, 10],
+        ["Takao Unno", false, 11],
+        ["Kanako Eo", false, 11],
+        ["Aimi Tomita", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PKMN_DESIGNERS_4",
+      "entries": [
+        ["POKéMON Designers", true, 10],
+        ["Atsuko Nishida", false, 11],
+        ["Muneo Saito", false, 11],
+        ["Rena Yoshikawa", false, 11],
+        ["Jun Okutani", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_SUPPORT_PROGRAMMERS",
+      "entries": [
+        null,
+        ["Support Programmers", true, 10],
+        ["Satoshi Mitsuhara", false, 11],
+        ["Daisuke Hoshino", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_NCL_PRODUCT_TESTING",
+      "entries": [
+        null,
+        ["NCL Product Testing", true, 11],
+        ["NCL Super Mario Club", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PACKAGE_AND_MANUAL",
+      "entries": [
+        null,
+        ["Package & Manual Illustration", true, 0],
+        ["Ken Sugimori", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SPECIAL_THANKS_1",
+      "entries": [
+        null,
+        ["Special Thanks", true, 10],
+        ["Kenji Tominaga", false, 11],
+        ["Hiroki Enomoto", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SPECIAL_THANKS_2",
+      "entries": [
+        ["Special Thanks", true, 10],
+        ["Kazuya Suyama", false, 11],
+        ["Kenjiro Ito", false, 11],
+        ["Michiko Takizawa", false, 11],
+        ["Makiko Takada", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_SPECIAL_THANKS_3",
+      "entries": [
+        ["Special Thanks", true, 10],
+        ["Mikiko Ohhashi", false, 11],
+        ["Takanao Kondo", false, 11],
+        ["Rui Kawaguchi", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SPECIAL_THANKS_4",
+      "entries": [
+        ["Special Thanks", true, 10],
+        ["Takahiro Ohnishi", false, 11],
+        ["Norihide Okamura", false, 11],
+        ["Shunsuke Kohori", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_INFORMATION_SUPERVISORS",
+      "entries": [
+        ["Information Supervisors", true, 10],
+        ["Kazuyuki Terada", false, 11],
+        ["Yuri Sakurai", false, 11],
+        ["Yumi Funasaka", false, 11],
+        ["Naoko Yanase", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_ARTWORK_1",
+      "entries": [
+        null,
+        ["Artwork", true, 12],
+        ["Sachiko Nakamichi", false, 11],
+        ["Fujiko Nomura", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ARTWORK_2",
+      "entries": [
+        null,
+        ["Artwork", true, 12],
+        ["Hideyuki Nakajima", false, 0],
+        ["Hidenori Saeki", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ARTWORK_3",
+      "entries": [
+        ["Artwork", true, 12],
+        ["Yoko Watanabe", false, 0],
+        ["Sakae Kimura", false, 0],
+        ["Chiaki Shinkai", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_COORDINATORS",
+      "entries": [
+        ["Coordinators", true, 11],
+        ["Kazuki Yoshihara", false, 11],
+        ["Akira Kinashi", false, 11],
+        ["Retsuji Nomoto", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ENGLISH_VERSION",
+      "entries": [
+        null,
+        ["English Version Coordinators", true, 0],
+        ["Hiro Nakamura", false, 11],
+        ["Seth McMahill", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_TRANSLATOR",
+      "entries": [
+        null,
+        ["Translator", true, 0],
+        ["Nob Ogasawara", false, 0],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_TEXT_EDITOR",
+      "entries": [
+        null,
+        ["Text Editor", true, 0],
+        ["Teresa Lillygren", false, 0],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_NCL_COORDINATOR",
+      "entries": [
+        null,
+        ["NCL Coordinator", true, 0],
+        ["Kimiko Nakamichi", false, 0],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PROGRAMMERS_5",
+      "entries": [
+        ["Programmers", true, 12],
+        ["Teruki Murakawa", false, 11],
+        ["Souichi Yamamoto", false, 0],
+        ["Yuichiro Ito", false, 0],
+        ["Akira Kinashi", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_GRAPHIC_DESIGNER",
+      "entries": [
+        null,
+        ["Graphic Designer", true, 0],
+        ["Akira Kinashi", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_ENVIRONMENT_AND_TOOL_PROGRAMS_2",
+      "entries": [
+        ["Environment & Tool Programmers", true, 6],
+        ["Teruki Murakawa", false, 11],
+        ["Souichi Yamamoto", false, 0],
+        ["Kimiko Nakamichi", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_NOA_TESTING",
+      "entries": [
+        ["NOA Product Testing", true, 0],
+        ["Thomas Hertzog", false, 0],
+        ["Erik Johnson", false, 0],
+        ["Mika Kurosawa", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_BRAILLE_CODE_CHECK_1",
+      "entries": [
+        ["Braille Code Check", true, 10],
+        ["National Federation of the Blind", false, 0],
+        ["Patricia A. Maurer", false, 0],
+        ["Japan Braille Library", false, 9],
+        ["European Blind Union", false, 0]
+      ]
+    },
+    {
+      "label": "PAGE_BRAILLE_CODE_CHECK_2",
+      "entries": [
+        null,
+        ["Braille Code Check", true, 10],
+        ["Australian Braille Authority", false, 0],
+        ["Royal New Zealand Federation for the Blind", false, 0],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_SPECIAL_THANKS_5",
+      "entries": [
+        ["Special Thanks", true, 10],
+        ["Hiroyuki Uesugi", false, 11],
+        ["Motoyasu Tojima", false, 0],
+        ["Nicola Pratt-Barlow", false, 0],
+        ["Shellie Dow", false, 0]
+      ]
+    },
+    {
+      "label": "PAGE_TASK_MANAGERS",
+      "entries": [
+        null,
+        ["Task Managers", true, 8],
+        ["Azusa Tajima", false, 11],
+        ["Shusaku Egami", false, 11],
+        null
+      ]
+    },
+    {
+      "label": "PAGE_PRODUCERS",
+      "entries": [
+        ["Producers", true, 11],
+        ["Hiroyuki Jinnai", false, 11],
+        ["Hitoshi Yamagami", false, 11],
+        ["Gakuji Nomoto", false, 11],
+        ["Hiroaki Tsuru", false, 11]
+      ]
+    },
+    {
+      "label": "PAGE_EXECUTIVE_DIRECTOR",
+      "entries": [
+        null,
+        ["Executive Director", true, 8],
+        ["Satoshi Tajiri", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_EXECUTIVE_PRODUCERS_1",
+      "entries": [
+        null,
+        ["Executive Producers", true, 7],
+        ["Satoru Iwata", false, 11],
+        null,
+        null
+      ]
+    },
+    {
+      "label": "PAGE_EXECUTIVE_PRODUCERS_2",
+      "entries": [
+        null,
+        ["Executive Producers", true, 7],
+        ["Tsunekaz Ishihara", false, 11],
+        null,
+        null
+      ]
+    }
+  ]
+}

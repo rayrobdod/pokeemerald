@@ -1,0 +1,70 @@
+{{ doNotModifyHeader }}
+## if not exists("strings_order")
+## set strings_order=[]
+## endif
+{##}
+## for page in pages
+## for entry in page.entries
+## if isArray(entry)
+## if not (entry.0 in strings_order)
+## set strings_order=append(strings_order, entry.0)
+## endif
+{{ setVarInt(concat(concat(entry.0, "-"), join(entry.1, "")), entry.2) -}}
+## endif
+## endfor
+## endfor
+## for entry in default(unused_entries, [])
+{{ setVarInt(concat(concat(entry.0, "-"), join(entry.1, "")), entry.2) -}}
+## endfor
+enum
+{
+## for page in pages
+## if existsIn(page, "label")
+    {{page.label}} = {{loop.index}},
+## endif
+## endfor
+    PAGE_COUNT = {{ length(pages) }}
+};
+
+## set entriesPerPage = 0
+## for page in pages
+## if length(page.entries) > entriesPerPage
+## set entriesPerPage = length(page.entries)
+## endif
+## endfor
+#define ENTRIES_PER_PAGE {{entriesPerPage}}
+
+static const u8 sCreditsText_EmptyString[]                    = _("");
+## for string in strings_order
+static const u8 sCreditsText_{{cleanString(string)}}[] = _("{{string}}");
+## endfor
+static const struct CreditsEntry sCreditsEntry_EmptyString                      = { 0, FALSE, sCreditsText_EmptyString};
+## for string in strings_order
+{# Intentionally duplicate this to catch any instance where the same string is being used as both a title and a name, which this otherwise does not handle #}
+## if "" != getVar(concat(string, "-true"))
+static const struct CreditsEntry sCreditsEntry_{{cleanString(string)}} = { {{ getVar(concat(string, "-true")) }}, TRUE, sCreditsText_{{cleanString(string)}} };
+## endif
+## if "" != getVar(concat(string, "-false"))
+static const struct CreditsEntry sCreditsEntry_{{cleanString(string)}} = { {{ getVar(concat(string, "-false")) }}, FALSE, sCreditsText_{{cleanString(string)}} };
+## endif
+## endfor
+
+#define _ &sCreditsEntry_EmptyString
+static const struct CreditsEntry *const sCreditsEntryPointerTable[PAGE_COUNT][ENTRIES_PER_PAGE] =
+{
+## for page in pages
+    {% if existsIn(page, "label") %}[{{page.label}}] = {% endif %} {
+## for entry in page.entries
+## if isArray(entry)
+        &sCreditsEntry_{{cleanString(entry.0)}},
+## else
+        _,
+## endif
+## endfor
+## for i in range(entriesPerPage - length(page.entries))
+        _,
+## endfor
+    },
+## endfor
+};
+#undef _

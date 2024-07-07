@@ -118,6 +118,14 @@ int main(int argc, char *argv[])
         return str;
     });
 
+    // returns an array with all the items of [1] followed by [2]
+    env.add_callback("append", 2, [](Arguments& args) {
+        auto collection = args.at(0)->get<std::vector<json>>();
+        auto item = args.at(1)->get<json>();
+        collection.push_back(item);
+        return collection;
+    });
+
     try
     {
         env.write_with_json_file(templateFilepath, jsonfilepath, outputFilepath);
