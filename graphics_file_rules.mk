@@ -14,7 +14,7 @@ ROULETTEGFXDIR := graphics/roulette
 SLOTMACHINEGFXDIR := graphics/slot_machine
 PKNAVGFXDIR := graphics/pokenav
 PKNAVOPTIONSGFXDIR := graphics/pokenav/options
-PKNAVREGIONGFXDIR := graphics/pokenav/region_map
+REGIONGFXDIR := graphics/region_map
 WALLPAPERGFXDIR := graphics/pokemon_storage/wallpapers
 OBJEVENTGFXDIR := graphics/object_events
 MISCGFXDIR := graphics/misc
@@ -23,6 +23,8 @@ POKEDEXGFXDIR := graphics/pokedex
 STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/pokemon/spinda/spots
+
+REGIONGFXBUILDDIR := build/graphics/region_map
 
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
@@ -298,28 +300,82 @@ $(FONTGFXDIR)/frlg_female.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_female.png
 	$(GFX) $< $@
 
 
+### Region Map ###
+
+$(REGIONGFXBUILDDIR):
+	mkdir -p $(REGIONGFXBUILDDIR)
+
+$(REGIONGFXBUILDDIR)/%_base.gbapal: $(REGIONGFXDIR)/%.png | $(REGIONGFXBUILDDIR)
+	$(FAMICONV) palette \
+		--mode gba_affine \
+		--palettes 1 \
+		--colors 48 \
+		--in-image $< \
+		--out-data $@
+
+$(REGIONGFXBUILDDIR)/empty_112.gbapal: | $(REGIONGFXBUILDDIR)
+	dd if=/dev/zero of=$@ bs=1 count=224 status=none
+
+$(REGIONGFXBUILDDIR)/%_padded.gbapal: $(REGIONGFXBUILDDIR)/empty_112.gbapal $(REGIONGFXBUILDDIR)/%_base.gbapal
+	cat $^ >$@
+
+$(REGIONGFXBUILDDIR)/%_text.8bpp : \
+		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+		$(REGIONGFXDIR)/%.png
+	$(FAMICONV) tiles \
+		--mode gba \
+		--bpp 8 \
+		--in-image $(REGIONGFXDIR)/$*.png \
+		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
+		--out-image $(REGIONGFXBUILDDIR)/$*_text_tiles.png \
+		--out-data $@
+
+$(REGIONGFXBUILDDIR)/%_affine.8bpp : \
+		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+		$(REGIONGFXDIR)/%.png
+	$(FAMICONV) tiles \
+		--mode gba_affine \
+		--in-image $(REGIONGFXDIR)/$*.png \
+		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
+		--out-image $(REGIONGFXBUILDDIR)/$*_affine_tiles.png \
+		--out-data $@
+
+$(REGIONGFXBUILDDIR)/%_text.tilemap : \
+		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+		$(REGIONGFXBUILDDIR)/%_text.8bpp \
+		$(REGIONGFXDIR)/%.png
+	$(FAMICONV) map \
+		--mode gba \
+		--bpp 8 \
+		--map-width 32 \
+		--map-height 32 \
+		--in-image $(REGIONGFXDIR)/$*.png \
+		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
+		--in-tiles $(REGIONGFXBUILDDIR)/$*_text.8bpp \
+		--out-data $@
+
+$(REGIONGFXBUILDDIR)/%_affine.tilemap : \
+		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+		$(REGIONGFXBUILDDIR)/%_affine.8bpp \
+		$(REGIONGFXDIR)/%.png
+	$(FAMICONV) map \
+		--mode gba_affine \
+		--map-width 64 \
+		--map-height 64 \
+		--split-width 64 \
+		--split-height 64 \
+		--in-image $(REGIONGFXDIR)/$*.png \
+		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
+		--in-tiles $(REGIONGFXBUILDDIR)/$*_affine.8bpp \
+		--out-data $@
+
+
 ### Miscellaneous ###
 graphics/title_screen/pokemon_logo.gbapal: %.gbapal: %.pal
 	$(GFX) $< $@ -num_colors 224
 
 graphics/pokemon_jump/bg.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 63 -Wnum_tiles
-
-AUTO_GEN_TARGETS += $(PKNAVREGIONGFXDIR)/map.bin
-AUTO_GEN_TARGETS += $(PKNAVREGIONGFXDIR)/map.tileset.png
-
-$(PKNAVREGIONGFXDIR)/map.8bpp \
-                $(PKNAVREGIONGFXDIR)/map.bin \
-                $(PKNAVREGIONGFXDIR)/map.tileset.png \
-                &: \
-                $(PKNAVREGIONGFXDIR)/map.png
-	$(FAMICONV) \
-		--mode gba_affine \
-		--no-remap \
-		--in-image $< \
-		--out-map $(PKNAVREGIONGFXDIR)/map.bin \
-		--out-tiles $(PKNAVREGIONGFXDIR)/map.8bpp \
-		--out-tiles-image $(PKNAVREGIONGFXDIR)/map.tileset.png
 
 $(MISCGFXDIR)/japanese_hof.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 29 -Wnum_tiles
@@ -680,12 +736,6 @@ $(PKNAVGFXDIR)/device_outline.4bpp: %.4bpp: %.png
 
 $(PKNAVGFXDIR)/match_call/ui.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 13 -Wnum_tiles
-
-$(POKEDEXGFXDIR)/region_map.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 232 -Wnum_tiles
-
-$(POKEDEXGFXDIR)/region_map_affine.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 233 -Wnum_tiles
 
 $(NAMINGGFXDIR)/cursor.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 5 -Wnum_tiles

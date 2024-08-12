@@ -19,8 +19,6 @@
 *.fwjpnfont
 sound/**/*.bin
 sound/songs/midi/*.s
-graphics/pokenav/region_map/map.bin
-graphics/pokenav/region_map/map.tileset.png
 tools/agbcc
 *.map
 *.bat
