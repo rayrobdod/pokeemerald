@@ -14,6 +14,7 @@ ROULETTEGFXDIR := graphics/roulette
 SLOTMACHINEGFXDIR := graphics/slot_machine
 PKNAVGFXDIR := graphics/pokenav
 PKNAVOPTIONSGFXDIR := graphics/pokenav/options
+PKNAVREGIONGFXDIR := graphics/pokenav/region_map
 WALLPAPERGFXDIR := graphics/pokemon_storage/wallpapers
 OBJEVENTGFXDIR := graphics/object_events
 MISCGFXDIR := graphics/misc
@@ -304,8 +305,21 @@ graphics/title_screen/pokemon_logo.gbapal: %.gbapal: %.pal
 graphics/pokemon_jump/bg.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 63 -Wnum_tiles
 
-graphics/pokenav/region_map/map.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 233 -Wnum_tiles
+AUTO_GEN_TARGETS += $(PKNAVREGIONGFXDIR)/map.bin
+AUTO_GEN_TARGETS += $(PKNAVREGIONGFXDIR)/map.tileset.png
+
+$(PKNAVREGIONGFXDIR)/map.8bpp \
+                $(PKNAVREGIONGFXDIR)/map.bin \
+                $(PKNAVREGIONGFXDIR)/map.tileset.png \
+                &: \
+                $(PKNAVREGIONGFXDIR)/map.png
+	$(FAMICONV) \
+		--mode gba_affine \
+		--no-remap \
+		--in-image $< \
+		--out-map $(PKNAVREGIONGFXDIR)/map.bin \
+		--out-tiles $(PKNAVREGIONGFXDIR)/map.8bpp \
+		--out-tiles-image $(PKNAVREGIONGFXDIR)/map.tileset.png
 
 $(MISCGFXDIR)/japanese_hof.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 29 -Wnum_tiles
