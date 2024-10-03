@@ -1,0 +1,2 @@
+    [B_TRANSITION_INVERSE_POKEBALLS_TRAIL] = &Task_InverseIntro,
+    [B_TRANSITION_INVERSE_ANGLED_WIPES] = &Task_InverseIntro,
