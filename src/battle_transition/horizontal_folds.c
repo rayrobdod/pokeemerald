@@ -12,8 +12,6 @@
 static bool8 HorizontalFolds_Init(struct Task *);
 static bool8 HorizontalFolds_Main_Centered(struct Task *);
 
-static const u16 sPal[2] = {RGB_BLACK, RGB_BLACK};
-
 #define SEGMENT_TILE_WIDTH (2)
 #define FOLD_DURATION (20)
 #define FOLD_START_OFFSET (5)
@@ -63,7 +61,7 @@ static bool8 HorizontalFolds_Init(struct Task *task)
     sTransitionData->VBlank_DMA = FALSE;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sPal, BG_PLTT_ID(15), sizeof(sPal));
+    FillPalette(RGB_BLACK, BG_PLTT_ID(15) + 1, PLTT_SIZEOF(1));
     HorizontalFolds_BuildTileset(tileset);
 
     task->tTimer = 0;
