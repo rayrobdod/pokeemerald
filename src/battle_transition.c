@@ -44,29 +44,6 @@
 #define tWipeYDist  data[9]
 #define tWipeTemp   data[10]
 
-struct TransitionData
-{
-    vu8 VBlank_DMA;
-    u16 WININ;
-    u16 WINOUT;
-    u16 WIN0H;
-    u16 WIN0V;
-    u16 unused1;
-    u16 unused2;
-    u16 BLDCNT;
-    u16 BLDALPHA;
-    u16 BLDY;
-    s16 cameraX;
-    s16 cameraY;
-    s16 BG0HOFS_Lower;
-    s16 BG0HOFS_Upper;
-    s16 BG0VOFS; // used but not set
-    s16 unused3;
-    s16 counter;
-    s16 unused4;
-    s16 data[11];
-};
-
 struct RectangularSpiralLine
 {
     u8 state;
@@ -275,7 +252,7 @@ static u8 sTestingTransitionId;
 static u8 sTestingTransitionState;
 static struct RectangularSpiralLine sRectangularSpiralLines[4];
 
-EWRAM_DATA static struct TransitionData *sTransitionData = NULL;
+EWRAM_DATA struct TransitionData *sTransitionData = NULL;
 
 static const u32 sBigPokeball_Tileset[] = INCBIN_U32("graphics/battle_transitions/big_pokeball.4bpp");
 static const u32 sPokeballTrail_Tileset[] = INCBIN_U32("graphics/battle_transitions/pokeball_trail.4bpp");
@@ -321,7 +298,7 @@ static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transi
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 {
-    [0 ... B_TRANSITION_COUNT - 1] = &Task_Intro
+    #include "battle_transition_tasks_intro/_index.h"
 };
 
 // After the intro each transition has a unique main task.
