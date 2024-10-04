@@ -1,6 +1,7 @@
 #ifndef GUARD_BATTLE_TRANSITION_HORIZONTAL_FOLDS_H
 #define GUARD_BATTLE_TRANSITION_HORIZONTAL_FOLDS_H
 
+void Task_HorizontalFolds(u8 taskId);
 void Task_HorizontalFoldsCentered(u8 taskId);
 
 #endif // GUARD_BATTLE_TRANSITION_HORIZONTAL_FOLDS_H
