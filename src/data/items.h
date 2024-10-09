@@ -14075,7 +14075,7 @@ const struct Item gItemsInfo[] =
 
     [ITEM_TECHNIQUE_MANUAL] =
     {
-        .name = _("MOVE MANUAL"),
+        .name = HANDLE_EXPANDED_ITEM_NAME("Move Manual", "Technique Manual"),
         .price = 0,
         .description = COMPOUND_STRING(
             "A manual for\n"
