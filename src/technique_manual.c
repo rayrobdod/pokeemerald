@@ -206,6 +206,20 @@ static bool8 TmShouldDisplayName(u8 tmIndex)
     return FALSE;
 }
 
+struct ScriptContext;
+void SetupTechniqueManualForShowAndTell(struct ScriptContext *ctx)
+{
+    memset(&gSaveBlockTm, 0, sizeof(gSaveBlockTm));
+
+    gSaveBlockTm.counters[sTechniqueManualPages[TM_TACKLE].tasks[1].storage_index] = sTechniqueManualPages[TM_TACKLE].tasks[1].requirement - 1;
+    gSaveBlockTm.species[0] = SPECIES_POOCHYENA;
+    gSaveBlockTm.species[1] = SPECIES_WURMPLE;
+
+    gSaveBlockTm.counters[sTechniqueManualPages[TM_POUND].tasks[1].storage_index] = 5;
+    gSaveBlockTm.species[sTechniqueManualPages[TM_POUND].tasks[0].storage_index] = SPECIES_TREECKO;
+
+    gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE] = 250;
+}
 
 
 // The tm menu
