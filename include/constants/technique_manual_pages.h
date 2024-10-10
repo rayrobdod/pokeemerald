@@ -9,8 +9,9 @@
 #define TM_SOLAR_BEAM 3
 #define TM_CHILLING_WATER 4
 #define TM_CUT 5
+#define TM_ROCK_TOMB 6
 
-#define TM_COUNT 6
+#define TM_COUNT 7
 
 
 #endif

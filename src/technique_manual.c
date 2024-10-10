@@ -33,17 +33,18 @@
 #define gSaveBlockTmPtr gSaveBlock3Ptr->techniqueManual
 
 
-struct TypeAndRequirement
+struct ResearchTask
 {
     u8 type;
     u8 requirement;
+    const u8* descriptionOverride;
 };
 
 struct TechniqueManual
 {
     u16 move;
-    struct TypeAndRequirement species;
-    struct TypeAndRequirement counter[TM_COUNTERS_COUNT];
+    struct ResearchTask species;
+    struct ResearchTask counter[TM_COUNTERS_COUNT];
 };
 
 #define SATURATING_INCREMENT_COUNTER(counter) \
@@ -737,7 +738,11 @@ static void DrawMoveInfo(s32 tmIndex)
 
         if (type != TM_SPECIESCOUNTER_NONE)
         {
-            AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, sSpeciesDesc[type]);
+            const u8* taskDescription = sSpeciesDesc[type];
+            if (sTM[tmIndex].species.descriptionOverride) {
+                taskDescription = sTM[tmIndex].species.descriptionOverride;
+            }
+            AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, taskDescription);
             y += 32;
             ConvertUIntToDecimalStringN(gStringVar1, sTM[tmIndex].species.requirement, STR_CONV_MODE_RIGHT_ALIGN, 1);
             unsigned x = sWindowTemplates[WIN_COUNTER_DESCS].width * 8 - digitWidth;
@@ -764,7 +769,11 @@ static void DrawMoveInfo(s32 tmIndex)
 
             if (TM_COUNTER_NONE != type)
             {
-                AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, sCounterDesc[type]);
+                const u8* taskDescription = sCounterDesc[type];
+                if (sTM[tmIndex].counter[i].descriptionOverride) {
+                    taskDescription = sTM[tmIndex].counter[i].descriptionOverride;
+                }
+                AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, taskDescription);
                 y += 16;
 
                 const u8 requirement = sTM[tmIndex].counter[i].requirement;

@@ -54,7 +54,16 @@ const struct TechniqueManual sTM[TM_COUNT] =
         .move = MOVE_CUT,
         .species = {TM_SPECIESCOUNTER_NONE, 0},
         .counter = {
-            [0] = {TM_COUNTER_BE_TUTORED, 1},
+            [0] = {TM_COUNTER_BE_TUTORED, 1, COMPOUND_STRING("Learn from The Cutter")},
+            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
+        },
+    },
+    [TM_ROCK_TOMB] =
+    {
+        .move = MOVE_CUT,
+        .species = {TM_SPECIESCOUNTER_NONE, 0},
+        .counter = {
+            [0] = {TM_COUNTER_BE_TUTORED, 1, COMPOUND_STRING("Learn from Leader\nRoxanne")},
             [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
         },
     },
