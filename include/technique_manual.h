@@ -6,8 +6,10 @@
 
 /** Increments counters about the currently-being-used battle move */
 void TmIncrementSeenStats(u16 move, u16 attackerSpecies);
-/** Increments BE_TUTORED counters */
-void TmBeTutored(u8 tmIndex);
+/** Sets a TM flag */
+void TmSetFlag(u8 tmFlagIndex);
+/** Returns whether a TM flag has been set */
+bool8 TmIsFlagSet(u8 tmFlagIndex);
 /** Returns whether all the quests for the specified tm have been completed */
 bool8 TmIsMastered(u8 tmIndex);
 

@@ -26,25 +26,40 @@
 #include "strings.h"
 #include "task.h"
 #include "text_window.h"
+#include "tv.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "constants/technique_manual_flags.h"
+#include "constants/technique_manual_pages.h"
 #include "gba/isagbprint.h"
 
-#define gSaveBlockTmPtr gSaveBlock3Ptr->techniqueManual
+#define gSaveBlockTm gSaveBlock3Ptr->techniqueManual
+#define TASKS_PER_PAGE (3)
+#define MAX_SPECIES_REQUIREMENT (5)
 
+enum {
+    TM_TASK_NONE,
+    TM_TASK_SCRIPT_FLAG,
+    TM_TASK_BATTLE_SPECIAL,
+    TM_TASK_SEEN,
+    TM_TASK_SEEN_DIFFERENT_SPECIES,
+    TM_TASK_SEEN_RAIN,
+    TM_TASK_SEEN_SUN,
+    TM_TASK_COUNT,
+};
 
 struct ResearchTask
 {
     u8 type;
+    u8 storage_index;
     u8 requirement;
-    const u8* descriptionOverride;
+    const u8* description;
 };
 
-struct TechniqueManual
+struct TechniqueManualPage
 {
     u16 move;
-    struct ResearchTask species;
-    struct ResearchTask counter[TM_COUNTERS_COUNT];
+    struct ResearchTask tasks[TASKS_PER_PAGE];
 };
 
 #define SATURATING_INCREMENT_COUNTER(counter) \
@@ -61,7 +76,7 @@ static u8 MoveToTm(u16 move)
     u8 i;
     for (i = 0; i < TM_COUNT; i++)
     {
-        if (sTM[i].move == move)
+        if (sTechniqueManualPages[i].move == move)
             return i;
     }
     return TM_NONE;
@@ -69,97 +84,93 @@ static u8 MoveToTm(u16 move)
 
 void TmIncrementSeenStats(u16 move, u16 attackerSpecies)
 {
-    u8 i;
     u8 tmIndex = MoveToTm(move);
 
     if (TM_NONE != tmIndex)
     {
-        if (TM_SPECIESCOUNTER_SEEN == sTM[tmIndex].species.type)
+        for (unsigned taskIndex = 0; taskIndex < TASKS_PER_PAGE; taskIndex++)
         {
-            for (i = 0; i < TM_SPECIES_COUNT; i++)
-            {
-                u16 *saveSpot = &(gSaveBlockTmPtr[tmIndex].species[i]);
-                if (attackerSpecies == *saveSpot)
-                    break;
+            const struct ResearchTask task = sTechniqueManualPages[tmIndex].tasks[taskIndex];
 
-                if (0 == *saveSpot)
+            switch (task.type) {
+            case TM_TASK_SEEN_DIFFERENT_SPECIES:
+                for (unsigned i = 0; i < task.requirement; i++)
                 {
-                    *saveSpot = attackerSpecies;
-                    break;
-                }
-            }
-        }
+                    u16 *saveSpot = &(gSaveBlockTm.species[task.storage_index + i]);
+                    if (attackerSpecies == *saveSpot)
+                        break;
 
-        for (i = 0; i < TM_COUNTERS_COUNT; i++)
-        {
-            if ((TM_COUNTER_SEEN == sTM[tmIndex].counter[i].type)
-                || ((TM_COUNTER_SEEN_RAIN == sTM[tmIndex].counter[i].type)
-                    && (gBattleWeather & B_WEATHER_RAIN))
-                || ((TM_COUNTER_SEEN_SUN == sTM[tmIndex].counter[i].type)
-                    && (gBattleWeather & B_WEATHER_SUN))
-            )
-            {
+                    if (0 == *saveSpot)
+                    {
+                        *saveSpot = attackerSpecies;
+                        break;
+                    }
+                }
+            case TM_TASK_SEEN_RAIN:
+                if (gBattleWeather & B_WEATHER_RAIN) goto incrementCounter;
+                break;
+            case TM_TASK_SEEN_SUN:
+                if (gBattleWeather & B_WEATHER_SUN) goto incrementCounter;
+                break;
+            case TM_TASK_SEEN:
+incrementCounter:
                 SATURATING_INCREMENT_COUNTER(
-                    gSaveBlockTmPtr[tmIndex].counters[i]);
+                    gSaveBlockTm.counters[task.storage_index]);
+                break;
+            default:
+                // do nothing
+                break;
             }
         }
     }
 
+#if TM_COUNTER_WATER_USING_ICE
     if (gMovesInfo[move].type == TYPE_ICE && (gSpeciesInfo[attackerSpecies].types[0] == TYPE_WATER || gSpeciesInfo[attackerSpecies].types[1] == TYPE_WATER))
     {
-        // which counter this affects should be constant.
-        // TODO: determine which counter to increment at compile-time
-        for (tmIndex = 0; tmIndex < TM_COUNT; tmIndex++)
-        {
-            for (i = 0; i < TM_COUNTERS_COUNT; i++)
-            {
-                if ((TM_COUNTER_WATER_USING_ICE == sTM[tmIndex].counter[i].type))
-                {
-                    SATURATING_INCREMENT_COUNTER(
-                        gSaveBlockTmPtr[tmIndex].counters[i]);
-                }
-            }
-        }
+        SATURATING_INCREMENT_COUNTER(
+            gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE]);
     }
+#endif
 }
 
-void TmBeTutored(u8 tmIndex)
+void TmSetFlag(u8 tmFlagIndex)
 {
-    int i;
-    if (TM_NONE != tmIndex && tmIndex < TM_COUNT)
-    {
-        for (i = 0; i < TM_COUNTERS_COUNT; i++)
-        {
-            if ((TM_COUNTER_BE_TUTORED == sTM[tmIndex].counter[i].type))
-            {
-                SATURATING_INCREMENT_COUNTER(
-                    gSaveBlockTmPtr[tmIndex].counters[i]);
-            }
-        }
-    }
+    gSaveBlockTm.flags[tmFlagIndex / 8] |= 1 << (tmFlagIndex % 8);
+}
+
+bool8 TmIsFlagSet(u8 tmFlagIndex)
+{
+    return 0 != (gSaveBlockTm.flags[tmFlagIndex / 8] & (1 << (tmFlagIndex % 8)));
 }
 
 bool8 TmIsMastered(u8 tmIndex)
 {
-    int i;
+    unsigned start, end;
+    unsigned i, j;
 
-    if (sTM[tmIndex].species.type != TM_SPECIESCOUNTER_NONE)
+    for (i = 0; i < TASKS_PER_PAGE; i++)
     {
-        for (i = 0; i < TM_SPECIES_COUNT; i++)
-            if (0 == gSaveBlockTmPtr[tmIndex].species[i])
-                break;
+        const struct ResearchTask* task = &(sTechniqueManualPages[tmIndex].tasks[i]);
 
-        if (i < sTM[tmIndex].species.requirement)
-            return FALSE;
-    }
-
-    for (i = 0; i < TM_COUNTERS_COUNT; i++)
-    {
-        if (sTM[tmIndex].counter[i].type == TM_COUNTER_NONE)
-            continue;
-
-        if (gSaveBlockTmPtr[tmIndex].counters[i] < sTM[tmIndex].counter[i].requirement)
-            return FALSE;
+        switch (task->type) {
+        case TM_TASK_NONE:
+            break;
+        case TM_TASK_SCRIPT_FLAG:
+            if (! TmIsFlagSet(task->storage_index))
+                return FALSE;
+            break;
+        case TM_TASK_SEEN_DIFFERENT_SPECIES:
+            start = task->storage_index;
+            end = start + task->requirement;
+            for (j = start; j < end; j++)
+                if (gSaveBlockTm.species[j] == SPECIES_NONE)
+                    return FALSE;
+            break;
+        default:
+            if (gSaveBlockTm.counters[task->storage_index] < task->requirement)
+                return FALSE;
+            break;
+        }
     }
 
     return TRUE;
@@ -167,23 +178,29 @@ bool8 TmIsMastered(u8 tmIndex)
 
 static bool8 TmShouldDisplayName(u8 tmIndex)
 {
-    int i;
+    unsigned i;
 
     if (TmIsMastered(tmIndex))
         return TRUE;
 
-    if (sTM[tmIndex].species.type == TM_SPECIESCOUNTER_SEEN && 0 != gSaveBlockTmPtr[tmIndex].species[0])
-        return TRUE;
-
-    for (i = 0; i < TM_COUNTERS_COUNT; i++)
+    for (i = 0; i < TASKS_PER_PAGE; i++)
     {
-        if ((sTM[tmIndex].counter[i].type == TM_COUNTER_SEEN
-            || sTM[tmIndex].counter[i].type == TM_COUNTER_SEEN_RAIN
-            || sTM[tmIndex].counter[i].type == TM_COUNTER_SEEN_SUN
-            )
-            && gSaveBlockTmPtr[tmIndex].counters[i] != 0
-        )
-            return TRUE;
+        const struct ResearchTask task = sTechniqueManualPages[tmIndex].tasks[i];
+
+        switch (task.type) {
+        case TM_TASK_SEEN_DIFFERENT_SPECIES:
+            if (0 != gSaveBlockTm.species[task.storage_index])
+                return TRUE;
+            break;
+        case TM_TASK_SEEN:
+        case TM_TASK_SEEN_RAIN:
+        case TM_TASK_SEEN_SUN:
+            if (0 != gSaveBlockTm.counters[task.storage_index])
+                return TRUE;
+            break;
+        default:
+            break;
+        }
     }
 
     return FALSE;
@@ -224,7 +241,7 @@ struct TechniqueManualStruct
     void (*callbackOnUse)(void);
     struct ListMenuItem items[TM_COUNT + 1];
     // 0xFF indicates unused
-    u8 monSpriteIds[TM_SPECIES_COUNT];
+    u8 monSpriteIds[MAX_SPECIES_REQUIREMENT];
     u8 arrowTaskId;
 };
 
@@ -355,7 +372,7 @@ u16 TmCurrentlySelectedMove(void)
         + sSavedTechniqueManualData.selectedRow;
 
     if (id < TM_COUNT)
-        return sTM[id].move;
+        return sTechniqueManualPages[id].move;
     return MOVE_NONE;
 }
 
@@ -403,7 +420,7 @@ static void OpenTechniqueManual(void (*callback)(void))
     sTechniqueManualMenu = Alloc(sizeof(*sTechniqueManualMenu));
     sTechniqueManualMenu->callbackOnUse = NULL;
     sTechniqueManualMenu->arrowTaskId = TASK_NONE;
-    for (i = 0; i < TM_SPECIES_COUNT; i++)
+    for (i = 0; i < MAX_SPECIES_REQUIREMENT; i++)
         sTechniqueManualMenu->monSpriteIds[i] = 0xFF;
     sSavedTechniqueManualData.callback = callback;
 
@@ -415,7 +432,7 @@ void CB2_ReopenTechniqueManual(void)
     int i;
     sTechniqueManualMenu = Alloc(sizeof(*sTechniqueManualMenu));
     sTechniqueManualMenu->callbackOnUse = NULL;
-    for (i = 0; i < TM_SPECIES_COUNT; i++)
+    for (i = 0; i < MAX_SPECIES_REQUIREMENT; i++)
         sTechniqueManualMenu->monSpriteIds[i] = 0xFF;
 
     SetMainCallback2(CB2_InitTechniqueManual);
@@ -582,7 +599,7 @@ static void UpdateTechniqueManualList(void)
     for (i = 0; i < TM_COUNT; i++)
     {
         if (TmShouldDisplayName(i))
-            sTechniqueManualMenu->items[i].name = gMovesInfo[sTM[i].move].name;
+            sTechniqueManualMenu->items[i].name = gMovesInfo[sTechniqueManualPages[i].move].name;
         else
             sTechniqueManualMenu->items[i].name = sText_UndiscoveredMove;
         sTechniqueManualMenu->items[i].id = i;
@@ -691,12 +708,21 @@ static void Task_HandleTechniqueManualInput(u8 taskId)
     }
 }
 
+static void BlitCheckmark(int tileOffset)
+{
+    // `* 2` because two tiles wide
+    CopyToWindowPixelBuffer(WIN_COUNTER_DESCS, sCheckmarkTechniqueManual_Gfx, TILE_SIZE_4BPP * 2, tileOffset);
+    tileOffset += sWindowTemplates[WIN_COUNTER_DESCS].width - 1;
+    CopyToWindowPixelBuffer(WIN_COUNTER_DESCS, &sCheckmarkTechniqueManual_Gfx[TILE_SIZE_4BPP * 2 / sizeof(u16)], TILE_SIZE_4BPP * 2, tileOffset);
+}
+
 static void DrawMoveInfo(s32 tmIndex)
 {
+    unsigned counterValue;
     int i, y;
 
     FillWindowPixelBuffer(WIN_COUNTER_DESCS, PIXEL_FILL(0));
-    for (i = 0; i < TM_SPECIES_COUNT; i++)
+    for (i = 0; i < MAX_SPECIES_REQUIREMENT; i++)
     {
         if (! (sTechniqueManualMenu->monSpriteIds[i] & 0x80))
         {
@@ -734,75 +760,68 @@ static void DrawMoveInfo(s32 tmIndex)
 
     if (0 <= tmIndex && tmIndex < TM_COUNT)
     {
-        const u8 type = sTM[tmIndex].species.type;
-
-        if (type != TM_SPECIESCOUNTER_NONE)
+        for (int taskIndex = 0; taskIndex < TASKS_PER_PAGE; taskIndex++)
         {
-            const u8* taskDescription = sSpeciesDesc[type];
-            if (sTM[tmIndex].species.descriptionOverride) {
-                taskDescription = sTM[tmIndex].species.descriptionOverride;
-            }
+            const struct ResearchTask *task = &(sTechniqueManualPages[tmIndex].tasks[taskIndex]);
+
+            if (TM_TASK_NONE == task->type)
+                continue;
+
+            const u8* taskDescription = task->description;
+            if (taskDescription == NULL)
+                taskDescription = sTaskDefaultDesc[task->type];
+
             AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, taskDescription);
-            y += 32;
-            ConvertUIntToDecimalStringN(gStringVar1, sTM[tmIndex].species.requirement, STR_CONV_MODE_RIGHT_ALIGN, 1);
-            unsigned x = sWindowTemplates[WIN_COUNTER_DESCS].width * 8 - digitWidth;
+            y += 16;
+            if (TM_TASK_SEEN_DIFFERENT_SPECIES == task->type)
+                y += 16;
+
+            unsigned digits = max(1, CountDigits(task->requirement));
+            ConvertUIntToDecimalStringN(gStringVar1, task->requirement, STR_CONV_MODE_RIGHT_ALIGN, digits);
+            unsigned x = sWindowTemplates[WIN_COUNTER_DESCS].width * 8 - digits * digitWidth;
             AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, x, y, 0, 0, sTextColor, 0, gStringVar1);
             x -= slashWidth;
             AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, x, y, 0, 0, sTextColor, 0, gText_Slash);
 
-            x += sWindowTemplates[WIN_COUNTER_DESCS].tilemapLeft * 8 + 12;
-            for (i = TM_SPECIES_COUNT - 1; i >= 0; i--)
-            {
-                x -= 24;
-                u16 species = gSaveBlockTmPtr[tmIndex].species[i];
-                if (species)
-                    sTechniqueManualMenu->monSpriteIds[i] = CreateMonIconNoPersonality(GetIconSpeciesNoPersonality(species),
-                        SpriteCB_MonIcon, x, y + sWindowTemplates[WIN_COUNTER_DESCS].tilemapTop * 8, 0);
-            }
-
-            y += 16;
-        }
-
-        for (i = 0; i < TM_COUNTERS_COUNT; i++)
-        {
-            const u8 type = sTM[tmIndex].counter[i].type;
-
-            if (TM_COUNTER_NONE != type)
-            {
-                const u8* taskDescription = sCounterDesc[type];
-                if (sTM[tmIndex].counter[i].descriptionOverride) {
-                    taskDescription = sTM[tmIndex].counter[i].descriptionOverride;
-                }
-                AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, 1, y, 0, 0, sTextColor, 0, taskDescription);
-                y += 16;
-
-                const u8 requirement = sTM[tmIndex].counter[i].requirement;
-                const u8 counter = gSaveBlockTmPtr[tmIndex].counters[i];
-
-                ConvertUIntToDecimalStringN(gStringVar1, requirement, STR_CONV_MODE_RIGHT_ALIGN, 2);
-                unsigned x = sWindowTemplates[WIN_COUNTER_DESCS].width * 8 - digitWidth * 2;
-                AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, x, y, 0, 0, sTextColor, 0, gStringVar1);
-                x -= slashWidth;
-                AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, x, y, 0, 0, sTextColor, 0, gText_Slash);
-
-                if (counter >= requirement)
+            switch (task->type) {
+            case TM_TASK_SCRIPT_FLAG:
+                if (TmIsFlagSet(task->storage_index))
                 {
                     int tileOffset = ((y / 8) + 1) * sWindowTemplates[WIN_COUNTER_DESCS].width - 4;
+                    BlitCheckmark(tileOffset);
+                }
+                break;
 
-                    // `* 2` because two tiles; `/ 2` because array is `u16`s
-                    CopyToWindowPixelBuffer(WIN_COUNTER_DESCS, sCheckmarkTechniqueManual_Gfx, TILE_SIZE_4BPP * 2, tileOffset);
-                    tileOffset += sWindowTemplates[WIN_COUNTER_DESCS].width - 1;
-                    CopyToWindowPixelBuffer(WIN_COUNTER_DESCS, &sCheckmarkTechniqueManual_Gfx[TILE_SIZE_4BPP * 2 / 2], TILE_SIZE_4BPP * 2, tileOffset);
+            case TM_TASK_SEEN_DIFFERENT_SPECIES:
+                x += sWindowTemplates[WIN_COUNTER_DESCS].tilemapLeft * 8 + 12;
+                for (i = task->requirement - 1; i >= 0; i--)
+                {
+                    x -= 24;
+                    u16 species = gSaveBlockTm.species[task->storage_index + i];
+                    if (species)
+                        sTechniqueManualMenu->monSpriteIds[i] = CreateMonIconNoPersonality(GetIconSpeciesNoPersonality(species),
+                            SpriteCB_MonIcon, x, y + sWindowTemplates[WIN_COUNTER_DESCS].tilemapTop * 8, 0);
+                }
+                break;
+
+            default:
+                counterValue = gSaveBlockTm.counters[task->storage_index];
+                if (counterValue >= task->requirement)
+                {
+                    int tileOffset = ((y / 8) + 1) * sWindowTemplates[WIN_COUNTER_DESCS].width - 4;
+                    BlitCheckmark(tileOffset);
                 }
                 else
                 {
-                    x -= digitWidth * 2;
-                    ConvertUIntToDecimalStringN(gStringVar1, counter, STR_CONV_MODE_RIGHT_ALIGN, 2);
+                    digits = max(1, CountDigits(task->requirement));
+                    x -= digitWidth * digits;
+                    ConvertUIntToDecimalStringN(gStringVar1, counterValue, STR_CONV_MODE_RIGHT_ALIGN, digits);
                     AddTextPrinterParameterized4(WIN_COUNTER_DESCS, FONT_NORMAL, x, y, 0, 0, sTextColor, 0, gStringVar1);
                 }
-
-                y += 16;
+                break;
             }
+
+            y += 16;
         }
     }
 

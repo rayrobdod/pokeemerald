@@ -172,6 +172,7 @@ struct TechniqueManualRecords
 {
     u16 species[TM_SPECIES_COUNT];
     u8 counters[TM_COUNTERS_COUNT];
+    u8 flags[1 + (TM_FLAGS_COUNT / 8)];
 };
 
 struct Time
@@ -185,7 +186,7 @@ struct Time
 
 struct SaveBlock3
 {
-    struct TechniqueManualRecords techniqueManual[TM_COUNT];
+    struct TechniqueManualRecords techniqueManual;
 #if OW_USE_FAKE_RTC
     struct Time fakeRTC;
 #endif

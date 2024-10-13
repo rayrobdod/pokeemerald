@@ -1885,15 +1885,21 @@
 	_dynmultichoice \left, \top, \ignoreBPress, \maxBeforeScroll, \shouldSort, \initialSelected, \callbacks, NULL
 	.endm
 
-	@ Increments TM_COUNTER_BE_TUTORED counters for the specifed tm
-	.macro tmtutor tmindex:req
+	@ Sets a flag in the TM savedata
+	.macro settmflag tmflag:req
 	.byte 0xe5
-	.byte \tmindex
+	.byte \tmflag
+	.endm
+
+	@ Stores whether the TM flags has been set in comparisonResult to be used by goto_if, etc
+	.macro checktmflagset tmflag:req
+	.byte 0xe6
+	.byte \tmflag
 	.endm
 
 	@ stores whether the tm has been mastered in comparisonResult to be used by goto_if, etc
 	.macro checktmmastered tmindex:req
-	.byte 0xe6
+	.byte 0xe7
 	.byte \tmindex
 	.endm
 
@@ -2023,6 +2029,26 @@
 
 	.macro call_if_not_defeated trainer:req, dest:req
 	checktrainerflag \trainer
+	call_if FALSE, \dest
+	.endm
+
+	.macro goto_if_tmflagset tmflagindex:req, dest:req
+	checktmflagset \tmflagindex
+	goto_if TRUE, \dest
+	.endm
+
+	.macro goto_if_not_tmflagset tmflagindex:req, dest:req
+	checktmflagset \tmflagindex
+	goto_if FALSE, \dest
+	.endm
+
+	.macro call_if_tmflagset tmflagindex:req, dest:req
+	checktmflagset \tmflagindex
+	call_if TRUE, \dest
+	.endm
+
+	.macro call_if_not_tmflagset tmflagindex:req, dest:req
+	checktmflagset \tmflagindex
 	call_if FALSE, \dest
 	.endm
 

@@ -2469,17 +2469,24 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     return TRUE;
 }
 
-bool8 ScrCmd_tmtutor(struct ScriptContext *ctx)
+bool8 ScrCmd_tmsetflag(struct ScriptContext *ctx)
 {
     u8 tmIndex = ScriptReadByte(ctx);
-    TmBeTutored(tmIndex);
+    TmSetFlag(tmIndex);
+    return FALSE;
+}
+
+bool8 ScrCmd_checktmflagset(struct ScriptContext *ctx)
+{
+    u8 tmFlagIndex = ScriptReadByte(ctx);
+    ctx->comparisonResult = TmIsFlagSet(tmFlagIndex);
     return FALSE;
 }
 
 bool8 ScrCmd_checktmmastered(struct ScriptContext *ctx)
 {
     u8 tmIndex = ScriptReadByte(ctx);
-    gSpecialVar_Result = TmIsMastered(tmIndex);
+    ctx->comparisonResult = TmIsMastered(tmIndex);
     return FALSE;
 }
 

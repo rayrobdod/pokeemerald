@@ -1,70 +1,115 @@
 #include "constants/moves.h"
 
-const struct TechniqueManual sTM[TM_COUNT] =
+const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
 {
     [TM_TACKLE] =
     {
         .move = MOVE_TACKLE,
-        .species = {TM_SPECIESCOUNTER_SEEN, 3},
-        .counter = {
-            [0] = {TM_COUNTER_SEEN, 20},
-            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            {
+                .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
+                .storage_index = 0,
+                .requirement = 3,
+            },
+            {
+                .type = TM_TASK_SEEN,
+                .storage_index = 0,
+                .requirement = 20,
+            },
+        }
     },
     [TM_POUND] =
     {
         .move = MOVE_POUND,
-        .species = {TM_SPECIESCOUNTER_SEEN, 3},
-        .counter = {
-            [0] = {TM_COUNTER_SEEN, 20},
-            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            {
+                .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
+                .storage_index = 3,
+                .requirement = 3,
+            },
+            {
+                .type = TM_TASK_SEEN,
+                .storage_index = 1,
+                .requirement = 20,
+            },
+        }
     },
     [TM_THUNDER] =
     {
         .move = MOVE_THUNDER,
-        .species = {TM_SPECIESCOUNTER_SEEN, 3},
-        .counter = {
-            [0] = {TM_COUNTER_SEEN, 30},
-            [1] = {TM_COUNTER_SEEN_RAIN, 3},
-            [2 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            {
+                .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
+                .storage_index = 6,
+                .requirement = 3,
+            },
+            {
+                .type = TM_TASK_SEEN,
+                .storage_index = 2,
+                .requirement = 30,
+            },
+            {
+                .type = TM_TASK_SEEN_RAIN,
+                .storage_index = 3,
+                .requirement = 3,
+            },
+        }
     },
     [TM_SOLAR_BEAM] =
     {
         .move = MOVE_SOLAR_BEAM,
-        .species = {TM_SPECIESCOUNTER_SEEN, 3},
-        .counter = {
-            [0] = {TM_COUNTER_SEEN, 30},
-            [1] = {TM_COUNTER_SEEN_SUN, 3},
-            [2 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            {
+                .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
+                .storage_index = 9,
+                .requirement = 3,
+            },
+            {
+                .type = TM_TASK_SEEN,
+                .storage_index = 4,
+                .requirement = 30,
+            },
+            {
+                .type = TM_TASK_SEEN_SUN,
+                .storage_index = 5,
+                .requirement = 3,
+            },
+        }
     },
     [TM_CHILLING_WATER] =
     {
         .move = MOVE_CHILLING_WATER,
-        .species = {TM_SPECIESCOUNTER_NONE, 5},
-        .counter = {
-            [0] = {TM_COUNTER_WATER_USING_ICE, 30},
-            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            {
+                .type = TM_TASK_BATTLE_SPECIAL,
+                .storage_index = TM_COUNTER_WATER_USING_ICE,
+                .requirement = 30,
+                .description = COMPOUND_STRING("See a Water Pokémon\nuse an Ice move"),
+            },
+        }
     },
     [TM_CUT] =
     {
         .move = MOVE_CUT,
-        .species = {TM_SPECIESCOUNTER_NONE, 0},
-        .counter = {
-            [0] = {TM_COUNTER_BE_TUTORED, 1, COMPOUND_STRING("Learn from The Cutter")},
-            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .tasks = {
+            [0] = {
+                .type = TM_TASK_SCRIPT_FLAG,
+                .storage_index = TM_FLAG_CUTTER,
+                .requirement = 1,
+                .description = COMPOUND_STRING("Learn from The Cutter"),
+            },
+        }
     },
     [TM_ROCK_TOMB] =
     {
-        .move = MOVE_CUT,
-        .species = {TM_SPECIESCOUNTER_NONE, 0},
-        .counter = {
-            [0] = {TM_COUNTER_BE_TUTORED, 1, COMPOUND_STRING("Learn from Leader\nRoxanne")},
-            [1 ... TM_COUNTERS_COUNT-1] = {TM_COUNTER_NONE, 0},
-        },
+        .move = MOVE_ROCK_TOMB,
+        .tasks = {
+            {
+                .type = TM_TASK_SCRIPT_FLAG,
+                .storage_index = TM_FLAG_ROXANNE,
+                .requirement = 1,
+                .description = COMPOUND_STRING("Learn from Leader\nRoxanne"),
+            },
+        }
     },
 };
