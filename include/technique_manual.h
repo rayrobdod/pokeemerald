@@ -3,15 +3,17 @@
 
 #include "global.h"
 #include "constants/technique_manual.h"
+#include "constants/technique_manual_flags.h"
+#include "constants/technique_manual_pages.h"
 
 /** Increments counters about the currently-being-used battle move */
 void TmIncrementSeenStats(u16 move, u16 attackerSpecies);
 /** Sets a TM flag */
-void TmSetFlag(u8 tmFlagIndex);
+void TmSetFlag(enum TmFlags tmFlagIndex);
 /** Returns whether a TM flag has been set */
-bool8 TmIsFlagSet(u8 tmFlagIndex);
+bool8 TmIsFlagSet(enum TmFlags tmFlagIndex);
 /** Returns whether all the quests for the specified tm have been completed */
-bool8 TmIsMastered(u8 tmIndex);
+bool8 TmIsMastered(enum TmPages tmIndex);
 
 
 /** The move that is currently selected by the tm menu */

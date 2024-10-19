@@ -1,15 +1,17 @@
 #ifndef GUARD_CONSTANTS_TECHNIQUE_MANUAL_PAGES_H
 #define GUARD_CONSTANTS_TECHNIQUE_MANUAL_PAGES_H
 
-#define TM_NONE 0xFF
-#define TM_TACKLE 0
-#define TM_POUND 1
-#define TM_THUNDER 2
-#define TM_SOLAR_BEAM 3
-#define TM_CHILLING_WATER 4
-#define TM_CUT 5
-#define TM_ROCK_TOMB 6
+enum TmPages {
+    TM_TACKLE,
+    TM_POUND,
+    TM_THUNDER,
+    TM_SOLAR_BEAM,
+    TM_CHILLING_WATER,
+    TM_CUT,
+    TM_ROCK_TOMB,
 
-#define TM_COUNT 7
+    TM_COUNT,
+    TM_NONE = 0xFF,
+};
 
 #endif
