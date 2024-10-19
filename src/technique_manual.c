@@ -106,6 +106,7 @@ void TmIncrementSeenStats(u16 move, u16 attackerSpecies)
                         break;
                     }
                 }
+                break;
             case TM_TASK_SEEN_RAIN:
                 if (gBattleWeather & B_WEATHER_RAIN) goto incrementCounter;
                 break;
