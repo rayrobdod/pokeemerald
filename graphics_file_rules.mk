@@ -466,6 +466,18 @@ $(BATTRANSGFXDIR)/frontier_square_4.4bpp: $(BATTRANSGFXDIR)/frontier_squares_bla
                                           $(BATTRANSGFXDIR)/frontier_squares_4.4bpp
 	@cat $^ >$@
 
+$(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap &: tools/justiceslash/justiceslash
+	$^ tiles 0 $(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap
+
+$(BATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap &: tools/justiceslash/justiceslash
+	$^ tiles 1 $(BATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap
+
+$(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap &: tools/justiceslash/justiceslash
+	$^ tiles 2 $(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap
+
+$(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
+	$^ palette $* $@
+
 $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \
                                          $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
 	@cat $^ >$@
