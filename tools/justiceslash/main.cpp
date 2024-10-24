@@ -12,8 +12,11 @@
 static const int CANVAS_WIDTH = 256;
 static const int CANVAS_HEIGHT = 160;
 
-static const std::array<float, 3> parallelThresholds = {0.2, 0.4, 0.75};
-static const std::array<float, 4> perpendicularThresholds = {5.5, 9.5, 18, 27};
+//static const std::array<float, 3> parallelThresholds = {0.2, 0.4, 0.75};
+static const std::array<float, 9> parallelThresholds = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+
+//static const std::array<float, 4> perpendicularThresholds = {5.5, 9.5, 18, 27};
+static const std::array<float, 5> perpendicularThresholds = {5, 8.5, 11, 18, 27};
 
 static const std::vector<std::vector<Curve::Cubic>> centerlines({
 	{
