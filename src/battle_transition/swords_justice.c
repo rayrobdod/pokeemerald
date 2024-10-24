@@ -23,8 +23,6 @@ static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("graphics/battle
 static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.tilemap.lz");
 static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.tilemap.lz");
 
-static const u16 sSwordsOfJustice_Palette_Black[16] = {0};
-
 static const u16 sSwordsOfJustice_Slash0_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_0.gbapal");
 static const u16 sSwordsOfJustice_Slash1_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_1.gbapal");
 static const u16 sSwordsOfJustice_Slash2_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_2.gbapal");
@@ -84,28 +82,27 @@ static bool8 SwordsOfJustice_Init(struct Task *task)
 
 static bool8 SwordsOfJustice_AnimateSlash(struct Task *task)
 {
+    // The slash animation doesn't need palette fading,
+    // and a todo is to fade back to the overworld with an overlaid screen-shattered overlay,
+    // so preserve `gPlttBufferUnfaded` by writing to `gPlttBufferFaded` directly instead of calling `LoadPalette`
     switch (task->tSlashFrame) {
         case 4:
-            LoadPalette(sSwordsOfJustice_Slash0_Palette, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Slash0_Palette));
+            CpuCopy16(sSwordsOfJustice_Slash0_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash0_Palette));
             break;
         case 7:
-            gPlttBufferFaded[1] = RGB(0, 16, 0);
-            LoadPalette(sSwordsOfJustice_Slash1_Palette, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Slash1_Palette));
+            CpuCopy16(sSwordsOfJustice_Slash1_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash1_Palette));
             break;
         case 10:
-            gPlttBufferFaded[1] = RGB(0, 31, 0);
-            LoadPalette(sSwordsOfJustice_Slash2_Palette, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Slash2_Palette));
+            CpuCopy16(sSwordsOfJustice_Slash2_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash2_Palette));
             break;
         case 14:
-            gPlttBufferFaded[1] = RGB(0, 16, 0);
-            LoadPalette(sSwordsOfJustice_Slash3_Palette, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Slash3_Palette));
+            CpuCopy16(sSwordsOfJustice_Slash3_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash3_Palette));
             break;
         case 17:
-            gPlttBufferFaded[1] = RGB_BLACK;
-            LoadPalette(sSwordsOfJustice_Slash4_Palette, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Slash4_Palette));
+            CpuCopy16(sSwordsOfJustice_Slash4_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
             break;
         case 20:
-            LoadPalette(sSwordsOfJustice_Palette_Black, BG_PLTT_ID(15), sizeof(sSwordsOfJustice_Palette_Black));
+            CpuFill16(RGB_BLACK, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
             break;
         case 24:
             task->tState++;

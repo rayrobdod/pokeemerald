@@ -123,7 +123,7 @@ static uint8_t paletteIndex(double t, double distanceSq) {
 	if (0 == perp)
 		return 1;
 	else
-		return 255 - ((perp - 1) * (parallelThresholds.size() + 1) + par);
+		return 2 + ((perp - 1) * (parallelThresholds.size() + 1) + par);
 }
 
 
@@ -253,13 +253,29 @@ int main(int argc, char** argv)
 
 		float (*brightnessFunc)(float, float) = brightnessFuncs[index];
 
+		{
+			unsigned short brightness = 0;
+			switch (index)
+			{
+				case 1:
+				case 3:
+					brightness = 16;
+					break;
+				case 2:
+					brightness = 31;
+			}
+
+			Rgb555 color = Rgb555::fromGreenBrightness(brightness);
+			fwrite(&color, sizeof(Rgb555), 1, palf);
+		}
+
 		for (unsigned i = 0; i < perpendicularThresholds.size(); i++)
 		for (unsigned j = 0; j < (1 + parallelThresholds.size()); j++)
 		{
 			float perpLo = (i == 0 ? 0.0 : perpendicularThresholds[i - 1]);
 			float perpHi = (i == 0 ? 0.0 : perpendicularThresholds[i]);
 			float perpMid = (perpHi - perpLo) / 2 + perpLo;
-			float perpNorm = 1.0 - (perpMid / perpendicularThresholds.back());
+			float perpNorm = (perpMid / perpendicularThresholds.back());
 
 			float parLo = (j == 0 ? 0.0 : parallelThresholds[j - 1]);
 			float parHi = (j == parallelThresholds.size() ? 1.0 : parallelThresholds[j]);
