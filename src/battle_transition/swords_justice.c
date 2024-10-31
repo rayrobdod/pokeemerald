@@ -36,21 +36,32 @@ static const struct { const u32* tileset; const u32* tilemap; } sSwordsOfJustice
     },
 };
 
-static const u16 sSwordsOfJustice_Slash0_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_0.gbapal");
-static const u16 sSwordsOfJustice_Slash1_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_1.gbapal");
-static const u16 sSwordsOfJustice_Slash2_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_2.gbapal");
-static const u16 sSwordsOfJustice_Slash3_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_3.gbapal");
-static const u16 sSwordsOfJustice_Slash4_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_4.gbapal");
-static const u16 sSwordsOfJustice_Slash5_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_5.gbapal");
-static const u16 sSwordsOfJustice_Slash6_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_6.gbapal");
-static const u16 sSwordsOfJustice_Slash_Peak_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_7.gbapal");
-static const u16 sSwordsOfJustice_Slash8_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_8.gbapal");
-static const u16 sSwordsOfJustice_Slash9_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_9.gbapal");
-static const u16 sSwordsOfJustice_Slash10_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_10.gbapal");
-static const u16 sSwordsOfJustice_Slash11_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_11.gbapal");
-static const u16 sSwordsOfJustice_Slash12_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_12.gbapal");
-static const u16 sSwordsOfJustice_Slash13_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_13.gbapal");
-static const u16 sSwordsOfJustice_Slash14_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_14.gbapal");
+#define SLASH_PALETTE_SIZE (51)
+#define SLASHFRAMES_PREFIX (4)
+#define SLASHFRAMES_INCREASING (7)
+#define SLASHFRAMES_PEAK (3)
+#define SLASHFRAMES_DECREASING (7)
+#define SLASHFRAMES_SUFFIX (3)
+
+static const u16 sSwordsOfJustice_Slash_Increasing_Palettes[SLASHFRAMES_INCREASING][SLASH_PALETTE_SIZE] = {
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_0.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_1.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_2.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_3.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_4.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_5.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_6.gbapal")
+};
+static const u16 sSwordsOfJustice_Slash_Peak_Palette[SLASH_PALETTE_SIZE] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_7.gbapal");
+static const u16 sSwordsOfJustice_Slash_Decreasing_Palettes[SLASHFRAMES_DECREASING][SLASH_PALETTE_SIZE] = {
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_8.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_9.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_10.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_11.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_12.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_13.gbapal"),
+    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_14.gbapal"),
+};
 
 #define tSlashFrame data[2]
 #define tBlend data[2]
@@ -106,63 +117,52 @@ static bool8 SwordsOfJustice_Init(struct Task *task)
 
 static bool8 SwordsOfJustice_AnimateSlash(struct Task *task)
 {
-    // The slash animation doesn't need palette fading,
-    // and a todo is to fade back to the overworld with an overlaid screen-shattered overlay,
-    // so preserve `gPlttBufferUnfaded` by writing to `gPlttBufferFaded` directly instead of calling `LoadPalette`
-    switch (task->tSlashFrame) {
-        case 4:
-            CpuCopy16(sSwordsOfJustice_Slash0_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash0_Palette));
-            break;
-        case 5:
-            CpuCopy16(sSwordsOfJustice_Slash1_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash1_Palette));
-            break;
-        case 6:
-            CpuCopy16(sSwordsOfJustice_Slash2_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash2_Palette));
-            break;
-        case 7:
-            CpuCopy16(sSwordsOfJustice_Slash3_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash3_Palette));
-            break;
-        case 8:
-            CpuCopy16(sSwordsOfJustice_Slash4_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
-            break;
-        case 9:
-            CpuCopy16(sSwordsOfJustice_Slash5_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash5_Palette));
-            break;
-        case 10:
-            CpuCopy16(sSwordsOfJustice_Slash6_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash6_Palette));
-            break;
-        case 11:
-            CpuCopy16(sSwordsOfJustice_Slash_Peak_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash_Peak_Palette));
-            break;
-        case 14:
-            CpuCopy16(sSwordsOfJustice_Slash8_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash8_Palette));
-            break;
-        case 15:
-            CpuCopy16(sSwordsOfJustice_Slash9_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash9_Palette));
-            break;
-        case 16:
-            CpuCopy16(sSwordsOfJustice_Slash10_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash10_Palette));
-            break;
-        case 17:
-            CpuCopy16(sSwordsOfJustice_Slash11_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash11_Palette));
-            break;
-        case 18:
-            CpuCopy16(sSwordsOfJustice_Slash12_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash12_Palette));
-            break;
-        case 19:
-            CpuCopy16(sSwordsOfJustice_Slash13_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash13_Palette));
-            break;
-        case 20:
-            CpuCopy16(sSwordsOfJustice_Slash14_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash14_Palette));
-            break;
-        case 21:
-            CpuFill16(RGB_BLACK, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
-            break;
-        case 24:
-            task->tState++;
-            break;
-        default:
-            break;
+    const u16* palette = NULL;
+
+    u16 slashFrame = task->tSlashFrame;
+
+    if (slashFrame >= SLASHFRAMES_PREFIX)
+    {
+        slashFrame -= SLASHFRAMES_PREFIX;
+        if (slashFrame < SLASHFRAMES_INCREASING)
+        {
+            palette = sSwordsOfJustice_Slash_Increasing_Palettes[slashFrame];
+        }
+        else
+        {
+            slashFrame -= SLASHFRAMES_INCREASING;
+            if (slashFrame == 0)
+            {
+                palette = sSwordsOfJustice_Slash_Peak_Palette;
+            }
+            else if (slashFrame >= SLASHFRAMES_PEAK)
+            {
+                slashFrame -= SLASHFRAMES_PEAK;
+                if (slashFrame < SLASHFRAMES_DECREASING)
+                {
+                    palette = sSwordsOfJustice_Slash_Decreasing_Palettes[slashFrame];
+                }
+                else
+                {
+                    slashFrame -= SLASHFRAMES_DECREASING;
+                    if (slashFrame == 0)
+                    {
+                        CpuFill16(RGB_BLACK, &gPlttBufferFaded[1], sizeof(u16) * SLASH_PALETTE_SIZE);
+                    }
+                    else if (slashFrame == SLASHFRAMES_SUFFIX)
+                    {
+                        task->tState++;
+                    }
+                }
+            }
+        }
+    }
+
+    if (NULL != palette) {
+        // The slash animation doesn't need palette fading,
+        // and a todo is to fade back to the overworld with an overlaid screen-shattered overlay,
+        // so preserve `gPlttBufferUnfaded` by writing to `gPlttBufferFaded` directly instead of calling `LoadPalette`
+        CpuCopy16(palette, &gPlttBufferFaded[1], sizeof(u16) * SLASH_PALETTE_SIZE);
     }
     task->tSlashFrame++;
     return FALSE;
