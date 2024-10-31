@@ -17,9 +17,9 @@ static bool8 SwordsOfJustice_End(struct Task *);
 static const u32 sSwordsOfJustice_Slash0_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_0.8bpp.lz");
 static const u32 sSwordsOfJustice_Slash1_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.8bpp.lz");
 static const u32 sSwordsOfJustice_Slash2_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.8bpp.lz");
-static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_0.tilemap.lz");
-static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.tilemap.lz");
-static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.tilemap.lz");
+static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_0.tilemap.rl");
+static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.tilemap.rl");
+static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.tilemap.rl");
 
 static const struct { const u32* tileset; const u32* tilemap; } sSwordsOfJustice_Slash_Tiles[] = {
     [0] = {
@@ -174,7 +174,7 @@ static bool8 SwordsOfJustice_SetSlashGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LZ77UnCompVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tileset, tileset);
-    LZ77UnCompVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tilemap, tilemap);
+    RLUnCompVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tilemap, tilemap);
 
     task->tState++;
     task->tScene++;
