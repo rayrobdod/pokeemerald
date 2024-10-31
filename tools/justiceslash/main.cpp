@@ -33,6 +33,8 @@ static const std::vector<std::vector<Curve::Cubic>> centerlines({
 	}
 });
 
+static const unsigned PALETTE_ANIM_FRAMES = 7;
+
 struct TilemapEntry {
 	unsigned short index: 10;
 	bool flipx: 1;
@@ -177,42 +179,109 @@ PixelMap<CANVAS_WIDTH, CANVAS_HEIGHT> drawSlash(const std::vector<Curve::Cubic>&
 	return retval;
 }
 
-float brightnessFunc0(float perpNorm, float parNorm) {
-	return std::max(8.0f * (perpNorm + (1.0f - parNorm) - 1.5f), 0.0f);
-}
+class BrightnessFunc {
+public:
+	BrightnessFunc() {}
+	virtual ~BrightnessFunc() {}
+	virtual float background() const =0;
+	virtual float operator()(float perpNorm, float parNorm) const = 0;
+};
 
-float brightnessFunc1(float perpNorm, float parNorm) {
-	return std::min(std::max(20.0f * perpNorm + 20.0f * (1.0f - parNorm) - 8.0f, 16.0f), 31.0f);
-}
+class PeakBrightnessFunc : public BrightnessFunc {
+public:
+	PeakBrightnessFunc() {}
+	~PeakBrightnessFunc() {}
+	float background() const override {
+		return 31.0f;
+	}
+	float operator()(float perpNorm, float parNorm) const override {
+		return 31.0f + 31.0f * perpNorm;
+	}
+};
 
-float brightnessFunc2(float perpNorm, float parNorm) {
-	return 31.0f + 31.0f * perpNorm;
-}
+static PeakBrightnessFunc peakBrightnessFunc;
 
-float brightnessFunc3(float perpNorm, float parNorm) {
-	float a = 12.0f * perpNorm + 22.0f * parNorm + 1.5f;
-	float b = (a > 31 ? a + 24 : a);
+class IncreasingBrightnessFunc : public BrightnessFunc {
+private:
+	float progress;
+public:
+	IncreasingBrightnessFunc(float progress) : progress(progress) {}
+	~IncreasingBrightnessFunc() {}
+	float background() const override {
+		if (this->progress < 0.25f)
+			return 0.0f;
+		else
+			return 31.0f * (this->progress - 0.25f) * 4 / 3;
+	}
+	float operator()(float perpNorm, float parNorm) const override {
+		float parInv = 1.0f - parNorm;
+		float progressAura = 2.0f * this->progress - 1.0f;
 
-	return std::max(b, 16.0f);
-}
+		float aura1 = -12.0f
+			+ 31.0f * perpNorm
+			+ 16.0f * parInv
+			+ 31.0f * progressAura
+			;
+		float aura = std::max(this->background(), std::min(31.0f, aura1));
 
-float brightnessFunc4(float perpNorm, float parNorm) {
-	return std::max(8.0f * perpNorm + 12.0f * parNorm - 10.0f, 0.0f);
-}
+		float blade = 0;
+		if (0.5 < this->progress) {
+			float progressBlade = 2 * (this->progress - 0.5);
+			blade = -20.0f
+				+ 31.0f * perpNorm
+				+ 31.0f * parInv
+				+ 31.0f * progressBlade
+				;
+			blade = std::min(peakBrightnessFunc(perpNorm, parNorm), blade);
+		}
 
-static const std::array<float (*)(float, float), 5> brightnessFuncs({
-	&brightnessFunc0,
-	&brightnessFunc1,
-	&brightnessFunc2,
-	&brightnessFunc3,
-	&brightnessFunc4,
-});
+		return std::max(aura, blade);
+	}
+};
+
+class DecreasingBrightnessFunc : public BrightnessFunc {
+private:
+	float progress;
+public:
+	DecreasingBrightnessFunc(float progress) : progress(progress) {}
+	~DecreasingBrightnessFunc() {}
+	float background() const override {
+		if (this->progress > 0.75f)
+			return 0.0f;
+		else
+			return 31.0f * (0.75 - this->progress) * 4 / 3;
+	}
+	float operator()(float perpNorm, float parNorm) const override {
+		float progressInv = 1.0f - this->progress;
+		float progressAura = 2.0f * progressInv - 1.0f;
+
+		float aura1 = -8.0f
+			+ 31.0f * perpNorm
+			+ 16.0f * parNorm
+			+ 31.0f * progressAura
+			;
+		float aura = std::max(this->background(), std::min(31.0f, aura1));
+
+		float blade = 0;
+		if (0.5 > this->progress) {
+			float progressBlade = 2 * (progressInv - 0.5);
+			blade = -20.0f
+				+ 31.0f * perpNorm
+				+ 31.0f * parNorm
+				+ 31.0f * progressBlade
+				;
+			blade = std::min(peakBrightnessFunc(perpNorm, parNorm), blade);
+		}
+
+		return std::max(aura, blade);
+	}
+};
 
 
 static void printUsage(char* program_name)
 {
 	printf("%s tiles [0-%zd] tileset_filename tilemap_filename\n", program_name, centerlines.size() - 1);
-	printf("%s palette [0-%zd] palette_filename\n", program_name, brightnessFuncs.size() - 1);
+	printf("%s palette [0-%d] palette_filename\n", program_name, PALETTE_ANIM_FRAMES * 2);
 }
 
 int main(int argc, char** argv)
@@ -254,20 +323,20 @@ int main(int argc, char** argv)
 		size_t index = atoi(indexStr);
 		FILE* palf = fopen(outpalette, "w");
 
-		float (*brightnessFunc)(float, float) = brightnessFuncs[index];
+		BrightnessFunc *brightnessFunc;
+		if (index < PALETTE_ANIM_FRAMES) {
+			const float progress = (0.5f + index) / PALETTE_ANIM_FRAMES;
+			brightnessFunc = new IncreasingBrightnessFunc(progress);
+		} else if (index == PALETTE_ANIM_FRAMES) {
+			brightnessFunc = new PeakBrightnessFunc();
+		} else {
+			const float progress = (-0.5f + index - PALETTE_ANIM_FRAMES) / PALETTE_ANIM_FRAMES;
+			brightnessFunc = new DecreasingBrightnessFunc(progress);
+		}
 
 		{
-			unsigned short brightness = 0;
-			switch (index)
-			{
-				case 1:
-				case 3:
-					brightness = 16;
-					break;
-				case 2:
-					brightness = 31;
-			}
-
+			float brightnessFloat = brightnessFunc->background();
+			unsigned short brightness = static_cast<unsigned short>(brightnessFloat);
 			Rgb555 color = Rgb555::fromGreenBrightness(brightness);
 			fwrite(&color, sizeof(Rgb555), 1, palf);
 		}
@@ -284,13 +353,14 @@ int main(int argc, char** argv)
 			float parHi = (j == parallelThresholds.size() ? 1.0 : parallelThresholds[j]);
 			float parMid = (parHi - parLo) / 2 + parLo;
 
-			float brightnessFloat = brightnessFunc(perpNorm, parMid);
+			float brightnessFloat = (*brightnessFunc)(perpNorm, parMid);
 			unsigned short brightness = static_cast<unsigned short>(brightnessFloat);
 
 			Rgb555 color = Rgb555::fromGreenBrightness(brightness);
 			fwrite(&color, sizeof(Rgb555), 1, palf);
 		}
 		fclose(palf);
+		delete brightnessFunc;
 	}
 	else
 	{

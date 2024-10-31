@@ -475,7 +475,7 @@ $(BATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BATTRANSGFXDIR)/swords_just
 $(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap &: tools/justiceslash/justiceslash
 	$^ tiles 2 $(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap
 
-$(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
+$(patsubst %,$(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal,0 1 2 3 4 5 6 7 8 9 10 11 12 13 14): $(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
 	$^ palette $* $@
 
 $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \

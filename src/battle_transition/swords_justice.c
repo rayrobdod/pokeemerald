@@ -28,6 +28,16 @@ static const u16 sSwordsOfJustice_Slash1_Palette[] = INCBIN_U16("graphics/battle
 static const u16 sSwordsOfJustice_Slash2_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_2.gbapal");
 static const u16 sSwordsOfJustice_Slash3_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_3.gbapal");
 static const u16 sSwordsOfJustice_Slash4_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_4.gbapal");
+static const u16 sSwordsOfJustice_Slash5_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_5.gbapal");
+static const u16 sSwordsOfJustice_Slash6_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_6.gbapal");
+static const u16 sSwordsOfJustice_Slash_Peak_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_7.gbapal");
+static const u16 sSwordsOfJustice_Slash8_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_8.gbapal");
+static const u16 sSwordsOfJustice_Slash9_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_9.gbapal");
+static const u16 sSwordsOfJustice_Slash10_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_10.gbapal");
+static const u16 sSwordsOfJustice_Slash11_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_11.gbapal");
+static const u16 sSwordsOfJustice_Slash12_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_12.gbapal");
+static const u16 sSwordsOfJustice_Slash13_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_13.gbapal");
+static const u16 sSwordsOfJustice_Slash14_Palette[] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_14.gbapal");
 
 #define tSlashFrame data[2]
 #define tBlend data[2]
@@ -66,7 +76,6 @@ static bool8 SwordsOfJustice_FadeToBlack(struct Task *task)
 
 static bool8 SwordsOfJustice_Init(struct Task *task)
 {
-    u16 *tilemap, *tileset;
     InitTransitionData();
     ScanlineEffect_Clear();
 
@@ -89,19 +98,49 @@ static bool8 SwordsOfJustice_AnimateSlash(struct Task *task)
         case 4:
             CpuCopy16(sSwordsOfJustice_Slash0_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash0_Palette));
             break;
-        case 7:
+        case 5:
             CpuCopy16(sSwordsOfJustice_Slash1_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash1_Palette));
             break;
-        case 10:
+        case 6:
             CpuCopy16(sSwordsOfJustice_Slash2_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash2_Palette));
             break;
-        case 14:
+        case 7:
             CpuCopy16(sSwordsOfJustice_Slash3_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash3_Palette));
             break;
-        case 17:
+        case 8:
             CpuCopy16(sSwordsOfJustice_Slash4_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
             break;
+        case 9:
+            CpuCopy16(sSwordsOfJustice_Slash5_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash5_Palette));
+            break;
+        case 10:
+            CpuCopy16(sSwordsOfJustice_Slash6_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash6_Palette));
+            break;
+        case 11:
+            CpuCopy16(sSwordsOfJustice_Slash_Peak_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash_Peak_Palette));
+            break;
+        case 14:
+            CpuCopy16(sSwordsOfJustice_Slash8_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash8_Palette));
+            break;
+        case 15:
+            CpuCopy16(sSwordsOfJustice_Slash9_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash9_Palette));
+            break;
+        case 16:
+            CpuCopy16(sSwordsOfJustice_Slash10_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash10_Palette));
+            break;
+        case 17:
+            CpuCopy16(sSwordsOfJustice_Slash11_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash11_Palette));
+            break;
+        case 18:
+            CpuCopy16(sSwordsOfJustice_Slash12_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash12_Palette));
+            break;
+        case 19:
+            CpuCopy16(sSwordsOfJustice_Slash13_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash13_Palette));
+            break;
         case 20:
+            CpuCopy16(sSwordsOfJustice_Slash14_Palette, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash14_Palette));
+            break;
+        case 21:
             CpuFill16(RGB_BLACK, &gPlttBufferFaded[1], sizeof(sSwordsOfJustice_Slash4_Palette));
             break;
         case 24:
