@@ -22,6 +22,7 @@
 #include "text.h"
 #include "intro.h"
 #include "main.h"
+#include "menu.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
 
@@ -120,6 +121,7 @@ void AgbMain()
 
     gLinkTransferringData = FALSE;
     sUnusedVar = 0xFC0;
+    gSpeakerName[0] = EOS;
 
 #ifndef NDEBUG
 #if (LOG_HANDLER == LOG_HANDLER_MGBA_PRINT)

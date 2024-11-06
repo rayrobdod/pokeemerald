@@ -1264,7 +1264,7 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
 
 bool8 ScrCmd_speakername(struct ScriptContext *ctx)
 {
-    gSpeakerName = (const u8 *)ScriptReadWord(ctx);
+    StringCopy(gSpeakerName, (const u8 *)ScriptReadWord(ctx));
     return FALSE;
 }
 

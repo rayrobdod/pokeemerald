@@ -22,8 +22,9 @@
 #define MENU_INFO_ICON_BALL_RED  (NUMBER_OF_MON_TYPES + 6)
 #define MENU_INFO_ICON_BALL_BLUE (NUMBER_OF_MON_TYPES + 7)
 
-#define STD_WINDOW_NAMEPLATE_WIDTH 8
-#define STD_WINDOW_MUGSHOT_HEIGHT 8
+#define DLG_WINDOW_NAMEPLATE_TILEWIDTH 8
+#define DLG_WINDOW_MUGSHOT_TILEHEIGHT 8
+#define DLG_WINDOW_NAMEPLATE_LENGTH 11
 
 enum
 {
@@ -130,6 +131,6 @@ void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineH
 void Menu_LoadStdPal(void);
 
 extern u8 gSpeakerMugshot;
-extern const u8* gSpeakerName;
+extern u8 gSpeakerName[DLG_WINDOW_NAMEPLATE_LENGTH + 1];
 
 #endif // GUARD_MENU_H

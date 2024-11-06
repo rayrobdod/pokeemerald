@@ -1100,7 +1100,7 @@ void SetMapVarsToTrainer(void)
     }
     if (gTrainerBattleOpponent_A != 0)
     {
-        gSpeakerName = gTrainers[gTrainerBattleOpponent_A].trainerName;
+        StringCopy(gSpeakerName, gTrainers[gTrainerBattleOpponent_A].trainerName);
     }
 }
 
@@ -1514,12 +1514,12 @@ static const u8 *GetIntroSpeechOfApproachingTrainer(void)
 {
     if (gApproachingTrainerId == 0)
     {
-        gSpeakerName = gTrainers[gTrainerBattleOpponent_A].trainerName;
+        StringCopy(gSpeakerName, gTrainers[gTrainerBattleOpponent_A].trainerName);
         return ReturnEmptyStringIfNull(sTrainerAIntroSpeech);
     }
     else
     {
-        gSpeakerName = gTrainers[gTrainerBattleOpponent_B].trainerName;
+        StringCopy(gSpeakerName, gTrainers[gTrainerBattleOpponent_B].trainerName);
         return ReturnEmptyStringIfNull(sTrainerBIntroSpeech);
     }
 }

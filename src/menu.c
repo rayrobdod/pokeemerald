@@ -78,7 +78,7 @@ static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
 static EWRAM_DATA void *sTempTileDataBuffer[0x20] = {NULL};
 EWRAM_DATA u8 gSpeakerMugshot = MUGSHOT_NONE;
-EWRAM_DATA const u8* gSpeakerName = NULL;
+EWRAM_DATA u8 gSpeakerName[DLG_WINDOW_NAMEPLATE_LENGTH + 1] = {0};
 
 const u16 gStandardMenuPalette[] = INCBIN_U16("graphics/interface/std_menu.gbapal");
 
@@ -104,19 +104,19 @@ static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 13,
-        .width = STD_WINDOW_NAMEPLATE_WIDTH,
+        .width = DLG_WINDOW_NAMEPLATE_TILEWIDTH,
         .height = 2,
         .paletteNum = DLG_WINDOW_PALETTE_NUM,
-        .baseBlock = 0x194 - STD_WINDOW_NAMEPLATE_WIDTH * 2,
+        .baseBlock = 0x194 - DLG_WINDOW_NAMEPLATE_TILEWIDTH * 2,
     },
     {
         .bg = 0,
         .tilemapLeft = 1,
         .tilemapTop = 5,
-        .width = STD_WINDOW_NAMEPLATE_WIDTH,
-        .height = STD_WINDOW_MUGSHOT_HEIGHT,
+        .width = DLG_WINDOW_NAMEPLATE_TILEWIDTH,
+        .height = DLG_WINDOW_MUGSHOT_TILEHEIGHT,
         .paletteNum = DLG_WINDOW_MUGSHOT_NUM,
-        .baseBlock = 0x194 - STD_WINDOW_NAMEPLATE_WIDTH * 2 - STD_WINDOW_NAMEPLATE_WIDTH * STD_WINDOW_MUGSHOT_HEIGHT,
+        .baseBlock = 0x194 - DLG_WINDOW_NAMEPLATE_TILEWIDTH * 2 - DLG_WINDOW_NAMEPLATE_TILEWIDTH * DLG_WINDOW_MUGSHOT_TILEHEIGHT,
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -251,25 +251,25 @@ static void FillDialogFrameNameWindow(u8 windowId, const u8 *speakerName, bool8 
     if (curveTopCorners)
     {
         CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*9], TILE_SIZE_4BPP, 0);
-        for (i = 1; i < STD_WINDOW_NAMEPLATE_WIDTH - 1; i++)
+        for (i = 1; i < DLG_WINDOW_NAMEPLATE_TILEWIDTH - 1; i++)
             CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*10], TILE_SIZE_4BPP, i);
         CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*11], TILE_SIZE_4BPP, i);
     }
     else
     {
-        for (i = 0; i < STD_WINDOW_NAMEPLATE_WIDTH; i++)
+        for (i = 0; i < DLG_WINDOW_NAMEPLATE_TILEWIDTH; i++)
             CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*1], TILE_SIZE_4BPP, i);
     }
 
-    CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*13], TILE_SIZE_4BPP, STD_WINDOW_NAMEPLATE_WIDTH);
-    for (i = 1; i < STD_WINDOW_NAMEPLATE_WIDTH; i++)
-        CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*14], TILE_SIZE_4BPP, STD_WINDOW_NAMEPLATE_WIDTH + i);
+    CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*13], TILE_SIZE_4BPP, DLG_WINDOW_NAMEPLATE_TILEWIDTH);
+    for (i = 1; i < DLG_WINDOW_NAMEPLATE_TILEWIDTH; i++)
+        CopyToWindowPixelBuffer(windowId, &gMessageBox_Gfx[8*14], TILE_SIZE_4BPP, DLG_WINDOW_NAMEPLATE_TILEWIDTH + i);
 
     if (speakerName != NULL)
     {
         StringExpandPlaceholders(nameBuffer, speakerName);
         strWidth = GetStringWidth(FONT_SMALL, nameBuffer, -1);
-        strOffset = max(0, 8 * STD_WINDOW_NAMEPLATE_WIDTH / 2 - strWidth / 2);
+        strOffset = max(0, 8 * DLG_WINDOW_NAMEPLATE_TILEWIDTH / 2 - strWidth / 2);
 
         AddTextPrinterParameterized3(windowId, FONT_SMALL, strOffset, 0, sNameWindowTextColors, 0, nameBuffer);
 
@@ -296,12 +296,12 @@ void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
 
 void DrawDialogueFrameWithDecorations(u8 windowId, u8 windowIdName, u8 windowIdMugshot, bool8 copyToVram)
 {
-   if (gSpeakerMugshot != MUGSHOT_NONE)
-       DrawDialogueFrameWithNameAndMug(windowId, windowIdName, windowIdMugshot, gSpeakerName, gSpeakerMugshot, copyToVram);
-   else if (gSpeakerName != NULL)
-       DrawDialogueFrameWithName(windowId, windowIdName, gSpeakerName, copyToVram);
-   else
-       DrawDialogueFrame(windowId, copyToVram);
+    if (gSpeakerMugshot != MUGSHOT_NONE)
+        DrawDialogueFrameWithNameAndMug(windowId, windowIdName, windowIdMugshot, gSpeakerName, gSpeakerMugshot, copyToVram);
+    else if (gSpeakerName[0] != EOS)
+        DrawDialogueFrameWithName(windowId, windowIdName, gSpeakerName, copyToVram);
+    else
+        DrawDialogueFrame(windowId, copyToVram);
 }
 
 static void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram)
@@ -540,12 +540,12 @@ static void WindowFunc_DrawDialogueFrameName(u8 bg, u8 tilemapLeft, u8 tilemapTo
                             DLG_WINDOW_BASE_TILE_NUM + 7,
                             tilemapLeft,
                             tilemapTop - 1,
-                            STD_WINDOW_NAMEPLATE_WIDTH,
+                            DLG_WINDOW_NAMEPLATE_TILEWIDTH,
                             1,
                             DLG_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg,
                             BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 6),
-                            tilemapLeft + STD_WINDOW_NAMEPLATE_WIDTH,
+                            tilemapLeft + DLG_WINDOW_NAMEPLATE_TILEWIDTH,
                             tilemapTop - 1,
                             1,
                             1,
@@ -568,19 +568,19 @@ static void WindowFunc_DrawDialogueFrameName(u8 bg, u8 tilemapLeft, u8 tilemapTo
                             DLG_WINDOW_BASE_TILE_NUM + 10,
                             tilemapLeft + 1,
                             tilemapTop,
-                            STD_WINDOW_NAMEPLATE_WIDTH - 2,
+                            DLG_WINDOW_NAMEPLATE_TILEWIDTH - 2,
                             1,
                             DLG_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg,
                             BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 9),
-                            tilemapLeft + STD_WINDOW_NAMEPLATE_WIDTH - 1,
+                            tilemapLeft + DLG_WINDOW_NAMEPLATE_TILEWIDTH - 1,
                             tilemapTop,
                             1,
                             1,
                             DLG_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg,
                             BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 8),
-                            tilemapLeft + STD_WINDOW_NAMEPLATE_WIDTH,
+                            tilemapLeft + DLG_WINDOW_NAMEPLATE_TILEWIDTH,
                             tilemapTop,
                             1,
                             1,
@@ -589,7 +589,7 @@ static void WindowFunc_DrawDialogueFrameName(u8 bg, u8 tilemapLeft, u8 tilemapTo
                             DLG_WINDOW_BASE_TILE_NUM + 12,
                             tilemapLeft - 1,
                             tilemapTop + 1,
-                            STD_WINDOW_NAMEPLATE_WIDTH,
+                            DLG_WINDOW_NAMEPLATE_TILEWIDTH,
                             1,
                             DLG_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg,
@@ -603,12 +603,12 @@ static void WindowFunc_DrawDialogueFrameName(u8 bg, u8 tilemapLeft, u8 tilemapTo
                             DLG_WINDOW_BASE_TILE_NUM + 14,
                             tilemapLeft + 1,
                             tilemapTop + 1,
-                            STD_WINDOW_NAMEPLATE_WIDTH - 1,
+                            DLG_WINDOW_NAMEPLATE_TILEWIDTH - 1,
                             1,
                             DLG_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg,
                             DLG_WINDOW_BASE_TILE_NUM + 15,
-                            tilemapLeft + STD_WINDOW_NAMEPLATE_WIDTH,
+                            tilemapLeft + DLG_WINDOW_NAMEPLATE_TILEWIDTH,
                             tilemapTop + 1,
                             1,
                             1,
@@ -689,7 +689,7 @@ static void WindowFunc_ClearStdWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapT
 
 static void WindowFunc_ClearDialogWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
-    FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 3 - STD_WINDOW_MUGSHOT_HEIGHT, STD_WINDOW_NAMEPLATE_WIDTH + 3, STD_WINDOW_MUGSHOT_HEIGHT + 2, STD_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 3 - DLG_WINDOW_MUGSHOT_TILEHEIGHT, DLG_WINDOW_NAMEPLATE_TILEWIDTH + 3, DLG_WINDOW_MUGSHOT_TILEHEIGHT + 2, STD_WINDOW_PALETTE_NUM);
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 1, width + 6, height + 2, STD_WINDOW_PALETTE_NUM);
 }
 
