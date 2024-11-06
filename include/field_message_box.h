@@ -11,9 +11,6 @@ enum
     FIELD_MESSAGE_BOX_AUTO_SCROLL,
 };
 
-extern u8 gSpeakerMugshot;
-extern const u8* gSpeakerName;
-
 bool8 ShowFieldMessage(const u8 *message);
 bool8 ShowPokenavFieldMessage(const u8 *message);
 bool8 ShowFieldMessageFromBuffer(void);

@@ -52,6 +52,8 @@ struct Menu
 };
 
 static u16 AddWindowParameterized(u8, u8, u8, u8, u8, u8, u16);
+static void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram);
+static void DrawDialogueFrameWithNameAndMug(u8 windowId, u8 windowIdName, u8 windowIdMugshot, const u8 *speakerName, u8 speakerMugshot, bool8 copyToVram);
 static void WindowFunc_DrawStandardFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_DrawDialogueFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_DrawDialogueFrameName(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum);
@@ -75,6 +77,8 @@ static EWRAM_DATA u16 sFiller = 0;  // needed to align
 static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
 static EWRAM_DATA void *sTempTileDataBuffer[0x20] = {NULL};
+EWRAM_DATA u8 gSpeakerMugshot = MUGSHOT_NONE;
+EWRAM_DATA const u8* gSpeakerName = NULL;
 
 const u16 gStandardMenuPalette[] = INCBIN_U16("graphics/interface/std_menu.gbapal");
 
@@ -290,7 +294,17 @@ void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
-void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram)
+void DrawDialogueFrameWithDecorations(u8 windowId, u8 windowIdName, u8 windowIdMugshot, bool8 copyToVram)
+{
+   if (gSpeakerMugshot != MUGSHOT_NONE)
+       DrawDialogueFrameWithNameAndMug(windowId, windowIdName, windowIdMugshot, gSpeakerName, gSpeakerMugshot, copyToVram);
+   else if (gSpeakerName != NULL)
+       DrawDialogueFrameWithName(windowId, windowIdName, gSpeakerName, copyToVram);
+   else
+       DrawDialogueFrame(windowId, copyToVram);
+}
+
+static void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram)
 {
     CallWindowFunction(windowId, WindowFunc_DrawDialogueFrame);
     CallWindowFunction(windowIdName, WindowFunc_DrawDialogueFrameName);
@@ -305,7 +319,7 @@ void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerNa
     }
 }
 
-void DrawDialogueFrameWithNameAndMug(u8 windowId, u8 windowIdName, u8 windowIdMugshot, const u8 *speakerName, u8 speakerMugshot, bool8 copyToVram)
+static void DrawDialogueFrameWithNameAndMug(u8 windowId, u8 windowIdName, u8 windowIdMugshot, const u8 *speakerName, u8 speakerMugshot, bool8 copyToVram)
 {
     CallWindowFunction(windowId, WindowFunc_DrawDialogueFrame);
     CallWindowFunction(windowIdName, WindowFunc_DrawDialogueFrameName);

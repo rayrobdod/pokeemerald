@@ -51,8 +51,7 @@ void InitTextBoxGfxAndPrinters(void);
 u16 RunTextPrintersAndIsPrinter0Active(void);
 void LoadMessageBoxAndBorderGfx(void);
 void DrawDialogueFrame(u8 windowId, bool8 copyToVram);
-void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram);
-void DrawDialogueFrameWithNameAndMug(u8 windowId, u8 windowIdName, u8 windowIdMugshot, const u8 *speakerName, u8 speakerMugshot, bool8 copyToVram);
+void DrawDialogueFrameWithDecorations(u8 windowId, u8 windowIdName, u8 windowIdMugshot, bool8 copyToVram);
 void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram);
 u16 AddTextPrinterParameterized2(u8 windowId, u8 fontId, const u8 *str, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16), u8 fgColor, u8 bgColor, u8 shadowColor);
 void PrintPlayerNameOnWindow(u8, const u8 *, u16, u16);
@@ -129,5 +128,8 @@ void AddTextPrinterWithCustomSpeedForMessage(bool8 allowSkippingDelayWithButtonP
 void EraseYesNoWindow(void);
 void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *strs);
 void Menu_LoadStdPal(void);
+
+extern u8 gSpeakerMugshot;
+extern const u8* gSpeakerName;
 
 #endif // GUARD_MENU_H
