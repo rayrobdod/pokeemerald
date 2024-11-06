@@ -118,6 +118,16 @@ u16 FontFunc_Braille(struct TextPrinter *textPrinter)
             case EXT_CTRL_CODE_FILL_WINDOW:
                 FillWindowPixelBuffer(textPrinter->printerTemplate.windowId, PIXEL_FILL(textPrinter->printerTemplate.bgColor));
                 return RENDER_REPEAT;
+            case EXT_CTRL_CODE_NAMEPLATE:
+                while (CHAR_PROMPT_CLEAR != *textPrinter->printerTemplate.currentChar)
+                {
+                    ++textPrinter->printerTemplate.currentChar;
+                }
+                ++textPrinter->printerTemplate.currentChar;
+                return RENDER_REPEAT;
+            case EXT_CTRL_CODE_MUGSHOT:
+                textPrinter->printerTemplate.currentChar++;
+                return RENDER_REPEAT;
             }
             break;
         case CHAR_PROMPT_CLEAR:

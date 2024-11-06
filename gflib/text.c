@@ -934,6 +934,7 @@ void DrawDownArrow(u8 windowId, u16 x, u16 y, u8 bgColor, bool8 drawArrow, u8 *c
 static u16 RenderText(struct TextPrinter *textPrinter)
 {
     struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
+    unsigned i;
     u16 currChar;
     s32 width;
     s32 widthHelper;
@@ -1096,6 +1097,21 @@ static u16 RenderText(struct TextPrinter *textPrinter)
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_ENG:
                 textPrinter->japanese = FALSE;
+                return RENDER_REPEAT;
+            case EXT_CTRL_CODE_NAMEPLATE:
+                i = 0;
+                while (CHAR_PROMPT_CLEAR != *(textPrinter->printerTemplate.currentChar) && i < DLG_WINDOW_NAMEPLATE_LENGTH)
+                {
+                    gSpeakerName[i++] = *(textPrinter->printerTemplate.currentChar++);
+                }
+                gSpeakerName[i] = EOS;
+                ++textPrinter->printerTemplate.currentChar;
+                DrawDialogueFrameWithDecorations(0, 1, 2, TRUE);
+                return RENDER_REPEAT;
+            case EXT_CTRL_CODE_MUGSHOT:
+                gSpeakerMugshot = *textPrinter->printerTemplate.currentChar;
+                ++textPrinter->printerTemplate.currentChar;
+                DrawDialogueFrameWithDecorations(0, 1, 2, TRUE);
                 return RENDER_REPEAT;
             }
             break;
@@ -1275,6 +1291,7 @@ static u32 UNUSED GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 lett
             case EXT_CTRL_CODE_SKIP:
             case EXT_CTRL_CODE_CLEAR_TO:
             case EXT_CTRL_CODE_MIN_LETTER_SPACING:
+            case EXT_CTRL_CODE_MUGSHOT:
                 ++strPos;
                 break;
             case EXT_CTRL_CODE_RESET_FONT:
@@ -1284,6 +1301,9 @@ static u32 UNUSED GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 lett
             case EXT_CTRL_CODE_JPN:
             case EXT_CTRL_CODE_ENG:
             default:
+                break;
+            case EXT_CTRL_CODE_NAMEPLATE:
+                while (CHAR_PROMPT_CLEAR != strLocal[strPos++]) {};
                 break;
             }
             break;
@@ -1413,6 +1433,7 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
             case EXT_CTRL_CODE_ESCAPE:
             case EXT_CTRL_CODE_SHIFT_RIGHT:
             case EXT_CTRL_CODE_SHIFT_DOWN:
+            case EXT_CTRL_CODE_MUGSHOT:
                 ++str;
                 break;
             case EXT_CTRL_CODE_FONT:
@@ -1447,6 +1468,9 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
             case EXT_CTRL_CODE_WAIT_SE:
             case EXT_CTRL_CODE_FILL_WINDOW:
             default:
+                break;
+            case EXT_CTRL_CODE_NAMEPLATE:
+                while (CHAR_PROMPT_CLEAR != *(str++)) {};
                 break;
             }
             break;
@@ -1560,6 +1584,7 @@ u8 RenderTextHandleBold(u8 *pixels, u8 fontId, u8 *str)
             case EXT_CTRL_CODE_SKIP:
             case EXT_CTRL_CODE_CLEAR_TO:
             case EXT_CTRL_CODE_MIN_LETTER_SPACING:
+            case EXT_CTRL_CODE_MUGSHOT:
                 ++strPos;
                 break;
             case EXT_CTRL_CODE_RESET_FONT:
@@ -1569,6 +1594,10 @@ u8 RenderTextHandleBold(u8 *pixels, u8 fontId, u8 *str)
             case EXT_CTRL_CODE_JPN:
             case EXT_CTRL_CODE_ENG:
             default:
+                continue;
+            case EXT_CTRL_CODE_NAMEPLATE:
+                while (CHAR_PROMPT_CLEAR != strLocal[strPos++]) {}
+                ++strPos;
                 continue;
             }
             break;

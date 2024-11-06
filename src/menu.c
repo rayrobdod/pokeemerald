@@ -297,11 +297,19 @@ void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
 void DrawDialogueFrameWithDecorations(u8 windowId, u8 windowIdName, u8 windowIdMugshot, bool8 copyToVram)
 {
     if (gSpeakerMugshot != MUGSHOT_NONE)
+    {
         DrawDialogueFrameWithNameAndMug(windowId, windowIdName, windowIdMugshot, gSpeakerName, gSpeakerMugshot, copyToVram);
+    }
     else if (gSpeakerName[0] != EOS)
+    {
+        CallWindowFunction(windowId, WindowFunc_ClearDialogWindowAndFrame);
         DrawDialogueFrameWithName(windowId, windowIdName, gSpeakerName, copyToVram);
+    }
     else
+    {
+        CallWindowFunction(windowId, WindowFunc_ClearDialogWindowAndFrame);
         DrawDialogueFrame(windowId, copyToVram);
+    }
 }
 
 static void DrawDialogueFrameWithName(u8 windowId, u8 windowIdName, const u8 *speakerName, bool8 copyToVram)
