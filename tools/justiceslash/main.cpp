@@ -192,10 +192,10 @@ public:
 	PeakBrightnessFunc() {}
 	~PeakBrightnessFunc() {}
 	float background() const override {
-		return 31.0f;
+		return 0.0f;
 	}
 	float operator()(float perpNorm, float parNorm) const override {
-		return 31.0f + 31.0f * perpNorm;
+		return 62.0f * perpNorm;
 	}
 };
 
@@ -208,10 +208,7 @@ public:
 	IncreasingBrightnessFunc(float progress) : progress(progress) {}
 	~IncreasingBrightnessFunc() {}
 	float background() const override {
-		if (this->progress < 0.25f)
 			return 0.0f;
-		else
-			return 31.0f * (this->progress - 0.25f) * 4 / 3;
 	}
 	float operator()(float perpNorm, float parNorm) const override {
 		float parInv = 1.0f - parNorm;
@@ -232,10 +229,9 @@ public:
 				+ 31.0f * parInv
 				+ 31.0f * progressBlade
 				;
-			blade = std::min(peakBrightnessFunc(perpNorm, parNorm), blade);
 		}
 
-		return std::max(aura, blade);
+		return std::min(peakBrightnessFunc(perpNorm, parNorm), std::max(aura, blade));
 	}
 };
 
@@ -246,10 +242,7 @@ public:
 	DecreasingBrightnessFunc(float progress) : progress(progress) {}
 	~DecreasingBrightnessFunc() {}
 	float background() const override {
-		if (this->progress > 0.75f)
 			return 0.0f;
-		else
-			return 31.0f * (0.75 - this->progress) * 4 / 3;
 	}
 	float operator()(float perpNorm, float parNorm) const override {
 		float progressInv = 1.0f - this->progress;
@@ -270,10 +263,9 @@ public:
 				+ 31.0f * parNorm
 				+ 31.0f * progressBlade
 				;
-			blade = std::min(peakBrightnessFunc(perpNorm, parNorm), blade);
 		}
 
-		return std::max(aura, blade);
+		return std::min(peakBrightnessFunc(perpNorm, parNorm), std::max(aura, blade));
 	}
 };
 
