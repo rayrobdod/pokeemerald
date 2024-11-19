@@ -386,6 +386,9 @@ SECTIONS {
         *libagbsyscall.a:SoftReset.o(.text);
         *libagbsyscall.a:Sqrt.o(.text);
         *libagbsyscall.a:VBlankIntrWait.o(.text);
+        *libagbsyscall.a:Diff16bitUnFilter.o(.text);
+        *libagbsyscall.a:Diff8bitUnFilterVram.o(.text);
+        *libagbsyscall.a:Diff8bitUnFilterWram.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_divdi3.o(.text);
         *libgcc.a:_divsi3.o(.text);

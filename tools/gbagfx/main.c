@@ -9,6 +9,7 @@
 #include "gfx.h"
 #include "convert_png.h"
 #include "jasc_pal.h"
+#include "diff.h"
 #include "lz.h"
 #include "rl.h"
 #include "font.h"
@@ -586,6 +587,70 @@ void HandleHuffDecompressCommand(char *inputPath, char *outputPath, int argc UNU
     free(uncompressedData);
 }
 
+void HandleDiff8bitFilterCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+{
+    int fileSize;
+
+    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
+
+    int compressedSize;
+    unsigned char *compressedData = DiffFilter(buffer, fileSize, &compressedSize, 1);
+
+    free(buffer);
+
+    WriteWholeFile(outputPath, compressedData, compressedSize);
+
+    free(compressedData);
+}
+
+void HandleDiff16bitFilterCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+{
+    int fileSize;
+
+    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
+
+    int compressedSize;
+    unsigned char *compressedData = DiffFilter(buffer, fileSize, &compressedSize, 2);
+
+    free(buffer);
+
+    WriteWholeFile(outputPath, compressedData, compressedSize);
+
+    free(compressedData);
+}
+
+void HandleDiff8bitUnfilterCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+{
+    int fileSize;
+
+    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
+
+    int compressedSize;
+    unsigned char *compressedData = DiffUnfilter(buffer, fileSize, &compressedSize, 1);
+
+    free(buffer);
+
+    WriteWholeFile(outputPath, compressedData, compressedSize);
+
+    free(compressedData);
+}
+
+void HandleDiff16bitUnfilterCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+{
+    int fileSize;
+
+    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
+
+    int compressedSize;
+    unsigned char *compressedData = DiffUnfilter(buffer, fileSize, &compressedSize, 2);
+
+    free(buffer);
+
+    WriteWholeFile(outputPath, compressedData, compressedSize);
+
+    free(compressedData);
+}
+
 int main(int argc, char **argv)
 {
     char converted = 0;
@@ -617,6 +682,10 @@ int main(int argc, char **argv)
         { "lz", NULL, HandleLZDecompressCommand },
         { NULL, "rl", HandleRLCompressCommand },
         { "rl", NULL, HandleRLDecompressCommand },
+        { NULL, "diff8", HandleDiff8bitFilterCommand },
+        { NULL, "diff16", HandleDiff16bitFilterCommand },
+        { "diff8", NULL, HandleDiff8bitUnfilterCommand },
+        { "diff16", NULL, HandleDiff16bitUnfilterCommand },
         { NULL, NULL, NULL }
     };
 

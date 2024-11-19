@@ -65,6 +65,12 @@ void RLUnCompWram(const void *src, void *dest);
 
 void RLUnCompVram(const void *src, void *dest);
 
+void Diff16bitUnFilter(const void *src, void *dest);
+
+void Diff8bitUnFilterWram(const void *src, void *dest);
+
+void Diff8bitUnFilterVram(const void *src, void *dest);
+
 int MultiBoot(struct MultiBootParam *mp);
 
 s32 Div(s32 num, s32 denom);
