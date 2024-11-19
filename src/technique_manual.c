@@ -128,13 +128,13 @@ incrementCounter:
         }
     }
 
-#if TM_COUNTER_WATER_USING_ICE
-    if (gMovesInfo[move].type == TYPE_ICE && (gSpeciesInfo[attackerSpecies].types[0] == TYPE_WATER || gSpeciesInfo[attackerSpecies].types[1] == TYPE_WATER))
-    {
-        SATURATING_INCREMENT_COUNTER(
-            gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE]);
+    if (0 <= TM_COUNTER_WATER_USING_ICE) {
+        if (gMovesInfo[move].type == TYPE_ICE && (gSpeciesInfo[attackerSpecies].types[0] == TYPE_WATER || gSpeciesInfo[attackerSpecies].types[1] == TYPE_WATER))
+        {
+            SATURATING_INCREMENT_COUNTER(
+                gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE]);
+        }
     }
-#endif
 }
 
 void TmSetFlag(enum TmFlags tmFlagIndex)
