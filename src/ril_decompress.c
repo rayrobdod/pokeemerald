@@ -73,7 +73,7 @@ void Ril8DecompressWram(const u32 *src, void *dest)
     }
 
 fail:
-    // ???
+    ; // ???
 }
 
 void Ril8DecompressVram(const u32 *src, void *dest)
@@ -124,12 +124,11 @@ void Ril8DecompressVram(const u32 *src, void *dest)
                     if (bufferHasValue)
                     {
                         buffer |= (0xFF & src8[srcPos++]) << 8;
-                        dest8[destPos++ / 2] = buffer;
+                        dest8[destPos++] = buffer;
                     }
                     else
                     {
                         buffer = 0xFF & src8[srcPos++];
-                        destPos++;
                     }
                     bufferHasValue = !bufferHasValue;
                 }
@@ -139,19 +138,26 @@ void Ril8DecompressVram(const u32 *src, void *dest)
                 if (destPos + count > destSize)
                     goto fail;
 
-                for (i = 0; i < count; i++)
+                if (bufferHasValue)
                 {
-                    if (bufferHasValue)
-                    {
-                        buffer |= (0xFF & repeatValue) << 8;
-                        dest8[destPos++ / 2] = buffer;
-                    }
-                    else
-                    {
-                        buffer = 0xFF & repeatValue;
-                        destPos++;
-                    }
-                    bufferHasValue = !bufferHasValue;
+                    buffer |= (0xFF & repeatValue) << 8;
+                    dest8[destPos++] = buffer;
+                    count--;
+                }
+
+                bufferHasValue = count % 2;
+                count -= bufferHasValue;
+
+                buffer = (repeatValue << 8) | repeatValue;
+
+                for (i = 0; i < count / 2; i++)
+                {
+                    dest8[destPos++] = buffer;
+                }
+
+                if (bufferHasValue)
+                {
+                    buffer = 0xFF & repeatValue;
                 }
 
                 break;
@@ -164,12 +170,11 @@ void Ril8DecompressVram(const u32 *src, void *dest)
                     if (bufferHasValue)
                     {
                         buffer |= (0xFF & incrementValue) << 8;
-                        dest8[destPos++ / 2] = buffer;
+                        dest8[destPos++] = buffer;
                     }
                     else
                     {
                         buffer = 0xFF & incrementValue;
-                        destPos++;
                     }
                     bufferHasValue = !bufferHasValue;
                     incrementValue++;
@@ -177,14 +182,14 @@ void Ril8DecompressVram(const u32 *src, void *dest)
                 break;
         }
 
-        if (destPos == destSize)
+        if (destPos * 2 == destSize)
         {
             return;
         }
     }
 
 fail:
-    // ???
+    ; // ???
 }
 
 void Ril16DecompressVram(const u32 *src, void *dest)
@@ -268,5 +273,5 @@ void Ril16DecompressVram(const u32 *src, void *dest)
     }
 
 fail:
-    // ???
+    ; // ???
 }
