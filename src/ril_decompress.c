@@ -233,42 +233,42 @@ void Ril16DecompressVram(const u32 *src, void *dest)
                 }
                 break;
             case 1:
-                if (destPos + count * 2 > destSize)
+                if ((destPos + count) * 2 > destSize)
                     goto fail;
 
                 for (i = 0; i < count; i++)
                 {
                     buffer = 0xFF & src8[srcPos++];
                     buffer |= (0xFF & src8[srcPos++]) << 8;
-                    dest16[destPos / 2] = buffer;
-                    destPos += 2;
+                    dest16[destPos] = buffer;
+                    destPos += 1;
                 }
 
                 break;
             case 2:
-                if (destPos + count * 2 > destSize)
+                if ((destPos + count) * 2 > destSize)
                     goto fail;
 
                 for (i = 0; i < count; i++)
                 {
-                    dest16[destPos / 2] = repeatValue;
-                    destPos += 2;
+                    dest16[destPos] = repeatValue;
+                    destPos += 1;
                 }
                 break;
             case 3:
-                if (destPos + count * 2 > destSize)
+                if ((destPos + count) * 2 > destSize)
                     goto fail;
 
                 for (i = 0; i < count; i++)
                 {
-                    dest16[destPos / 2] = incrementValue;
-                    destPos += 2;
+                    dest16[destPos] = incrementValue;
+                    destPos += 1;
                     incrementValue++;
                 }
                 break;
         }
 
-        if (destPos == destSize)
+        if (destPos * 2 == destSize)
             return;
     }
 
