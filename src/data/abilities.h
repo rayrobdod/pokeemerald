@@ -881,7 +881,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SNOW_WARNING] =
     {
         .name = _("Snow Warning"),
-        .description = COMPOUND_STRING("Summons a Hailstorm."),
+    #if B_SNOW_WARNING >= GEN_9
+        .description = COMPOUND_STRING("Summons snow in battle."),
+    #else
+        .description = COMPOUND_STRING("Summons hail in battle."),
+    #endif
         .aiRating = 8,
     },
 
@@ -1546,7 +1550,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SLUSH_RUSH] =
     {
         .name = _("Slush Rush"),
-        .description = COMPOUND_STRING("Raises Speed in Hail or Snow."),
+        .description = COMPOUND_STRING("Raises Speed in Hail/Snow."),
         .aiRating = 5,
     },
 
@@ -1602,6 +1606,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Disguise"),
         .description = COMPOUND_STRING("Decoy protects it once."),
         .aiRating = 8,
+        .breakable = TRUE,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
@@ -2268,6 +2273,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
         .cantBeSuppressed = TRUE,
+        .cantBeOverwritten = TRUE,
     },
 
     [ABILITY_ELECTROMORPHOSIS] =
@@ -2547,14 +2553,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     #else
         .name = _("SuprswtSyrup"),
     #endif
-        .description = COMPOUND_STRING("Lowers the foe's Speed."),
+        .description = COMPOUND_STRING("Lowers the foe's Evasion."),
         .aiRating = 5,
     },
 
     [ABILITY_TERA_SHIFT] =
     {
         .name = _("Tera Shift"),
-        .description = COMPOUND_STRING("Terasteralizes upon entry."),
+        .description = COMPOUND_STRING("Terastallizes upon entry."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2567,7 +2573,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TERA_SHELL] =
     {
         .name = _("Tera Shell"),
-        .description = COMPOUND_STRING("Resistant to types at full HP."),
+        .description = COMPOUND_STRING("Resists all at full HP."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2582,7 +2588,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     #else
         .name = _("TeraformZero"),
     #endif
-        .description = COMPOUND_STRING("Removes weather and terrain."),
+        .description = COMPOUND_STRING("Zeroes weather and terrain."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,

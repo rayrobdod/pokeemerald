@@ -5205,8 +5205,7 @@ static const union AnimCmd sAnim_DeoxysNormal_1[] =
 {
     ANIMCMD_FRAME(0, 16),
     ANIMCMD_FRAME(1, 16),
-    ANIMCMD_FRAME(0, 26),
-    ANIMCMD_FRAME(1, 16),
+    ANIMCMD_FRAME(1, 26),
     ANIMCMD_FRAME(0, 16),
     ANIMCMD_END,
 };
@@ -10120,8 +10119,20 @@ PLACEHOLDER_ANIM_SINGLE_FRAME(IronCrown);
 #endif //P_FAMILY_IRON_CROWN
 
 #if P_FAMILY_TERAPAGOS
-PLACEHOLDER_ANIM_SINGLE_FRAME(TerapagosNormal);
-PLACEHOLDER_ANIM_SINGLE_FRAME(TerapagosTerastal);
+static const union AnimCmd sAnim_TerapagosNormal_1[] =
+{
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 30),
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+static const union AnimCmd sAnim_TerapagosTerastal_1[] =
+{
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 30),
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
 PLACEHOLDER_ANIM_SINGLE_FRAME(TerapagosStellar);
 #endif //P_FAMILY_TERAPAGOS
 

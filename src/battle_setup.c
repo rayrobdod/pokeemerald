@@ -254,6 +254,23 @@ static const struct TrainerBattleParameter sTrainerBContinueScriptBattleParams[]
     {&sTrainerBattleEndScript,      TRAINER_PARAM_LOAD_SCRIPT_RET_ADDR},
 };
 
+// two trainers, each with a defeat speech
+static const struct TrainerBattleParameter sTrainerTwoTrainerBattleParams[] =
+{
+    {&sTrainerBattleMode,           TRAINER_PARAM_LOAD_VAL_8BIT},
+    {&sTrainerObjectEventLocalId,   TRAINER_PARAM_CLEAR_VAL_16BIT},
+    {&gTrainerBattleOpponent_A,     TRAINER_PARAM_LOAD_VAL_16BIT},
+    {&sTrainerAIntroSpeech,         TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerADefeatSpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
+    {&gTrainerBattleOpponent_B,     TRAINER_PARAM_LOAD_VAL_16BIT},
+    {&sTrainerBIntroSpeech,         TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerBDefeatSpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
+    {&sTrainerVictorySpeech,        TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerCannotBattleSpeech,   TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerBBattleScriptRetAddr, TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerBattleEndScript,      TRAINER_PARAM_LOAD_SCRIPT_RET_ADDR},
+};
+
 #define REMATCH(trainer1, trainer2, trainer3, trainer4, trainer5, map)  \
 {                                                                       \
     .trainerIds = {trainer1, trainer2, trainer3, trainer4, trainer5},   \
@@ -910,7 +927,7 @@ u8 GetTrainerBattleTransition(void)
         return sBattleTransitionTable_Trainer[transitionType][1];
 }
 
-#define RANDOM_TRANSITION(table)(table[Random() % ARRAY_COUNT(table)])
+#define RANDOM_TRANSITION(table) (table[Random() % ARRAY_COUNT(table)])
 u8 GetSpecialBattleTransition(s32 id)
 {
     u16 var;
@@ -1230,6 +1247,11 @@ const u8 *BattleSetup_ConfigureTrainerBattle(const u8 *data)
             gTrainerBattleOpponent_B = LocalIdToHillTrainerId(gSpecialVar_LastTalked);
         }
         return EventScript_TryDoNormalTrainerBattle;
+    case TRAINER_BATTLE_TWO_TRAINERS_NO_INTRO:
+        gNoOfApproachingTrainers = 2; // set TWO_OPPONENTS gBattleTypeFlags
+        gApproachingTrainerId = 1; // prevent trainer approach
+        TrainerBattleLoadArgs(sTrainerTwoTrainerBattleParams, data);
+        return EventScript_DoNoIntroTrainerBattle;
     default:
         if (gApproachingTrainerId == 0)
         {
@@ -1707,7 +1729,7 @@ static inline bool32 DoesCurrentMapMatchRematchTrainerMap(s32 i, const struct Re
 
 bool32 TrainerIsMatchCallRegistered(s32 i)
 {
-    return FlagGet(FLAG_MATCH_CALL_REGISTERED + i);
+    return FlagGet(TRAINER_REGISTERED_FLAGS_START + i);
 }
 
 #if FREE_MATCH_CALL == FALSE
@@ -1865,7 +1887,7 @@ static u32 GetTrainerMatchCallFlag(u32 trainerId)
     for (i = 0; i < REMATCH_TABLE_ENTRIES; i++)
     {
         if (gRematchTable[i].trainerIds[0] == trainerId)
-            return FLAG_MATCH_CALL_REGISTERED + i;
+            return TRAINER_REGISTERED_FLAGS_START + i;
     }
 
     return 0xFFFF;
@@ -1916,15 +1938,16 @@ static bool32 HasAtLeastFiveBadges(void)
 void IncrementRematchStepCounter(void)
 {
 #if FREE_MATCH_CALL == FALSE
-    if (HasAtLeastFiveBadges()
-        && (I_VS_SEEKER_CHARGING != 0)
-        && (!CheckBagHasItem(ITEM_VS_SEEKER, 1)))
-    {
-        if (gSaveBlock1Ptr->trainerRematchStepCounter >= STEP_COUNTER_MAX)
-            gSaveBlock1Ptr->trainerRematchStepCounter = STEP_COUNTER_MAX;
-        else
-            gSaveBlock1Ptr->trainerRematchStepCounter++;
-    }
+    if (!HasAtLeastFiveBadges())
+        return;
+
+    if (IsVsSeekerEnabled())
+        return;
+
+    if (gSaveBlock1Ptr->trainerRematchStepCounter >= STEP_COUNTER_MAX)
+        gSaveBlock1Ptr->trainerRematchStepCounter = STEP_COUNTER_MAX;
+    else
+        gSaveBlock1Ptr->trainerRematchStepCounter++;
 #endif //FREE_MATCH_CALL
 }
 
