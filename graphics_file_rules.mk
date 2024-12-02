@@ -22,6 +22,7 @@ POKEDEXGFXDIR := graphics/pokedex
 STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/pokemon/spinda/spots
+TITLESCREENGFXDIR := graphics/title_screen
 
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
@@ -298,8 +299,12 @@ $(FONTGFXDIR)/frlg_female.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_female.png
 
 
 ### Miscellaneous ###
-graphics/title_screen/pokemon_logo.gbapal: %.gbapal: %.pal
+
+$(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal
 	$(GFX) $< $@ -num_colors 224
+
+$(TITLESCREENGFXDIR)/emerald_version.8bpp: %.8bpp: %.png
+	$(GFX) $< $@ -mwidth 8 -mheight 4
 
 graphics/pokemon_jump/bg.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 63 -Wnum_tiles
@@ -466,6 +471,20 @@ $(BATTRANSGFXDIR)/frontier_square_4.4bpp: $(BATTRANSGFXDIR)/frontier_squares_bla
                                           $(BATTRANSGFXDIR)/frontier_squares_4.4bpp
 	@cat $^ >$@
 
+$(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \
+                                         $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
+	@cat $^ >$@
+
+graphics/birch_speech/unused_beauty.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -num_tiles 822 -Wnum_tiles
+
+
+### Swords of Justice Battle Transition ###
+
+AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap
+AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap
+AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap
+
 $(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap &: tools/justiceslash/justiceslash
 	$^ tiles 0 $(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap
 
@@ -477,14 +496,6 @@ $(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_just
 
 $(patsubst %,$(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal,0 1 2 3 4 5 6 7 8 9 10 11 12 13 14): $(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
 	$^ palette $* $@
-
-$(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \
-                                         $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
-	@cat $^ >$@
-
-graphics/birch_speech/unused_beauty.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 822 -Wnum_tiles
-
 
 
 ### Pokémon Storage System ###
