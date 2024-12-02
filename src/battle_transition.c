@@ -294,7 +294,7 @@ static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transi
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 {
-    [0 ... B_TRANSITION_COUNT - 1] = &Task_Intro
+    #include "battle_transition_tasks_intro/_index.h"
 };
 
 // After the intro each transition has a unique main task.
