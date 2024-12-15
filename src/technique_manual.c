@@ -37,7 +37,8 @@
 #define TASKS_PER_PAGE (3)
 #define MAX_SPECIES_REQUIREMENT (5)
 
-enum {
+enum ResearchTaskType
+{
     TM_TASK_NONE,
     TM_TASK_SCRIPT_FLAG,
     TM_TASK_BATTLE_SPECIAL,
@@ -45,12 +46,14 @@ enum {
     TM_TASK_SEEN_DIFFERENT_SPECIES,
     TM_TASK_SEEN_RAIN,
     TM_TASK_SEEN_SUN,
+
     TM_TASK_COUNT,
 };
 
 struct ResearchTask
 {
-    u8 type;
+    // considering that the main `ResearchTask` variable is rodata, I'd like this enum to be a rodata
+    enum ResearchTaskType type;
     u8 storage_index;
     u8 requirement;
     const u8* description;
@@ -106,6 +109,7 @@ void TmIncrementSeenStats(u16 move, u16 attackerSpecies)
                         break;
                     }
                 }
+                break;
             case TM_TASK_SEEN_RAIN:
                 if (gBattleWeather & B_WEATHER_RAIN) goto incrementCounter;
                 break;
@@ -124,26 +128,26 @@ incrementCounter:
         }
     }
 
-#if TM_COUNTER_WATER_USING_ICE
-    if (gMovesInfo[move].type == TYPE_ICE && (gSpeciesInfo[attackerSpecies].types[0] == TYPE_WATER || gSpeciesInfo[attackerSpecies].types[1] == TYPE_WATER))
-    {
-        SATURATING_INCREMENT_COUNTER(
-            gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE]);
+    if (0 <= TM_COUNTER_WATER_USING_ICE) {
+        if (gMovesInfo[move].type == TYPE_ICE && (gSpeciesInfo[attackerSpecies].types[0] == TYPE_WATER || gSpeciesInfo[attackerSpecies].types[1] == TYPE_WATER))
+        {
+            SATURATING_INCREMENT_COUNTER(
+                gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE]);
+        }
     }
-#endif
 }
 
-void TmSetFlag(u8 tmFlagIndex)
+void TmSetFlag(enum TmFlags tmFlagIndex)
 {
     gSaveBlockTm.flags[tmFlagIndex / 8] |= 1 << (tmFlagIndex % 8);
 }
 
-bool8 TmIsFlagSet(u8 tmFlagIndex)
+bool8 TmIsFlagSet(enum TmFlags tmFlagIndex)
 {
     return 0 != (gSaveBlockTm.flags[tmFlagIndex / 8] & (1 << (tmFlagIndex % 8)));
 }
 
-bool8 TmIsMastered(u8 tmIndex)
+bool8 TmIsMastered(enum TmPages tmIndex)
 {
     unsigned start, end;
     unsigned i, j;
@@ -176,7 +180,7 @@ bool8 TmIsMastered(u8 tmIndex)
     return TRUE;
 }
 
-static bool8 TmShouldDisplayName(u8 tmIndex)
+static bool8 TmShouldDisplayName(enum TmPages tmIndex)
 {
     unsigned i;
 
@@ -198,7 +202,10 @@ static bool8 TmShouldDisplayName(u8 tmIndex)
             if (0 != gSaveBlockTm.counters[task.storage_index])
                 return TRUE;
             break;
-        default:
+        case TM_TASK_SCRIPT_FLAG:
+        case TM_TASK_NONE:
+        case TM_TASK_COUNT:
+        case TM_TASK_BATTLE_SPECIAL:
             break;
         }
     }
@@ -730,7 +737,7 @@ static void BlitCheckmark(int tileOffset)
     CopyToWindowPixelBuffer(WIN_COUNTER_DESCS, &sCheckmarkTechniqueManual_Gfx[TILE_SIZE_4BPP * 2 / sizeof(u16)], TILE_SIZE_4BPP * 2, tileOffset);
 }
 
-static void DrawMoveInfo(s32 tmIndex)
+static void DrawMoveInfo(enum TmPages tmIndex)
 {
     unsigned counterValue;
     int i, y;
