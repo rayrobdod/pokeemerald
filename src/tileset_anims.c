@@ -1169,7 +1169,7 @@ static void BlendAnimPalette_BattleDome_FloorLights(u16 timer)
 {
     CpuCopy16(sTilesetAnims_BattleDomeFloorLightPals[timer % ARRAY_COUNT(sTilesetAnims_BattleDomeFloorLightPals)], &gPlttBufferUnfaded[BG_PLTT_ID(8)], PLTT_SIZE_4BPP);
     BlendPalette(BG_PLTT_ID(8), 16, gPaletteFade.y, gPaletteFade.blendColor & 0x7FFF);
-    if ((u8)FindTaskIdByFunc(Task_BattleTransition_Intro) != TASK_NONE)
+    if (IsBattleTransitionIntroActive())
     {
         sSecondaryTilesetAnimCallback = TilesetAnim_BattleDome2;
         sSecondaryTilesetAnimCounterMax = 32;
@@ -1179,7 +1179,7 @@ static void BlendAnimPalette_BattleDome_FloorLights(u16 timer)
 static void BlendAnimPalette_BattleDome_FloorLightsNoBlend(u16 timer)
 {
     CpuCopy16(sTilesetAnims_BattleDomeFloorLightPals[timer % ARRAY_COUNT(sTilesetAnims_BattleDomeFloorLightPals)], &gPlttBufferUnfaded[BG_PLTT_ID(8)], PLTT_SIZE_4BPP);
-    if ((u8)FindTaskIdByFunc(Task_BattleTransition_Intro) == TASK_NONE)
+    if (! IsBattleTransitionIntroActive())
     {
         BlendPalette(BG_PLTT_ID(8), 16, gPaletteFade.y, gPaletteFade.blendColor & 0x7FFF);
         if (!--sSecondaryTilesetAnimCounterMax)
