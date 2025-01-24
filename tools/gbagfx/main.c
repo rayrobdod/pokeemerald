@@ -10,7 +10,6 @@
 #include "convert_png.h"
 #include "jasc_pal.h"
 #include "lz.h"
-#include "ril.h"
 #include "rl.h"
 #include "font.h"
 #include "huff.h"
@@ -502,66 +501,6 @@ void HandleLZDecompressCommand(char *inputPath, char *outputPath, int argc UNUSE
     free(uncompressedData);
 }
 
-void HandleRIL16CompressCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
-{
-    int fileSize;
-    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
-
-    int compressedSize;
-    unsigned char *compressedData = RIL16Compress(buffer, fileSize, &compressedSize);
-
-    free(buffer);
-
-    WriteWholeFile(outputPath, compressedData, compressedSize);
-
-    free(compressedData);
-}
-
-void HandleRIL16DecompressCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
-{
-    int fileSize;
-    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
-
-    int uncompressedSize;
-    unsigned char *uncompressedData = RIL16Decompress(buffer, fileSize, &uncompressedSize);
-
-    free(buffer);
-
-    WriteWholeFile(outputPath, uncompressedData, uncompressedSize);
-
-    free(uncompressedData);
-}
-
-void HandleRIL8CompressCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
-{
-    int fileSize;
-    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
-
-    int compressedSize;
-    unsigned char *compressedData = RIL8Compress(buffer, fileSize, &compressedSize);
-
-    free(buffer);
-
-    WriteWholeFile(outputPath, compressedData, compressedSize);
-
-    free(compressedData);
-}
-
-void HandleRIL8DecompressCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
-{
-    int fileSize;
-    unsigned char *buffer = ReadWholeFile(inputPath, &fileSize);
-
-    int uncompressedSize;
-    unsigned char *uncompressedData = RIL8Decompress(buffer, fileSize, &uncompressedSize);
-
-    free(buffer);
-
-    WriteWholeFile(outputPath, uncompressedData, uncompressedSize);
-
-    free(uncompressedData);
-}
-
 void HandleRLCompressCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
 {
     int fileSize;
@@ -678,10 +617,6 @@ int main(int argc, char **argv)
         { "lz", NULL, HandleLZDecompressCommand },
         { NULL, "rl", HandleRLCompressCommand },
         { "rl", NULL, HandleRLDecompressCommand },
-        { NULL, "ril16", HandleRIL16CompressCommand },
-        { "ril16", NULL, HandleRIL16DecompressCommand },
-        { NULL, "ril8", HandleRIL8CompressCommand },
-        { "ril8", NULL, HandleRIL8DecompressCommand },
         { NULL, NULL, NULL }
     };
 

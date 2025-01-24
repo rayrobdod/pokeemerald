@@ -6,7 +6,8 @@ CFLAGS += $(shell pkg-config --cflags libpng)
 LIBS = -lpng -lz
 LDFLAGS += $(shell pkg-config --libs-only-L libpng)
 
-SRCS = main.c convert_png.c gfx.c jasc_pal.c lz.c rl.c util.c font.c huff.c
+SRCS = main.c ril.c util.c
+HEADERS = global.h ril.h util.h
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -16,14 +17,14 @@ endif
 
 .PHONY: all clean
 
-all: gbagfx$(EXE)
+all: compressTilemap1$(EXE)
 	@:
 
-gbagfx-debug$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h rl.h util.h font.h
+compressTilemap1-debug$(EXE): $(SRCS) $(HEADERS)
 	$(CC) $(CFLAGS) -DDEBUG $(SRCS) -o $@ $(LDFLAGS) $(LIBS)
 
-gbagfx$(EXE): $(SRCS) convert_png.h gfx.h global.h jasc_pal.h lz.h rl.h util.h font.h
+compressTilemap1$(EXE): $(SRCS) $(HEADERS)
 	$(CC) $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS) $(LIBS)
 
 clean:
-	$(RM) gbagfx gbagfx.exe
+	$(RM) compressTilemap1 compressTilemap1.exe

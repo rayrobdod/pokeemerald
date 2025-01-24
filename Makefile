@@ -140,6 +140,7 @@ include make_tools.mk
 # Tool executables
 GFX       := $(TOOLS_DIR)/gbagfx/gbagfx$(EXE)
 AIF       := $(TOOLS_DIR)/aif2pcm/aif2pcm$(EXE)
+TILEMAPCOMP1 := $(TOOLS_DIR)/compressTilemap1/compressTilemap1$(EXE)
 MID       := $(TOOLS_DIR)/mid2agb/mid2agb$(EXE)
 SCANINC   := $(TOOLS_DIR)/scaninc/scaninc$(EXE)
 PREPROC   := $(TOOLS_DIR)/preproc/preproc$(EXE)
@@ -280,8 +281,8 @@ generated: $(AUTO_GEN_TARGETS)
 %.gbapal: %.pal  ; $(GFX) $< $@
 %.gbapal: %.png  ; $(GFX) $< $@
 %.lz:     %      ; $(GFX) $< $@
-%.ril8:   %      ; $(GFX) $< $@
-%.ril16:  %      ; $(GFX) $< $@
+%.ril8:   %      ; $(TILEMAPCOMP1) $< $@
+%.ril16:  %      ; $(TILEMAPCOMP1) $< $@
 %.rl:     %      ; $(GFX) $< $@
 
 clean-generated:
