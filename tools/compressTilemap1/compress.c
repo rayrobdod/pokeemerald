@@ -1,5 +1,5 @@
 
-#include "ril.h"
+#include "compress.h"
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -23,29 +23,12 @@
  * Other instructions are reserved and MUST NOT appear in compressed files
  */
 
-static unsigned char *RILDecompress(unsigned char *src, int srcSize, int *uncompressedSize, int wordSize);
-static unsigned char *RILCompress(unsigned char *src, int srcSize, int *compressedSize, int wordSize);
-
-unsigned char *RIL8Decompress(unsigned char *src, int srcSize, int *uncompressedSize) {
-    return RILDecompress(src, srcSize, uncompressedSize, 1);
-}
-unsigned char *RIL8Compress(unsigned char *src, int srcSize, int *compressedSize) {
-    return RILCompress(src, srcSize, compressedSize, 1);
-}
-
-unsigned char *RIL16Decompress(unsigned char *src, int srcSize, int *uncompressedSize) {
-    return RILDecompress(src, srcSize, uncompressedSize, 2);
-}
-unsigned char *RIL16Compress(unsigned char *src, int srcSize, int *compressedSize) {
-    return RILCompress(src, srcSize, compressedSize, 2);
-}
-
 #define MAX_LENGTH_MINUS_ONE (0x3F)
 
 #define NEXT_SRC_WORD (wordSize == 2 ? (src[srcPos + 1] << 8) | src[srcPos] : src[srcPos])
 #define NEXT_NEXT_SRC_WORD (wordSize == 2 ? (src[srcPos + 3] << 8) | src[srcPos + 2] : src[srcPos + 1])
 
-static unsigned char *RILDecompress(unsigned char *src, int srcSize, int *uncompressedSize, int wordSize)
+unsigned char *RILDecompress(unsigned char *src, int srcSize, int *uncompressedSize, enum WordSize wordSize)
 {
     if (srcSize < 4)
         FATAL_ERROR("Source did not have at least four bytes while decompressing RIL file.\n");
@@ -156,7 +139,7 @@ fail:
     FATAL_ERROR("Fatal error while decompressing RIL file.\n");
 }
 
-static unsigned char *RILCompress(unsigned char *src, int srcSize, int *compressedSize, int wordSize)
+unsigned char *RILCompress(unsigned char *src, int srcSize, int *compressedSize, enum WordSize wordSize)
 {
     if (srcSize <= 0)
         goto fail;

@@ -1,7 +1,7 @@
 #include "global.h"
-#include "ril_decompress.h"
+#include "tilemap1_decompress.h"
 
-void Ril8DecompressWram(const u32 *src, void *dest)
+void Tilemap1_8DecompressWram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
     u8 *dest8 = (u8 *) dest;
@@ -76,7 +76,7 @@ fail:
     ; // ???
 }
 
-void Ril8DecompressVram(const u32 *src, void *dest)
+void Tilemap1_8DecompressVram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
     u16 *dest8 = (u16 *) dest;
@@ -192,7 +192,7 @@ fail:
     ; // ???
 }
 
-void Ril16DecompressVram(const u32 *src, void *dest)
+void Tilemap1_16DecompressVram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
     u16 *dest16 = (u16 *) dest;

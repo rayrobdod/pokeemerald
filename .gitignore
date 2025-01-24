@@ -14,8 +14,8 @@
 *.gbapal
 *.lz
 *.rl
-*.ril8
-*.ril16
+*.tilemapcomp1_8
+*.tilemapcomp1_16
 *.latfont
 *.hwjpnfont
 *.fwjpnfont
