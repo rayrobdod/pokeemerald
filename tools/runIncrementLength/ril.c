@@ -184,7 +184,7 @@ unsigned char *RILCompress(unsigned char *src, unsigned int srcSize, unsigned in
 
         const unsigned short secondValue = NEXT_SRC_WORD;
         
-        if (srcPos == srcSize)
+        if ((srcPos + 2) == srcSize)
         {
             dest[destPos++] = 0b00000001;
             dest[destPos++] = 0xFF & firstValue;
@@ -267,7 +267,7 @@ unsigned char *RILCompress(unsigned char *src, unsigned int srcSize, unsigned in
                 dest[destPos++] = 0xFF & (firstValue >> 8);
             }
             
-            while (srcPos < srcSize && lengthMinusOne < 0x3F && (SRC_WORD(0) - SRC_WORD(1) != SRC_WORD(1) - SRC_WORD(2)))
+            while ((srcPos + wordSize * 2) < srcSize && lengthMinusOne < 0x3F && (SRC_WORD(0) - SRC_WORD(1) != SRC_WORD(1) - SRC_WORD(2)))
             {
                 lengthMinusOne += 1;
                 dest[destPos++] = src[srcPos++];
