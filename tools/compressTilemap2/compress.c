@@ -166,6 +166,18 @@ struct ShortArray compress(struct ShortArray src)
                 runs[runPos].delta = -1;
             }
         }
+
+        if (runPos + 1 < runCount &&
+            0 == runs[runPos].delta &&
+            1 < runs[runPos].length &&
+            1 == runs[runPos + 1].delta &&
+            runs[runPos].start + runs[runPos + 1].delta == runs[runPos + 1].start &&
+            true)
+        {
+            runs[runPos].length -= 1;
+            runs[runPos+1].length += 1;
+            runs[runPos+1].start -= runs[runPos+1].delta;
+        }
     }
 
 #ifdef DEBUG
