@@ -1,26 +1,25 @@
 #include "global.h"
 #include "tilemap1_decompress.h"
 
+//__attribute__((optimize("-O3")))
 void Tilemap1_8DecompressWram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
     u8 *dest8 = (u8 *) dest;
 
-    int destSize = (src8[3] << 16) | (src8[2] << 8) | src8[1];
+    u8 *destEnd = dest8 + ((src8[3] << 16) | (src8[2] << 8) | src8[1]);
 
-    int incrementValue = 0;
-    int repeatValue = 0;
-
-    int srcPos = 4;
-    int destPos = 0;
+    unsigned incrementValue = 0;
+    u8 repeatValue = 0;
 
     u8 flags;
-    int count;
-    int i;
+    unsigned count;
+
+    src8 += 4;
 
     for (;;)
     {
-        flags = src8[srcPos++];
+        flags = *(src8++);
         count = (flags & 0x3F) + 1;
 
         switch ((flags & 0xC0) >> 6)
@@ -29,44 +28,56 @@ void Tilemap1_8DecompressWram(const u32 *src, void *dest)
                 switch (flags)
                 {
                     case 0:
-                        incrementValue = src8[srcPos++];
+                        incrementValue = *(src8++);
                         break;
                     case 1:
-                        repeatValue = src8[srcPos++];
+                        repeatValue = *(src8++);
                         break;
                     default:
                         goto fail;
                 }
                 break;
             case 1:
-                if (destPos + count > destSize)
+                if (dest8 + count > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
-                    dest8[destPos++] = src8[srcPos++];
+                for (; count > 8; count -= 8)
+                {
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                    *(dest8++) = *(src8++);
+                }
+
+                for (; count > 0; count--)
+                    *(dest8++) = *(src8++);
 
                 break;
             case 2:
-                if (destPos + count > destSize)
+                if (dest8 + count > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
-                    dest8[destPos++] = 0xFF & repeatValue;
+                // the compiler's unrolling is smarter than mine
+                for (; count > 0; count--)
+                    *(dest8++) = repeatValue;
 
                 break;
             case 3:
-                if (destPos + count > destSize)
+                if (dest8 + count > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
-                {
-                    dest8[destPos++] = 0xFF & incrementValue;
-                    incrementValue++;
-                }
+                // the compiler's unrolling is smarter than mine
+                for (; count > 0; count--)
+                    *(dest8++) = (incrementValue++);
+
                 break;
         }
 
-        if (destPos == destSize)
+        if (dest8 == destEnd)
         {
             return;
         }
@@ -76,113 +87,130 @@ fail:
     ; // ???
 }
 
+//__attribute__((optimize("-O3")))
 void Tilemap1_8DecompressVram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
-    u16 *dest8 = (u16 *) dest;
+    u16 *dest16 = (u16 *) dest;
 
-    int destSize = (src8[3] << 16) | (src8[2] << 8) | src8[1];
+    u16 *destEnd = dest16 + ((src8[3] << 16) | (src8[2] << 8) | src8[1]) / sizeof(u16);
 
-    int incrementValue = 0;
-    int repeatValue = 0;
-
-    int srcPos = 4;
-    int destPos = 0;
+    unsigned incrementValue = 0;
+    unsigned repeatValue = 0;
 
     u8 flags;
     bool8 bufferHasValue = FALSE;
-    int count;
-    int i;
-    u16 buffer;
+    unsigned count;
+    unsigned buffer;
+
+    src8 += 4;
 
     for (;;)
     {
-        flags = src8[srcPos++];
+        flags = *(src8++);
         count = (flags & 0x3F) + 1;
 
         switch ((flags & 0xC0) >> 6)
         {
+        case 0:
+            switch (flags)
+            {
             case 0:
-                switch (flags)
-                {
-                    case 0:
-                        incrementValue = src8[srcPos++];
-                        break;
-                    case 1:
-                        repeatValue = src8[srcPos++];
-                        break;
-                    default:
-                        goto fail;
-                }
+                incrementValue = *(src8++);
                 break;
             case 1:
-                if (destPos + count > destSize)
-                    goto fail;
-
-                for (i = 0; i < count; i++)
-                {
-                    if (bufferHasValue)
-                    {
-                        buffer |= (0xFF & src8[srcPos++]) << 8;
-                        dest8[destPos++] = buffer;
-                    }
-                    else
-                    {
-                        buffer = 0xFF & src8[srcPos++];
-                    }
-                    bufferHasValue = !bufferHasValue;
-                }
-
+                repeatValue = *(src8++);
                 break;
-            case 2:
-                if (destPos + count > destSize)
-                    goto fail;
+            default:
+                goto fail;
+            }
+            break;
+        case 1:
+            if (dest16 + count / sizeof(u16) > destEnd)
+                goto fail;
 
-                if (bufferHasValue)
-                {
-                    buffer |= (0xFF & repeatValue) << 8;
-                    dest8[destPos++] = buffer;
-                    count--;
-                }
+            if (bufferHasValue)
+            {
+                *(dest16++) = buffer | (0xFF & *(src8++)) << 8;
+                count --;
+            }
 
-                bufferHasValue = count % 2;
-                count -= bufferHasValue;
+            bufferHasValue = count % 2;
+            count /= 2;
 
-                buffer = (repeatValue << 8) | repeatValue;
+            for (; count > 0; count--)
+            {
+                buffer = *(src8++);
+                buffer |= *(src8++) << 8;
+                *(dest16++) = buffer;
+            }
 
-                for (i = 0; i < count / 2; i++)
-                {
-                    dest8[destPos++] = buffer;
-                }
+            if (bufferHasValue)
+            {
+                buffer = *(src8++);
+            }
 
-                if (bufferHasValue)
-                {
-                    buffer = 0xFF & repeatValue;
-                }
+            break;
+        case 2:
+            if (dest16 + count / sizeof(u16) > destEnd)
+                goto fail;
 
-                break;
-            case 3:
-                if (destPos + count > destSize)
-                    goto fail;
+            if (bufferHasValue)
+            {
+                *(dest16++) = buffer | (0xFF & repeatValue) << 8;
+                count--;
+            }
 
-                for (i = 0; i < count; i++)
-                {
-                    if (bufferHasValue)
-                    {
-                        buffer |= (0xFF & incrementValue) << 8;
-                        dest8[destPos++] = buffer;
-                    }
-                    else
-                    {
-                        buffer = 0xFF & incrementValue;
-                    }
-                    bufferHasValue = !bufferHasValue;
-                    incrementValue++;
-                }
-                break;
+            bufferHasValue = count % 2;
+            count /= 2;
+
+            buffer = (repeatValue << 8) | repeatValue;
+            for (; count > 3; count -= 4)
+            {
+                *(dest16++) = buffer;
+                *(dest16++) = buffer;
+                *(dest16++) = buffer;
+                *(dest16++) = buffer;
+            }
+            for (; count > 0; count--)
+            {
+                *(dest16++) = buffer;
+            }
+
+            if (bufferHasValue)
+            {
+                buffer = repeatValue;
+            }
+
+            break;
+        case 3:
+            if (dest16 + count / sizeof(u16) > destEnd)
+                goto fail;
+
+            if (bufferHasValue)
+            {
+                *(dest16++) = buffer | (0xFF & incrementValue++) << 8;
+                count--;
+            }
+
+            bufferHasValue = count % 2;
+            count /= 2;
+
+            for (; count > 0; count--)
+            {
+                buffer = (incrementValue++);
+                buffer |= (incrementValue++) << 8;
+                *(dest16++) = buffer;
+            }
+
+            if (bufferHasValue)
+            {
+                buffer = incrementValue++;
+            }
+            break;
         }
 
-        if (destPos * 2 == destSize)
+        if (dest16 == destEnd)
         {
             return;
         }
@@ -192,27 +220,26 @@ fail:
     ; // ???
 }
 
+//__attribute__((optimize("-O3")))
 void Tilemap1_16DecompressVram(const u32 *src, void *dest)
 {
     const u8 *src8 = (const u8 *) src;
     u16 *dest16 = (u16 *) dest;
 
-    int destSize = (src8[3] << 16) | (src8[2] << 8) | src8[1];
+    u16* destEnd = dest16 + ((src8[3] << 16) | (src8[2] << 8) | src8[1]) / sizeof(u16);
 
-    int incrementValue = 0;
-    int repeatValue = 0;
-
-    int srcPos = 4;
-    int destPos = 0;
+    unsigned incrementValue = 0;
+    unsigned repeatValue = 0;
 
     u16 buffer;
     u8 flags;
     int count;
-    int i;
 
-    for (;;)
+    src8 += 4;
+
+    while (dest16 < destEnd)
     {
-        flags = src8[srcPos++];
+        flags = *(src8++);
         count = (flags & 0x3F) + 1;
 
         switch ((flags & 0xC0) >> 6)
@@ -221,56 +248,72 @@ void Tilemap1_16DecompressVram(const u32 *src, void *dest)
                 switch (flags)
                 {
                     case 0:
-                        incrementValue = (src8[srcPos + 1] << 8) | src8[srcPos];
-                        srcPos += 2;
+                        incrementValue = *(src8++);
+                        incrementValue |= *(src8++) << 8;
                         break;
                     case 1:
-                        repeatValue = (src8[srcPos + 1] << 8) | src8[srcPos];
-                        srcPos += 2;
+                        repeatValue = *(src8++);
+                        repeatValue |= *(src8++) << 8;
                         break;
                     default:
                         goto fail;
                 }
                 break;
             case 1:
-                if ((destPos + count) * 2 > destSize)
+                if ((dest16 + count) > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
+                for (; count > 0; count--)
                 {
-                    buffer = 0xFF & src8[srcPos++];
-                    buffer |= (0xFF & src8[srcPos++]) << 8;
-                    dest16[destPos] = buffer;
-                    destPos += 1;
+                    buffer = *(src8++);
+                    buffer |= *(src8++) << 8;
+                    *(dest16++) = buffer;
                 }
 
                 break;
             case 2:
-                if ((destPos + count) * 2 > destSize)
+                if ((dest16 + count) > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
+                for (; count > 8; count -= 8)
                 {
-                    dest16[destPos] = repeatValue;
-                    destPos += 1;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
+                    *(dest16++) = repeatValue;
                 }
+
+                for (; count > 0; count--)
+                    *(dest16++) = repeatValue;
+
                 break;
             case 3:
-                if ((destPos + count) * 2 > destSize)
+                if ((dest16 + count) > destEnd)
                     goto fail;
 
-                for (i = 0; i < count; i++)
+                for (; count > 8; count -= 8)
                 {
-                    dest16[destPos] = incrementValue;
-                    destPos += 1;
-                    incrementValue++;
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
+                    *(dest16++) = (incrementValue++);
                 }
+
+                for (; count > 0; count--)
+                    *(dest16++) = (incrementValue++);
                 break;
         }
-
-        if (destPos * 2 == destSize)
-            return;
     }
+
+    return;
 
 fail:
     ; // ???
