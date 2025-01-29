@@ -40,6 +40,9 @@ void Tilemap2Decompress(const u32 *src_32, void *dest_v)
         case 15:
             delta = -1;
 write:
+            if (destPos + operand > destSize)
+                goto fail;
+
             regs[to] = regs[from];
             for (i = 0; i <= operand; i++) {
                 dest[destPos++] = regs[to];
@@ -58,6 +61,7 @@ fail:
 }
 
 
+//__attribute__((optimize("-O3")))
 void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
 {
     const u16* src = (const u16 *)src_32;
@@ -71,7 +75,6 @@ void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
 
     while (dest < destEnd)
     {
-        unsigned i;
         unsigned value;
         unsigned short srcValue = *src;
         unsigned srcValuePart;
@@ -90,29 +93,70 @@ void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
 
         switch (srcValuePart) {
         case 0:
+            // You'd think just shifting the operand here then falling through
+            // would have the exact same execution, just with a slightly less codesize.
+            // but doing that is measurably slower, because with the fallthrough gcc insists
+            // on copying `operand` to multiple registers before the jumptable
             value ^= (operand << 8);
             break;
         case 1:
             value ^= operand;
             break;
         case 12:
-            for (i = 0; i <= operand; i++) {
-                *dest = value;
-                dest++;
+            if (dest + operand > destEnd)
+                goto fail;
+
+            *(dest++) = value;
+            for (; operand >= 8; operand -= 8) {
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+                *(dest++) = value;
+            }
+            for (; operand > 0; operand--) {
+                *(dest++) = value;
             }
             break;
         case 13:
-            for (i = 0; i <= operand; i++) {
-                *dest = value;
-                dest++;
-                value += 1;
+            if (dest + operand > destEnd)
+                goto fail;
+
+            *(dest++) = value++;
+            for (; operand >= 8; operand -= 8) {
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+                *(dest++) = value++;
+            }
+            for (; operand > 0; operand--) {
+                *(dest++) = value++;
             }
             break;
         case 15:
-            for (i = 0; i <= operand; i++) {
-                *dest = value;
-                dest++;
-                value -= 1;
+            if (dest + operand > destEnd)
+                goto fail;
+
+            *(dest++) = value--;
+            for (; operand >= 8; operand -= 8) {
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+                *(dest++) = value--;
+            }
+            for (; operand > 0; operand--) {
+                *(dest++) = value--;
             }
             break;
         default:
