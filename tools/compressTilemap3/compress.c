@@ -73,11 +73,11 @@ struct ShortArray decompress(struct ByteArray src, bool disassemble)
                 break;
             case 1:
                 {
-                    unsigned short new_flips = (opbyte & 0x30) << 6;
+                    unsigned short xor_flips = (opbyte & 0x30) << 6;
                     signed short delta_index = (opbyte & 0x0F) - DIFF_BIAS;
                     if (disassemble)
-                        printf("OP_DELTA %d %2d\n", new_flips >> 10, delta_index);
-                    last = ((last & 0xF3FF) + delta_index) | new_flips;
+                        printf("OP_DELTA %d %2d\n", xor_flips >> 10, delta_index);
+                    last = (last + delta_index) ^ xor_flips;
                     regs[ENTRY_HASH(last)] = last;
                     dest.buffer[destPos++] = last;
                 }
@@ -184,18 +184,20 @@ struct ByteArray compress(struct ShortArray src)
                 ((last & 0x03FF) - (src.buffer[srcPos] & 0x03FF)) < 8)
         {
             prev_op_is_a_run = ROS_NONE;
+            unsigned prev_flips = (last & 0xC00) >> 6;
             unsigned new_flips = (src.buffer[srcPos] & 0xC00) >> 6;
             unsigned delta = DIFF_BIAS - ((last & 0x03FF) - (src.buffer[srcPos] & 0x03FF));
-            dest.buffer[destPos++] = 0x40 | new_flips | delta;
+            dest.buffer[destPos++] = 0x40 | (prev_flips ^ new_flips) | delta;
         }
         else if ((src.buffer[srcPos] & 0xF000) == (last & 0xF000) &&
                 (src.buffer[srcPos] & 0x03FF) >= (last & 0x03FF) &&
                 ((src.buffer[srcPos] & 0x03FF) - (last & 0x03FF)) < 8)
         {
             prev_op_is_a_run = ROS_NONE;
+            unsigned prev_flips = (last & 0xC00) >> 6;
             unsigned new_flips = (src.buffer[srcPos] & 0xC00) >> 6;
             unsigned delta = DIFF_BIAS + (src.buffer[srcPos] & 0x03FF) - (last & 0x03FF);
-            dest.buffer[destPos++] = 0x40 | new_flips | delta;
+            dest.buffer[destPos++] = 0x40 | (prev_flips ^ new_flips) | delta;
         }
         else
         {

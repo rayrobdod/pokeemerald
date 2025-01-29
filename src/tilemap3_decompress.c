@@ -9,27 +9,25 @@
 
 void Tilemap3Decompress(const u32 *src_32, void *dest_v)
 {
-    unsigned i;
     const u8* src = (const u8 *)src_32;
     u16* dest = (u16 *) dest_v;
-    unsigned destSize = ((src[3] << 16) | (src[2] << 8) | src[1]) / sizeof(u16);
+    u16* destEnd = dest + ((src[3] << 16) | (src[2] << 8) | src[1]) / sizeof(u16);
 
     unsigned short regs[NUM_REGS] = {0};
     unsigned short last = 0;
 
-    unsigned srcPos = 4;
-    unsigned destPos = 0;
+    src += 4;
 
-    while (destPos < destSize)
+    while (dest < destEnd)
     {
-        unsigned char opbyte = src[srcPos++];
+        unsigned char opbyte = *(src++);
 
         if (opbyte == 0xFF)
         {
-            last = src[srcPos++];
-            last |= src[srcPos++] << 8;
+            last = *(src++);
+            last |= *(src++) << 8;
             regs[ENTRY_HASH(last)] = last;
-            dest[destPos++] = last;
+            *(dest++) = last;
         }
         else
         {
@@ -38,26 +36,26 @@ void Tilemap3Decompress(const u32 *src_32, void *dest_v)
             case 0:
                 {
                     last = regs[opbyte & 0x3F];
-                    dest[destPos++] = last;
+                    *(dest++) = last;
                 }
                 break;
             case 1:
                 {
-                    unsigned short new_flips = (opbyte & 0x30) << 6;
+                    unsigned short xor_flips = (opbyte & 0x30) << 6;
                     signed short delta_index = (opbyte & 0x0F) - DIFF_BIAS;
-                    last = ((last & 0xF3FF) + delta_index) | new_flips;
+                    last = (last + delta_index) ^ xor_flips;
                     regs[ENTRY_HASH(last)] = last;
-                    dest[destPos++] = last;
+                    *(dest++) = last;
                 }
                 break;
             case 2:
                 {
                     signed short delta = ((opbyte & 0x20) != 0 ? -1 : 1);
                     unsigned count = (opbyte & 0x1F) - RUN_BIAS;
-                    for (i = 0; i < count; i++)
+                    for (; count > 0; count--)
                     {
                         last = last + delta;
-                        dest[destPos++] = last;
+                        *(dest++) = last;
                         regs[ENTRY_HASH(last)] = last;
                     }
                 }
@@ -65,10 +63,19 @@ void Tilemap3Decompress(const u32 *src_32, void *dest_v)
             case 3:
                 {
                     unsigned count = (opbyte & 0x3F) - RUN_BIAS;
-                    for (i = 0; i < count; i++)
+                    for (; count > 7; count -= 8)
                     {
-                        dest[destPos++] = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
+                        *(dest++) = last;
                     }
+                    for (; count > 0; count--)
+                        *(dest++) = last;
                 }
                 break;
             default:
