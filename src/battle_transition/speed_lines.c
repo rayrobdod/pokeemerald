@@ -183,6 +183,8 @@ static bool8 SpeedLines_Init(struct Task *task)
     LoadPalette(sSpeedLines_Palette, BG_PLTT_ID(15), sizeof(sSpeedLines_Palette));
     LZ77UnCompVram(sSpeedLines_Bg_Small_Tileset, tileset);
 
+    CpuFill16(0, tilemap, BG_SCREEN_SIZE);
+
     x = 0;
     for (y = 0; y < DISPLAY_TILE_HEIGHT; y++)
     for (i = 0; i < 2; i++)
