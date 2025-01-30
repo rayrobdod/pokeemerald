@@ -16,12 +16,12 @@
 #define PALTAG_SPEED_LINES (0xFA57)
 #define TILETAG_SPEED_LINES (0xFA57)
 
-#define SPEEDLINE_SMALL_FRAMES (8)
-#define SPEEDLINE_INITIAL_SPEED_FRAMES (8)
-#define INITIAL_VELOCITY (Q_12_4(1))
+#define SPEEDLINE_SMALL_FRAMES (4)
+#define SPEEDLINE_INITIAL_SPEED_FRAMES (12)
+#define INITIAL_VELOCITY (Q_12_4(4))
 #define INITIAL_ACCELERATION (3)
 #define JERK (Q_12_4(0))
-#define MAX_VELOCITY (Q_12_4(8))
+#define START_FADE_VELOCITY (INITIAL_VELOCITY + Q_12_4(INITIAL_ACCELERATION * 3))
 
 static const u16 sSpeedLines_Palette[] = INCBIN_U16("graphics/battle_transitions/speedlines_bg.gbapal");
 static const u32 sSpeedLines_Bg_Tileset[] = INCBIN_U32("graphics/battle_transitions/speedlines_bg.4bpp.lz");
@@ -30,9 +30,9 @@ static const u32 sSpeedLines_Sprites[] = INCBIN_U32("graphics/battle_transitions
 
 static bool8 SpeedLines_Init(struct Task *);
 static bool8 SpeedLines_ConstantVelocityUntilTimerZero(struct Task *);
-static bool8 SpeedLines_ConstantVelocityUntilFadeComplete(struct Task *);
+static bool8 SpeedLines_AccelerateUntilFadeComplete(struct Task *);
 static bool8 SpeedLines_SwapToFullSize(struct Task *);
-static bool8 SpeedLines_Accelerate(struct Task *);
+static bool8 SpeedLines_AccelerateUntilFadeStart(struct Task *);
 static bool8 SpeedLines_FadeToWhite(struct Task *);
 static bool8 SpeedLines_FadeWhiteToBlack(struct Task *);
 static bool8 SpeedLines_End(struct Task *);
@@ -151,9 +151,9 @@ static const TransitionStateFunc sSpeedLines_Funcs[] = {
     SpeedLines_ConstantVelocityUntilTimerZero,
     SpeedLines_SwapToFullSize,
     SpeedLines_ConstantVelocityUntilTimerZero,
-    SpeedLines_Accelerate,
+    SpeedLines_AccelerateUntilFadeStart,
     SpeedLines_FadeToWhite,
-    SpeedLines_ConstantVelocityUntilFadeComplete,
+    SpeedLines_AccelerateUntilFadeComplete,
     SpeedLines_FadeWhiteToBlack,
     SpeedLines_End,
 };
@@ -286,14 +286,14 @@ static bool8 SpeedLines_ConstantVelocityUntilTimerZero(struct Task *task)
     return FALSE;
 }
 
-static bool8 SpeedLines_Accelerate(struct Task *task)
+static bool8 SpeedLines_AccelerateUntilFadeStart(struct Task *task)
 {
     task->tAcceleration += JERK;
     task->tVelocity += task->tAcceleration;
     task->tPosition += task->tVelocity;
     SetGpuReg(REG_OFFSET_BG0HOFS, Q_12_4_TO_INT(task->tPosition));
 
-    if (task->tVelocity > MAX_VELOCITY) {
+    if (task->tVelocity > START_FADE_VELOCITY) {
         task->tState++;
     }
     return FALSE;
@@ -306,8 +306,10 @@ static bool8 SpeedLines_FadeToWhite(struct Task *task)
     return TRUE;
 }
 
-static bool8 SpeedLines_ConstantVelocityUntilFadeComplete(struct Task *task)
+static bool8 SpeedLines_AccelerateUntilFadeComplete(struct Task *task)
 {
+    task->tAcceleration += JERK;
+    task->tVelocity += task->tAcceleration;
     task->tPosition += task->tVelocity;
     SetGpuReg(REG_OFFSET_BG0HOFS, Q_12_4_TO_INT(task->tPosition));
 
@@ -349,8 +351,7 @@ static bool8 SpeedLines_End(struct Task *task)
 
 static void SpeedLines_SpriteCallback(struct Sprite* sprite)
 {
-    if (sprite->tTimer > SPEEDLINE_INITIAL_SPEED_FRAMES + SPEEDLINE_SMALL_FRAMES &&
-        sprite->tVelocity < MAX_VELOCITY)
+    if (sprite->tTimer > SPEEDLINE_INITIAL_SPEED_FRAMES + SPEEDLINE_SMALL_FRAMES)
     {
         sprite->tAcceleration += JERK;
         sprite->tVelocity += sprite->tAcceleration;
