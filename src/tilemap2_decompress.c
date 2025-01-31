@@ -106,8 +106,8 @@ void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
             if (dest + operand > destEnd)
                 goto fail;
 
-            *(dest++) = value;
-            for (; operand >= 8; operand -= 8) {
+            operand++;
+            for (; operand > 8; operand -= 8) {
                 *(dest++) = value;
                 *(dest++) = value;
                 *(dest++) = value;
@@ -125,8 +125,8 @@ void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
             if (dest + operand > destEnd)
                 goto fail;
 
-            *(dest++) = value++;
-            for (; operand >= 8; operand -= 8) {
+            operand++;
+            for (; operand > 8; operand -= 8) {
                 *(dest++) = value++;
                 *(dest++) = value++;
                 *(dest++) = value++;
@@ -144,8 +144,8 @@ void Tilemap2Decompress_Unrolled(const u32 *src_32, void *dest_v)
             if (dest + operand > destEnd)
                 goto fail;
 
-            *(dest++) = value--;
-            for (; operand >= 8; operand -= 8) {
+            operand++;
+            for (; operand > 8; operand -= 8) {
                 *(dest++) = value--;
                 *(dest++) = value--;
                 *(dest++) = value--;
