@@ -7,19 +7,31 @@
 #include "scanline_effect.h"
 #include "task.h"
 
+#define Q_10_6(n) ((s16)((n) * 64))
+#define Q_10_6_TO_INT(n) ((s16)((n) / 64))
+
 static bool8 StarIris_Init(struct Task *);
 static bool8 StarIris_FirstHalf(struct Task *);
 static bool8 StarIris_SecondHalf(struct Task *);
 static void HBlankCB_StarIris(void);
 static void VBlankCB_StarIris(void);
 static void VBlankCB_StarIris_First(void);
-static void StarIris_SetScanineEffectReflectionalSymetryQuadrants(int row, int column);
+static void StarIris_UpdateSpeedsAccelerationsAndScanlineEffects(struct Task *task);
+static void StarIris_SetScanlineEffectReflectionalSymmetryQuadrants(int row, int column);
 
 #define FIRST_HALF_HEIGHT (60)
 
 #define tEdgeX data[2]
 #define tEdgeY data[3]
 #define tPivotY data[4]
+
+#define tEdgeDX data[5]
+#define tEdgeDY data[6]
+#define tPivotDY data[7]
+
+#define tEdgeDDX data[8]
+#define tEdgeDDY data[9]
+#define tPivotDDY data[10]
 
 static const TransitionStateFunc sStarIris_Funcs[] = {
     StarIris_Init,
@@ -34,7 +46,7 @@ void Task_StarIris(u8 taskId)
 
 static bool8 StarIris_Init(struct Task *task)
 {
-    int i;
+    unsigned i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -55,54 +67,63 @@ static bool8 StarIris_Init(struct Task *task)
 
     EnableInterrupts(INTR_FLAG_HBLANK);
 
-    task->tEdgeX = 0;
-    task->tEdgeY = 0;
-    task->tPivotY = 0;
+    task->tEdgeX = Q_10_6(0);
+    task->tEdgeY = Q_10_6(0);
+    task->tPivotY = Q_10_6(0);
+    task->tEdgeDX = Q_10_6(0);
+    task->tEdgeDY = Q_10_6(0);
+    task->tPivotDY = Q_10_6(1);
+    task->tEdgeDDX = Q_10_6(0);
+    task->tEdgeDDY = Q_10_6(0);
+    task->tPivotDDY = Q_10_6(0);
     task->tState++;
     return TRUE;
 }
 
 static bool8 StarIris_FirstHalf(struct Task *task)
 {
-    int row, pivotY, pivotX;
-    u16 left, right, drawX;
+    StarIris_UpdateSpeedsAccelerationsAndScanlineEffects(task);
 
-    sTransitionData->VBlank_DMA = FALSE;
-
-    pivotY = task->tPivotY;
-    pivotX = pivotY + (pivotY / 2);
-
-    for (row = 0; row < pivotY; row++)
+    if (task->tPivotY > Q_10_6(FIRST_HALF_HEIGHT))
     {
-        left = (pivotX - (DISPLAY_WIDTH / 2)) * row / pivotY + (DISPLAY_WIDTH / 2);
-        StarIris_SetScanineEffectReflectionalSymetryQuadrants(row, left);
-    }
-    for (; row < DISPLAY_HEIGHT / 2; row++)
-    {
-        left = pivotX * (row - (DISPLAY_HEIGHT / 2)) / (pivotY - (DISPLAY_HEIGHT / 2));
-        StarIris_SetScanineEffectReflectionalSymetryQuadrants(row, left);
-    }
-
-    if (++task->tPivotY == FIRST_HALF_HEIGHT)
-    {
+        task->tEdgeDX = Q_10_6(3);
+        task->tEdgeDY = Q_10_6(2);
         task->tState++;
     }
 
-    sTransitionData->VBlank_DMA = TRUE;
     return FALSE;
 }
 
 static bool8 StarIris_SecondHalf(struct Task *task)
 {
-    int row, pivotY, pivotX, edgeY, edgeX;
-    u16 left, right, drawX;
+    StarIris_UpdateSpeedsAccelerationsAndScanlineEffects(task);
+
+    if (task->tPivotY > Q_10_6(DISPLAY_HEIGHT / 2))
+    {
+        DestroyTask(FindTaskIdByFunc(Task_StarIris));
+    }
+
+    return FALSE;
+}
+
+static void StarIris_UpdateSpeedsAccelerationsAndScanlineEffects(struct Task *task)
+{
+    int row, pivotX, pivotY, edgeX, edgeY;
+    u16 left;
+
+    task->tEdgeDX += task->tEdgeDDX;
+    task->tEdgeDY += task->tEdgeDDY;
+    task->tPivotDY += task->tPivotDDY;
+    task->tEdgeX += task->tEdgeDX;
+    task->tEdgeY += task->tEdgeDY;
+    task->tPivotY += task->tPivotDY;
+
+    pivotY = Q_10_6_TO_INT(task->tPivotY);
+    pivotX = pivotY + (pivotY / 2);
+    edgeX = Q_10_6_TO_INT(task->tEdgeX);
+    edgeY = Q_10_6_TO_INT(task->tEdgeY);
 
     sTransitionData->VBlank_DMA = FALSE;
-
-    pivotY = task->tPivotY;
-    pivotX = pivotY + (pivotY / 2);
-    edgeY = task->tEdgeY;
-    edgeX = task->tEdgeX;
 
     for (row = 0; row < edgeY; row++)
     {
@@ -112,28 +133,18 @@ static bool8 StarIris_SecondHalf(struct Task *task)
     for (; row < pivotY; row++)
     {
         left = (row - edgeY) * (pivotX - (DISPLAY_WIDTH / 2)) / (pivotY - edgeY) + (DISPLAY_WIDTH / 2);
-        StarIris_SetScanineEffectReflectionalSymetryQuadrants(row, left);
+        StarIris_SetScanlineEffectReflectionalSymmetryQuadrants(row, left);
     }
     for (; row < DISPLAY_HEIGHT / 2; row++)
     {
         left = (pivotX - edgeX) * (row - (DISPLAY_HEIGHT / 2)) / (pivotY - (DISPLAY_HEIGHT / 2)) + edgeX;
-        StarIris_SetScanineEffectReflectionalSymetryQuadrants(row, left);
-    }
-
-    task->tPivotY++;
-    task->tEdgeX += 3;
-    task->tEdgeY += 2;
-
-    if (task->tPivotY == (DISPLAY_HEIGHT / 2))
-    {
-        DestroyTask(FindTaskIdByFunc(Task_StarIris));
+        StarIris_SetScanlineEffectReflectionalSymmetryQuadrants(row, left);
     }
 
     sTransitionData->VBlank_DMA = TRUE;
-    return FALSE;
 }
 
-static void StarIris_SetScanineEffectReflectionalSymetryQuadrants(int row, int column)
+static void StarIris_SetScanlineEffectReflectionalSymmetryQuadrants(int row, int column)
 {
     int right;
     u16 drawX;
