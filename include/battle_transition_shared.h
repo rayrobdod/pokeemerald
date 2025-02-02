@@ -48,4 +48,10 @@ void SetSinWave(s16 *, s16, s16, s16, s16, s16);
 void SetCircularMask(u16 *, s16, s16, s16);
 bool8 UpdateBlackWipe(s16 *, bool8, bool8);
 
+bool8 Intro_Init(struct Task *);
+bool8 Intro_End(struct Task *);
+bool8 Intro_FadeToGray(struct Task *);
+bool8 Intro_FadeFromGray(struct Task *);
+bool8 Intro_ClearBg0(struct Task *);
+
 #endif // GUARD_BATTLE_TRANSITION_H
