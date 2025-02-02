@@ -8,12 +8,6 @@
 
 #define FADE_INCREMENT (2)
 
-static bool8 Intro_Init(struct Task *);
-static bool8 Intro_End(struct Task *);
-static bool8 Intro_FadeToGray(struct Task *);
-static bool8 Intro_FadeFromGray(struct Task *);
-static bool8 Intro_ClearBg0(struct Task *);
-
 static const TransitionStateFunc sIntro_Funcs[] = {
     Intro_Init,
     Intro_FadeToGray,
@@ -49,20 +43,20 @@ void Task_IntroWithClearBg0(u8 taskId)
     while (sIntroWithClearBg0_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
-static bool8 Intro_Init(struct Task *task)
+bool8 Intro_Init(struct Task *task)
 {
     task->tBlend = 0;
     task->tState++;
     return TRUE;
 }
 
-static bool8 Intro_End(struct Task *task)
+bool8 Intro_End(struct Task *task)
 {
     DestroyTask(FindTaskIdByFunc(task->func));
     return FALSE;
 }
 
-static bool8 Intro_FadeToGray(struct Task *task)
+bool8 Intro_FadeToGray(struct Task *task)
 {
     task->tBlend += FADE_INCREMENT;
     if (task->tBlend > 16)
@@ -75,7 +69,7 @@ static bool8 Intro_FadeToGray(struct Task *task)
     return FALSE;
 }
 
-static bool8 Intro_FadeFromGray(struct Task *task)
+bool8 Intro_FadeFromGray(struct Task *task)
 {
     task->tBlend -= FADE_INCREMENT;
     if (task->tBlend < 0)
@@ -88,7 +82,7 @@ static bool8 Intro_FadeFromGray(struct Task *task)
     return FALSE;
 }
 
-static bool8 Intro_ClearBg0(struct Task * task)
+bool8 Intro_ClearBg0(struct Task * task)
 {
     u16 *tilemap, *tileset;
     GetBg0TilesDst(&tilemap, &tileset);
