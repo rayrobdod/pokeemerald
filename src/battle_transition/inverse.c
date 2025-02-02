@@ -17,7 +17,6 @@ static bool8 InverseIntro_CopyInvertedPalette(struct Task *);
 static void InverseIntro_DoPaletteCalculations(struct Task *task);
 static u16 HueInvert(u16 in);
 
-#define FADE_INCREMENT (2)
 #define CALCULATED_PALS_PER_FRAME ((PLTT_BUFFER_SIZE / 24) + 1)
 
 static const TransitionStateFunc sInverseIntro_Funcs[] = {
@@ -26,18 +25,13 @@ static const TransitionStateFunc sInverseIntro_Funcs[] = {
     InverseIntro_FadeFromGray,
     InverseIntro_FadeToGray,
     InverseIntro_CopyInvertedPalette,
-    // You could have extra functions for fades without the palette calculations,
-    // but the calculations are bounded to PLTT_BUFFER_SIZE,
-    // so using the same functions skips pal calculations, just requiring calculating bounds
-    // and everything still fits in a frame,
-    // so adding extra functions in exchange not calculating bounds isn't worthwhile
-    InverseIntro_FadeFromGray,
-    InverseIntro_FadeToGray,
-    InverseIntro_FadeFromGray,
+    Intro_FadeFromGray,
+    Intro_FadeToGray,
+    Intro_FadeFromGray,
     InverseIntro_End
 };
 
-#define tBlend                 data[1]
+#define tBlend                 data[1]  // see battle_transition/intro.c
 #define tInvertProgress        data[2]
 
 void Task_InverseIntro(u8 taskId)
@@ -55,47 +49,28 @@ static bool8 InverseIntro_Init(struct Task *task)
     REG_WIN0H = DISPLAY_WIDTH;
     REG_WIN0V = DISPLAY_HEIGHT;
 
-    task->tState++;
-    task->tBlend = 0;
     task->tInvertProgress = 0;
 
-    return FALSE;
+    return Intro_Init(task);
 }
 
 static bool8 InverseIntro_End(struct Task *task)
 {
-    DestroyTask(FindTaskIdByFunc(task->func));
-    return FALSE;
+    return Intro_End(task);
 }
 
 static bool8 InverseIntro_FadeToGray(struct Task *task)
 {
-    task->tBlend += FADE_INCREMENT;
-    if (task->tBlend > 16)
-    {
-        task->tBlend = 16;
-        task->tState++;
-    }
-    BlendPalettes(PALETTES_ALL, task->tBlend, RGB(11, 11, 11));
-
     InverseIntro_DoPaletteCalculations(task);
 
-    return FALSE;
+    return Intro_FadeToGray(task);
 }
 
 static bool8 InverseIntro_FadeFromGray(struct Task *task)
 {
-    task->tBlend -= FADE_INCREMENT;
-    if (task->tBlend < 0)
-    {
-        task->tBlend = 0;
-        task->tState++;
-    }
-    BlendPalettes(PALETTES_ALL, task->tBlend, RGB(11, 11, 11));
-
     InverseIntro_DoPaletteCalculations(task);
 
-    return FALSE;
+    return Intro_FadeFromGray(task);
 }
 
 static bool8 InverseIntro_CopyInvertedPalette(struct Task *task)
