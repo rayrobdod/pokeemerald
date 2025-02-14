@@ -17,6 +17,16 @@ struct Runs
     unsigned short start;
 };
 
+static unsigned findFirstRunWithStart(struct Runs* runs, unsigned length, unsigned short start)
+{
+	for (unsigned i = 0; i < length; i++)
+	{
+		if (runs[i].start == start)
+			return i;
+	}
+	return 0xFFFFFF;
+}
+
 struct ShortArray decompress(struct ShortArray src)
 {
     struct ShortArray dest;
@@ -200,21 +210,21 @@ struct ShortArray compress(struct ShortArray src)
 
     unsigned short regs[NUM_REGS] = {0};
 
-    unsigned leastRecentlyUsed[NUM_REGS] = {0};
-    unsigned nextLRUvalue = 1;
-
     for (runPos = 0; runPos < runCount; runPos++)
     {
         #ifdef DEBUG
             printf("%04x %04x %04x %04x\n", regs[0], regs[1], regs[2], regs[3]);
         #endif
+	unsigned nextRegUse[NUM_REGS];
+	for (unsigned i = 0; i < NUM_REGS; i++) {
+		nextRegUse[i] = findFirstRunWithStart(runs + runPos, runCount - runPos, regs[i]);
+	}
+
         unsigned toReg = 0;
-        if (leastRecentlyUsed[1] < leastRecentlyUsed[toReg])
-            toReg = 1;
-        if (leastRecentlyUsed[2] < leastRecentlyUsed[toReg])
-            toReg = 2;
-        if (leastRecentlyUsed[3] < leastRecentlyUsed[toReg])
-            toReg = 3;
+	for (unsigned i = 1; i < NUM_REGS; i++) {
+		if (nextRegUse[i] > nextRegUse[toReg])
+			toReg = i;
+	}
 
         unsigned fromReg;
         for (fromReg = 0; fromReg < NUM_REGS; fromReg++)
@@ -237,8 +247,6 @@ struct ShortArray compress(struct ShortArray src)
 
             dest.buffer[destPos++] = OP_WRITE(runs[runPos].delta, fromReg, toReg, runs[runPos].length);
             regs[toReg] = endValue;
-            leastRecentlyUsed[fromReg] = (nextLRUvalue++);
-            leastRecentlyUsed[toReg] = nextLRUvalue;
         }
         else
         {
@@ -270,9 +278,6 @@ struct ShortArray compress(struct ShortArray src)
                 dest.buffer[destPos++] = OP_XOR_LO(fromReg, toReg, xorValue);
                 regs[toReg] = (runs[runPos].start & 0xFF) | (regs[fromReg] & 0xFF00);
             }
-
-            leastRecentlyUsed[fromReg] = (nextLRUvalue++);
-            leastRecentlyUsed[toReg] = nextLRUvalue;
 
             runPos--;
         }
