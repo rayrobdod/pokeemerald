@@ -19,12 +19,12 @@ struct Runs
 
 static unsigned findFirstRunWithStart(struct Runs* runs, unsigned length, unsigned short start)
 {
-	for (unsigned i = 0; i < length; i++)
-	{
-		if (runs[i].start == start)
-			return i;
-	}
-	return 0xFFFFFF;
+    for (unsigned i = 0; i < length; i++)
+    {
+        if (runs[i].start == start)
+            return i;
+    }
+    return 0xFFFFFF;
 }
 
 struct ShortArray decompress(struct ShortArray src)
@@ -49,7 +49,8 @@ struct ShortArray decompress(struct ShortArray src)
         unsigned to = (srcValue & 0x300) >> 8;
         unsigned operand = srcValue & 0xFF;
 
-        switch (op) {
+        switch (op)
+        {
         case 0:
             {
                 printf("XOR_HI    %d->%d  0x%02x -- %04x %04x %04x %04x\n", from, to, operand, regs[0], regs[1], regs[2], regs[3]);
@@ -75,7 +76,8 @@ write:
                 unsigned count = operand;
                 printf("WRITE %2d  %d->%d   %3d -- %04x %04x %04x %04x\n", delta, from, to, count + 1, regs[0], regs[1], regs[2], regs[3]);
                 regs[to] = regs[from];
-                for (int i = 0; i <= count; i++) {
+                for (int i = 0; i <= count; i++)
+                {
                     dest.buffer[destPos++] = regs[to];
                     regs[to] += delta;
                 }
@@ -190,11 +192,12 @@ struct ShortArray compress(struct ShortArray src)
         }
     }
 
-#ifdef DEBUG
-    for (int i = 0; i < runCount; i++) {
+    #ifdef DEBUG
+    for (int i = 0; i < runCount; i++)
+    {
         printf("%04x - %3d - %d\n", runs[i].start, runs[i].length, runs[i].delta);
     }
-#endif
+    #endif
 
     struct ShortArray dest = {0};
     dest.buffer = malloc(sizeof(unsigned short) * runCount * 3 + 2);
@@ -215,16 +218,28 @@ struct ShortArray compress(struct ShortArray src)
         #ifdef DEBUG
             printf("%04x %04x %04x %04x\n", regs[0], regs[1], regs[2], regs[3]);
         #endif
-	unsigned nextRegUse[NUM_REGS];
-	for (unsigned i = 0; i < NUM_REGS; i++) {
-		nextRegUse[i] = findFirstRunWithStart(runs + runPos, runCount - runPos, regs[i]);
-	}
+        unsigned nextRegUse[NUM_REGS];
+        for (unsigned i = 0; i < NUM_REGS; i++)
+        {
+            nextRegUse[i] = findFirstRunWithStart(runs + runPos, runCount - runPos, regs[i]);
+        }
 
         unsigned toReg = 0;
-	for (unsigned i = 1; i < NUM_REGS; i++) {
-		if (nextRegUse[i] > nextRegUse[toReg])
-			toReg = i;
-	}
+        if (regs[3] == regs[2] || regs[3] == regs[1] || regs[3] == regs[0])
+            toReg = 3;
+        else if (regs[2] == regs[1] || regs[2] == regs[0])
+            toReg = 2;
+        else if (regs[1] == regs[0])
+            toReg = 1;
+
+        if (0 == toReg)
+        {
+            for (unsigned i = 1; i < NUM_REGS; i++)
+            {
+                if (nextRegUse[i] > nextRegUse[toReg])
+                    toReg = i;
+            }
+        }
 
         unsigned fromReg;
         for (fromReg = 0; fromReg < NUM_REGS; fromReg++)
@@ -250,7 +265,8 @@ struct ShortArray compress(struct ShortArray src)
         }
         else
         {
-            for (fromReg = 0; fromReg < NUM_REGS; fromReg++) {
+            for (fromReg = 0; fromReg < NUM_REGS; fromReg++)
+            {
                 if ((regs[fromReg] & 0xFF) == (runs[runPos].start & 0xFF))
                     break;
                 if ((regs[fromReg] & 0xFF00) == (runs[runPos].start & 0xFF00))
