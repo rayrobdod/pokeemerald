@@ -4,7 +4,10 @@
 #include "global.h"
 #include <stdbool.h>
 
-struct ShortArray decompress(struct ByteArray, bool disassemble);
-struct ByteArray compress(struct ShortArray);
+struct ByteArray decompress8(struct ByteArray, bool disassemble);
+struct ByteArray compress8(struct ByteArray);
+
+struct ShortArray decompress16(struct ByteArray, bool disassemble);
+struct ByteArray compress16(struct ShortArray);
 
 #endif // COMPRESS_H

@@ -33,6 +33,9 @@
 #define NUM_REGS (4)
 #define LONGEST_RUN (1+14+16+255)
 
+#define CAT1(A, B) A ## B
+#define CAT(A, B) CAT1(A, B)
+
 struct Runs
 {
     char delta;
@@ -50,11 +53,11 @@ static unsigned findFirstRunWithStart(struct Runs* runs, unsigned length, unsign
     return 0xFFFFFF;
 }
 
-struct ShortArray decompress(struct ByteArray src, bool decompile)
+struct ARRAY CAT(decompress, SIZE)(struct ByteArray src, bool decompile)
 {
-    struct ShortArray dest;
-    dest.size = ((src.buffer[3] << 16) | (src.buffer[2] << 8) | src.buffer[1]) / sizeof(unsigned short);
-    dest.buffer = malloc(sizeof(unsigned short) * dest.size);
+    struct ARRAY dest;
+    dest.size = ((src.buffer[3] << 16) | (src.buffer[2] << 8) | src.buffer[1]) / sizeof(unsigned TYPE);
+    dest.buffer = malloc(sizeof(unsigned TYPE) * dest.size);
 
     if (dest.buffer == NULL)
         goto fail;
@@ -140,7 +143,7 @@ fail:
     FATAL_ERROR("Fatal error while decompressing file.\n");
 }
 
-struct ByteArray compress(struct ShortArray src)
+struct ByteArray CAT(compress, SIZE)(struct ARRAY src)
 {
     if (src.size <= 0)
         goto fail;
@@ -243,7 +246,7 @@ struct ByteArray compress(struct ShortArray src)
         goto fail;
 
     // header
-    unsigned size_in_bytes = src.size * sizeof(unsigned short);
+    unsigned size_in_bytes = src.size * sizeof(unsigned TYPE);
 
     dest.buffer[0] = 0x00; // TODO compression type
     dest.buffer[1] = (unsigned char)size_in_bytes;
