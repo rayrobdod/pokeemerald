@@ -33,6 +33,26 @@ static const TransitionStateFunc sInverseIntro_Funcs[] = {
 
 #define tBlend                 data[1]  // see battle_transition/intro.c
 #define tInvertProgress        data[2]
+#define bufferDataElem         (3)
+
+// See: SetWordTaskArg
+static void SetWordTaskArgPtr(struct Task *task, u8 dataElem, u32 value)
+{
+    if (dataElem < NUM_TASK_DATA - 1)
+    {
+        task->data[dataElem] = value;
+        task->data[dataElem + 1] = value >> 16;
+    }
+}
+
+// See: GetWordTaskArg
+static u32 GetWordTaskArgPtr(struct Task *task, u8 dataElem)
+{
+    if (dataElem < NUM_TASK_DATA - 1)
+        return (u16)task->data[dataElem] | (task->data[dataElem + 1] << 16);
+    else
+        return 0;
+}
 
 void Task_InverseIntro(u8 taskId)
 {
@@ -50,12 +70,14 @@ static bool8 InverseIntro_Init(struct Task *task)
     REG_WIN0V = DISPLAY_HEIGHT;
 
     task->tInvertProgress = 0;
+    SetWordTaskArgPtr(task, bufferDataElem, (u32) Alloc(PLTT_BUFFER_SIZE * sizeof(u16)));
 
     return Intro_Init(task);
 }
 
 static bool8 InverseIntro_End(struct Task *task)
 {
+    Free((void*) GetWordTaskArgPtr(task, bufferDataElem));
     return Intro_End(task);
 }
 
@@ -75,7 +97,7 @@ static bool8 InverseIntro_FadeFromGray(struct Task *task)
 
 static bool8 InverseIntro_CopyInvertedPalette(struct Task *task)
 {
-    memcpy(gPlttBufferUnfaded, gPaletteDecompressionBuffer, PLTT_SIZE);
+    memcpy(gPlttBufferUnfaded, (void*) GetWordTaskArgPtr(task, bufferDataElem), PLTT_SIZE);
     task->tState++;
     return FALSE;
 }
@@ -86,7 +108,7 @@ static void InverseIntro_DoPaletteCalculations(struct Task *task)
     int end;
     u16 *plttBufferInverted;
 
-    plttBufferInverted = (u16 *)(gPaletteDecompressionBuffer);
+    plttBufferInverted = (u16 *) GetWordTaskArgPtr(task, bufferDataElem);
     end = min(task->tInvertProgress + CALCULATED_PALS_PER_FRAME, PLTT_BUFFER_SIZE);
     for (i = task->tInvertProgress; i < end; i++)
     {
