@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle_pyramid.h"
 #include "bg.h"
+#include "decoration.h"
 #include "fieldmap.h"
 #include "fldeff.h"
 #include "fldeff_misc.h"
@@ -845,6 +846,8 @@ static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u16 o
             LoadBgTiles(2, tileset->tiles, numTiles * 32, offset);
         else
             DecompressAndCopyTileDataToVram(2, tileset->tiles, numTiles * 32, offset, 0);
+        if (tileset->isDecorationTiles)
+            CopyDecorationsTilesetToVram();
     }
 }
 
@@ -856,6 +859,8 @@ static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTil
             LoadBgTiles(2, tileset->tiles, numTiles * 32, offset);
         else
             DecompressAndLoadBgGfxUsingHeap(2, tileset->tiles, numTiles * 32, offset, 0);
+        if (tileset->isDecorationTiles)
+            CopyDecorationsTilesetToVram();
     }
 }
 

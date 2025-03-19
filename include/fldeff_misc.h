@@ -17,7 +17,7 @@ void DoSecretBasePCTurnOffEffect(void);
 void PopSecretBaseBalloon(s16 metatileId, s16 x, s16 y);
 bool8 FldEff_Nop47(void);
 bool8 FldEff_Nop48(void);
-void ShatterSecretBaseBreakableDoor(s16 x, s16 y);
+void ShatterSecretBaseBreakableDoor(s16 metatileId, s16 x, s16 y);
 void PlaySecretBaseMusicNoteMatSound(s16 metatileId);
 void DoSecretBaseGlitterMatSparkle(void);
 bool8 FldEff_SandPillar(void);

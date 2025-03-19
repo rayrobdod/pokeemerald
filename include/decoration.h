@@ -49,7 +49,10 @@ struct Decoration
     u8 category;
     u16 price;
     const u8 *description;
-    const u16 *tiles;
+    const u32 *tiles;
+    const u16 *metatiles;
+    const u16 *attributes;
+    u16 objEvent;
 };
 
 extern const struct Decoration gDecorations[];
@@ -58,11 +61,14 @@ extern u8 gCurDecorationIndex;
 
 void InitDecorationContextItems(void);
 void DoSecretBaseDecorationMenu(u8 taskId);
-void ShowDecorationOnMap(u16 mapX, u16 mapY, u16 decor);
+void ShowDecorationOnMap(u16 mapX, u16 mapY, u32 index, u16 decor);
 void DoPlayerRoomDecorationMenu(u8 taskId);
 void ShowDecorationCategoriesWindow(u8 taskId);
 void CopyDecorationCategoryName(u8 *dest, u8 decorCat);
 bool8 IsSelectedDecorInThePC(void);
 u8 AddDecorationIconObject(u8 decor, s16 x, s16 y, u8 priority, u16 tilesTag, u16 paletteTag);
+void CopyDecorationsTilesetToVram(void);
+u8 CurrentSecretBaseMetatileIdToDecorId(u16);
+u8 CurrentSecretBaseMetatileWithinDecor(u16);
 
 #endif //GUARD_DECORATION_H

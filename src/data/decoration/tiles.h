@@ -1,643 +1,437 @@
-#define DECOR_TILE(name) (METATILE_SecretBase_##name - NUM_TILES_IN_PRIMARY)
-
-const u16 DecorGfx_SMALL_DESK[] = {
-    DECOR_TILE(SmallDesk)
-};
-
-const u16 DecorGfx_POKEMON_DESK[] = {
-    DECOR_TILE(PokemonDesk)
-};
-
-const u16 DecorGfx_HEAVY_DESK[] = {
-    DECOR_TILE(HeavyDesk_TopLeft),
-    DECOR_TILE(HeavyDesk_TopMid),
-    DECOR_TILE(HeavyDesk_TopRight),
-    DECOR_TILE(HeavyDesk_BottomLeft),
-    DECOR_TILE(HeavyDesk_BottomMid),
-    DECOR_TILE(HeavyDesk_BottomRight)
-};
-
-const u16 DecorGfx_RAGGED_DESK[] = {
-    DECOR_TILE(RaggedDesk_TopLeft),
-    DECOR_TILE(RaggedDesk_TopMid),
-    DECOR_TILE(RaggedDesk_TopRight),
-    DECOR_TILE(RaggedDesk_BottomLeft),
-    DECOR_TILE(RaggedDesk_BottomMid),
-    DECOR_TILE(RaggedDesk_BottomRight)
-};
-
-const u16 DecorGfx_COMFORT_DESK[] = {
-    DECOR_TILE(ComfortDesk_TopLeft),
-    DECOR_TILE(ComfortDesk_TopMid),
-    DECOR_TILE(ComfortDesk_TopRight),
-    DECOR_TILE(ComfortDesk_BottomLeft),
-    DECOR_TILE(ComfortDesk_BottomMid),
-    DECOR_TILE(ComfortDesk_BottomRight)
-};
-
-const u16 DecorGfx_PRETTY_DESK[] = {
-    DECOR_TILE(PrettyDesk_TopLeft),
-    DECOR_TILE(PrettyDesk_TopMid),
-    DECOR_TILE(PrettyDesk_TopRight),
-    DECOR_TILE(PrettyDesk_MidLeft),
-    DECOR_TILE(PrettyDesk_Center),
-    DECOR_TILE(PrettyDesk_MidRight),
-    DECOR_TILE(PrettyDesk_BottomLeft),
-    DECOR_TILE(PrettyDesk_BottomMid),
-    DECOR_TILE(PrettyDesk_BottomRight)
-};
-
-const u16 DecorGfx_BRICK_DESK[] = {
-    DECOR_TILE(BrickDesk_TopLeft),
-    DECOR_TILE(BrickDesk_TopMid),
-    DECOR_TILE(BrickDesk_TopRight),
-    DECOR_TILE(BrickDesk_MidLeft),
-    DECOR_TILE(BrickDesk_Center),
-    DECOR_TILE(BrickDesk_MidRight),
-    DECOR_TILE(BrickDesk_BottomLeft),
-    DECOR_TILE(BrickDesk_BottomMid),
-    DECOR_TILE(BrickDesk_BottomRight)
-};
-
-const u16 DecorGfx_CAMP_DESK[] = {
-    DECOR_TILE(CampDesk_TopLeft),
-    DECOR_TILE(CampDesk_TopMid),
-    DECOR_TILE(CampDesk_TopRight),
-    DECOR_TILE(CampDesk_MidLeft),
-    DECOR_TILE(CampDesk_Center),
-    DECOR_TILE(CampDesk_MidRight),
-    DECOR_TILE(CampDesk_BottomLeft),
-    DECOR_TILE(CampDesk_BottomMid),
-    DECOR_TILE(CampDesk_BottomRight)
-};
-
-const u16 DecorGfx_HARD_DESK[] = {
-    DECOR_TILE(HardDesk_TopLeft),
-    DECOR_TILE(HardDesk_TopMid),
-    DECOR_TILE(HardDesk_TopRight),
-    DECOR_TILE(HardDesk_MidLeft),
-    DECOR_TILE(HardDesk_Center),
-    DECOR_TILE(HardDesk_MidRight),
-    DECOR_TILE(HardDesk_BottomLeft),
-    DECOR_TILE(HardDesk_BottomMid),
-    DECOR_TILE(HardDesk_BottomRight)
-};
-
-const u16 DecorGfx_SMALL_CHAIR[] = {
-    DECOR_TILE(SmallChair)
-};
-
-const u16 DecorGfx_POKEMON_CHAIR[] = {
-    DECOR_TILE(PokemonChair)
-};
-
-const u16 DecorGfx_HEAVY_CHAIR[] = {
-    DECOR_TILE(HeavyChair)
-};
-
-const u16 DecorGfx_PRETTY_CHAIR[] = {
-    DECOR_TILE(PrettyChair)
-};
-
-const u16 DecorGfx_COMFORT_CHAIR[] = {
-    DECOR_TILE(ComfortChair)
-};
-
-const u16 DecorGfx_RAGGED_CHAIR[] = {
-    DECOR_TILE(RaggedChair)
-};
-
-const u16 DecorGfx_BRICK_CHAIR[] = {
-    DECOR_TILE(BrickChair)
-};
-
-const u16 DecorGfx_CAMP_CHAIR[] = {
-    DECOR_TILE(CampChair)
-};
-
-const u16 DecorGfx_HARD_CHAIR[] = {
-    DECOR_TILE(HardChair)
-};
-
-const u16 DecorGfx_RED_PLANT[] = {
-    DECOR_TILE(RedPlant_Top),
-    DECOR_TILE(RedPlant_Base1)
-};
-
-const u16 DecorGfx_TROPICAL_PLANT[] = {
-    DECOR_TILE(TropicalPlant_Top),
-    DECOR_TILE(TropicalPlant_Base1)
-};
-
-const u16 DecorGfx_PRETTY_FLOWERS[] = {
-    DECOR_TILE(PrettyFlowers_Top),
-    DECOR_TILE(PrettyFlowers_Base1)
-};
-
-const u16 DecorGfx_COLORFUL_PLANT[] = {
-    DECOR_TILE(ColorfulPlant_TopLeft),
-    DECOR_TILE(ColorfulPlant_TopRight),
-    DECOR_TILE(ColorfulPlant_BaseLeft1),
-    DECOR_TILE(ColorfulPlant_BaseRight1)
-};
-
-const u16 DecorGfx_BIG_PLANT[] = {
-    DECOR_TILE(BigPlant_TopLeft),
-    DECOR_TILE(BigPlant_TopRight),
-    DECOR_TILE(BigPlant_BaseLeft1),
-    DECOR_TILE(BigPlant_BaseRight1)
-};
-
-const u16 DecorGfx_GORGEOUS_PLANT[] = {
-    DECOR_TILE(GorgeousPlant_TopLeft),
-    DECOR_TILE(GorgeousPlant_TopRight),
-    DECOR_TILE(GorgeousPlant_BaseLeft1),
-    DECOR_TILE(GorgeousPlant_BaseRight1)
-};
-
-const u16 DecorGfx_RED_BRICK[] = {
-    DECOR_TILE(RedBrick_Top),
-    DECOR_TILE(RedBrick_Bottom)
-};
-
-const u16 DecorGfx_YELLOW_BRICK[] = {
-    DECOR_TILE(YellowBrick_Top),
-    DECOR_TILE(YellowBrick_Bottom)
-};
-
-const u16 DecorGfx_BLUE_BRICK[] = {
-    DECOR_TILE(BlueBrick_Top),
-    DECOR_TILE(BlueBrick_Bottom)
-};
-
-const u16 DecorGfx_RED_BALLOON[] = {
-    DECOR_TILE(RedBalloon)
-};
-
-const u16 DecorGfx_BLUE_BALLOON[] = {
-    DECOR_TILE(BlueBalloon)
-};
-
-const u16 DecorGfx_YELLOW_BALLOON[] = {
-    DECOR_TILE(YellowBalloon)
-};
-
-const u16 DecorGfx_RED_TENT[] = {
-    DECOR_TILE(RedTent_TopLeft),
-    DECOR_TILE(RedTent_TopMid),
-    DECOR_TILE(RedTent_TopRight),
-    DECOR_TILE(RedTent_MidLeft),
-    DECOR_TILE(RedTent_DoorTop),
-    DECOR_TILE(RedTent_MidRight),
-    DECOR_TILE(RedTent_BottomLeft),
-    DECOR_TILE(RedTent_Door),
-    DECOR_TILE(RedTent_BottomRight)
-};
-
-const u16 DecorGfx_BLUE_TENT[] = {
-    DECOR_TILE(BlueTent_TopLeft),
-    DECOR_TILE(BlueTent_TopMid),
-    DECOR_TILE(BlueTent_TopRight),
-    DECOR_TILE(BlueTent_MidLeft),
-    DECOR_TILE(BlueTent_DoorTop),
-    DECOR_TILE(BlueTent_MidRight),
-    DECOR_TILE(BlueTent_BottomLeft),
-    DECOR_TILE(BlueTent_Door),
-    DECOR_TILE(BlueTent_BottomRight)
-};
-
-const u16 DecorGfx_SOLID_BOARD[] = {
-    DECOR_TILE(SolidBoard_Top),
-    DECOR_TILE(SolidBoard_Bottom)
-};
-
-const u16 DecorGfx_SLIDE[] = {
-    DECOR_TILE(Slide_TopLeft),
-    DECOR_TILE(Slide_TopRight),
-    DECOR_TILE(Slide_StairLanding),
-    DECOR_TILE(Slide_SlideTop),
-    DECOR_TILE(Slide_Stairs),
-    DECOR_TILE(Slide_SlideBottom),
-    DECOR_TILE(Slide_MatLeft),
-    DECOR_TILE(Slide_MatRight)
-};
-
-const u16 DecorGfx_FENCE_LENGTH[] = {
-    DECOR_TILE(Fence_Vertical)
-};
-
-const u16 DecorGfx_FENCE_WIDTH[] = {
-    DECOR_TILE(Fence_Horizontal)
-};
-
-const u16 DecorGfx_TIRE[] = {
-    DECOR_TILE(Tire_TopLeft),
-    DECOR_TILE(Tire_TopRight),
-    DECOR_TILE(Tire_BottomLeft),
-    DECOR_TILE(Tire_BottomRight)
-};
-
-const u16 DecorGfx_STAND[] = {
-    DECOR_TILE(Stand_CornerLeft),
-    DECOR_TILE(Stand_MidLeft),
-    DECOR_TILE(Stand_MidRight),
-    DECOR_TILE(Stand_CornerRight),
-    DECOR_TILE(Stand_StairsLeft),
-    DECOR_TILE(Stand_BaseLeft),
-    DECOR_TILE(Stand_BaseRight),
-    DECOR_TILE(Stand_StairsRight)
-};
-
-const u16 DecorGfx_MUD_BALL[] = {
-    DECOR_TILE(MudBall)
-};
-
-const u16 DecorGfx_BREAKABLE_DOOR[] = {
-    DECOR_TILE(BreakableDoor_TopClosed),
-    DECOR_TILE(BreakableDoor_BottomClosed)
-};
-
-const u16 DecorGfx_SAND_ORNAMENT[] = {
-    DECOR_TILE(SandOrnament_Top),
-    DECOR_TILE(SandOrnament_Base1)
-};
-
-const u16 DecorGfx_SILVER_SHIELD[] = {
-    DECOR_TILE(SilverShield_Top),
-    DECOR_TILE(SilverShield_Base1)
-};
-
-const u16 DecorGfx_GOLD_SHIELD[] = {
-    DECOR_TILE(GoldShield_Top),
-    DECOR_TILE(GoldShield_Base1)
-};
-
-const u16 DecorGfx_GLASS_ORNAMENT[] = {
-    DECOR_TILE(GlassOrnament_Top),
-    DECOR_TILE(GlassOrnament_Base1)
-};
-
-const u16 DecorGfx_TV[] = {
-    DECOR_TILE(TV)
-};
-
-const u16 DecorGfx_ROUND_TV[] = {
-    DECOR_TILE(RoundTV)
-};
-
-const u16 DecorGfx_CUTE_TV[] = {
-    DECOR_TILE(CuteTV)
-};
-
-const u16 DecorGfx_GLITTER_MAT[] = {
-    DECOR_TILE(GlitterMat)
-};
-
-const u16 DecorGfx_JUMP_MAT[] = {
-    DECOR_TILE(JumpMat)
-};
-
-const u16 DecorGfx_SPIN_MAT[] = {
-    DECOR_TILE(SpinMat)
-};
-
-const u16 DecorGfx_C_LOW_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_C_Low)
-};
-
-const u16 DecorGfx_D_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_D)
-};
-
-const u16 DecorGfx_E_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_E)
-};
-
-const u16 DecorGfx_F_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_F)
-};
-
-const u16 DecorGfx_G_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_G)
-};
-
-const u16 DecorGfx_A_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_A)
-};
-
-const u16 DecorGfx_B_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_B)
-};
-
-const u16 DecorGfx_C_HIGH_NOTE_MAT[] = {
-    DECOR_TILE(NoteMat_C_High)
-};
-
-const u16 DecorGfx_SURF_MAT[] = {
-    DECOR_TILE(SurfMat_TopLeft),
-    DECOR_TILE(SurfMat_TopMid),
-    DECOR_TILE(SurfMat_TopRight),
-    DECOR_TILE(SurfMat_MidLeft),
-    DECOR_TILE(SurfMat_Center),
-    DECOR_TILE(SurfMat_MidRight),
-    DECOR_TILE(SurfMat_BottomLeft),
-    DECOR_TILE(SurfMat_BottomMid),
-    DECOR_TILE(SurfMat_BottomRight)
-};
-
-const u16 DecorGfx_THUNDER_MAT[] = {
-    DECOR_TILE(ThunderMat_TopLeft),
-    DECOR_TILE(ThunderMat_TopMid),
-    DECOR_TILE(ThunderMat_TopRight),
-    DECOR_TILE(ThunderMat_MidLeft),
-    DECOR_TILE(ThunderMat_Center),
-    DECOR_TILE(ThunderMat_MidRight),
-    DECOR_TILE(ThunderMat_BottomLeft),
-    DECOR_TILE(ThunderMat_BottomMid),
-    DECOR_TILE(ThunderMat_BottomRight)
+#define DecorTilesMaxSize (DECOR_TILES_PER_ITEM * TILE_SIZE_4BPP / sizeof(u32))
+
+// set to `DecorTilesMaxSize` to fill unused tiles with zeros for prettier tile inspection and bounds checking
+// otherwise, set to empty to minimize used rom
+#define DecorTilesSize
+
+const u32 DecorTiles_SMALL_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/small_desk.4bpp");
+const u16 DecorMetatiles_SMALL_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, BG_TILE_H_FLIP(0x5000), 0x5001, BG_TILE_H_FLIP(0x5001)
+};
+
+const u32 DecorTiles_POKEMON_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pokemon_desk.4bpp");
+const u16 DecorMetatiles_POKEMON_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, BG_TILE_H_FLIP(0x2000), 0x2001, BG_TILE_H_FLIP(0x2001)
+};
+
+const u32 DecorTiles_HEAVY_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/heavy_desk.4bpp");
+const u16 DecorMetatiles_HEAVY_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4001, 0x4403, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4403, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4405, 0x4005, 0x4407, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4405, 0x4404, 0x4407, 0x4406,
+};
+
+const u32 DecorTiles_RAGGED_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/ragged_desk.4bpp");
+const u16 DecorMetatiles_RAGGED_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5001, 0x5403, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5400, 0x5403, 0x5402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5405, 0x5005, 0x5407, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5405, 0x5404, 0x5407, 0x5406,
 };
 
-const u16 DecorGfx_FIRE_BLAST_MAT[] = {
-    DECOR_TILE(FireBlastMat_TopLeft),
-    DECOR_TILE(FireBlastMat_TopMid),
-    DECOR_TILE(FireBlastMat_TopRight),
-    DECOR_TILE(FireBlastMat_MidLeft),
-    DECOR_TILE(FireBlastMat_Center),
-    DECOR_TILE(FireBlastMat_MidRight),
-    DECOR_TILE(FireBlastMat_BottomLeft),
-    DECOR_TILE(FireBlastMat_BottomMid),
-    DECOR_TILE(FireBlastMat_BottomRight)
+const u32 DecorTiles_COMFORT_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/comfort_desk.4bpp");
+const u16 DecorMetatiles_COMFORT_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5001, 0x5403, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5400, 0x5403, 0x5402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5405, 0x5005, 0x5407, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5405, 0x5404, 0x5407, 0x5406,
 };
 
-const u16 DecorGfx_POWDER_SNOW_MAT[] = {
-    DECOR_TILE(PowderSnowMat_TopLeft),
-    DECOR_TILE(PowderSnowMat_TopMid),
-    DECOR_TILE(PowderSnowMat_TopRight),
-    DECOR_TILE(PowderSnowMat_MidLeft),
-    DECOR_TILE(PowderSnowMat_Center),
-    DECOR_TILE(PowderSnowMat_MidRight),
-    DECOR_TILE(PowderSnowMat_BottomLeft),
-    DECOR_TILE(PowderSnowMat_BottomMid),
-    DECOR_TILE(PowderSnowMat_BottomRight)
+const u32 DecorTiles_PRETTY_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pretty_desk.4bpp");
+const u16 DecorMetatiles_PRETTY_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4001, 0x4001, 0x4003, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4001, 0x4400, 0x4003, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4002, 0x4003, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4003, 0x4003, 0x4003, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4003, 0x4402, 0x4403, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x4005, 0x4007, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x4404, 0x4007, 0x4406,
 };
 
-const u16 DecorGfx_ATTRACT_MAT[] = {
-    DECOR_TILE(AttractMat_TopLeft),
-    DECOR_TILE(AttractMat_TopMid),
-    DECOR_TILE(AttractMat_TopRight),
-    DECOR_TILE(AttractMat_MidLeft),
-    DECOR_TILE(AttractMat_Center),
-    DECOR_TILE(AttractMat_MidRight),
-    DECOR_TILE(AttractMat_BottomLeft),
-    DECOR_TILE(AttractMat_BottomMid),
-    DECOR_TILE(AttractMat_BottomRight)
+const u32 DecorTiles_BRICK_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/brick_desk.4bpp");
+const u16 DecorMetatiles_BRICK_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4003, 0x4004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4002, 0x4402, 0x4005, 0x4405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4404, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4003, 0x4004, 0x4003, 0x4004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x4405, 0x4005, 0x4405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4404, 0x4403, 0x4404, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4006, 0x4007, 0x4009, 0x400A,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4007, 0x4407, 0x400A, 0x400A,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4407, 0x4406, 0x440A, 0x4409,
 };
 
-const u16 DecorGfx_FISSURE_MAT[] = {
-    DECOR_TILE(FissureMat_TopLeft),
-    DECOR_TILE(FissureMat_TopMid),
-    DECOR_TILE(FissureMat_TopRight),
-    DECOR_TILE(FissureMat_MidLeft),
-    DECOR_TILE(FissureMat_Center),
-    DECOR_TILE(FissureMat_MidRight),
-    DECOR_TILE(FissureMat_BottomLeft),
-    DECOR_TILE(FissureMat_BottomMid),
-    DECOR_TILE(FissureMat_BottomRight)
+const u32 DecorTiles_CAMP_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/camp_desk.4bpp");
+const u16 DecorMetatiles_CAMP_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5001, 0x5001, 0x5003, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5001, 0x5402, 0x5003, 0x5400,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5000, 0x5001,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5001, 0x5001, 0x5001, 0x5001,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5001, 0x5402, 0x5001, 0x5402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5002, 0x5003, 0x5004, 0x5005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5003, 0x5003, 0x5005, 0x5005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5003, 0x5400, 0x5005, 0x5404,
 };
 
-const u16 DecorGfx_SPIKES_MAT[] = {
-    DECOR_TILE(SpikesMat_TopLeft),
-    DECOR_TILE(SpikesMat_TopMid),
-    DECOR_TILE(SpikesMat_TopRight),
-    DECOR_TILE(SpikesMat_MidLeft),
-    DECOR_TILE(SpikesMat_Center),
-    DECOR_TILE(SpikesMat_MidRight),
-    DECOR_TILE(SpikesMat_BottomLeft),
-    DECOR_TILE(SpikesMat_BottomMid),
-    DECOR_TILE(SpikesMat_BottomRight)
+const u32 DecorTiles_HARD_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/hard_desk.4bpp");
+const u16 DecorMetatiles_HARD_DESK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4001, 0x4401, 0x4003, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4403, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4002, 0x4003, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4003, 0x4403, 0x4003, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4403, 0x4402, 0x4403, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x4405, 0x4007, 0x4407,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4405, 0x4404, 0x4407, 0x4406,
 };
 
-const u16 DecorGfx_BALL_POSTER[] = {
-    DECOR_TILE(BallPoster)
+const u32 DecorTiles_SMALL_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/small_chair.4bpp");
+const u16 DecorMetatiles_SMALL_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2400, 0x2001, 0x2401,
 };
 
-const u16 DecorGfx_GREEN_POSTER[] = {
-    DECOR_TILE(GreenPoster)
-};
-
-const u16 DecorGfx_RED_POSTER[] = {
-    DECOR_TILE(RedPoster)
-};
-
-const u16 DecorGfx_BLUE_POSTER[] = {
-    DECOR_TILE(BluePoster)
-};
-
-const u16 DecorGfx_CUTE_POSTER[] = {
-    DECOR_TILE(CutePoster)
-};
-
-const u16 DecorGfx_PIKA_POSTER[] = {
-    DECOR_TILE(PikaPoster_Left),
-    DECOR_TILE(PikaPoster_Right)
-};
+const u32 DecorTiles_POKEMON_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pokemon_chair.4bpp");
 
-const u16 DecorGfx_LONG_POSTER[] = {
-    DECOR_TILE(LongPoster_Left),
-    DECOR_TILE(LongPoster_Right)
+const u32 DecorTiles_HEAVY_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/heavy_chair.4bpp");
+const u16 DecorMetatiles_HEAVY_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4400, 0x4001, 0x4401,
 };
 
-const u16 DecorGfx_SEA_POSTER[] = {
-    DECOR_TILE(SeaPoster_Left),
-    DECOR_TILE(SeaPoster_Right)
+const u32 DecorTiles_PRETTY_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pretty_chair.4bpp");
+const u16 DecorMetatiles_PRETTY_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4400, 0x4001, 0x4401,
 };
 
-const u16 DecorGfx_SKY_POSTER[] = {
-    DECOR_TILE(SkyPoster_Left),
-    DECOR_TILE(SkyPoster_Right)
+const u32 DecorTiles_COMFORT_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/comfort_chair.4bpp");
+const u16 DecorMetatiles_COMFORT_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5400, 0x5001, 0x5401,
 };
 
-const u16 DecorGfx_KISS_POSTER[] = {
-    DECOR_TILE(KissPoster_Left),
-    DECOR_TILE(KissPoster_Right)
+const u32 DecorTiles_RAGGED_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/ragged_chair.4bpp");
+const u16 DecorMetatiles_RAGGED_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5400, 0x5001, 0x5401,
 };
 
-const u16 DecorGfx_PICHU_DOLL[] = {
-    OBJ_EVENT_GFX_PICHU_DOLL
+const u32 DecorTiles_BRICK_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/brick_chair.4bpp");
+const u16 DecorMetatiles_BRICK_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4400, 0x4001, 0x4401,
 };
 
-const u16 DecorGfx_PIKACHU_DOLL[] = {
-    OBJ_EVENT_GFX_PIKACHU_DOLL
+const u32 DecorTiles_CAMP_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/camp_chair.4bpp");
+const u16 DecorMetatiles_CAMP_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5400, 0x5001, 0x5401,
 };
 
-const u16 DecorGfx_MARILL_DOLL[] = {
-    OBJ_EVENT_GFX_MARILL_DOLL
+const u32 DecorTiles_HARD_CHAIR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/hard_chair.4bpp");
+const u16 DecorMetatiles_HARD_CHAIR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
 };
 
-const u16 DecorGfx_TOGEPI_DOLL[] = {
-    OBJ_EVENT_GFX_TOGEPI_DOLL
+const u32 DecorTiles_RED_PLANT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/red_plant.4bpp");
+const u16 DecorMetatiles_RED_PLANT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2001, 0x2002, 0x2003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2004, 0x2005, 0x2006, 0x2007,
 };
 
-const u16 DecorGfx_CYNDAQUIL_DOLL[] = {
-    OBJ_EVENT_GFX_CYNDAQUIL_DOLL
+const u32 DecorTiles_TROPICAL_PLANT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/tropical_plant.4bpp");
+const u16 DecorMetatiles_TROPICAL_PLANT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
 };
 
-const u16 DecorGfx_CHIKORITA_DOLL[] = {
-    OBJ_EVENT_GFX_CHIKORITA_DOLL
+const u32 DecorTiles_PRETTY_FLOWERS[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pretty_flowers.4bpp");
+const u16 DecorMetatiles_PRETTY_FLOWERS[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2001, 0x2002, 0x2003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2004, 0x2005, 0x2006, 0x2007,
 };
 
-const u16 DecorGfx_TOTODILE_DOLL[] = {
-    OBJ_EVENT_GFX_TOTODILE_DOLL
+const u32 DecorTiles_COLORFUL_PLANT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/colorful_plant.4bpp");
+const u16 DecorMetatiles_COLORFUL_PLANT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5004, 0x5005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5002, 0x5003, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5008, 0x5009, 0x500C, 0x500D,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x500A, 0x500B, 0x500E, 0x500F,
 };
 
-const u16 DecorGfx_JIGGLYPUFF_DOLL[] = {
-    OBJ_EVENT_GFX_JIGGLYPUFF_DOLL
+const u32 DecorTiles_BIG_PLANT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/big_plant.4bpp");
+const u32 DecorTiles_GORGEOUS_PLANT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/gorgeous_plant.4bpp");
+const u16 DecorMetatiles_BIG_PLANT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5400, 0x5403, 0x5402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5405, 0x5404, 0x5407, 0x5406,
 };
 
-const u16 DecorGfx_MEOWTH_DOLL[] = {
-    OBJ_EVENT_GFX_MEOWTH_DOLL
+const u32 DecorTiles_BRICK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/brick.4bpp");
+const u16 DecorMetatiles_RED_BRICK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2400, 0x2001, 0x2401,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2002, 0x2402, 0x2003, 0x2403,
 };
-
-const u16 DecorGfx_CLEFAIRY_DOLL[] = {
-    OBJ_EVENT_GFX_CLEFAIRY_DOLL
-};
-
-const u16 DecorGfx_DITTO_DOLL[] = {
-    OBJ_EVENT_GFX_DITTO_DOLL
+const u16 DecorMetatiles_YELLOW_BRICK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3400, 0x3001, 0x3401,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3002, 0x3402, 0x3003, 0x3403,
 };
-
-const u16 DecorGfx_SMOOCHUM_DOLL[] = {
-    OBJ_EVENT_GFX_SMOOCHUM_DOLL
+const u16 DecorMetatiles_BLUE_BRICK[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4400, 0x4001, 0x4401,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4002, 0x4402, 0x4003, 0x4403,
 };
 
-const u16 DecorGfx_TREECKO_DOLL[] = {
-    OBJ_EVENT_GFX_TREECKO_DOLL
+const u32 DecorTiles_BALLOON[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/balloon.4bpp");
+const u16 DecorMetatiles_RED_BALLOON[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2001, 0x2002, 0x2003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2004, 0x2005, 0x2006, 0x2007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2008, 0x2009, 0x200A, 0x200B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x200C, 0x200D, 0x200E, 0x200F,
 };
-
-const u16 DecorGfx_TORCHIC_DOLL[] = {
-    OBJ_EVENT_GFX_TORCHIC_DOLL
+const u16 DecorMetatiles_YELLOW_BALLOON[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3001, 0x3002, 0x3003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3004, 0x3005, 0x3006, 0x3007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3008, 0x3009, 0x300A, 0x300B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x300C, 0x300D, 0x300E, 0x300F,
 };
-
-const u16 DecorGfx_MUDKIP_DOLL[] = {
-    OBJ_EVENT_GFX_MUDKIP_DOLL
+const u16 DecorMetatiles_BLUE_BALLOON[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4008, 0x4009, 0x400A, 0x400B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x400C, 0x400D, 0x400E, 0x400F,
 };
 
-const u16 DecorGfx_DUSKULL_DOLL[] = {
-    OBJ_EVENT_GFX_DUSKULL_DOLL
+const u32 DecorTiles_TENT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/tent.4bpp");
+const u16 DecorMetatiles_RED_TENT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x2004, 0x2000, 0x200A, 0x2006,
+    0x4005, 0x4005, 0x4005, 0x4005, 0x2001, 0x2002, 0x2007, 0x2008,
+    0xFFFF, 0xFFFF, 0x4005, 0xFFFF, 0x2400, 0x2404, 0x2009, 0x240A,
+    0xFFFF, 0x4005, 0xFFFF, 0x4005, 0x2003, 0x200C, 0x2003, 0x2012,
+    0x4005, 0x4005, 0x4005, 0x4005, 0x200D, 0x200E, 0x2013, 0x2014,
+    0x4005, 0xFFFF, 0x4005, 0xFFFF, 0x200F, 0x2403, 0x2412, 0x2403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2010, 0x2011, 0x2016, 0x2017,
+    0x4015, 0x4415, 0x400B, 0x440B, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2411, 0x2410, 0x2417, 0x2416,
 };
 
-const u16 DecorGfx_WYNAUT_DOLL[] = {
-    OBJ_EVENT_GFX_WYNAUT_DOLL
+const u16 DecorMetatiles_BLUE_TENT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0x4005, 0x4004, 0x4000, 0x400A, 0x4006,
+    0x4005, 0x4005, 0x4005, 0x4005, 0x4001, 0x4002, 0x4007, 0x4008,
+    0xFFFF, 0xFFFF, 0x4005, 0xFFFF, 0x4400, 0x4404, 0x4009, 0x440A,
+    0xFFFF, 0x4005, 0xFFFF, 0x4005, 0x4003, 0x400C, 0x4003, 0x4012,
+    0x4005, 0x4005, 0x4005, 0x4005, 0x400D, 0x400E, 0x4013, 0x4014,
+    0x4005, 0xFFFF, 0x4005, 0xFFFF, 0x400F, 0x4403, 0x4412, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4010, 0x4011, 0x4016, 0x4017,
+    0x4015, 0x4415, 0x400B, 0x440B, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4411, 0x4410, 0x4417, 0x4416,
 };
 
-const u16 DecorGfx_BALTOY_DOLL[] = {
-    OBJ_EVENT_GFX_BALTOY_DOLL
+const u32 DecorTiles_SOLID_BOARD[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/solid_board.4bpp");
+const u16 DecorMetatiles_SOLID_BOARD[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5802, 0x5803, 0x5800, 0x5801,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
 };
 
-const u16 DecorGfx_KECLEON_DOLL[] = {
-    OBJ_EVENT_GFX_KECLEON_DOLL
+const u32 DecorTiles_SLIDE[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/slide.4bpp");
+const u16 DecorMetatiles_SLIDE[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4405, 0x4404,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4006, 0x4406, 0x4006, 0x4406,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x400C, 0x400D, 0x400C, 0x400D,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4008, 0x4009, 0x400A, 0x400B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x400C, 0x400D, 0x400E, 0x400F,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4010, 0x4011, 0x4012, 0x4013,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4411, 0x4410, 0x4413, 0x4412,
 };
 
-const u16 DecorGfx_AZURILL_DOLL[] = {
-    OBJ_EVENT_GFX_AZURILL_DOLL
+const u32 DecorTiles_FENCE_LENGTH[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/fence_length.4bpp");
+const u32 DecorTiles_FENCE_WIDTH[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/fence_width.4bpp");
+const u16 DecorMetatiles_FENCE[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5400, 0x5001, 0x5401,
 };
 
-const u16 DecorGfx_SKITTY_DOLL[] = {
-    OBJ_EVENT_GFX_SKITTY_DOLL
+const u32 DecorTiles_TIRE[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/tire.4bpp");
+const u16 DecorMetatiles_TIRE[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4403, 0x4402,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4405, 0x4404, 0x4407, 0x4406,
 };
 
-const u16 DecorGfx_SWABLU_DOLL[] = {
-    OBJ_EVENT_GFX_SWABLU_DOLL
+const u32 DecorTiles_STAND[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/stand.4bpp");
+const u16 DecorMetatiles_STAND[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2001, 0x2003, 0x2004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2002, 0x2002, 0x2005, 0x2005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2002, 0x2002, 0x2005, 0x2005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2401, 0x2400, 0x2404, 0x2403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2006, 0x2007, 0x2009, 0x200A,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2008, 0x2008, 0x200B, 0x200B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2008, 0x2008, 0x200B, 0x200B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2407, 0x2406, 0x240A, 0x2409,
 };
 
-const u16 DecorGfx_GULPIN_DOLL[] = {
-    OBJ_EVENT_GFX_GULPIN_DOLL
+const u32 DecorTiles_MUD_BALL[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/mud_ball.4bpp");
+const u16 DecorMetatiles_MUD_BALL[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5008, 0x5009, 0x500A, 0x500B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x500C, 0x500D, 0x500E, 0x500F,
 };
 
-const u16 DecorGfx_LOTAD_DOLL[] = {
-    OBJ_EVENT_GFX_LOTAD_DOLL
+const u32 DecorTiles_BREAKABLE_DOOR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/breakable_door.4bpp");
+const u16 DecorMetatiles_BREAKABLE_DOOR[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5008, 0x5009, 0x500A, 0x500B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x500C, 0x500D, 0x500E, 0x500F,
 };
 
-const u16 DecorGfx_SEEDOT_DOLL[] = {
-    OBJ_EVENT_GFX_SEEDOT_DOLL
+const u32 DecorTiles_SAND_ORNAMENT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sand_ornament.4bpp");
+const u16 DecorMetatiles_SAND_ORNAMENT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5004, 0x5005, 0x5006, 0x5007,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5008, 0x5009, 0x500A, 0x500B,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x500C, 0x500D, 0x500E, 0x500F,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
 };
 
-const u16 DecorGfx_PIKA_CUSHION[] = {
-    OBJ_EVENT_GFX_PIKA_CUSHION
+const u32 DecorTiles_SILVER_SHIELD[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/silver_shield.4bpp");
+const u32 DecorTiles_GOLD_SHIELD[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/gold_shield.4bpp");
+const u16 DecorMetatiles_SILVER_SHIELD[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3001,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3002, 0x3003, 0x3004, 0x3005,
 };
 
-const u16 DecorGfx_ROUND_CUSHION[] = {
-    OBJ_EVENT_GFX_ROUND_CUSHION
+const u32 DecorTiles_GLASS_ORNAMENT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/glass_ornament.4bpp");
+const u16 DecorMetatiles_GLASS_ORNAMENT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4004, 0x4005, 0x4006, 0x4007,
 };
 
-const u16 DecorGfx_KISS_CUSHION[] = {
-    OBJ_EVENT_GFX_KISS_CUSHION
+const u32 DecorTiles_TV[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/tv.4bpp");
+const u16 DecorMetatiles_TV[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
 };
 
-const u16 DecorGfx_ZIGZAG_CUSHION[] = {
-    OBJ_EVENT_GFX_ZIGZAG_CUSHION
+const u32 DecorTiles_ROUND_TV[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/round_tv.4bpp");
+const u16 DecorMetatiles_ROUND_TV[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5002, 0x5003,
 };
 
-const u16 DecorGfx_SPIN_CUSHION[] = {
-    OBJ_EVENT_GFX_SPIN_CUSHION
+const u32 DecorTiles_CUTE_TV[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/cute_tv.4bpp");
+const u16 DecorMetatiles_CUTE_TV[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x1000, 0x1001, 0x1002, 0x1003,
 };
 
-const u16 DecorGfx_DIAMOND_CUSHION[] = {
-    OBJ_EVENT_GFX_DIAMOND_CUSHION
+const u32 DecorTiles_GLITTER_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/glitter_mat.4bpp");
+const u16 DecorMetatiles_GLITTER_MAT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
 };
 
-const u16 DecorGfx_BALL_CUSHION[] = {
-    OBJ_EVENT_GFX_BALL_CUSHION
+const u32 DecorTiles_JUMP_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/jump_mat.4bpp");
+const u16 DecorMetatiles_JUMP_MAT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4400, 0x4001, 0x4401,
 };
 
-const u16 DecorGfx_GRASS_CUSHION[] = {
-    OBJ_EVENT_GFX_GRASS_CUSHION
+const u32 DecorTiles_SPIN_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/spin_mat.4bpp");
+const u16 DecorMetatiles_SPIN_MAT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3001, 0x3002, 0x3003,
 };
 
-const u16 DecorGfx_FIRE_CUSHION[] = {
-    OBJ_EVENT_GFX_FIRE_CUSHION
+const u32 DecorTiles_NOTE_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/note_mat.4bpp");
+const u16 DecorMetatiles_NOTE_MAT[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
 };
 
-const u16 DecorGfx_WATER_CUSHION[] = {
-    OBJ_EVENT_GFX_WATER_CUSHION
-};
+const u32 DecorTiles_SURF_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/surf_mat.4bpp");
+const u32 DecorTiles_THUNDER_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/thunder_mat.4bpp");
+const u32 DecorTiles_FIRE_BLAST_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/fire_blast_mat.4bpp");
+const u32 DecorTiles_POWDER_SNOW_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/powder_snow_mat.4bpp");
+const u32 DecorTiles_ATTRACT_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/attract_mat.4bpp");
+const u32 DecorTiles_FISSURE_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/fissure_mat.4bpp");
+const u32 DecorTiles_SPIKES_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/spikes_mat.4bpp");
 
-const u16 DecorGfx_SNORLAX_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_SNORLAX_DOLL
+const u16 DecorMetatiles_MAT_3x3_PAL2[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2000, 0x2001, 0x2003, 0x2004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2002, 0x2402, 0x2005, 0x2405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2401, 0x2400, 0x2404, 0x2403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2006, 0x2007, 0x2806, 0x2807,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2008, 0x2408, 0x2808, 0x2C08,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2407, 0x2406, 0x2C07, 0x2C06,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2803, 0x2804, 0x2800, 0x2801,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2805, 0x2C05, 0x2802, 0x2C02,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x2C04, 0x2C03, 0x2C01, 0x2C00,
 };
 
-const u16 DecorGfx_RHYDON_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_RHYDON_DOLL
+const u16 DecorMetatiles_MAT_3x3_PAL3[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3001, 0x3003, 0x3004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3002, 0x3402, 0x3005, 0x3405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3401, 0x3400, 0x3404, 0x3403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3006, 0x3007, 0x3806, 0x3807,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3008, 0x3408, 0x3808, 0x3C08,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3407, 0x3406, 0x3C07, 0x3C06,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3803, 0x3804, 0x3800, 0x3801,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3805, 0x3C05, 0x3802, 0x3C02,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3C04, 0x3C03, 0x3C01, 0x3C00,
 };
 
-const u16 DecorGfx_LAPRAS_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_LAPRAS_DOLL
+const u16 DecorMetatiles_MAT_3x3_PAL4[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4003, 0x4004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4002, 0x4402, 0x4005, 0x4405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4401, 0x4400, 0x4404, 0x4403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4006, 0x4007, 0x4806, 0x4807,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4008, 0x4408, 0x4808, 0x4C08,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4407, 0x4406, 0x4C07, 0x4C06,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4803, 0x4804, 0x4800, 0x4801,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4805, 0x4C05, 0x4802, 0x4C02,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4C04, 0x4C03, 0x4C01, 0x4C00,
 };
 
-const u16 DecorGfx_VENUSAUR_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_VENUSAUR_DOLL
+const u16 DecorMetatiles_MAT_3x3_PAL5[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5000, 0x5001, 0x5003, 0x5004,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5002, 0x5402, 0x5005, 0x5405,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5401, 0x5400, 0x5404, 0x5403,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5006, 0x5007, 0x5806, 0x5807,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5008, 0x5408, 0x5808, 0x5C08,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5407, 0x5406, 0x5C07, 0x5C06,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5803, 0x5804, 0x5800, 0x5801,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5805, 0x5C05, 0x5802, 0x5C02,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x5C04, 0x5C03, 0x5C01, 0x5C00,
 };
 
-const u16 DecorGfx_CHARIZARD_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_CHARIZARD_DOLL
-};
+const u32 DecorTiles_BALL_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/ball_poster.4bpp");
+const u32 DecorTiles_GREEN_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/green_poster.4bpp");
+const u32 DecorTiles_RED_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/red_poster.4bpp");
+const u32 DecorTiles_BLUE_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/blue_poster.4bpp");
+const u32 DecorTiles_CUTE_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/cute_poster.4bpp");
 
-const u16 DecorGfx_BLASTOISE_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_BLASTOISE_DOLL
+const u16 DecorMetatiles_POSTER_1x1_PAL1[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x1000, 0x1001, 0x1002, 0x1003,
 };
 
-const u16 DecorGfx_WAILMER_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_WAILMER_DOLL
+const u16 DecorMetatiles_POSTER_1x1_PAL4[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x4000, 0x4001, 0x4002, 0x4003,
 };
 
-const u16 DecorGfx_REGIROCK_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_REGIROCK_DOLL
-};
+const u32 DecorTiles_PIKA_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pika_poster.4bpp");
+const u32 DecorTiles_LONG_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/long_poster.4bpp");
+const u32 DecorTiles_SEA_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sea_poster.4bpp");
+const u32 DecorTiles_SKY_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sky_poster.4bpp");
+const u32 DecorTiles_KISS_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/kiss_poster.4bpp");
 
-const u16 DecorGfx_REGICE_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_REGICE_DOLL
+const u16 DecorMetatiles_POSTER_2x1_PAL1[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x1000, 0x1001, 0x1004, 0x1005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x1002, 0x1003, 0x1006, 0x1007,
 };
 
-const u16 DecorGfx_REGISTEEL_DOLL[] = {
-    OBJ_EVENT_GFX_BIG_REGISTEEL_DOLL
+const u16 DecorMetatiles_POSTER_2x1_PAL3[] = {
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3000, 0x3001, 0x3004, 0x3005,
+    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x3002, 0x3003, 0x3006, 0x3007,
 };

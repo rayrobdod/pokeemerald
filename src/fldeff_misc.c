@@ -6,6 +6,7 @@
 #include "task.h"
 #include "strings.h"
 #include "party_menu.h"
+#include "decoration.h"
 #include "fieldmap.h"
 #include "field_effect.h"
 #include "field_camera.h"
@@ -18,6 +19,8 @@
 #include "event_object_movement.h"
 #include "metatile_behavior.h"
 #include "string_util.h"
+#include "constants/decorations.h"
+#include "constants/decoration_metatile_labels.h"
 #include "constants/field_effects.h"
 #include "constants/metatile_behaviors.h"
 #include "constants/metatile_labels.h"
@@ -884,18 +887,19 @@ static void Task_PopSecretBaseBalloon(u8 taskId)
 
 static void DoBalloonSoundEffect(s16 metatileId)
 {
-    switch (metatileId)
+    u8 decorId = CurrentSecretBaseMetatileIdToDecorId(metatileId);
+    switch (decorId)
     {
-    case METATILE_SecretBase_RedBalloon:
+    case DECOR_RED_BALLOON:
         PlaySE(SE_BALLOON_RED);
         break;
-    case METATILE_SecretBase_BlueBalloon:
+    case DECOR_BLUE_BALLOON:
         PlaySE(SE_BALLOON_BLUE);
         break;
-    case METATILE_SecretBase_YellowBalloon:
+    case DECOR_YELLOW_BALLOON:
         PlaySE(SE_BALLOON_YELLOW);
         break;
-    case METATILE_SecretBase_MudBall:
+    case DECOR_MUD_BALL:
         PlaySE(SE_MUD_BALL);
         break;
     }
@@ -911,11 +915,11 @@ bool8 FldEff_Nop48(void)
     return FALSE;
 }
 
-static void DoSecretBaseBreakableDoorEffect(s16 x, s16 y)
+static void DoSecretBaseBreakableDoorEffect(s16 x, s16 y, s16 metatileId)
 {
     PlaySE(SE_BREAKABLE_DOOR);
-    MapGridSetMetatileIdAt(x, y, METATILE_SecretBase_BreakableDoor_BottomOpen);
-    MapGridSetMetatileIdAt(x, y - 1, METATILE_SecretBase_BreakableDoor_TopOpen);
+    MapGridSetMetatileIdAt(x, y, metatileId + 2);
+    MapGridSetMetatileIdAt(x, y - 1, metatileId + 1);
     CurrentMapDrawMetatileAt(x, y);
     CurrentMapDrawMetatileAt(x, y - 1);
 }
@@ -924,7 +928,7 @@ static void Task_ShatterSecretBaseBreakableDoor(u8 taskId)
 {
     if (gTasks[taskId].data[0] == 7)
     {
-        DoSecretBaseBreakableDoorEffect(gTasks[taskId].data[1], gTasks[taskId].data[2]);
+        DoSecretBaseBreakableDoorEffect(gTasks[taskId].data[1], gTasks[taskId].data[2], gTasks[taskId].data[3]);
         DestroyTask(taskId);
     }
     else
@@ -933,13 +937,13 @@ static void Task_ShatterSecretBaseBreakableDoor(u8 taskId)
     }
 }
 
-void ShatterSecretBaseBreakableDoor(s16 x, s16 y)
+void ShatterSecretBaseBreakableDoor(s16 metatileId, s16 x, s16 y)
 {
     u8 dir = GetPlayerFacingDirection();
 
     if (dir == DIR_SOUTH)
     {
-        DoSecretBaseBreakableDoorEffect(x, y);
+        DoSecretBaseBreakableDoorEffect(x, y, metatileId);
     }
     else if (dir == DIR_NORTH)
     {
@@ -947,6 +951,7 @@ void ShatterSecretBaseBreakableDoor(s16 x, s16 y)
         gTasks[taskId].data[0] = 0;
         gTasks[taskId].data[1] = x;
         gTasks[taskId].data[2] = y;
+        gTasks[taskId].data[3] = metatileId;
     }
 }
 
@@ -955,30 +960,31 @@ static void Task_SecretBaseMusicNoteMatSound(u8 taskId)
 {
     if (gTasks[taskId].data[1] == 7)
     {
-        switch (gTasks[taskId].tMetatileID)
+        u8 decorId = CurrentSecretBaseMetatileIdToDecorId(gTasks[taskId].tMetatileID);
+        switch (decorId)
         {
-        case METATILE_SecretBase_NoteMat_C_Low:
+        case DECOR_C_LOW_NOTE_MAT:
             PlaySE(SE_NOTE_C);
             break;
-        case METATILE_SecretBase_NoteMat_D:
+        case DECOR_D_NOTE_MAT:
             PlaySE(SE_NOTE_D);
             break;
-        case METATILE_SecretBase_NoteMat_E:
+        case DECOR_E_NOTE_MAT:
             PlaySE(SE_NOTE_E);
             break;
-        case METATILE_SecretBase_NoteMat_F:
+        case DECOR_F_NOTE_MAT:
             PlaySE(SE_NOTE_F);
             break;
-        case METATILE_SecretBase_NoteMat_G:
+        case DECOR_G_NOTE_MAT:
             PlaySE(SE_NOTE_G);
             break;
-        case METATILE_SecretBase_NoteMat_A:
+        case DECOR_A_NOTE_MAT:
             PlaySE(SE_NOTE_A);
             break;
-        case METATILE_SecretBase_NoteMat_B:
+        case DECOR_B_NOTE_MAT:
             PlaySE(SE_NOTE_B);
             break;
-        case METATILE_SecretBase_NoteMat_C_High:
+        case DECOR_C_HIGH_NOTE_MAT:
             PlaySE(SE_NOTE_C_HIGH);
             break;
         }
@@ -1080,14 +1086,13 @@ bool8 FldEff_SandPillar(void)
 
 static void SpriteCB_SandPillar_BreakTop(struct Sprite *sprite)
 {
+    u16 metatileId = MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1);
     PlaySE(SE_M_ROCK_THROW);
 
-    if (MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1) == METATILE_SecretBase_SandOrnament_TopWall)
-        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1, METATILE_SecretBase_Wall_TopMid | MAPGRID_COLLISION_MASK);
-    else
-        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1, METATILE_SecretBase_SandOrnament_BrokenTop);
+    MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1, metatileId + 2);
 
-    MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], METATILE_SecretBase_Ground);
+    metatileId = MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
+    MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], metatileId + 4);
     CurrentMapDrawMetatileAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1);
     CurrentMapDrawMetatileAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
 
@@ -1103,7 +1108,8 @@ static void SpriteCB_SandPillar_BreakBase(struct Sprite *sprite)
     }
     else
     {
-        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], METATILE_SecretBase_SandOrnament_BrokenBase | MAPGRID_COLLISION_MASK);
+        u16 metatileId = MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
+        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], (metatileId - 2) | MAPGRID_COLLISION_MASK);
         CurrentMapDrawMetatileAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
         sprite->data[0] = 0;
         sprite->callback = SpriteCB_SandPillar_End;
@@ -1120,14 +1126,16 @@ void InteractWithShieldOrTVDecoration(void)
 {
     s16 x, y;
     s32 metatileId;
+    u8 decorId;
 
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
 
     metatileId = MapGridGetMetatileIdAt(x, y);
+    decorId = CurrentSecretBaseMetatileIdToDecorId(metatileId);
 
-    switch (metatileId)
+    switch (decorId)
     {
-    case METATILE_SecretBase_GoldShield_Base1:
+    case DECOR_GOLD_SHIELD:
         ConvertIntToDecimalStringN(gStringVar1, 100, STR_CONV_MODE_LEFT_ALIGN, 3);
         StringCopy(gStringVar2, gText_Gold);
 
@@ -1138,7 +1146,7 @@ void InteractWithShieldOrTVDecoration(void)
 
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GOLD_SHIELD);
         break;
-    case METATILE_SecretBase_SilverShield_Base1:
+    case DECOR_SILVER_SHIELD:
         ConvertIntToDecimalStringN(gStringVar1, 50, STR_CONV_MODE_LEFT_ALIGN, 2);
         StringCopy(gStringVar2, gText_Silver);
 
@@ -1149,7 +1157,7 @@ void InteractWithShieldOrTVDecoration(void)
 
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_SILVER_SHIELD);
         break;
-    case METATILE_SecretBase_TV:
+    case DECOR_TV:
         gSpecialVar_Result = 1;
 
         if (!VarGet(VAR_CURRENT_SECRET_BASE))
@@ -1157,7 +1165,7 @@ void InteractWithShieldOrTVDecoration(void)
 
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_TV);
         break;
-    case METATILE_SecretBase_RoundTV:
+    case DECOR_ROUND_TV:
         gSpecialVar_Result = 2;
 
         if (!VarGet(VAR_CURRENT_SECRET_BASE))
@@ -1165,7 +1173,7 @@ void InteractWithShieldOrTVDecoration(void)
 
         VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_TV);
         break;
-    case METATILE_SecretBase_CuteTV:
+    case DECOR_CUTE_TV:
         gSpecialVar_Result = 3;
 
         if (!VarGet(VAR_CURRENT_SECRET_BASE))
@@ -1179,25 +1187,14 @@ void InteractWithShieldOrTVDecoration(void)
 // As opposed to a small one (single metatile) like the balloons
 bool8 IsLargeBreakableDecoration(u16 metatileId, bool8 checkBase)
 {
+    u8 decorId;
     if (!CurMapIsSecretBase())
         return FALSE;
 
-    if (!checkBase)
-    {
-        if (metatileId == METATILE_SecretBase_SandOrnament_Top || metatileId == METATILE_SecretBase_SandOrnament_TopWall)
-            return TRUE;
-        if (metatileId == METATILE_SecretBase_BreakableDoor_TopClosed)
-            return TRUE;
-    }
-    else
-    {
-        if (metatileId == METATILE_SecretBase_SandOrnament_Base1)
-            return TRUE;
-        if (metatileId == METATILE_SecretBase_BreakableDoor_BottomClosed)
-            return TRUE;
-    }
+    decorId = CurrentSecretBaseMetatileIdToDecorId(metatileId);
 
-    return FALSE;
+    return ((CurrentSecretBaseMetatileWithinDecor(metatileId)) == (checkBase ? DECORMETATILE_SandOrnament_Top : DECORMETATILE_SandOrnament_Base)) &&
+        (decorId == DECOR_SAND_ORNAMENT || decorId == DECOR_BREAKABLE_DOOR);
 }
 
 #define tState  data[0]

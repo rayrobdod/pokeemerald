@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "bg.h"
 #include "decompress.h"
 #include "decoration.h"
 #include "decoration_inventory.h"
@@ -34,9 +35,11 @@
 #include "trader.h"
 #include "tv.h"
 #include "constants/decorations.h"
+#include "constants/decoration_metatile_labels.h"
 #include "constants/event_objects.h"
 #include "constants/songs.h"
 #include "constants/region_map_sections.h"
+#include "constants/metatile_behaviors.h"
 #include "constants/metatile_labels.h"
 
 #define PLACE_DECORATION_SELECTOR_TAG 0xbe5
@@ -62,6 +65,10 @@
 #define DECOR_ITEMS_MENU_PLACE 0
 #define DECOR_ITEMS_MENU_PUT_AWAY 1
 
+#define DECOR_TILES_PER_ITEM (24)
+#define DECOR_METATILES_PER_ITEM (12)
+#define DECOR_FIRST_TILE (48)
+
 struct DecorationItemsMenu
 {
     struct ListMenuItem items[41];
@@ -74,7 +81,6 @@ struct DecorationItemsMenu
 struct PlaceDecorationGraphicsDataBuffer
 {
     const struct Decoration *decoration;
-    u16 tiles[0x40];
     u8 image[0x800];
     u16 palette[16];
 };
@@ -126,6 +132,8 @@ EWRAM_DATA static u8 sDecorationLastDirectionMoved = 0;
 EWRAM_DATA static struct OamData sDecorSelectorOam = {};
 EWRAM_DATA static struct DecorRearrangementDataBuffer sDecorRearrangementDataBuffer[DECOR_MAX_SECRET_BASE] = {};
 EWRAM_DATA static u8 sCurDecorSelectedInRearrangement = 0;
+EWRAM_DATA u16 gMetatiles_Decoration[DECOR_MAX_SECRET_BASE * DECOR_METATILES_PER_ITEM * 8] = {0};
+EWRAM_DATA u16 gMetatileAttributes_Decoration[DECOR_MAX_SECRET_BASE * DECOR_METATILES_PER_ITEM] = {0};
 
 static void HandleDecorationActionsMenuInput(u8 taskId);
 static void PrintCurMainMenuDescription(void);
@@ -169,7 +177,7 @@ static void AttemptCancelPlaceDecoration(u8 taskId);
 static void AttemptPlaceDecoration_(u8 taskId);
 static void PlaceDecorationPrompt(u8 taskId);
 static void PlaceDecoration(u8 taskId);
-static void PlaceDecoration_(u8 taskId);
+static u32 PlaceDecoration_(u8 taskId);
 static void CancelDecoratingPrompt(u8 taskId);
 static void CancelDecorating(u8 taskId);
 static void CancelDecorating_(u8 taskId);
@@ -204,6 +212,7 @@ static void DecorationItemsMenuAction_AttemptToss(u8 taskId);
 static void TossDecorationPrompt(u8 taskId);
 static void TossDecoration(u8 taskId);
 
+#include "data/decoration/attributes.h"
 #include "data/decoration/tiles.h"
 #include "data/decoration/description.h"
 #include "data/decoration/header.h"
@@ -1205,14 +1214,28 @@ static u16 GetDecorationElevation(u8 decoration, u8 tileIndex)
     }
 }
 
-static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, u16 decoration)
+static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, u32 decorIdx, u16 decoration)
 {
-    u16 i, j;
+    u16 i, j, k, state_i;
     s16 x, y;
     u16 attributes;
+    u16 behavior;
+    u16 decStates = 1;
     u16 impassableFlag;
-    u16 overlapsWall;
     u16 elevation;
+    u16 metatileIdx;
+
+    for (i = 0; i < decHeight * decWidth; i++)
+    {
+        attributes = gDecorations[decoration].attributes[i];
+        behavior = attributes & METATILE_ATTR_BEHAVIOR_MASK;
+        if (MetatileBehavior_IsSecretBaseBalloon(behavior))
+            decStates = 4;
+        if (MetatileBehavior_IsSecretBaseBreakableDoor(behavior))
+            decStates = 2;
+        if (MetatileBehavior_IsSecretBaseSandOrnament(behavior))
+            decStates = 3;
+    }
 
     for (j = 0; j < decHeight; j++)
     {
@@ -1220,61 +1243,81 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
         for (i = 0; i < decWidth; i++)
         {
             x = mapX + i;
-            attributes = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + gDecorations[decoration].tiles[j * decWidth + i]);
+
+            metatileIdx = decorIdx * DECOR_METATILES_PER_ITEM + j * decWidth + i;
+
+            for (state_i = 0; state_i < decStates; state_i++)
+            {
+                u32 metatileStateIdx = metatileIdx + state_i * decHeight * decWidth;
+                attributes = gDecorations[decoration].attributes[state_i * decHeight * decWidth + j * decWidth + i];
+
+                for (k = 0; k < NUM_TILES_PER_METATILE; k++)
+                {
+                    u16 tileId = gDecorations[decoration].metatiles[(state_i * decHeight * decWidth + j * decWidth + i) * NUM_TILES_PER_METATILE + k];
+                    if (tileId == 0xFFFF)
+                    {
+                        const struct MapLayout *layout = gMapHeader.mapLayout;
+                        const u16 metatile = MapGridGetMetatileIdAt(x, y) - NUM_METATILES_IN_PRIMARY;
+                        tileId = layout->secondaryTileset->metatiles[metatile * NUM_TILES_PER_METATILE + k];
+                    }
+                    else
+                    {
+                        tileId += DECOR_FIRST_TILE + decorIdx * DECOR_TILES_PER_ITEM;
+                    }
+                    gMetatiles_Decoration[metatileStateIdx * NUM_TILES_PER_METATILE + k] = tileId;
+                }
+
+                gMetatileAttributes_Decoration[metatileStateIdx] = attributes;
+            }
+
             if (MetatileBehavior_IsSecretBaseImpassable(attributes & METATILE_ATTR_BEHAVIOR_MASK) == TRUE
-             || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && (attributes >> METATILE_ATTR_LAYER_SHIFT) != METATILE_LAYER_TYPE_NORMAL))
+             || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && (attributes >> METATILE_ATTR_LAYER_SHIFT) == METATILE_LAYER_TYPE_COVERED))
                 impassableFlag = MAPGRID_COLLISION_MASK;
             else
                 impassableFlag = 0;
 
-            // Choose the metatile that has the wall background instead of the floor if overlapping a wall.
-            if (gDecorations[decoration].permission != DECORPERM_NA_WALL && MetatileBehavior_IsSecretBaseNorthWall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
-                overlapsWall = 1;
-            else
-                overlapsWall = 0;
-
             elevation = GetDecorationElevation(gDecorations[decoration].id, j * decWidth + i);
             if (elevation != 0xFFFF)
-                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag | elevation);
+                MapGridSetMetatileEntryAt(x, y, metatileIdx | impassableFlag | elevation);
             else
-                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag);
+                MapGridSetMetatileIdAt(x, y, metatileIdx | impassableFlag);
         }
     }
 }
 
-void ShowDecorationOnMap(u16 mapX, u16 mapY, u16 decoration)
+void ShowDecorationOnMap(u16 mapX, u16 mapY, u32 decorIdx, u16 decoration)
 {
     switch (gDecorations[decoration].shape)
     {
     case DECORSHAPE_1x1:
-        ShowDecorationOnMap_(mapX, mapY, 1, 1, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 1, 1, decorIdx, decoration);
         break;
     case DECORSHAPE_2x1:
-        ShowDecorationOnMap_(mapX, mapY, 2, 1, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 2, 1, decorIdx, decoration);
         break;
     case DECORSHAPE_3x1: // unused
-        ShowDecorationOnMap_(mapX, mapY, 3, 1, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 3, 1, decorIdx, decoration);
         break;
     case DECORSHAPE_4x2:
-        ShowDecorationOnMap_(mapX, mapY, 4, 2, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 4, 2, decorIdx, decoration);
         break;
     case DECORSHAPE_2x2:
-        ShowDecorationOnMap_(mapX, mapY, 2, 2, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 2, 2, decorIdx, decoration);
         break;
     case DECORSHAPE_1x2:
-        ShowDecorationOnMap_(mapX, mapY, 1, 2, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 1, 2, decorIdx, decoration);
         break;
     case DECORSHAPE_1x3: // unused
-        ShowDecorationOnMap_(mapX, mapY, 1, 3, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 1, 3, decorIdx, decoration);
         break;
     case DECORSHAPE_2x4:
-        ShowDecorationOnMap_(mapX, mapY, 2, 4, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 2, 4, decorIdx, decoration);
         break;
     case DECORSHAPE_3x3:
-        ShowDecorationOnMap_(mapX, mapY, 3, 3, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 3, 3, decorIdx, decoration);
         break;
     case DECORSHAPE_3x2:
-        ShowDecorationOnMap_(mapX, mapY, 3, 2, decoration);
+        ShowDecorationOnMap_(mapX, mapY, 3, 2, decorIdx, decoration);
         break;
     }
 }
@@ -1297,7 +1340,7 @@ void SetDecoration(void)
 
             VarSet(
                 VAR_OBJ_GFX_ID_0 + (gMapHeader.events->objectEvents[j].graphicsId - OBJ_EVENT_GFX_VAR_0),
-                sPlaceDecorationGraphicsDataBuffer.decoration->tiles[0]);
+                sPlaceDecorationGraphicsDataBuffer.decoration->objEvent);
 
             gSpecialVar_0x8005 = gMapHeader.events->objectEvents[j].localId;
             gSpecialVar_0x8006 = sCurDecorMapX;
@@ -1520,6 +1563,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
     u8 j;
     u8 behaviorAt;
     u16 layerType;
+    u16 metatileId;
     u8 mapY;
     u8 mapX;
     s16 curY;
@@ -1538,7 +1582,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ATTR_LAYER_MASK;
+                layerType = GetMetatileAttributesById(decoration->metatiles[(mapY - 1 - i) * mapX + j]) & METATILE_ATTR_LAYER_MASK;
                 if (!IsFloorOrBoardAndHole(behaviorAt, decoration))
                     return FALSE;
 
@@ -1559,7 +1603,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ATTR_LAYER_MASK;
+                layerType = GetMetatileAttributesById(decoration->metatiles[(mapY - 1 - i) * mapX + j]) & METATILE_ATTR_LAYER_MASK;
                 if (!MetatileBehavior_IsNormal(behaviorAt) && !IsSecretBaseTrainerSpot(behaviorAt, layerType))
                     return FALSE;
 
@@ -1576,7 +1620,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
         {
             curX = gTasks[taskId].tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-            layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[j]) & METATILE_ATTR_LAYER_MASK;
+            layerType = GetMetatileAttributesById(decoration->metatiles[j]) & METATILE_ATTR_LAYER_MASK;
             if (!MetatileBehavior_IsNormal(behaviorAt) && !MetatileBehavior_IsSecretBaseNorthWall(behaviorAt))
                 return FALSE;
 
@@ -1598,7 +1642,9 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
                 if (!MetatileBehavior_IsSecretBaseNorthWall(MapGridGetMetatileBehaviorAt(curX, curY)))
                     return FALSE;
 
-                if (MapGridGetMetatileIdAt(curX, curY + 1) == METATILE_SecretBase_SandOrnament_BrokenBase)
+                metatileId = MapGridGetMetatileIdAt(curX, curY + 1);
+                if (DECOR_SAND_ORNAMENT == CurrentSecretBaseMetatileIdToDecorId(metatileId)
+                    && DECORMETATILE_SandOrnament_BrokenBase == CurrentSecretBaseMetatileWithinDecor(metatileId))
                     return FALSE;
             }
         }
@@ -1651,11 +1697,13 @@ static void PlaceDecorationPrompt(u8 taskId)
 
 static void PlaceDecoration(u8 taskId)
 {
+    u32 decorIdx;
+
     ClearDialogWindowAndFrame(0, FALSE);
-    PlaceDecoration_(taskId);
+    decorIdx = PlaceDecoration_(taskId);
     if (gDecorations[gCurDecorationItems[gCurDecorationIndex]].permission != DECORPERM_SPRITE)
     {
-        ShowDecorationOnMap(gTasks[taskId].tCursorX, gTasks[taskId].tCursorY, gCurDecorationItems[gCurDecorationIndex]);
+        ShowDecorationOnMap(gTasks[taskId].tCursorX, gTasks[taskId].tCursorY, decorIdx, gCurDecorationItems[gCurDecorationIndex]);
     }
     else
     {
@@ -1671,8 +1719,9 @@ static void PlaceDecoration(u8 taskId)
     CancelDecorating_(taskId);
 }
 
-static void PlaceDecoration_(u8 taskId)
+static u32 PlaceDecoration_(u8 taskId)
 {
+    u32 decorIdx = 0;
     u16 i;
 
     for (i = 0; i < sDecorationContext.size; i++)
@@ -1681,6 +1730,7 @@ static void PlaceDecoration_(u8 taskId)
         {
             sDecorationContext.items[i] = gCurDecorationItems[gCurDecorationIndex];
             sDecorationContext.pos[i] = ((gTasks[taskId].tCursorX - MAP_OFFSET) << 4) + (gTasks[taskId].tCursorY - MAP_OFFSET);
+            decorIdx = i;
             break;
         }
     }
@@ -1707,6 +1757,8 @@ static void PlaceDecoration_(u8 taskId)
             }
         }
     }
+
+    return decorIdx;
 }
 
 static void CancelDecoratingPrompt(u8 taskId)
@@ -1924,17 +1976,12 @@ static void CopyPalette(u16 *dest, u16 pal)
     CpuFastCopy(&gTilesetPointer_SecretBase->palettes[pal], dest, PLTT_SIZE_4BPP);
 }
 
-static void CopyTile(u8 *dest, u16 tile)
+static void CopyTile(u8 *dest, const u32 *src, u16 mode)
 {
     u8 ALIGNED(4) buffer[TILE_SIZE_4BPP];
-    u16 mode;
     u16 i;
 
-    mode = tile >> 10;
-    if (tile != 0)
-        tile &= 0x03FF;
-
-    CpuFastCopy(&gTilesetPointer_SecretBase->tiles[tile * TILE_SIZE_4BPP / sizeof(u32)], buffer, TILE_SIZE_4BPP);
+    CpuFastCopy(src, buffer, TILE_SIZE_4BPP);
     switch (mode)
     {
     case 0:
@@ -1969,25 +2016,22 @@ static void CopyTile(u8 *dest, u16 tile)
 
 static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *data)
 {
-    u16 i;
-    for (i = 0; i < 64; i++)
-        CopyTile(&data->image[i * TILE_SIZE_4BPP], data->tiles[i]);
-}
-
-static u16 GetMetatile(u16 tile)
-{
-    return gTilesetPointer_SecretBaseRedCave->metatiles[tile] & 0xFFF;
-}
-
-static void SetDecorSelectionMetatiles(struct PlaceDecorationGraphicsDataBuffer *data)
-{
     u8 i;
     u8 shape;
 
     shape = data->decoration->shape;
+
     for (i = 0; i < sDecorTilemaps[shape].size; i++)
     {
-        data->tiles[sDecorTilemaps[shape].tiles[i]] = GetMetatile(data->decoration->tiles[sDecorTilemaps[shape].y[i]] * NUM_TILES_PER_METATILE + sDecorTilemaps[shape].x[i]);
+        u16 srcMetatile = data->decoration->metatiles[4 + (i % 4) + ((i / 4) * 8)];
+        if (srcMetatile != 0xFFFF) {
+            u16 srcTile = srcMetatile & 0x3FF;
+            u16 srcFlips = (srcMetatile & 0xC00) >> 10;
+            u8 destTile = sDecorTilemaps[shape].tiles[i];
+            u8 *dest = &data->image[destTile * TILE_SIZE_4BPP];
+            const u32 *src = &data->decoration->tiles[srcTile * TILE_SIZE_4BPP / sizeof(u32)];
+            CopyTile(dest, src, srcFlips);
+        }
     }
 }
 
@@ -2041,13 +2085,12 @@ static u8 gpu_pal_decompress_alloc_tag_and_upload(struct PlaceDecorationGraphics
     ClearPlaceDecorationGraphicsDataBuffer(data);
     data->decoration = &gDecorations[decor];
     if (data->decoration->permission == DECORPERM_SPRITE)
-        return CreateObjectGraphicsSprite(data->decoration->tiles[0], SpriteCallbackDummy, 0, 0, 1);
+        return CreateObjectGraphicsSprite(data->decoration->objEvent, SpriteCallbackDummy, 0, 0, 1);
 
     FreeSpritePaletteByTag(PLACE_DECORATION_SELECTOR_TAG);
-    SetDecorSelectionMetatiles(data);
     SetDecorSelectionBoxOamAttributes(data->decoration->shape);
     SetDecorSelectionBoxTiles(data);
-    CopyPalette(data->palette, gTilesetPointer_SecretBaseRedCave->metatiles[(data->decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
+    CopyPalette(data->palette, (data->decoration->metatiles[7]) >> 12);
     LoadSpritePalette(&sSpritePal_PlaceDecoration);
     return CreateSprite(&sDecorationSelectorSpriteTemplate, 0, 0, 0);
 }
@@ -2100,10 +2143,9 @@ static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u
     sPlaceDecorationGraphicsDataBuffer.decoration = &gDecorations[decor];
     if (sPlaceDecorationGraphicsDataBuffer.decoration->permission != DECORPERM_SPRITE)
     {
-        SetDecorSelectionMetatiles(&sPlaceDecorationGraphicsDataBuffer);
         SetDecorSelectionBoxOamAttributes(sPlaceDecorationGraphicsDataBuffer.decoration->shape);
         SetDecorSelectionBoxTiles(&sPlaceDecorationGraphicsDataBuffer);
-        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, gTilesetPointer_SecretBaseRedCave->metatiles[(sPlaceDecorationGraphicsDataBuffer.decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
+        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, (sPlaceDecorationGraphicsDataBuffer.decoration->metatiles[7]) >> 12);
         sheet.data = sPlaceDecorationGraphicsDataBuffer.image;
         sheet.size = sDecorShapeSizes[sPlaceDecorationGraphicsDataBuffer.decoration->shape] * TILE_SIZE_4BPP;
         sheet.tag = tilesTag;
@@ -2120,7 +2162,7 @@ static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u
     }
     else
     {
-        spriteId = CreateObjectGraphicsSprite(sPlaceDecorationGraphicsDataBuffer.decoration->tiles[0], SpriteCallbackDummy, 0, 0, 1);
+        spriteId = CreateObjectGraphicsSprite(sPlaceDecorationGraphicsDataBuffer.decoration->objEvent, SpriteCallbackDummy, 0, 0, 1);
     }
     return spriteId;
 }
@@ -2481,7 +2523,8 @@ static bool8 DecorationIsUnderCursor(u8 taskId, u8 idx, struct DecorRearrangemen
     xOff = sDecorationContext.pos[idx] >> 4;
     yOff = sDecorationContext.pos[idx] & 0x0F;
     ht = data->height;
-    if (sDecorationContext.items[idx] == DECOR_SAND_ORNAMENT && MapGridGetMetatileIdAt(xOff + MAP_OFFSET, yOff + MAP_OFFSET) == METATILE_SecretBase_SandOrnament_BrokenBase)
+
+    if (sDecorationContext.items[idx] == DECOR_SAND_ORNAMENT && CurrentSecretBaseMetatileWithinDecor(MapGridGetMetatileIdAt(xOff + MAP_OFFSET, yOff + MAP_OFFSET)) == DECORMETATILE_SandOrnament_BrokenBase)
         ht--;
 
     if (x >= xOff && x < xOff + data->width && y > yOff - ht && y <= yOff)
@@ -2734,4 +2777,49 @@ static void TossDecoration(u8 taskId)
     IdentifyOwnedDecorationsCurrentlyInUseInternal(taskId);
     StringExpandPlaceholders(gStringVar4, gText_DecorationThrownAway);
     DisplayItemMessageOnField(taskId, gStringVar4, ReturnToDecorationItemsAfterInvalidSelection);
+}
+
+void CopyDecorationsTilesetToVram(void)
+{
+    const u32 secretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
+    const u8* const decorations = gSaveBlock1Ptr->secretBases[secretBaseIdx].decorations;
+    u32 i;
+    u32 decor;
+    u32 baseTile;
+
+    baseTile = DECOR_FIRST_TILE - DECOR_TILES_PER_ITEM;
+
+    for (i = 0; i < DECOR_MAX_SECRET_BASE; i++)
+    {
+        decor = decorations[i];
+        baseTile += DECOR_TILES_PER_ITEM;
+
+        if (DECOR_NONE != decor)
+        {
+            if (gDecorations[decor].permission != DECORPERM_SPRITE)
+            {
+                if (gDecorations[decor].tiles)
+                {
+                    LoadBgTiles(2, gDecorations[decor].tiles, DECOR_TILES_PER_ITEM * TILE_SIZE_4BPP, baseTile);
+                }
+            }
+        }
+    }
+}
+
+/** Returns the decorId associated with the specified metatileId. */
+u8 CurrentSecretBaseMetatileIdToDecorId(u16 metatileId)
+{
+    const u32 secretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
+    const u8* const decorations = gSaveBlock1Ptr->secretBases[secretBaseIdx].decorations;
+
+    return decorations[metatileId / DECOR_METATILES_PER_ITEM];
+}
+
+/** Returns which of a decor's metatiles the specified metatileId is
+ * see: GUARD_CONSTANTS_DECORATION_METATILE_LABELS_H
+ */
+u8 CurrentSecretBaseMetatileWithinDecor(u16 metatileId)
+{
+    return (metatileId % DECOR_METATILES_PER_ITEM);
 }

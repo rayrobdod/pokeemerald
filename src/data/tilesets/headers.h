@@ -629,10 +629,11 @@ const struct Tileset gTileset_SecretBase =
 {
     .isCompressed = FALSE,
     .isSecondary = FALSE,
+    .isDecorationTiles = TRUE,
     .tiles = gTilesetTiles_SecretBase,
     .palettes = gTilesetPalettes_SecretBase,
-    .metatiles = gMetatiles_SecretBasePrimary,
-    .metatileAttributes = gMetatileAttributes_SecretBasePrimary,
+    .metatiles = gMetatiles_Decoration,
+    .metatileAttributes = gMetatileAttributes_Decoration,
     .callback = NULL,
 };
 
