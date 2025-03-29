@@ -132,7 +132,7 @@ EWRAM_DATA static u8 sDecorationLastDirectionMoved = 0;
 EWRAM_DATA static struct OamData sDecorSelectorOam = {};
 EWRAM_DATA static struct DecorRearrangementDataBuffer sDecorRearrangementDataBuffer[DECOR_MAX_SECRET_BASE] = {};
 EWRAM_DATA static u8 sCurDecorSelectedInRearrangement = 0;
-EWRAM_DATA u16 gMetatiles_Decoration[DECOR_MAX_SECRET_BASE * DECOR_METATILES_PER_ITEM * 8] = {0};
+EWRAM_DATA u16 gMetatiles_Decoration[DECOR_MAX_SECRET_BASE * DECOR_METATILES_PER_ITEM * NUM_TILES_PER_METATILE] = {0};
 EWRAM_DATA u16 gMetatileAttributes_Decoration[DECOR_MAX_SECRET_BASE * DECOR_METATILES_PER_ITEM] = {0};
 
 static void HandleDecorationActionsMenuInput(u8 taskId);
@@ -2023,14 +2023,28 @@ static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *
 
     for (i = 0; i < sDecorTilemaps[shape].size; i++)
     {
-        u16 srcMetatile = data->decoration->metatiles[4 + (i % 4) + ((i / 4) * 8)];
-        if (srcMetatile != 0xFFFF) {
+        u16 srcMetatile = data->decoration->metatiles[4 + (i % 4) + ((i / 4) * NUM_TILES_PER_METATILE)];
+        if (srcMetatile != 0xFFFF)
+        {
             u16 srcTile = srcMetatile & 0x3FF;
             u16 srcFlips = (srcMetatile & 0xC00) >> 10;
             u8 destTile = sDecorTilemaps[shape].tiles[i];
             u8 *dest = &data->image[destTile * TILE_SIZE_4BPP];
             const u32 *src = &data->decoration->tiles[srcTile * TILE_SIZE_4BPP / sizeof(u32)];
             CopyTile(dest, src, srcFlips);
+        }
+        if (12 == NUM_TILES_PER_METATILE)
+        {
+            srcMetatile = data->decoration->metatiles[8 + (i % 4) + ((i / 4) * NUM_TILES_PER_METATILE)];
+            if (srcMetatile != 0xFFFF)
+            {
+                u16 srcTile = srcMetatile & 0x3FF;
+                u16 srcFlips = (srcMetatile & 0xC00) >> 10;
+                u8 destTile = sDecorTilemaps[shape].tiles[i];
+                u8 *dest = &data->image[destTile * TILE_SIZE_4BPP];
+                const u32 *src = &data->decoration->tiles[srcTile * TILE_SIZE_4BPP / sizeof(u32)];
+                CopyTile(dest, src, srcFlips);
+            }
         }
     }
 }
@@ -2082,6 +2096,8 @@ static void InitializePuttingAwayCursorSprite2(struct Sprite *sprite)
 
 static u8 gpu_pal_decompress_alloc_tag_and_upload(struct PlaceDecorationGraphicsDataBuffer *data, u8 decor)
 {
+    u8 metatileIdx = 11;
+
     ClearPlaceDecorationGraphicsDataBuffer(data);
     data->decoration = &gDecorations[decor];
     if (data->decoration->permission == DECORPERM_SPRITE)
@@ -2090,7 +2106,9 @@ static u8 gpu_pal_decompress_alloc_tag_and_upload(struct PlaceDecorationGraphics
     FreeSpritePaletteByTag(PLACE_DECORATION_SELECTOR_TAG);
     SetDecorSelectionBoxOamAttributes(data->decoration->shape);
     SetDecorSelectionBoxTiles(data);
-    CopyPalette(data->palette, (data->decoration->metatiles[7]) >> 12);
+    if (12 != NUM_TILES_PER_METATILE || (data->decoration->metatiles[metatileIdx]) == 0xFFFF)
+        metatileIdx = 7;
+    CopyPalette(data->palette, (data->decoration->metatiles[metatileIdx]) >> 12);
     LoadSpritePalette(&sSpritePal_PlaceDecoration);
     return CreateSprite(&sDecorationSelectorSpriteTemplate, 0, 0, 0);
 }
@@ -2135,6 +2153,7 @@ static const u32 *GetDecorationIconPicOrPalette(u16 decor, u8 mode)
 static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u8 decor)
 {
     u8 spriteId;
+    u8 metatileIdx = 11;
     struct SpriteSheet sheet;
     struct SpritePalette palette;
     struct SpriteTemplate *template;
@@ -2145,7 +2164,9 @@ static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u
     {
         SetDecorSelectionBoxOamAttributes(sPlaceDecorationGraphicsDataBuffer.decoration->shape);
         SetDecorSelectionBoxTiles(&sPlaceDecorationGraphicsDataBuffer);
-        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, (sPlaceDecorationGraphicsDataBuffer.decoration->metatiles[7]) >> 12);
+        if (12 != NUM_TILES_PER_METATILE || (sPlaceDecorationGraphicsDataBuffer.decoration->metatiles[metatileIdx]) == 0xFFFF)
+            metatileIdx = 7;
+        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, (sPlaceDecorationGraphicsDataBuffer.decoration->metatiles[metatileIdx]) >> 12);
         sheet.data = sPlaceDecorationGraphicsDataBuffer.image;
         sheet.size = sDecorShapeSizes[sPlaceDecorationGraphicsDataBuffer.decoration->shape] * TILE_SIZE_4BPP;
         sheet.tag = tilesTag;
