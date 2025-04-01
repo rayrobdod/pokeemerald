@@ -40,6 +40,13 @@ enum DecorationCategory
     DECORCAT_COUNT,
 };
 
+struct DecorMetatileAttributes
+{
+    u16 behavior : 8;
+    u16 layerType : 2;
+    u16 elevation : 4;
+};
+
 struct Decoration
 {
     u8 id;
@@ -51,7 +58,7 @@ struct Decoration
     const u8 *description;
     const u32 *tiles;
     const u16 *metatiles;
-    const u16 *attributes;
+    const struct DecorMetatileAttributes *attributes;
     u16 objEvent;
 };
 

@@ -416,20 +416,6 @@ static const struct YesNoFuncTable sPlacePutAwayYesNoFunctions[] =
     }
 };
 
-static const u8 sDecorationStandElevations[] =
-{
-    4, 4, 4, 4,
-    0, 3, 3, 0
-};
-
-static const u8 sDecorationSlideElevation[] =
-{
-    4, 4,
-    4, 4,
-    0, 4,
-    3, 0,
-};
-
 static const u16 sDecorShapeSizes[] = {
     [DECORSHAPE_1x1] = 4,
     [DECORSHAPE_2x1] = 8,
@@ -1198,27 +1184,11 @@ static void WarpToInitialPosition(u8 taskId)
     WarpIntoMap();
 }
 
-static u16 GetDecorationElevation(u8 decoration, u8 tileIndex)
-{
-    u16 elevation = -1;
-    switch (decoration)
-    {
-    case DECOR_STAND:
-        elevation = sDecorationStandElevations[tileIndex] << MAPGRID_ELEVATION_SHIFT;
-        return elevation;
-    case DECOR_SLIDE:
-        elevation = sDecorationSlideElevation[tileIndex] << MAPGRID_ELEVATION_SHIFT;
-        return elevation;
-    default:
-        return elevation;
-    }
-}
-
 static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, u32 decorIdx, u16 decoration)
 {
     u16 i, j, k, state_i;
     s16 x, y;
-    u16 attributes;
+    struct DecorMetatileAttributes attributes;
     u16 behavior;
     u16 decStates = 1;
     u16 impassableFlag;
@@ -1228,7 +1198,7 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
     for (i = 0; i < decHeight * decWidth; i++)
     {
         attributes = gDecorations[decoration].attributes[i];
-        behavior = attributes & METATILE_ATTR_BEHAVIOR_MASK;
+        behavior = attributes.behavior;
         if (MetatileBehavior_IsSecretBaseBalloon(behavior))
             decStates = 4;
         if (MetatileBehavior_IsSecretBaseBreakableDoor(behavior))
@@ -1267,20 +1237,17 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
                     gMetatiles_Decoration[metatileStateIdx * NUM_TILES_PER_METATILE + k] = tileId;
                 }
 
-                gMetatileAttributes_Decoration[metatileStateIdx] = attributes;
+                gMetatileAttributes_Decoration[metatileStateIdx] = attributes.behavior | (attributes.layerType << METATILE_ATTR_LAYER_SHIFT);
             }
 
-            if (MetatileBehavior_IsSecretBaseImpassable(attributes & METATILE_ATTR_BEHAVIOR_MASK) == TRUE
-             || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && (attributes >> METATILE_ATTR_LAYER_SHIFT) == METATILE_LAYER_TYPE_COVERED))
+            if (MetatileBehavior_IsSecretBaseImpassable(attributes.behavior) == TRUE
+             || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && attributes.layerType == METATILE_LAYER_TYPE_COVERED))
                 impassableFlag = MAPGRID_COLLISION_MASK;
             else
                 impassableFlag = 0;
 
-            elevation = GetDecorationElevation(gDecorations[decoration].id, j * decWidth + i);
-            if (elevation != 0xFFFF)
-                MapGridSetMetatileEntryAt(x, y, metatileIdx | impassableFlag | elevation);
-            else
-                MapGridSetMetatileIdAt(x, y, metatileIdx | impassableFlag);
+            elevation = attributes.elevation << MAPGRID_ELEVATION_SHIFT;
+            MapGridSetMetatileEntryAt(x, y, metatileIdx | impassableFlag | elevation);
         }
     }
 }

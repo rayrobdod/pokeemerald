@@ -1,171 +1,167 @@
-#define METATILE_ATTR(BEHAVIOR, LAYERS) BEHAVIOR | ((METATILE_LAYER_TYPE_##LAYERS) << METATILE_ATTR_LAYER_SHIFT)
-
-const u16 DecorAttributes_Desk_1x1[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Desk_1x1[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Desk_3x2[] = {
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_LARGE_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Desk_3x2[] = {
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_LARGE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Desk_3x3[] = {
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_LARGE_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_LARGE_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Desk_3x3[] = {
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_LARGE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_LARGE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Chair[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Chair[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Plant_1x2[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Plant_1x2[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Plant_2x2[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Plant_2x2[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Brick[] = {
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Brick[] = {
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Balloon[] = {
-    METATILE_ATTR(MB_SECRET_BASE_BALLOON, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Balloon[] = {
+    {.behavior = MB_SECRET_BASE_BALLOON, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Tent[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Tent[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_SolidBoard[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_SolidBoard[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Slide[] = {
-    METATILE_ATTR(MB_IMPASSABLE_NORTHWEST, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_NORTHEAST, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_WEST_AND_EAST, COVERED),
-    METATILE_ATTR(MB_SLIDE_SOUTH, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_WEST_AND_EAST, COVERED),
-    METATILE_ATTR(MB_SLIDE_SOUTH, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Slide[] = {
+    {.behavior = MB_IMPASSABLE_NORTHWEST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_NORTHEAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_WEST_AND_EAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_SLIDE_SOUTH, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_WEST_AND_EAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 0},
+    {.behavior = MB_SLIDE_SOUTH, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 0},
 };
 
-const u16 DecorAttributes_Fence[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Fence[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Tire[] = {
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Tire[] = {
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Stand[] = {
-    METATILE_ATTR(MB_IMPASSABLE_NORTHWEST, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_NORTH, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_NORTH, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_NORTHEAST, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_WEST, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
-    METATILE_ATTR(MB_IMPASSABLE_EAST, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Stand[] = {
+    {.behavior = MB_IMPASSABLE_NORTHWEST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_NORTH, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_NORTH, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_NORTHEAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 4},
+    {.behavior = MB_IMPASSABLE_WEST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 0},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_IMPASSABLE_EAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 0},
 };
 
-const u16 DecorAttributes_BreakableDoor[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_BREAKABLE_DOOR, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_IMPASSABLE_WEST_AND_EAST, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_BreakableDoor[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_BREAKABLE_DOOR, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_IMPASSABLE_WEST_AND_EAST, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_SandOrnament[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_SAND_ORNAMENT, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_SCENERY, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_IMPASSABLE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_SandOrnament[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_SAND_ORNAMENT, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_SCENERY, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Shield[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_TV_SHIELD, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Shield[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_TV_SHIELD, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_GlassOrnament[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION, SPLIT),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_GlassOrnament[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Tv[] = {
-    METATILE_ATTR(MB_SECRET_BASE_TV_SHIELD, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Tv[] = {
+    {.behavior = MB_SECRET_BASE_TV_SHIELD, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_GlitterMat[] = {
-    METATILE_ATTR(MB_SECRET_BASE_GLITTER_MAT, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_GlitterMat[] = {
+    {.behavior = MB_SECRET_BASE_GLITTER_MAT, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_JumpMat[] = {
-    METATILE_ATTR(MB_SECRET_BASE_JUMP_MAT, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_JumpMat[] = {
+    {.behavior = MB_SECRET_BASE_JUMP_MAT, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_SpinMat[] = {
-    METATILE_ATTR(MB_SECRET_BASE_SPIN_MAT, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_SpinMat[] = {
+    {.behavior = MB_SECRET_BASE_SPIN_MAT, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_NoteMat[] = {
-    METATILE_ATTR(MB_SECRET_BASE_SOUND_MAT, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_NoteMat[] = {
+    {.behavior = MB_SECRET_BASE_SOUND_MAT, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Mat_3x3[] = {
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_LARGE_DECORATION, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
-    METATILE_ATTR(MB_HOLDS_SMALL_DECORATION, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_DECORATION_BASE, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Mat_3x3[] = {
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_LARGE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_HOLDS_SMALL_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Poster_1x1[] = {
-    METATILE_ATTR(MB_SECRET_BASE_POSTER, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Poster_1x1[] = {
+    {.behavior = MB_SECRET_BASE_POSTER, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 
-const u16 DecorAttributes_Poster_2x1[] = {
-    METATILE_ATTR(MB_SECRET_BASE_POSTER, COVERED),
-    METATILE_ATTR(MB_SECRET_BASE_POSTER, COVERED),
+const struct DecorMetatileAttributes DecorAttributes_Poster_2x1[] = {
+    {.behavior = MB_SECRET_BASE_POSTER, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_POSTER, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
-
-#undef METATILE_ATTR
