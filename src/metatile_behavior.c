@@ -620,6 +620,19 @@ bool8 MetatileBehavior_IsSecretBaseNorthWall(u8 metatileBehavior)
         return FALSE;
 }
 
+bool8 MetatileBehavior_CanBeBehindDecoration(u8 metatileBehavior)
+{
+    switch (metatileBehavior)
+    {
+    case MB_NORMAL:
+    case MB_SECRET_BASE_NORTH_WALL:
+    case MB_SECRET_BASE_WALL:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 bool8 MetatileBehavior_IsSecretBaseScenery2(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_SECRET_BASE_SCENERY)

@@ -1087,6 +1087,7 @@ bool8 FldEff_SandPillar(void)
 static void SpriteCB_SandPillar_BreakTop(struct Sprite *sprite)
 {
     u16 metatileId = MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1);
+    metatileId |= (MapGridGetCollisionAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1) << MAPGRID_COLLISION_SHIFT);
     PlaySE(SE_M_ROCK_THROW);
 
     MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6] - 1, metatileId + 2);

@@ -1241,6 +1241,7 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
             }
 
             if (MetatileBehavior_IsSecretBaseImpassable(attributes.behavior) == TRUE
+             || MapGridGetCollisionAt(x, y) != 0
              || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && attributes.layerType == METATILE_LAYER_TYPE_COVERED))
                 impassableFlag = MAPGRID_COLLISION_MASK;
             else
@@ -1588,7 +1589,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             curX = gTasks[taskId].tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
             layerType = GetMetatileAttributesById(decoration->metatiles[j]) & METATILE_ATTR_LAYER_MASK;
-            if (!MetatileBehavior_IsNormal(behaviorAt) && !MetatileBehavior_IsSecretBaseNorthWall(behaviorAt))
+            if (!MetatileBehavior_CanBeBehindDecoration(behaviorAt))
                 return FALSE;
 
             if (!IsntInitialPosition(taskId, curX, curY, layerType))
