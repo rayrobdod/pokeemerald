@@ -1241,7 +1241,7 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
             }
 
             if (MetatileBehavior_IsSecretBaseImpassable(attributes.behavior) == TRUE
-             || MapGridGetCollisionAt(x, y) != 0
+             || (MapGridGetCollisionAt(x, y) != 0 && decoration != DECOR_SOLID_BOARD)
              || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && attributes.layerType == METATILE_LAYER_TYPE_COVERED))
                 impassableFlag = MAPGRID_COLLISION_MASK;
             else
