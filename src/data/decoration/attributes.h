@@ -59,7 +59,7 @@ const struct DecorMetatileAttributes DecorAttributes_Tent[] = {
     {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
     {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
     {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
-    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_SECRET_BASE_DECORATION, .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
     {.behavior = MB_SECRET_BASE_IMPASSABLE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
 

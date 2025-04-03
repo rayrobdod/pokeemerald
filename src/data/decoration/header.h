@@ -438,7 +438,7 @@ const struct Decoration gDecorations[] =
     {
         .id = DECOR_RED_TENT,
         .name = _("RED TENT"),
-        .permission = DECORPERM_PASS_FLOOR,
+        .permission = DECORPERM_BEHIND_FLOOR,
         .shape = DECORSHAPE_3x3,
         .category = DECORCAT_ORNAMENT,
         .price = 10000,
@@ -452,7 +452,7 @@ const struct Decoration gDecorations[] =
     {
         .id = DECOR_BLUE_TENT,
         .name = _("BLUE TENT"),
-        .permission = DECORPERM_PASS_FLOOR,
+        .permission = DECORPERM_BEHIND_FLOOR,
         .shape = DECORSHAPE_3x3,
         .category = DECORCAT_ORNAMENT,
         .price = 10000,
