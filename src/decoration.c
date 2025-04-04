@@ -1982,6 +1982,24 @@ static void CopyTile(u8 *dest, const u32 *src, u16 mode)
     }
 }
 
+static void BlitTile(u8 *dest, const u32 *src, u16 mode)
+{
+    u8 ALIGNED(4) buffer[TILE_SIZE_4BPP];
+    u16 i;
+
+    CopyTile(buffer, src, mode);
+
+    for (i = 0; i < TILE_SIZE_4BPP; i++)
+    {
+        if ((buffer[i] & 0xF0) && (buffer[i] & 0x0F))
+            dest[i] = buffer[i];
+        else if (buffer[i] & 0xF0)
+            dest[i] = (dest[i] & 0x0F) | (buffer[i] & 0xF0);
+        else if (buffer[i] & 0x0F)
+            dest[i] = (dest[i] & 0xF0) | (buffer[i] & 0x0F);
+    }
+}
+
 static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *data)
 {
     u8 i;
@@ -2011,7 +2029,7 @@ static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *
                 u8 destTile = sDecorTilemaps[shape].tiles[i];
                 u8 *dest = &data->image[destTile * TILE_SIZE_4BPP];
                 const u32 *src = &data->decoration->tiles[srcTile * TILE_SIZE_4BPP / sizeof(u32)];
-                CopyTile(dest, src, srcFlips);
+                BlitTile(dest, src, srcFlips);
             }
         }
     }
