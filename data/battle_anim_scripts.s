@@ -25888,6 +25888,26 @@ gBattleAnimMove_TriAttack::
 	waitforvisualfinish
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 2, 0, 16, RGB_BLACK
 	delay 16
+	createvisualtask AnimTask_TriAttack, 0x5
+	jumpargeq 0x0, TYPE_FIRE, TriAttackFireThenEnd
+	jumpargeq 0x0, TYPE_ELECTRIC, TriAttackLightningThenEnd
+	jumpargeq 0x0, TYPE_ICE, TriAttackIceThenEnd
+	call TriAttackFire
+	call TriAttackLightning
+	loadspritegfx ANIM_TAG_ICE_CRYSTALS
+	call IceCrystalEffectShort
+	goto TriAttackEnd
+TriAttackFireThenEnd:
+	call TriAttackFire
+	goto TriAttackEnd
+TriAttackLightningThenEnd:
+	call TriAttackLightning
+	goto TriAttackEnd
+TriAttackIceThenEnd:
+	loadspritegfx ANIM_TAG_ICE_CRYSTALS
+	call IceCrystalEffectShort
+	goto TriAttackEnd
+TriAttackFire:
 	loadspritegfx ANIM_TAG_FIRE
 	createsprite gLargeFlameScatterSpriteTemplate, ANIM_TARGET, 2, 0, 0, 30, 30, -1, 0
 	playsewithpan SE_M_FLAME_WHEEL2, SOUND_PAN_TARGET
@@ -25907,6 +25927,8 @@ gBattleAnimMove_TriAttack::
 	delay 2
 	createvisualtask AnimTask_ShakeTargetInPattern, 2, 20, 3, TRUE, 1
 	waitforvisualfinish
+	return
+TriAttackLightning:
 	loadspritegfx ANIM_TAG_LIGHTNING
 	createvisualtask AnimTask_InvertScreenColor, 2, 0x1 | 0x2 | 0x4
 	playsewithpan SE_M_TRI_ATTACK2, SOUND_PAN_TARGET
@@ -25920,8 +25942,8 @@ gBattleAnimMove_TriAttack::
 	delay 2
 	createvisualtask AnimTask_InvertScreenColor, 2, 0x1 | 0x2 | 0x4
 	waitforvisualfinish
-	loadspritegfx ANIM_TAG_ICE_CRYSTALS
-	call IceCrystalEffectShort
+	return
+TriAttackEnd:
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 2, 16, 0, RGB_BLACK
 	waitforvisualfinish
 	end

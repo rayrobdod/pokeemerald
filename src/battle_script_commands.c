@@ -2835,7 +2835,9 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_SUPEREFFECTIVE;
             }
-            else if (!gMultiHitCounter)  // Don't print effectiveness on each hit in a multi hit attack
+            // Don't print effectiveness on each hit in a multi hit attack,
+            // except for Multistrike Tri Attack, which should print on each hit without printing the final hit's effectiveness twice
+            else if ((!gMultiHitCounter) != (gMovesInfo[gCurrentMove].effect == EFFECT_MULTISTRIKE_TRI_ATTACK))
             {
                 stringId = STRINGID_SUPEREFFECTIVE;
             }
@@ -2852,7 +2854,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_NOTVERYEFFECTIVE; // Needs a string
             }
-            else if (!gMultiHitCounter)
+            else if ((!gMultiHitCounter) != (gMovesInfo[gCurrentMove].effect == EFFECT_MULTISTRIKE_TRI_ATTACK))
             {
                 stringId = STRINGID_NOTVERYEFFECTIVE;
             }
@@ -2880,7 +2882,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_ITDOESNTAFFECT;
             }
-            else
+            else if ((!gMultiHitCounter) || (gMovesInfo[gCurrentMove].effect != EFFECT_MULTISTRIKE_TRI_ATTACK))
             {
                 stringId = STRINGID_ITDOESNTAFFECT;
             }
@@ -3629,7 +3631,10 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                         MOVE_EFFECT_FREEZE_OR_FROSTBITE,
                         MOVE_EFFECT_PARALYSIS
                     };
-                    gBattleScripting.moveEffect = RandomElement(RNG_TRI_ATTACK, sTriAttackEffects);
+                    if (gMultiHitCounter)
+                        gBattleScripting.moveEffect = sTriAttackEffects[3 - gMultiHitCounter];
+                    else
+                        gBattleScripting.moveEffect = RandomElement(RNG_TRI_ATTACK, sTriAttackEffects);
                     SetMoveEffect(primary, certain);
                 }
                 break;
@@ -6957,7 +6962,7 @@ static void Cmd_moveend(void)
         }
         case MOVEEND_MULTIHIT_MOVE:
         {
-            if (!(gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NO_EFFECT)
+            if ((!(gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NO_EFFECT) || moveEffect == EFFECT_MULTISTRIKE_TRI_ATTACK)
              && !(gHitMarker & HITMARKER_UNABLE_TO_USE_MOVE)
              && gMultiHitCounter
              && !(moveEffect == EFFECT_PRESENT && gBattleStruct->presentBasePower == 0)) // Silly edge case
@@ -17866,6 +17871,27 @@ void BS_SetDynamicMoveCategory(void)
     default:
         gBattleStruct->swapDamageCategory = (GetCategoryBasedOnStats(gBattlerAttacker) != GetMoveCategory(gCurrentMove));
         break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+void BS_SetMultistrikeTriAttackType(void)
+{
+    NATIVE_ARGS();
+
+    switch (gMultiHitCounter) {
+    case 3:
+        gBattleStruct->dynamicMoveType = TYPE_FIRE | F_DYNAMIC_TYPE_SET;
+        break;
+    case 2:
+        gBattleStruct->dynamicMoveType = TYPE_ICE | F_DYNAMIC_TYPE_SET;
+        break;
+    case 1:
+        gBattleStruct->dynamicMoveType = TYPE_ELECTRIC | F_DYNAMIC_TYPE_SET;
+        break;
+    default:
+        gBattleStruct->dynamicMoveType = TYPE_NORMAL | F_DYNAMIC_TYPE_SET;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;

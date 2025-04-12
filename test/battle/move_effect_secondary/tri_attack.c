@@ -4,6 +4,7 @@
 ASSUMPTIONS
 {
     ASSUME(MoveHasAdditionalEffect(MOVE_TRI_ATTACK, MOVE_EFFECT_TRI_ATTACK) == TRUE);
+    ASSUME(gMovesInfo[MOVE_TRI_ATTACK].strikeCount <= 1);
 }
 
 #if B_USE_FROSTBITE == TRUE

@@ -1650,6 +1650,10 @@
 	callnative BS_SetDynamicMoveCategory
 	.endm
 
+	.macro setmultistriketriattacktype
+	callnative BS_SetMultistrikeTriAttackType
+	.endm
+
 	.macro tryupperhand failInstr:req
 	callnative BS_TryUpperHand
 	.4byte \failInstr

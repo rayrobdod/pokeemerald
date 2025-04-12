@@ -2246,4 +2246,10 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectSpectralThief,
         .battleTvScore = 0, // TODO: Assign points
     },
+
+    [EFFECT_MULTISTRIKE_TRI_ATTACK] =
+    {
+        .battleScript = BattleScript_EffectMultistrikeTriAttack,
+        .battleTvScore = 1,
+    },
 };

@@ -4439,7 +4439,10 @@ bool32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 
 
     if (battleScript != NULL)
     {
-        gMultiHitCounter = 0;   // Prevent multi-hit moves from hitting more than once after move has been absorbed.
+        if (gMovesInfo[move].effect != EFFECT_MULTISTRIKE_TRI_ATTACK)
+            // Prevent multi-hit moves from hitting more than once after move has been absorbed.
+            // tri-attack will be a different type, and so is allowed to continue
+            gMultiHitCounter = 0;
         gBattlescriptCurrInstr = battleScript;
     }
 
