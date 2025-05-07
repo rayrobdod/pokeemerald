@@ -474,5 +474,8 @@ const u16 DecorMetatiles_POSTER_2x1_PAL3[] = {
     DECORMETATILE_COVERED(0x3002, 0x3003, 0x3006, 0x3007),
 };
 
+const u32 DecorTiles_SMALL_BOOKSHELF[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/small_bookshelf.4bpp");
+const u32 DecorTiles_BIG_BOOKSHELF[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/big_bookshelf.4bpp");
+
 #undef DECORMETATILE_COVERED
 #undef DECORMETATILE_SPLIT

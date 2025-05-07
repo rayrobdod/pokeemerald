@@ -1602,5 +1602,33 @@ const struct Decoration gDecorations[] =
         .price = 10000,
         .description = DecorDesc_REGISTEEL_DOLL,
         .objEvent = OBJ_EVENT_GFX_BIG_REGISTEEL_DOLL,
-    }
+    },
+
+    [DECOR_SMALL_BOOKSHELF] =
+    {
+        .id = DECOR_SMALL_BOOKSHELF,
+        .name = _("SMALL BOOKSHELF"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 3000,
+        .description = DecorDesc_SMALL_BOOKSHELF,
+        .tiles = DecorTiles_SMALL_BOOKSHELF,
+        .metatiles = DecorMetatiles_TROPICAL_PLANT,
+        .attributes = DecorAttributes_Plant_1x2,
+    },
+
+    [DECOR_BIG_BOOKSHELF] =
+    {
+        .id = DECOR_BIG_BOOKSHELF,
+        .name = _("BIG BOOKSHELF"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_2x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 5000,
+        .description = DecorDesc_BIG_BOOKSHELF,
+        .tiles = DecorTiles_BIG_BOOKSHELF,
+        .metatiles = DecorMetatiles_COLORFUL_PLANT,
+        .attributes = DecorAttributes_Plant_2x2,
+    },
 };

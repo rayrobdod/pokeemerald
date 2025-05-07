@@ -571,3 +571,9 @@ const u8 DecorDesc_REGISTEEL_DOLL[] = _(
     "A large doll.\n"
         "Place it on a mat\n"
         "or a desk.");
+
+const u8 DecorDesc_SMALL_BOOKSHELF[] = _(
+    "A small bookshelf.");
+
+const u8 DecorDesc_BIG_BOOKSHELF[] = _(
+    "A big bookshelf.");
