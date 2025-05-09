@@ -52,6 +52,9 @@ const u32 gDecorIconPalette_RedTent[] = INCBIN_U32("graphics/decorations/red_ten
 const u32 gDecorIcon_BlueTent[] = INCBIN_U32("graphics/decorations/blue_tent.4bpp.lz");
 const u32 gDecorIconPalette_BlueTent[] = INCBIN_U32("graphics/decorations/blue_tent.gbapal.lz");
 
+const u32 gDecorIcon_GreenTent[] = INCBIN_U32("graphics/decorations/green_tent.4bpp.lz");
+const u32 gDecorIconPalette_GreenTent[] = INCBIN_U32("graphics/decorations/green_tent.gbapal.lz");
+
 const u32 gDecorIcon_SolidBoard[] = INCBIN_U32("graphics/decorations/solid_board.4bpp.lz");
 const u32 gDecorIconPalette_SolidBoard[] = INCBIN_U32("graphics/decorations/solid_board.gbapal.lz");
 

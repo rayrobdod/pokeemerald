@@ -33,6 +33,7 @@ const u32 *const gDecorIconTable[][2] =
     [DECOR_YELLOW_BALLOON]  = {NULL, NULL},
     [DECOR_RED_TENT]        = {gDecorIcon_RedTent, gDecorIconPalette_RedTent},
     [DECOR_BLUE_TENT]       = {gDecorIcon_BlueTent, gDecorIconPalette_BlueTent},
+    [DECOR_GREEN_TENT]      = {gDecorIcon_GreenTent, gDecorIconPalette_GreenTent},
     [DECOR_SOLID_BOARD]     = {gDecorIcon_SolidBoard, gDecorIconPalette_SolidBoard},
     [DECOR_SLIDE]           = {gDecorIcon_Slide, gDecorIconPalette_Slide},
     [DECOR_FENCE_LENGTH]    = {NULL, NULL},

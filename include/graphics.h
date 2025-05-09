@@ -3131,6 +3131,8 @@ extern const u32 gDecorIcon_RedTent[];
 extern const u32 gDecorIconPalette_RedTent[];
 extern const u32 gDecorIcon_BlueTent[];
 extern const u32 gDecorIconPalette_BlueTent[];
+extern const u32 gDecorIcon_GreenTent[];
+extern const u32 gDecorIconPalette_GreenTent[];
 extern const u32 gDecorIcon_SolidBoard[];
 extern const u32 gDecorIconPalette_SolidBoard[];
 extern const u32 gDecorIcon_Slide[];

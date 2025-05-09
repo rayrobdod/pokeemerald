@@ -145,6 +145,11 @@ const u8 DecorDesc_BLUE_TENT[] = _(
         "You can hide inside\n"
         "it.");
 
+const u8 DecorDesc_GREEN_TENT[] = _(
+    "A large green tent.\n"
+        "You can hide inside\n"
+        "it.");
+
 const u8 DecorDesc_SOLID_BOARD[] = _(
     "Place over a hole to\n"
         "cross to the other\n"
