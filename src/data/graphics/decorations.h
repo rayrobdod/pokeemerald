@@ -126,3 +126,9 @@ const u32 gDecorIconPalette_RegirockDoll[] = INCBIN_U32("graphics/decorations/re
 
 const u32 gDecorIcon_RegisteelDoll[] = INCBIN_U32("graphics/decorations/registeel_doll.4bpp.lz");
 const u32 gDecorIconPalette_RegisteelDoll[] = INCBIN_U32("graphics/decorations/registeel_doll.gbapal.lz");
+
+const u32 gDecorIcon_SmallBookshelf[] = INCBIN_U32("graphics/decorations/small_bookshelf.4bpp.lz");
+const u32 gDecorIconPalette_SmallBookshelf[] = INCBIN_U32("graphics/decorations/small_bookshelf.gbapal.lz");
+
+const u32 gDecorIcon_BigBookshelf[] = INCBIN_U32("graphics/decorations/big_bookshelf.4bpp.lz");
+const u32 gDecorIconPalette_BigBookshelf[] = INCBIN_U32("graphics/decorations/big_bookshelf.gbapal.lz");
