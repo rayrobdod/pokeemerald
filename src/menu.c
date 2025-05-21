@@ -21,7 +21,7 @@
 #include "window.h"
 #include "constants/songs.h"
 
-#define DLG_WINDOW_MUGSHOT_NUM 13
+#define DLG_WINDOW_MUGSHOT_PALETTE_NUM 13
 #define DLG_WINDOW_PALETTE_NUM 15
 #define DLG_WINDOW_BASE_TILE_NUM 0x200
 #define STD_WINDOW_PALETTE_NUM 14
@@ -115,7 +115,7 @@ static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
         .tilemapTop = 5,
         .width = DLG_WINDOW_NAMEPLATE_TILEWIDTH,
         .height = DLG_WINDOW_MUGSHOT_TILEHEIGHT,
-        .paletteNum = DLG_WINDOW_MUGSHOT_NUM,
+        .paletteNum = DLG_WINDOW_MUGSHOT_PALETTE_NUM,
         .baseBlock = 0x194 - DLG_WINDOW_NAMEPLATE_TILEWIDTH * 2 - DLG_WINDOW_NAMEPLATE_TILEWIDTH * DLG_WINDOW_MUGSHOT_TILEHEIGHT,
     },
     DUMMY_WIN_TEMPLATE
@@ -281,7 +281,7 @@ static void FillDialogFrameNameWindow(u8 windowId, const u8 *speakerName, bool8 
 
 static void FillDialogFrameMugshotWindow(u8 windowId, u8 mugshotId)
 {
-    LoadPalette(gMugshots[mugshotId - 1].palette, BG_PLTT_ID(DLG_WINDOW_MUGSHOT_NUM), TILE_SIZE_4BPP);
+    LoadPalette(gMugshots[mugshotId - 1].palette, BG_PLTT_ID(DLG_WINDOW_MUGSHOT_PALETTE_NUM), TILE_SIZE_4BPP);
     CopyToWindowPixelBuffer(windowId, gMugshots[mugshotId - 1].tiles, 0, 0);
 }
 
