@@ -486,7 +486,6 @@ gSpecials::
 	def_special CloseBattleFrontierTutorWindow
 	def_special ScrollableMultichoice_RedrawPersistentMenu
 	def_special ChooseMonForMoveTutor
-	def_special GetBattleFrontierTutorMoveIndex
 	def_special ScrollableMultichoice_ClosePersistentMenu
 	def_special DoDeoxysRockInteraction
 	def_special SetDeoxysRockPalette
@@ -535,3 +534,23 @@ gSpecials::
 	def_special RemoveRecordsWindow
 	def_special CloseDeptStoreElevatorWindow
 	def_special TrySetBattleTowerLinkType
+	def_special TrySpecialOverworldEvo
+	def_special GetNumberSprayStrength
+	def_special GetSprayId
+	def_special GetLastUsedSprayType
+	def_special TrySkyBattle
+	def_special VsSeekerResetObjectMovementAfterChargeComplete
+	def_special VsSeekerFreezeObjectsAfterChargeComplete
+	def_special PlayerHasMulch
+	def_special Bag_ChooseMulch
+	def_special ObjectEventInteractionApplyMulch
+	def_special ObjectEventInteractionPullBerryWeed
+	def_special ObjectEventInteractionClearBerryPests
+	def_special ObjectEventInteractionBerryHasWeed
+	def_special ObjectEventInteractionBerryHasPests
+	def_special CanWaterBerryPlot
+	def_special Script_GetChosenMonOffensiveEVs
+	def_special Script_GetChosenMonDefensiveEVs
+	def_special Script_GetChosenMonOffensiveIVs
+	def_special Script_GetChosenMonDefensiveIVs
+	def_special UseBlankMessageToCancelPokemonPic

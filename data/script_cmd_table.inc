@@ -136,7 +136,7 @@ gScriptCmdTable::
 	script_cmd_table_entry SCR_OP_HIDEMONPIC                    ScrCmd_hidemonpic                     @ 0x76
 	script_cmd_table_entry SCR_OP_SHOWCONTESTPAINTING           ScrCmd_showcontestpainting            @ 0x77
 	script_cmd_table_entry SCR_OP_BRAILLEMESSAGE                ScrCmd_braillemessage                 @ 0x78
-	script_cmd_table_entry SCR_OP_GIVEMON                       ScrCmd_givemon                        @ 0x79
+	script_cmd_table_entry SCR_OP_GIVEMON                       ScrCmd_nop1                           @ 0x79
 	script_cmd_table_entry SCR_OP_GIVEEGG                       ScrCmd_giveegg                        @ 0x7a
 	script_cmd_table_entry SCR_OP_SETMONMOVE                    ScrCmd_setmonmove                     @ 0x7b
 	script_cmd_table_entry SCR_OP_CHECKPARTYMOVE                ScrCmd_checkpartymove                 @ 0x7c
@@ -242,6 +242,8 @@ gScriptCmdTable::
 	script_cmd_table_entry SCR_OP_WARPWHITEFADE                 ScrCmd_warpwhitefade                  @ 0xe0
 	script_cmd_table_entry SCR_OP_BUFFERCONTESTNAME             ScrCmd_buffercontestname              @ 0xe1
 	script_cmd_table_entry SCR_OP_BUFFERITEMNAMEPLURAL          ScrCmd_bufferitemnameplural           @ 0xe2
+	script_cmd_table_entry SCR_OP_DYNMULTICHOICE                ScrCmd_dynmultichoice                 @ 0xe3
+	script_cmd_table_entry SCR_OP_DYNMULTIPUSH                  ScrCmd_dynmultipush                   @ 0xe4
 
 	.if ALLOCATE_SCRIPT_CMD_TABLE
 gScriptCmdTableEnd::
