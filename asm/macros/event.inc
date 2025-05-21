@@ -1729,16 +1729,6 @@
 	.2byte \quantity
 	.endm
 
-	.macro speakername text:req
-	.byte 0xe3
-	.4byte \text
-	.endm
-
-	.macro speakermugshot id:req
-	.byte 0xe4
-	.byte \id
-	.endm
-
 
 @ Supplementary
 
