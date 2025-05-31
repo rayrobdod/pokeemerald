@@ -9,7 +9,6 @@
 #include "constants/rgb.h"
 
 static bool8 TppHost_Init(struct Task *);
-static bool8 TppHost_WipeToBlack(struct Task *);
 static bool8 TppHost_Main1(struct Task *);
 static bool8 TppHost_Main2(struct Task *);
 static bool8 TppHost_Main3(struct Task *);
