@@ -103,10 +103,10 @@ enum
 u32 WhichBattleCoords(u32 battlerId);
 u8 CreateBattlerHealthboxSprites(u8 battler);
 u8 CreateSafariPlayerHealthboxSprites(void);
-void SetBattleBarStruct(u8 battler, u8 healthboxSpriteId, s32 maxVal, s32 currVal, s32 receivedValue);
+void SetBattleBarStruct(u8 battler, u8 healthboxSpriteId, s32 maxVal, s32 oldVal, s32 receivedValue);
 void SetHealthboxSpriteInvisible(u8 healthboxSpriteId);
 void SetHealthboxSpriteVisible(u8 healthboxSpriteId);
-void DummyBattleInterfaceFunc(u8 healthboxSpriteId, bool8 isDoubleBattleBankOnly);
+void DummyBattleInterfaceFunc(u8 healthboxSpriteId, bool8 isDoubleBattleBattlerOnly);
 void UpdateOamPriorityInAllHealthboxes(u8 priority, bool32 hideHpBoxes);
 void InitBattlerHealthboxCoords(u8 battler);
 void GetBattlerHealthboxCoords(u8 battler, s16 *x, s16 *y);
@@ -128,5 +128,7 @@ void SwapBallToDisplay(bool32 sameBall);
 void ArrowsChangeColorLastBallCycle(bool32 showArrows);
 void UpdateAbilityPopup(u8 battlerId);
 void CategoryIcons_LoadSpritesGfx(void);
+void TryToAddMoveInfoWindow(void);
+void TryToHideMoveInfoWindow(void);
 
 #endif // GUARD_BATTLE_INTERFACE_H

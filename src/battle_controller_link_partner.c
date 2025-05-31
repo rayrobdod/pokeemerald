@@ -86,10 +86,6 @@ static void (*const sLinkPartnerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battl
     [CONTROLLER_CHOSENMONRETURNVALUE]     = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE]           = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE_DUPLICATE] = BtlController_Empty,
-    [CONTROLLER_CLEARUNKVAR]              = BtlController_HandleClearUnkVar,
-    [CONTROLLER_SETUNKVAR]                = BtlController_HandleSetUnkVar,
-    [CONTROLLER_CLEARUNKFLAG]             = BtlController_HandleClearUnkFlag,
-    [CONTROLLER_TOGGLEUNKFLAG]            = BtlController_HandleToggleUnkFlag,
     [CONTROLLER_HITANIMATION]             = BtlController_HandleHitAnimation,
     [CONTROLLER_CANTSWITCH]               = BtlController_Empty,
     [CONTROLLER_PLAYSE]                   = BtlController_HandlePlaySE,
@@ -197,7 +193,7 @@ static void LinkPartnerBufferExecCompleted(u32 battler)
     {
         u8 playerId = GetMultiplayerId();
 
-        PrepareBufferDataTransferLink(battler, 2, 4, &playerId);
+        PrepareBufferDataTransferLink(battler, B_COMM_CONTROLLER_IS_DONE, 4, &playerId);
         gBattleResources->bufferA[battler][0] = CONTROLLER_TERMINATOR_NOP;
     }
     else

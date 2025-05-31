@@ -125,8 +125,8 @@ static bool8 CheckFeebas(void)
     u8 route119Section = 0;
     u16 spotId;
 
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE119)
-     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE119))
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_ROUTE119)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_ROUTE119))
     {
         GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
         x -= MAP_OFFSET;
@@ -186,7 +186,7 @@ static void FeebasSeedRng(u16 seed)
 }
 
 // LAND_WILD_COUNT
-static u8 ChooseWildMonIndex_Land(void)
+u8 ChooseWildMonIndex_Land(void)
 {
     u8 wildMonIndex = 0;
     bool8 swap = FALSE;
@@ -227,7 +227,7 @@ static u8 ChooseWildMonIndex_Land(void)
 }
 
 // ROCK_WILD_COUNT / WATER_WILD_COUNT
-static u8 ChooseWildMonIndex_WaterRock(void)
+u8 ChooseWildMonIndex_WaterRock(void)
 {
     u8 wildMonIndex = 0;
     bool8 swap = FALSE;
@@ -354,21 +354,21 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIn
     }
 }
 
-static u16 GetCurrentMapWildMonHeaderId(void)
+u16 GetCurrentMapWildMonHeaderId(void)
 {
     u16 i;
 
     for (i = 0; ; i++)
     {
         const struct WildPokemonHeader *wildHeader = &gWildMonHeaders[i];
-        if (wildHeader->mapGroup == MAP_GROUP(UNDEFINED))
+        if (wildHeader->mapGroup == MAP_GROUP(MAP_UNDEFINED))
             break;
 
         if (gWildMonHeaders[i].mapGroup == gSaveBlock1Ptr->location.mapGroup &&
             gWildMonHeaders[i].mapNum == gSaveBlock1Ptr->location.mapNum)
         {
-            if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
-                gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE))
+            if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_ALTERING_CAVE) &&
+                gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_ALTERING_CAVE))
             {
                 u16 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
                 if (alteringCaveId >= NUM_ALTERING_CAVE_TABLES)
@@ -417,7 +417,7 @@ u8 PickWildMonNature(void)
     return Random() % NUM_NATURES;
 }
 
-static void CreateWildMon(u16 species, u8 level)
+void CreateWildMon(u16 species, u8 level)
 {
     bool32 checkCuteCharm = TRUE;
 
@@ -610,8 +610,8 @@ static bool8 AllowWildCheckOnNewMetatile(void)
 
 static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(SOOTOPOLIS_CITY)
-     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(SOOTOPOLIS_CITY))
+    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_SOOTOPOLIS_CITY)
+     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_SOOTOPOLIS_CITY))
     {
         return FALSE;
     }
@@ -1133,4 +1133,25 @@ bool8 StandardWildEncounter_Debug(void)
 
     DoStandardWildBattle_Debug();
     return TRUE;
+}
+
+u8 ChooseHiddenMonIndex(void)
+{
+    #ifdef ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL
+        u8 rand = Random() % ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL;
+
+        if (rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0)
+            return 0;
+        else if (rand >= ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0 && rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_1)
+            return 1;
+        else
+            return 2;
+    #else
+        return 0xFF;
+    #endif
+}
+
+bool32 MapHasNoEncounterData(void)
+{
+    return (GetCurrentMapWildMonHeaderId() == HEADER_NONE);
 }

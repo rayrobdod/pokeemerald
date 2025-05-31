@@ -1369,7 +1369,7 @@ static bool32 MatchCall_EndCall(u8 taskId)
         if (!sMatchCallState.triggeredFromScript)
         {
             LoadMessageBoxAndBorderGfx();
-            playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+            playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
             ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
             ScriptMovement_UnfreezeObjectEvents();
             UnfreezeObjectEvents();
@@ -1753,9 +1753,9 @@ static void PopulateSpeciesFromTrainerLocation(int matchCallId, u8 *destStr)
     u8 slot;
     int i = 0;
 
-    if (gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED)) // ??? This check is nonsense.
+    if (gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED)) // ??? This check is nonsense.
     {
-        while (gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED))
+        while (gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED))
         {
             if (gWildMonHeaders[i].mapGroup == gRematchTable[matchCallId].mapGroup
              && gWildMonHeaders[i].mapNum == gRematchTable[matchCallId].mapNum)
@@ -1764,7 +1764,7 @@ static void PopulateSpeciesFromTrainerLocation(int matchCallId, u8 *destStr)
             i++;
         }
 
-        if (gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED))
+        if (gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED))
         {
             numSpecies = 0;
             if (gWildMonHeaders[i].landMonsInfo)
@@ -1839,25 +1839,13 @@ static void PopulateBattleFrontierStreak(int matchCallId, u8 *destStr)
     ConvertIntToDecimalStringN(destStr, sBattleFrontierStreakInfo.streak, STR_CONV_MODE_LEFT_ALIGN, i);
 }
 
-static const u16 sBadgeFlags[NUM_BADGES] =
-{
-    FLAG_BADGE01_GET,
-    FLAG_BADGE02_GET,
-    FLAG_BADGE03_GET,
-    FLAG_BADGE04_GET,
-    FLAG_BADGE05_GET,
-    FLAG_BADGE06_GET,
-    FLAG_BADGE07_GET,
-    FLAG_BADGE08_GET,
-};
-
 static int GetNumOwnedBadges(void)
 {
     u32 i;
 
     for (i = 0; i < NUM_BADGES; i++)
     {
-        if (!FlagGet(sBadgeFlags[i]))
+        if (!FlagGet(gBadgeFlags[i]))
             break;
     }
 

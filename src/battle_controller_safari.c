@@ -82,10 +82,6 @@ static void (*const sSafariBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
     [CONTROLLER_CHOSENMONRETURNVALUE]     = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE]           = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE_DUPLICATE] = BtlController_Empty,
-    [CONTROLLER_CLEARUNKVAR]              = BtlController_Empty,
-    [CONTROLLER_SETUNKVAR]                = BtlController_Empty,
-    [CONTROLLER_CLEARUNKFLAG]             = BtlController_Empty,
-    [CONTROLLER_TOGGLEUNKFLAG]            = BtlController_Empty,
     [CONTROLLER_HITANIMATION]             = BtlController_Empty,
     [CONTROLLER_CANTSWITCH]               = BtlController_Empty,
     [CONTROLLER_PLAYSE]                   = BtlController_HandlePlaySE,
@@ -131,16 +127,16 @@ static void HandleInputChooseAction(u32 battler)
         switch (gActionSelectionCursor[battler])
         {
         case 0:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SAFARI_BALL, 0);
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SAFARI_BALL, 0);
             break;
         case 1:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SAFARI_POKEBLOCK, 0);
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SAFARI_POKEBLOCK, 0);
             break;
         case 2:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SAFARI_GO_NEAR, 0);
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SAFARI_GO_NEAR, 0);
             break;
         case 3:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SAFARI_RUN, 0);
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_SAFARI_RUN, 0);
             break;
         }
         SafariBufferExecCompleted(battler);
@@ -224,7 +220,7 @@ static void CompleteWhenChosePokeblock(u32 battler)
 {
     if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active)
     {
-        BtlController_EmitOneReturnValue(battler, BUFFER_B, gSpecialVar_ItemId);
+        BtlController_EmitOneReturnValue(battler, B_COMM_TO_ENGINE, gSpecialVar_ItemId);
         SafariBufferExecCompleted(battler);
     }
 }
@@ -236,7 +232,7 @@ static void SafariBufferExecCompleted(u32 battler)
     {
         u8 playerId = GetMultiplayerId();
 
-        PrepareBufferDataTransferLink(battler, 2, 4, &playerId);
+        PrepareBufferDataTransferLink(battler, B_COMM_CONTROLLER_IS_DONE, 4, &playerId);
         gBattleResources->bufferA[battler][0] = CONTROLLER_TERMINATOR_NOP;
     }
     else
@@ -299,7 +295,6 @@ static void SafariHandleChooseAction(u32 battler)
 
     ActionSelectionCreateCursorAt(gActionSelectionCursor[battler], 0);
     BattleStringExpandPlaceholdersToDisplayedString(gText_WhatWillPkmnDo2);
-    BreakStringAutomatic(gDisplayedStringBattle, WindowWidthPx(B_WIN_ACTION_PROMPT), 2, FONT_NORMAL);
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_ACTION_PROMPT);
 }
 

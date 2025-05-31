@@ -64,7 +64,7 @@ static void (*const sRecordedOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 
     [CONTROLLER_SWITCHINANIM]             = RecordedOpponentHandleSwitchInAnim,
     [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
     [CONTROLLER_DRAWTRAINERPIC]           = RecordedOpponentHandleDrawTrainerPic,
-    [CONTROLLER_TRAINERSLIDE]             = BtlController_Empty,
+    [CONTROLLER_TRAINERSLIDE]             = OpponentHandleTrainerSlide,
     [CONTROLLER_TRAINERSLIDEBACK]         = RecordedOpponentHandleTrainerSlideBack,
     [CONTROLLER_FAINTANIMATION]           = BtlController_HandleFaintAnimation,
     [CONTROLLER_PALETTEFADE]              = BtlController_Empty,
@@ -93,10 +93,6 @@ static void (*const sRecordedOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 
     [CONTROLLER_CHOSENMONRETURNVALUE]     = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE]           = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE_DUPLICATE] = BtlController_Empty,
-    [CONTROLLER_CLEARUNKVAR]              = BtlController_HandleClearUnkVar,
-    [CONTROLLER_SETUNKVAR]                = BtlController_HandleSetUnkVar,
-    [CONTROLLER_CLEARUNKFLAG]             = BtlController_HandleClearUnkFlag,
-    [CONTROLLER_TOGGLEUNKFLAG]            = BtlController_HandleToggleUnkFlag,
     [CONTROLLER_HITANIMATION]             = BtlController_HandleHitAnimation,
     [CONTROLLER_CANTSWITCH]               = BtlController_Empty,
     [CONTROLLER_PLAYSE]                   = BtlController_HandlePlaySE,
@@ -413,9 +409,9 @@ static void RecordedOpponentHandleDrawTrainerPic(u32 battler)
         if (gBattleTypeFlags & BATTLE_TYPE_BATTLE_TOWER)
         {
             if (battler == B_POSITION_OPPONENT_LEFT)
-                trainerPicId = GetFrontierTrainerFrontSpriteId(gTrainerBattleOpponent_A);
+                trainerPicId = GetFrontierTrainerFrontSpriteId(TRAINER_BATTLE_PARAM.opponentA);
             else
-                trainerPicId = GetFrontierTrainerFrontSpriteId(gTrainerBattleOpponent_B);
+                trainerPicId = GetFrontierTrainerFrontSpriteId(TRAINER_BATTLE_PARAM.opponentB);
         }
         else
         {
@@ -425,7 +421,7 @@ static void RecordedOpponentHandleDrawTrainerPic(u32 battler)
     else
     {
         xPos = 176;
-        if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
+        if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_UNION_ROOM)
         {
             trainerPicId = GetUnionRoomTrainerPic();
         }
@@ -455,7 +451,7 @@ static void RecordedOpponentHandlePrintString(u32 battler)
 
 static void RecordedOpponentHandleChooseAction(u32 battler)
 {
-    BtlController_EmitTwoReturnValues(battler, BUFFER_B, RecordedBattle_GetBattlerAction(RECORDED_ACTION_TYPE, battler), 0);
+    BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, RecordedBattle_GetBattlerAction(RECORDED_ACTION_TYPE, battler), 0);
     RecordedOpponentBufferExecCompleted(battler);
 }
 
@@ -463,13 +459,13 @@ static void RecordedOpponentHandleChooseMove(u32 battler)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
     {
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, ChooseMoveAndTargetInBattlePalace(battler));
+        BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, 10, ChooseMoveAndTargetInBattlePalace(battler));
     }
     else
     {
         u8 moveId = RecordedBattle_GetBattlerAction(RECORDED_MOVE_SLOT, battler);
         u8 target = RecordedBattle_GetBattlerAction(RECORDED_MOVE_TARGET, battler);
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, moveId | (target << 8));
+        BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, 10, moveId | (target << 8));
     }
 
     RecordedOpponentBufferExecCompleted(battler);
@@ -482,15 +478,15 @@ static void RecordedOpponentHandleChooseItem(u32 battler)
     gBattleStruct->chosenItem[battler] = (byte1 << 8) | byte2;
     gBattleStruct->itemPartyIndex[battler] = RecordedBattle_GetBattlerAction(RECORDED_ITEM_TARGET, battler);
     gBattleStruct->itemMoveIndex[battler] = RecordedBattle_GetBattlerAction(RECORDED_ITEM_MOVE, battler);
-    BtlController_EmitOneReturnValue(battler, BUFFER_B, gBattleStruct->chosenItem[battler]);
+    BtlController_EmitOneReturnValue(battler, B_COMM_TO_ENGINE, gBattleStruct->chosenItem[battler]);
     RecordedOpponentBufferExecCompleted(battler);
 }
 
 static void RecordedOpponentHandleChoosePokemon(u32 battler)
 {
-    *(gBattleStruct->monToSwitchIntoId + battler) = RecordedBattle_GetBattlerAction(RECORDED_PARTY_INDEX, battler);
+    gBattleStruct->monToSwitchIntoId[battler] = RecordedBattle_GetBattlerAction(RECORDED_PARTY_INDEX, battler);
     gSelectedMonPartyId = gBattleStruct->monToSwitchIntoId[battler]; // Revival Blessing
-    BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, *(gBattleStruct->monToSwitchIntoId + battler), NULL);
+    BtlController_EmitChosenMonReturnValue(battler, B_COMM_TO_ENGINE, gBattleStruct->monToSwitchIntoId[battler], NULL);
     RecordedOpponentBufferExecCompleted(battler);
 }
 

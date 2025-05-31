@@ -78,7 +78,7 @@ void ClearSav1(void)
 // Offset is the sum of the trainer id bytes
 void SetSaveBlocksPointers(u16 offset)
 {
-    struct SaveBlock1** sav1_LocalVar = &gSaveBlock1Ptr;
+    struct SaveBlock1 **sav1_LocalVar = &gSaveBlock1Ptr;
 
     offset = (offset + Random()) & (SAVEBLOCK_MOVE_RANGE - 4);
 
@@ -235,7 +235,7 @@ void LoadObjectEvents(void)
         // Try to restore saved inactive follower
         if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER &&
             !gObjectEvents[i].active &&
-            gObjectEvents[i].graphicsId >= OBJ_EVENT_GFX_MON_BASE)
+            gObjectEvents[i].graphicsId & OBJ_EVENT_MON)
             gObjectEvents[i].active = TRUE;
     }
 }

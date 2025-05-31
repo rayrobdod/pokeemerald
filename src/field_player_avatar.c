@@ -39,14 +39,13 @@ EWRAM_DATA struct ObjectEvent gObjectEvents[OBJECT_EVENTS_COUNT] = {};
 EWRAM_DATA struct PlayerAvatar gPlayerAvatar = {};
 
 // static declarations
-
-static u8 ObjectEventCB2_NoMovement2();
+static u8 ObjectEventCB2_NoMovement2(void);
 static bool8 TryInterruptObjectEventSpecialAnim(struct ObjectEvent *, u8);
 static void npc_clear_strange_bits(struct ObjectEvent *);
 static void MovePlayerAvatarUsingKeypadInput(u8, u16, u16);
-static void PlayerAllowForcedMovementIfMovingSameDirection();
-static bool8 TryDoMetatileBehaviorForcedMovement();
-static u8 GetForcedMovementByMetatileBehavior();
+static void PlayerAllowForcedMovementIfMovingSameDirection(void);
+static bool8 TryDoMetatileBehaviorForcedMovement(void);
+static u8 GetForcedMovementByMetatileBehavior(void);
 
 static bool8 ForcedMovement_None(void);
 static bool8 ForcedMovement_Slip(void);
@@ -93,7 +92,8 @@ static bool8 PlayerAnimIsMultiFrameStationaryAndStateNotTurning(void);
 static bool8 PlayerIsAnimActive(void);
 static bool8 PlayerCheckIfAnimFinishedOrInactive(void);
 
-static void PlayerWalkSlow(u8 direction);
+static void PlayerWalkSlowStairs(u8 direction);
+static void UNUSED PlayerWalkSlow(u8 direction);
 static void PlayerRunSlow(u8 direction);
 static void PlayerRun(u8);
 static void PlayerNotOnBikeCollide(u8);
@@ -250,7 +250,7 @@ static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
     [DIR_EAST - 1]  = MetatileBehavior_IsEastArrowWarp,
 };
 
-static const u8 sRivalAvatarGfxIds[][2] =
+static const u8 sRivalAvatarGfxIds[][GENDER_COUNT] =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL,     OBJ_EVENT_GFX_RIVAL_MAY_NORMAL},
     [PLAYER_AVATAR_STATE_MACH_BIKE]  = {OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE,  OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE},
@@ -263,7 +263,7 @@ static const u8 sRivalAvatarGfxIds[][2] =
     [PLAYER_AVATAR_STATE_VSSEEKER]   = {OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE},
 };
 
-static const u8 sPlayerAvatarGfxIds[][2] =
+static const u8 sPlayerAvatarGfxIds[][GENDER_COUNT] =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
     [PLAYER_AVATAR_STATE_MACH_BIKE]  = {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE,  OBJ_EVENT_GFX_MAY_MACH_BIKE},
@@ -338,7 +338,7 @@ static bool8 (*const sPlayerAvatarSecretBaseMatSpin[])(struct Task *, struct Obj
 
 void MovementType_Player(struct Sprite *sprite)
 {
-    UpdateObjectEventCurrentMovement(&gObjectEvents[sprite->data[0]], sprite, ObjectEventCB2_NoMovement2);
+    UpdateObjectEventCurrentMovement(&gObjectEvents[sprite->data[0]], sprite, (bool8 (*)(struct ObjectEvent *, struct Sprite *))ObjectEventCB2_NoMovement2);
 }
 
 static u8 ObjectEventCB2_NoMovement2(void)
@@ -665,11 +665,20 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             return;
         }
     }
-
+    
+    gPlayerAvatar.creeping = FALSE;
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
     {
-        // same speed as running
-        PlayerWalkFast(direction);
+        if (FlagGet(DN_FLAG_SEARCHING) && (heldKeys & A_BUTTON))
+        {
+            gPlayerAvatar.creeping = TRUE;
+            PlayerWalkSlow(direction);
+        }
+        else
+        {
+            // speed 2 is fast, same speed as running
+            PlayerWalkFast(direction);
+        }
         return;
     }
 
@@ -684,10 +693,15 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
     }
+    else if (FlagGet(DN_FLAG_SEARCHING) && (heldKeys & A_BUTTON))
+    {
+        gPlayerAvatar.creeping = TRUE;
+        PlayerWalkSlow(direction);
+    }
     else
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))
-            PlayerWalkSlow(direction);
+            PlayerWalkSlowStairs(direction);
         else
             PlayerWalkNormal(direction);
     }
@@ -828,7 +842,7 @@ bool8 IsPlayerCollidingWithFarawayIslandMew(u8 direction)
     playerY = object->currentCoords.y;
 
     MoveCoords(direction, &playerX, &playerY);
-    mewObjectId = GetObjectEventIdByLocalIdAndMap(1, MAP_NUM(FARAWAY_ISLAND_INTERIOR), MAP_GROUP(FARAWAY_ISLAND_INTERIOR));
+    mewObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_FARAWAY_ISLAND_MEW, MAP_NUM(MAP_FARAWAY_ISLAND_INTERIOR), MAP_GROUP(MAP_FARAWAY_ISLAND_INTERIOR));
     if (mewObjectId == OBJECT_EVENTS_COUNT)
         return FALSE;
 
@@ -1002,8 +1016,14 @@ void PlayerSetAnimId(u8 movementActionId, u8 copyableMovement)
     }
 }
 
+// slow stairs (from FRLG--faster than slow)
+static void PlayerWalkSlowStairs(u8 direction)
+{
+    PlayerSetAnimId(GetWalkSlowStairsMovementAction(direction), 2);
+}
+
 // slow
-static void PlayerWalkSlow(u8 direction)
+static void UNUSED PlayerWalkSlow(u8 direction)
 {
     PlayerSetAnimId(GetWalkSlowMovementAction(direction), 2);
 }
@@ -1222,6 +1242,8 @@ u8 player_get_pos_including_state_based_drift(s16 *x, s16 *y)
 
 u8 GetPlayerFacingDirection(void)
 {
+    Script_RequestEffects(SCREFF_V1);
+
     return gObjectEvents[gPlayerAvatar.objectEventId].facingDirection;
 }
 
@@ -1407,7 +1429,7 @@ void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
     u8 objectEventId;
     struct ObjectEvent *objectEvent;
 
-    playerObjEventTemplate.localId = OBJ_EVENT_ID_PLAYER;
+    playerObjEventTemplate.localId = LOCALID_PLAYER;
     playerObjEventTemplate.graphicsId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gender);
     playerObjEventTemplate.x = x - MAP_OFFSET;
     playerObjEventTemplate.y = y - MAP_OFFSET;

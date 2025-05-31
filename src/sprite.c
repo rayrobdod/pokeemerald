@@ -5,8 +5,6 @@
 
 #define MAX_SPRITE_COPY_REQUESTS 64
 
-#define OAM_MATRIX_COUNT 32
-
 #define sAnchorX data[6]
 #define sAnchorY data[7]
 
@@ -114,8 +112,8 @@ typedef void (*AffineAnimCmdFunc)(u8 matrixNum, struct Sprite *);
 #define AFFINE_ANIM_END 0x7FFF
 
 // forward declarations
-const union AnimCmd * const gDummySpriteAnimTable[];
-const union AffineAnimCmd * const gDummySpriteAffineAnimTable[];
+const union AnimCmd *const gDummySpriteAnimTable[];
+const union AffineAnimCmd *const gDummySpriteAffineAnimTable[];
 const struct SpriteTemplate gDummySpriteTemplate;
 
 static const u8 sCenterToCornerVecTable[3][4][2] =
@@ -156,11 +154,11 @@ const struct OamData gDummyOamData = DUMMY_OAM_DATA;
 
 static const union AnimCmd sDummyAnim = { ANIM_END };
 
-const union AnimCmd * const gDummySpriteAnimTable[] = { &sDummyAnim };
+const union AnimCmd *const gDummySpriteAnimTable[] = { &sDummyAnim };
 
 static const union AffineAnimCmd sDummyAffineAnim = { AFFINE_ANIM_END };
 
-const union AffineAnimCmd * const gDummySpriteAffineAnimTable[] = { &sDummyAffineAnim };
+const union AffineAnimCmd *const gDummySpriteAffineAnimTable[] = { &sDummyAffineAnim };
 
 const struct SpriteTemplate gDummySpriteTemplate =
 {
@@ -1048,9 +1046,13 @@ void ContinueAffineAnim(struct Sprite *sprite)
         u8 matrixNum = GetSpriteMatrixNum(sprite);
 
         if (sAffineAnimStates[matrixNum].delayCounter)
+        {
             AffineAnimDelay(matrixNum, sprite);
+        }
         else if (sprite->affineAnimPaused)
+        {
             return;
+        }
         else
         {
             s16 type;
@@ -1565,9 +1567,9 @@ void FreeAllSpritePalettes(void)
         sSpritePaletteTags[i] = TAG_NONE;
 }
 
-u8 LoadSpritePalette(const struct SpritePalette *palette)
+u32 LoadSpritePalette(const struct SpritePalette *palette)
 {
-    u8 index = IndexOfSpritePaletteTag(palette->tag);
+    u32 index = IndexOfSpritePaletteTag(palette->tag);
 
     if (index != 0xFF)
         return index;
@@ -1599,9 +1601,9 @@ void DoLoadSpritePalette(const u16 *src, u16 paletteOffset)
     LoadPalette(src, OBJ_PLTT_OFFSET + paletteOffset, PLTT_SIZE_4BPP);
 }
 
-u8 AllocSpritePalette(u16 tag)
+u32 AllocSpritePalette(u16 tag)
 {
-    u8 index = IndexOfSpritePaletteTag(TAG_NONE);
+    u32 index = IndexOfSpritePaletteTag(TAG_NONE);
     if (index == 0xFF)
     {
         return 0xFF;
@@ -1613,7 +1615,7 @@ u8 AllocSpritePalette(u16 tag)
     }
 }
 
-u8 IndexOfSpritePaletteTag(u16 tag)
+u32 IndexOfSpritePaletteTag(u16 tag)
 {
     u32 i;
     for (i = gReservedSpritePaletteCount; i < 16; i++)
