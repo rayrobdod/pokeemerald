@@ -61,7 +61,6 @@ static void HorizontalFolds_BuildTileset(u16 *tileset) {
 static bool8 HorizontalFolds_Init(struct Task *task)
 {
     u16 *tilemap, *tileset;
-    int tile_i, y, short_i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
