@@ -278,7 +278,7 @@ enum {
 };
 
 static const u32 sMenuTechniqueManual_Gfx[] = INCBIN_U32("build/graphics/technique_manual/background.4bpp.lz");
-static const u32 sMenuTechniqueManual_Pal[] = INCBIN_U32("build/graphics/technique_manual/background.gbapal.lz");
+static const u32 sMenuTechniqueManual_Pal[] = INCBIN_U32("build/graphics/technique_manual/background.gbapal");
 static const u32 sMenuTechniqueManual_Tilemap[] = INCBIN_U32("build/graphics/technique_manual/background.tilemap.lz");
 
 static const u16 sCheckmarkTechniqueManual_Gfx[] = INCBIN_U16("graphics/technique_manual/checkmark.4bpp");
@@ -521,7 +521,7 @@ static bool8 InitTechniqueManual(void)
         }
         break;
     case 8:
-        LoadCompressedPalette(sMenuTechniqueManual_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
+        LoadPalette(sMenuTechniqueManual_Pal, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 9:
