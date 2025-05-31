@@ -155,6 +155,11 @@ static u16 HueInvert(u16 color)
     {
         hue = ((256 * (g - b)) / delta) + (4 * 256);
     }
+    else
+    {
+        // should be unreachable
+        hue = 0;
+    }
     saturation = (0 == brightness ? 0 : 31 * delta / brightness);
 
     // hue shift
