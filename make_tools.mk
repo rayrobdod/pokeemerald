@@ -5,7 +5,9 @@ MAKEFLAGS += --no-print-directory
 
 # Inclusive list. If you don't want a tool to be built, don't add it here.
 TOOLS_DIR := tools
-TOOL_NAMES := aif2pcm bin2c gbafix gbagfx jsonproc justiceslash mapjson mid2agb preproc ramscrgen rsfont scaninc
+TOOL_NAMES := aif2pcm bin2c gbafix gbagfx jsonproc mapjson mid2agb preproc ramscrgen rsfont scaninc
+
+TOOL_NAMES += justiceslash
 
 TOOLDIRS := $(TOOL_NAMES:%=$(TOOLS_DIR)/%)
 
