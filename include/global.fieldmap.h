@@ -39,7 +39,8 @@ struct Tileset
 {
     /*0x00*/ u8 isCompressed:1;
     /*0x00*/ u8 swapPalettes:7; // Bitmask determining whether palette has an alternate, night-time palette
-    /*0x01*/ bool8 isSecondary;
+    /*0x01*/ bool8 isSecondary : 1;
+    /*0x01*/ bool8 isDecorationTiles : 7;
     /*0x02*/ u8 lightPalettes; // Bitmask determining whether a palette should be time-blended as a light
     /*0x03*/ u8 customLightColor; // Bitmask determining which light palettes have custom light colors (color 15)
     /*0x04*/ const u32 *tiles;

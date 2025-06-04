@@ -62,6 +62,7 @@ bool8 MetatileBehavior_IsSecretBaseDecorationBase(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBasePoster(u8 metatileBehavior);
 bool8 MetatileBehavior_IsNormal(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseNorthWall(u8 metatileBehavior);
+bool8 MetatileBehavior_CanBeBehindDecoration(u8 metatileBehavior);
 bool8 MetatileBehavior_HoldsSmallDecoration(u8 metatileBehavior);
 bool8 MetatileBehavior_HoldsLargeDecoration(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseHole(u8 metatileBehavior);
