@@ -17,6 +17,8 @@
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
+#include "decoration.h"
+#include "decoration_inventory.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -58,6 +60,7 @@
 #include "constants/battle_ai.h"
 #include "constants/battle_frontier.h"
 #include "constants/coins.h"
+#include "constants/decorations.h"
 #include "constants/expansion.h"
 #include "constants/flags.h"
 #include "constants/items.h"
@@ -246,6 +249,7 @@ enum GiveDebugMenu
     DEBUG_GIVE_MENU_ITEM_ITEM_X,
     DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE,
     DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX,
+    DEBUG_GIVE_MENU_ITEM_DECOR_X,
     DEBUG_GIVE_MENU_ITEM_MAX_MONEY,
     DEBUG_GIVE_MENU_ITEM_MAX_COINS,
     DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS,
@@ -479,6 +483,8 @@ static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId);
 static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId);
 static void DebugAction_Give_Pokemon_Move(u8 taskId);
+static void DebugAction_Give_Decor(u8 taskId);
+static void DebugAction_Give_Decor_SelectId(u8 taskId);
 static void DebugAction_Give_MaxMoney(u8 taskId);
 static void DebugAction_Give_MaxCoins(u8 taskId);
 static void DebugAction_Give_MaxBattlePoints(u8 taskId);
@@ -802,6 +808,7 @@ static const struct ListMenuItem sDebugMenu_Items_Give[] =
     [DEBUG_GIVE_MENU_ITEM_ITEM_X]            = {COMPOUND_STRING("Give item XYZ…{CLEAR_TO 110}{RIGHT_ARROW}"),    DEBUG_GIVE_MENU_ITEM_ITEM_X},
     [DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE]    = {COMPOUND_STRING("Pokémon (Basic){CLEAR_TO 110}{RIGHT_ARROW}"),   DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE},
     [DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX]   = {COMPOUND_STRING("Pokémon (Complex){CLEAR_TO 110}{RIGHT_ARROW}"), DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX},
+    [DEBUG_GIVE_MENU_ITEM_DECOR_X]           = {COMPOUND_STRING("Give decor XYZ…{CLEAR_TO 110}{RIGHT_ARROW}"),   DEBUG_GIVE_MENU_ITEM_DECOR_X},
     [DEBUG_GIVE_MENU_ITEM_MAX_MONEY]         = {COMPOUND_STRING("Max Money"),                                    DEBUG_GIVE_MENU_ITEM_MAX_MONEY},
     [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = {COMPOUND_STRING("Max Coins"),                                    DEBUG_GIVE_MENU_ITEM_MAX_COINS},
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = {COMPOUND_STRING("Max Battle Points"),                            DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS},
@@ -937,6 +944,7 @@ static void (*const sDebugMenu_Actions_Give[])(u8) =
     [DEBUG_GIVE_MENU_ITEM_ITEM_X]            = DebugAction_Give_Item,
     [DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE]    = DebugAction_Give_PokemonSimple,
     [DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX]   = DebugAction_Give_PokemonComplex,
+    [DEBUG_GIVE_MENU_ITEM_DECOR_X]           = DebugAction_Give_Decor,
     [DEBUG_GIVE_MENU_ITEM_MAX_MONEY]         = DebugAction_Give_MaxMoney,
     [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = DebugAction_Give_MaxCoins,
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = DebugAction_Give_MaxBattlePoints,
@@ -3796,6 +3804,88 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
 #undef tIsComplex
 #undef tSpriteId
 #undef tIterator
+
+//Decor
+#define tSpriteId  data[6]
+
+static void Debug_Display_DecorInfo(u32 itemId, u32 digit, u8 windowId)
+{
+    StringCopy(gStringVar2, gText_DigitIndicator[digit]);
+    u8* end = StringCopy(gStringVar1, gDecorations[itemId].name);
+    WrapFontIdToFit(gStringVar1, end, DEBUG_MENU_FONT, WindowWidthPx(windowId));
+    StringCopyPadded(gStringVar1, gStringVar1, CHAR_SPACE, 15);
+    ConvertIntToDecimalStringN(gStringVar3, itemId, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
+    StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("Decor ID: {STR_VAR_3}\n{STR_VAR_1}{CLEAR_TO 90}\n\n{STR_VAR_2}"));
+    AddTextPrinterParameterized(windowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
+}
+
+static void DebugAction_Give_Decor(u8 taskId)
+{
+    u8 windowId;
+
+    ClearStdWindowAndFrame(gTasks[taskId].tWindowId, TRUE);
+    RemoveWindow(gTasks[taskId].tWindowId);
+
+    HideMapNamePopUpWindow();
+    LoadMessageBoxAndBorderGfx();
+    windowId = AddWindow(&sDebugMenuWindowTemplateExtra);
+    DrawStdWindowFrame(windowId, FALSE);
+
+    CopyWindowToVram(windowId, COPYWIN_FULL);
+
+    // Display initial item
+    Debug_Display_DecorInfo(1, 0, windowId);
+
+    gTasks[taskId].func = DebugAction_Give_Decor_SelectId;
+    gTasks[taskId].tSubWindowId = windowId;
+    gTasks[taskId].tInput = 1;
+    gTasks[taskId].tDigit = 0;
+    gTasks[taskId].tSpriteId = AddDecorationIconObject(gTasks[taskId].tInput, 0, 0, 0, ITEM_TAG, ITEM_TAG);
+    gSprites[gTasks[taskId].tSpriteId].x2 = DEBUG_NUMBER_ICON_X+10;
+    gSprites[gTasks[taskId].tSpriteId].y2 = DEBUG_NUMBER_ICON_Y+10;
+    gSprites[gTasks[taskId].tSpriteId].oam.priority = 0;
+}
+
+static void DestroyDecorIcon(u8 taskId)
+{
+    FreeSpriteTilesByTag(ITEM_TAG);
+    FreeSpritePaletteByTag(ITEM_TAG);
+    FreeSpriteOamMatrix(&gSprites[gTasks[taskId].tSpriteId]);
+    DestroySprite(&gSprites[gTasks[taskId].tSpriteId]);
+}
+
+static void DebugAction_Give_Decor_SelectId(u8 taskId)
+{
+    if (JOY_NEW(DPAD_ANY))
+    {
+        PlaySE(SE_SELECT);
+        Debug_HandleInput_Numeric(taskId, 1, NUM_DECORATIONS, DEBUG_NUMBER_DIGITS_ITEMS);
+        Debug_Display_DecorInfo(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        DestroyDecorIcon(taskId);
+        gTasks[taskId].tSpriteId = AddDecorationIconObject(gTasks[taskId].tInput, 0, 0, 0, ITEM_TAG, ITEM_TAG);
+        gSprites[gTasks[taskId].tSpriteId].x2 = DEBUG_NUMBER_ICON_X+10;
+        gSprites[gTasks[taskId].tSpriteId].y2 = DEBUG_NUMBER_ICON_Y+10;
+        gSprites[gTasks[taskId].tSpriteId].oam.priority = 0;
+    }
+
+    if (JOY_NEW(A_BUTTON))
+    {
+        DestroyItemIcon(taskId);
+
+        PlaySE(MUS_LEVEL_UP);
+        DecorationAdd(gTasks[taskId].tInput);
+        DebugAction_DestroyExtraWindow(taskId);
+    }
+    else if (JOY_NEW(B_BUTTON))
+    {
+        DestroyDecorIcon(taskId);
+
+        PlaySE(SE_SELECT);
+        DebugAction_DestroyExtraWindow(taskId);
+    }
+}
+
+#undef tSpriteId
 
 static void DebugAction_Give_MaxMoney(u8 taskId)
 {
