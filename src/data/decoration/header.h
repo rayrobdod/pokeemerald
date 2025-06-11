@@ -1645,4 +1645,18 @@ const struct Decoration gDecorations[] =
         .metatiles = DecorMetatiles_COLORFUL_PLANT,
         .attributes = DecorAttributes_Plant_2x2,
     },
+
+    [DECOR_DADS_SCROLL] =
+    {
+        .id = DECOR_DADS_SCROLL,
+        .name = _("DAD'S SCROLL"),
+        .permission = DECORPERM_NA_WALL,
+        .shape = DECORSHAPE_2x1,
+        .category = DECORCAT_POSTER,
+        .price = 1500,
+        .description = DecorDesc_DADS_SCROLL,
+        .tiles = DecorTiles_DADS_SCROLL,
+        .metatiles = DecorMetatiles_POSTER_2x1_PAL1,
+        .attributes = DecorAttributes_Poster_2x1,
+    },
 };

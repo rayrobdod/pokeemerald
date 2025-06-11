@@ -582,3 +582,8 @@ const u8 DecorDesc_SMALL_BOOKSHELF[] = _(
 
 const u8 DecorDesc_BIG_BOOKSHELF[] = _(
     "A big bookshelf.");
+
+const u8 DecorDesc_DADS_SCROLL[] = _(
+    "The same as the\n"
+        "scroll hanging in\n"
+        "the Petalburg Gym.");

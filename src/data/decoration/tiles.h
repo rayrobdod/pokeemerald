@@ -488,6 +488,7 @@ const u32 DecorTiles_LONG_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorati
 const u32 DecorTiles_SEA_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sea_poster.4bpp");
 const u32 DecorTiles_SKY_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sky_poster.4bpp");
 const u32 DecorTiles_KISS_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/kiss_poster.4bpp");
+const u32 DecorTiles_DADS_SCROLL[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/dads_scroll.4bpp");
 
 const u16 DecorMetatiles_POSTER_2x1_PAL1[] = {
     DECORMETATILE_COVERED(0x1000, 0x1001, 0x1004, 0x1005),
