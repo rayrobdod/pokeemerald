@@ -21,6 +21,7 @@ void ShatterSecretBaseBreakableDoor(s16 metatileId, s16 x, s16 y);
 void PlaySecretBaseMusicNoteMatSound(s16 metatileId);
 void DoSecretBaseGlitterMatSparkle(void);
 bool8 FldEff_SandPillar(void);
+void InteractWithCandlestick(void);
 void InteractWithShieldOrTVDecoration(void);
 bool8 IsLargeBreakableDecoration(u16 metatileId, bool8 checkBase);
 void FldEffPoison_Start(void);

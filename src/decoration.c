@@ -1203,6 +1203,8 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
             decStates = 4;
         if (MetatileBehavior_IsSecretBaseBreakableDoor(behavior))
             decStates = 2;
+        if (MetatileBehavior_IsSecretBaseCandlestick(behavior))
+            decStates = 2;
         if (MetatileBehavior_IsSecretBaseSandOrnament(behavior))
             decStates = 3;
     }

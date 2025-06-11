@@ -165,3 +165,10 @@ const struct DecorMetatileAttributes DecorAttributes_Poster_2x1[] = {
     {.behavior = MB_SECRET_BASE_POSTER, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
     {.behavior = MB_SECRET_BASE_POSTER, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
+
+const struct DecorMetatileAttributes DecorAttributes_Candlestick[] = {
+    [DECORMETATILE_Candlestick_TopOff]  = {.behavior = MB_SECRET_BASE_DECORATION,  .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    [DECORMETATILE_Candlestick_BaseOff] = {.behavior = MB_SECRET_BASE_CANDLESTICK, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    [DECORMETATILE_Candlestick_TopOn]   = {.behavior = MB_SECRET_BASE_DECORATION,  .layerType = METATILE_LAYER_TYPE_SPLIT, .elevation = 3},
+    [DECORMETATILE_Candlestick_BaseOn]  = {.behavior = MB_SECRET_BASE_CANDLESTICK, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+};

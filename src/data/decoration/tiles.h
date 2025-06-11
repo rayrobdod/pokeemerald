@@ -503,5 +503,14 @@ const u16 DecorMetatiles_POSTER_2x1_PAL3[] = {
 const u32 DecorTiles_SMALL_BOOKSHELF[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/small_bookshelf.4bpp");
 const u32 DecorTiles_BIG_BOOKSHELF[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/big_bookshelf.4bpp");
 
+const u16 DecorMetatiles_CANDLESTICK[] = {
+    DECORMETATILE_SPLIT(0x1000, 0x1001, 0x1004, 0x1005),
+    DECORMETATILE_COVERED(0x1008, 0x1009, 0x100C, 0x100D),
+    DECORMETATILE_SPLIT(0x1002, 0x1003, 0x1006, 0x1007),
+    DECORMETATILE_COVERED(0x100A, 0x100B, 0x100E, 0x100F),
+};
+
+const u32 DecorTiles_CANDLESTICK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/candlestick.4bpp");
+
 #undef DECORMETATILE_COVERED
 #undef DECORMETATILE_SPLIT

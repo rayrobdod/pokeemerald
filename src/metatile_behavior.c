@@ -705,6 +705,14 @@ bool8 MetatileBehavior_IsSecretBaseSandOrnament(u8 metatileBehavior)
         return FALSE;
 }
 
+bool8 MetatileBehavior_IsSecretBaseCandlestick(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SECRET_BASE_CANDLESTICK)
+        return TRUE;
+    else
+        return FALSE;
+}
+
 bool8 MetatileBehavior_IsSecretBaseShieldOrToyTV(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_SECRET_BASE_TV_SHIELD)

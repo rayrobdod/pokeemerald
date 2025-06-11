@@ -7,6 +7,9 @@ const u32 gDecorIconPalette_BigBookshelf[] = INCBIN_U32("graphics/decorations/bi
 const u32 gDecorIcon_DadsScroll[] = INCBIN_U32("graphics/decorations/dads_scroll.4bpp.lz");
 const u32 gDecorIconPalette_DadsScroll[] = INCBIN_U32("graphics/decorations/dads_scroll.gbapal.lz");
 
+const u32 gDecorIcon_Candlestick[] = INCBIN_U32("graphics/decorations/candlestick.4bpp.lz");
+const u32 gDecorIconPalette_Candlestick[] = INCBIN_U32("graphics/decorations/candlestick.gbapal.lz");
+
 const u32 *const gDecorIconTable[][2] =
 {
     [DECOR_NONE]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
@@ -134,4 +137,5 @@ const u32 *const gDecorIconTable[][2] =
     [DECOR_SMALL_BOOKSHELF] = {gDecorIcon_SmallBookshelf, gDecorIconPalette_SmallBookshelf},
     [DECOR_BIG_BOOKSHELF]   = {gDecorIcon_BigBookshelf, gDecorIconPalette_BigBookshelf},
     [DECOR_DADS_SCROLL]     = {gDecorIcon_DadsScroll, gDecorIconPalette_DadsScroll},
+    [DECOR_CANDLESTICK]     = {gDecorIcon_Candlestick, gDecorIconPalette_Candlestick},
 };

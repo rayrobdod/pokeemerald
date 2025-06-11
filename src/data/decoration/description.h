@@ -587,3 +587,8 @@ const u8 DecorDesc_DADS_SCROLL[] = _(
     "The same as the\n"
         "scroll hanging in\n"
         "the Petalburg Gym.");
+
+const u8 DecorDesc_CANDLESTICK[] = _(
+    "A LITWICK lamp.\n"
+        "The light turns on\n"
+        "when touched.");

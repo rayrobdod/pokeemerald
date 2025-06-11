@@ -418,6 +418,11 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
             return SecretBase_EventScript_RecordMixingPC;
         if (MetatileBehavior_IsSecretBaseSandOrnament(metatileBehavior) == TRUE)
             return SecretBase_EventScript_SandOrnament;
+        if (MetatileBehavior_IsSecretBaseCandlestick(metatileBehavior))
+        {
+            InteractWithCandlestick();
+            return NULL;
+        }
         if (MetatileBehavior_IsSecretBaseShieldOrToyTV(metatileBehavior) == TRUE)
             return SecretBase_EventScript_ShieldOrToyTV;
         if (MetatileBehavior_IsSecretBaseDecorationBase(metatileBehavior) == TRUE)

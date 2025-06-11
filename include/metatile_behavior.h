@@ -71,6 +71,7 @@ bool8 MetatileBehavior_IsSecretBaseBreakableDoor(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseSoundMat(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseGlitterMat(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseSandOrnament(u8 metatileBehavior);
+bool8 MetatileBehavior_IsSecretBaseCandlestick(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSecretBaseShieldOrToyTV(u8 metatileBehavior);
 bool8 MetatileBehavior_IsPlayerRoomPCOn(u8 metatileBehavior);
 bool8 MetatileBehavior_HasRipples(u8 metatileBehavior);

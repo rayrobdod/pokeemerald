@@ -1123,6 +1123,34 @@ static void SpriteCB_SandPillar_End(struct Sprite *sprite)
     ScriptContext_Enable();
 }
 
+void InteractWithCandlestick(void)
+{
+    s32 metatileIdBase, metatileIdTop;
+    s16 x, y;
+
+    PlaySE(SE_SWITCH);
+    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+
+    metatileIdBase = MapGridGetMetatileIdAt(x, y);
+    metatileIdTop  = MapGridGetMetatileIdAt(x, y - 1);
+
+    if (CurrentSecretBaseMetatileWithinDecor(metatileIdBase) == DECORMETATILE_Candlestick_BaseOff)
+    {
+        metatileIdBase += 2;
+        metatileIdTop  += 2;
+    }
+    else if (CurrentSecretBaseMetatileWithinDecor(metatileIdBase) == DECORMETATILE_Candlestick_BaseOn)
+    {
+        metatileIdBase -= 2;
+        metatileIdTop  -= 2;
+    }
+
+    MapGridSetMetatileIdAt(x, y, metatileIdBase | (MapGridGetCollisionAt(x, y) << MAPGRID_COLLISION_SHIFT));
+    CurrentMapDrawMetatileAt(x, y);
+    MapGridSetMetatileIdAt(x, y - 1, metatileIdTop | (MapGridGetCollisionAt(x, y - 1) << MAPGRID_COLLISION_SHIFT));
+    CurrentMapDrawMetatileAt(x, y - 1);
+}
+
 void InteractWithShieldOrTVDecoration(void)
 {
     s16 x, y;

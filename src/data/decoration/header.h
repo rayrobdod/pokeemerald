@@ -1659,4 +1659,18 @@ const struct Decoration gDecorations[] =
         .metatiles = DecorMetatiles_POSTER_2x1_PAL1,
         .attributes = DecorAttributes_Poster_2x1,
     },
+
+    [DECOR_CANDLESTICK] =
+    {
+        .id = DECOR_CANDLESTICK,
+        .name = _("CANDLESTICK"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 3000,
+        .description = DecorDesc_CANDLESTICK,
+        .tiles = DecorTiles_CANDLESTICK,
+        .metatiles = DecorMetatiles_CANDLESTICK,
+        .attributes = DecorAttributes_Candlestick,
+    },
 };
