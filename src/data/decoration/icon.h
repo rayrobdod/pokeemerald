@@ -1,6 +1,6 @@
-const u32 *const gDecorIconTable[][2] =
+const struct DecorIcon gDecorIconTable[] =
 {
-    [DECOR_NONE]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
+    [DECOR_NONE]            = {gItemIcon_QuestionMark, gDecorIconPalette_QuestionMark},
     [DECOR_SMALL_DESK]      = {NULL, NULL},
     [DECOR_POKEMON_DESK]    = {NULL, NULL},
     [DECOR_HEAVY_DESK]      = {gDecorIcon_HeavyDesk, gDecorIconPalette_HeavyDesk},
