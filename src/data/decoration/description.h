@@ -42,6 +42,11 @@ const u8 DecorDesc_HARD_DESK[] = _(
         "of rocks. Holds\n"
         "many decorations.");
 
+const u8 DecorDesc_ICY_DESK[] = _(
+    "A huge desk that\n"
+        "looks like an\n"
+        "AVALUGG.");
+
 const u8 DecorDesc_SMALL_CHAIR[] = _(
     "A small chair made\n"
         "for one.");

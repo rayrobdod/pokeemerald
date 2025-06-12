@@ -1673,4 +1673,18 @@ const struct Decoration gDecorations[] =
         .metatiles = DecorMetatiles_CANDLESTICK,
         .attributes = DecorAttributes_Candlestick,
     },
+
+    [DECOR_ICY_DESK] =
+    {
+        .id = DECOR_ICY_DESK,
+        .name = _("ICY DESK"),
+        .permission = DECORPERM_SOLID_FLOOR,
+        .shape = DECORSHAPE_3x3,
+        .category = DECORCAT_DESK,
+        .price = 9000,
+        .description = DecorDesc_ICY_DESK,
+        .tiles = DecorTiles_ICY_DESK,
+        .metatiles = DecorMetatiles_ICY_DESK,
+        .attributes = DecorAttributes_Desk_3x3,
+    },
 };
