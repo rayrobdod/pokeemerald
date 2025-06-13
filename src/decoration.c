@@ -101,7 +101,7 @@ struct DecorationPCContext
     u8 isPlayerRoom;
 };
 
-struct DecorItem
+struct DecorIcon
 {
     const u32 *pic;
     const u16 *pal;
