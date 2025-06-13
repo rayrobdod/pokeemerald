@@ -1,5 +1,6 @@
 const u32 gItemIcon_QuestionMark[] = INCBIN_U32("graphics/items/icons/question_mark.4bpp.lz");
 const u32 gItemIconPalette_QuestionMark[] = INCBIN_U32("graphics/items/icon_palettes/question_mark.gbapal.lz");
+const u16 gDecorIconPalette_QuestionMark[] = INCBIN_U16("graphics/items/icon_palettes/question_mark.gbapal");
 
 const u32 gItemIcon_ReturnToFieldArrow[] = INCBIN_U32("graphics/items/icons/return_to_field_arrow.4bpp.lz");
 const u32 gItemIconPalette_ReturnToFieldArrow[] = INCBIN_U32("graphics/items/icon_palettes/return_to_field_arrow.gbapal.lz");
