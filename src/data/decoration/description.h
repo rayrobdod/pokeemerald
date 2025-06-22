@@ -602,3 +602,8 @@ const u8 DecorDesc_BONSAI[] = _(
     "An miniature tree\n"
         "shaped by a master\n"
         "in a small pot.");
+
+const u8 DecorDesc_REGION_MAP[] = _(
+    "A large poster with\n"
+        "a print depicting\n"
+        "the region.");

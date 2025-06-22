@@ -1701,4 +1701,18 @@ const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
         .metatiles = DecorMetatiles_BONSAI,
         .attributes = DecorAttributes_Bonsai,
     },
+
+    [DECOR_REGION_MAP] =
+    {
+        .id = DECOR_REGION_MAP,
+        .name = _("REGION MAP"),
+        .permission = DECORPERM_NA_WALL,
+        .shape = DECORSHAPE_2x1,
+        .category = DECORCAT_POSTER,
+        .price = 2000,
+        .description = DecorDesc_REGION_MAP,
+        .tiles = DecorTiles_REGION_MAP,
+        .metatiles = DecorMetatiles_POSTER_2x1_PAL5,
+        .attributes = DecorAttributes_RegionMap,
+    },
 };

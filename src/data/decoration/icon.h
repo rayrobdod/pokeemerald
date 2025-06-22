@@ -128,4 +128,5 @@ const struct DecorIcon gDecorIconTable[NUM_DECORATIONS_PLUS_ONE] =
     [DECOR_CANDLESTICK]     = {gDecorIcon_Candlestick, gDecorIconPalette_Candlestick},
     [DECOR_ICY_DESK]        = {gDecorIcon_IcyDesk, gDecorIconPalette_IcyDesk},
     [DECOR_BONSAI]          = {NULL, NULL},
+    [DECOR_REGION_MAP]      = {NULL, NULL},
 };

@@ -176,3 +176,8 @@ const struct DecorMetatileAttributes DecorAttributes_Candlestick[] = {
 const struct DecorMetatileAttributes DecorAttributes_Bonsai[] = {
     {.behavior = MB_SECRET_BASE_DECORATION_BASE, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
 };
+
+const struct DecorMetatileAttributes DecorAttributes_RegionMap[] = {
+    {.behavior = MB_REGION_MAP, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+    {.behavior = MB_REGION_MAP, .layerType = METATILE_LAYER_TYPE_COVERED, .elevation = 3},
+};

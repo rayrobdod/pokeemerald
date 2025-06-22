@@ -489,6 +489,7 @@ const u32 DecorTiles_SEA_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decoratio
 const u32 DecorTiles_SKY_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/sky_poster.4bpp");
 const u32 DecorTiles_KISS_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/kiss_poster.4bpp");
 const u32 DecorTiles_DADS_SCROLL[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/dads_scroll.4bpp");
+const u32 DecorTiles_REGION_MAP[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/region_map.4bpp");
 
 const u16 DecorMetatiles_POSTER_2x1_PAL1[] = {
     DECORMETATILE_COVERED(0x1000, 0x1001, 0x1004, 0x1005),
@@ -498,6 +499,11 @@ const u16 DecorMetatiles_POSTER_2x1_PAL1[] = {
 const u16 DecorMetatiles_POSTER_2x1_PAL3[] = {
     DECORMETATILE_COVERED(0x3000, 0x3001, 0x3004, 0x3005),
     DECORMETATILE_COVERED(0x3002, 0x3003, 0x3006, 0x3007),
+};
+
+const u16 DecorMetatiles_POSTER_2x1_PAL5[] = {
+    DECORMETATILE_COVERED(0x5000, 0x5001, 0x5004, 0x5005),
+    DECORMETATILE_COVERED(0x5002, 0x5003, 0x5006, 0x5007),
 };
 
 const u32 DecorTiles_SMALL_BOOKSHELF[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/small_bookshelf.4bpp");
