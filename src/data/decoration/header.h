@@ -1,4 +1,4 @@
-const struct Decoration gDecorations[] =
+const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
 {
     [DECOR_NONE] =
     {
@@ -1686,5 +1686,19 @@ const struct Decoration gDecorations[] =
         .tiles = DecorTiles_ICY_DESK,
         .metatiles = DecorMetatiles_ICY_DESK,
         .attributes = DecorAttributes_Desk_3x3,
+    },
+
+    [DECOR_BONSAI] =
+    {
+        .id = DECOR_BONSAI,
+        .name = _("BONSAI"),
+        .permission = DECORPERM_SOLID_FLOOR,
+        .shape = DECORSHAPE_1x1,
+        .category = DECORCAT_PLANT,
+        .price = 1500,
+        .description = DecorDesc_BONSAI,
+        .tiles = DecorTiles_BONSAI,
+        .metatiles = DecorMetatiles_BONSAI,
+        .attributes = DecorAttributes_Bonsai,
     },
 };

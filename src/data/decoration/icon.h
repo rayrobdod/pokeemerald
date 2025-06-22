@@ -1,4 +1,4 @@
-const struct DecorIcon gDecorIconTable[] =
+const struct DecorIcon gDecorIconTable[NUM_DECORATIONS_PLUS_ONE] =
 {
     [DECOR_NONE]            = {gItemIcon_QuestionMark, gDecorIconPalette_QuestionMark},
     [DECOR_SMALL_DESK]      = {NULL, NULL},
@@ -127,4 +127,5 @@ const struct DecorIcon gDecorIconTable[] =
     [DECOR_DADS_SCROLL]     = {gDecorIcon_DadsScroll, gDecorIconPalette_DadsScroll},
     [DECOR_CANDLESTICK]     = {gDecorIcon_Candlestick, gDecorIconPalette_Candlestick},
     [DECOR_ICY_DESK]        = {gDecorIcon_IcyDesk, gDecorIconPalette_IcyDesk},
+    [DECOR_BONSAI]          = {NULL, NULL},
 };

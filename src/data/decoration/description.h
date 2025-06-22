@@ -597,3 +597,8 @@ const u8 DecorDesc_CANDLESTICK[] = _(
     "A LITWICK lamp.\n"
         "The light turns on\n"
         "when touched.");
+
+const u8 DecorDesc_BONSAI[] = _(
+    "An miniature tree\n"
+        "shaped by a master\n"
+        "in a small pot.");

@@ -526,5 +526,11 @@ const u16 DecorMetatiles_ICY_DESK[] = {
 
 const u32 DecorTiles_ICY_DESK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/icy_desk.4bpp");
 
+
+const u32 DecorTiles_BONSAI[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/bonsai.4bpp");
+const u16 DecorMetatiles_BONSAI[] = {
+    DECORMETATILE_COVERED(0x5000, 0x5001, 0x5002, 0x5003),
+};
+
 #undef DECORMETATILE_COVERED
 #undef DECORMETATILE_SPLIT
