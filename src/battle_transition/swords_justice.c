@@ -14,12 +14,12 @@ static bool8 SwordsOfJustice_SetSlashGfx(struct Task *task);
 static bool8 SwordsOfJustice_AnimateSlash(struct Task *task);
 static bool8 SwordsOfJustice_End(struct Task *);
 
-static const u32 sSwordsOfJustice_Slash0_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_0.8bpp.lz");
-static const u32 sSwordsOfJustice_Slash1_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.8bpp.lz");
-static const u32 sSwordsOfJustice_Slash2_Tileset[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.8bpp.lz");
-static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_0.tilemap.rl");
-static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_1.tilemap.rl");
-static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("graphics/battle_transitions/swords_justice_slash_page_2.tilemap.rl");
+static const u32 sSwordsOfJustice_Slash0_Tileset[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_0.8bpp.lz");
+static const u32 sSwordsOfJustice_Slash1_Tileset[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_1.8bpp.lz");
+static const u32 sSwordsOfJustice_Slash2_Tileset[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_2.8bpp.lz");
+static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_0.bin.rl");
+static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_1.bin.rl");
+static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("build/graphics/battle_transitions/swords_justice_slash_page_2.bin.rl");
 
 static const struct { const u32* tileset; const u32* tilemap; } sSwordsOfJustice_Slash_Tiles[] = {
     [0] = {
@@ -44,23 +44,23 @@ static const struct { const u32* tileset; const u32* tilemap; } sSwordsOfJustice
 #define SLASHFRAMES_SUFFIX (3)
 
 static const u16 sSwordsOfJustice_Slash_Increasing_Palettes[SLASHFRAMES_INCREASING][SLASH_PALETTE_SIZE] = {
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_0.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_1.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_2.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_3.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_4.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_5.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_6.gbapal")
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_0.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_1.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_2.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_3.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_4.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_5.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_6.gbapal")
 };
-static const u16 sSwordsOfJustice_Slash_Peak_Palette[SLASH_PALETTE_SIZE] = INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_7.gbapal");
+static const u16 sSwordsOfJustice_Slash_Peak_Palette[SLASH_PALETTE_SIZE] = INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_7.gbapal");
 static const u16 sSwordsOfJustice_Slash_Decreasing_Palettes[SLASHFRAMES_DECREASING][SLASH_PALETTE_SIZE] = {
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_8.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_9.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_10.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_11.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_12.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_13.gbapal"),
-    INCBIN_U16("graphics/battle_transitions/swords_justice_slash_anim_14.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_8.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_9.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_10.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_11.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_12.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_13.gbapal"),
+    INCBIN_U16("build/graphics/battle_transitions/swords_justice_slash_anim_14.gbapal"),
 };
 
 #define tSlashFrame data[2]

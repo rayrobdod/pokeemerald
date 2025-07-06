@@ -27,6 +27,7 @@ TITLESCREENGFXDIR := graphics/title_screen
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
 
+BUILDBATTRANSGFXDIR := build/$(BATTRANSGFXDIR)
 
 
 ### Castform ###
@@ -481,20 +482,21 @@ graphics/birch_speech/unused_beauty.4bpp: %.4bpp: %.png
 
 ### Swords of Justice Battle Transition ###
 
-AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap
-AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap
-AUTO_GEN_TARGETS += $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap
+$(shell mkdir -p $(BUILDBATTRANSGFXDIR))
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin
 
-$(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap &: tools/justiceslash/justiceslash
-	$^ tiles 0 $(BATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_0.tilemap
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin &: tools/justiceslash/justiceslash
+	$^ tiles 0 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin
 
-$(BATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap &: tools/justiceslash/justiceslash
-	$^ tiles 1 $(BATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_1.tilemap
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin &: tools/justiceslash/justiceslash
+	$^ tiles 1 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin
 
-$(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap &: tools/justiceslash/justiceslash
-	$^ tiles 2 $(BATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BATTRANSGFXDIR)/swords_justice_slash_page_2.tilemap
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin &: tools/justiceslash/justiceslash
+	$^ tiles 2 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin
 
-$(patsubst %,$(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal,0 1 2 3 4 5 6 7 8 9 10 11 12 13 14): $(BATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
+$(patsubst %,$(BUILDBATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal,0 1 2 3 4 5 6 7 8 9 10 11 12 13 14): $(BUILDBATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
 	$^ palette $* $@
 
 
