@@ -129,4 +129,9 @@ const struct DecorIcon gDecorIconTable[NUM_DECORATIONS_PLUS_ONE] =
     [DECOR_ICY_DESK]        = {gDecorIcon_IcyDesk, gDecorIconPalette_IcyDesk},
     [DECOR_BONSAI]          = {NULL, NULL},
     [DECOR_REGION_MAP]      = {NULL, NULL},
+    [DECOR_CUPBOARD]        = {gDecorIcon_Cupboard, gDecorIconPalette_Cupboard},
+    [DECOR_WOOD_DRESSER]    = {gDecorIcon_WoodDresser, gDecorIconPalette_WoodDresser},
+    [DECOR_PINK_DRESSER]    = {gDecorIcon_PinkDresser, gDecorIconPalette_PinkDresser},
+    [DECOR_REFRIGERATOR]    = {gDecorIcon_Refrigerator, gDecorIconPalette_Refrigerator},
+    [DECOR_PRETTY_SINK]     = {gDecorIcon_PrettySink, gDecorIconPalette_PrettySink},
 };

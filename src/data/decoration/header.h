@@ -1715,4 +1715,74 @@ const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
         .metatiles = DecorMetatiles_POSTER_2x1_PAL5,
         .attributes = DecorAttributes_RegionMap,
     },
+
+    [DECOR_CUPBOARD] =
+    {
+        .id = DECOR_CUPBOARD,
+        .name = _("CUPBOARD"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_2x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 5000,
+        .description = DecorDesc_CUPBOARD,
+        .tiles = DecorTiles_CUPBOARD,
+        .metatiles = DecorMetatiles_CUPBOARD,
+        .attributes = DecorAttributes_Plant_2x2,
+    },
+
+    [DECOR_WOOD_DRESSER] =
+    {
+        .id = DECOR_WOOD_DRESSER,
+        .name = _("WOOD DRESSER"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_2x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 5000,
+        .description = DecorDesc_WOOD_DRESSER,
+        .tiles = DecorTiles_WOOD_DRESSER,
+        .metatiles = DecorMetatiles_COLORFUL_PLANT,
+        .attributes = DecorAttributes_Plant_2x2,
+    },
+
+    [DECOR_PINK_DRESSER] =
+    {
+        .id = DECOR_PINK_DRESSER,
+        .name = _("PINK DRESSER"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_2x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 5000,
+        .description = DecorDesc_PINK_DRESSER,
+        .tiles = DecorTiles_PINK_DRESSER,
+        .metatiles = DecorMetatiles_PINK_DRESSER,
+        .attributes = DecorAttributes_Plant_2x2,
+    },
+
+    [DECOR_REFRIGERATOR] =
+    {
+        .id = DECOR_REFRIGERATOR,
+        .name = _("REFRIGERATOR"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_ORNAMENT,
+        .price = 3000,
+        .description = DecorDesc_REFRIGERATOR,
+        .tiles = DecorTiles_REFRIGERATOR,
+        .metatiles = DecorMetatiles_REFRIGERATOR,
+        .attributes = DecorAttributes_Plant_1x2,
+    },
+
+    [DECOR_PRETTY_SINK] =
+    {
+        .id = DECOR_PRETTY_SINK,
+        .name = _("PRETTY SINK"),
+        .permission = DECORPERM_SOLID_FLOOR,
+        .shape = DECORSHAPE_2x1,
+        .category = DECORCAT_ORNAMENT,
+        .price = 3000,
+        .description = DecorDesc_PRETTY_SINK,
+        .tiles = DecorTiles_PRETTY_SINK,
+        .metatiles = DecorMetatiles_PRETTY_SINK,
+        .attributes = DecorAttributes_PrettySink,
+    },
 };

@@ -538,5 +538,35 @@ const u16 DecorMetatiles_BONSAI[] = {
     DECORMETATILE_COVERED(0x5000, 0x5001, 0x5002, 0x5003),
 };
 
+const u32 DecorTiles_CUPBOARD[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/cupboard.4bpp");
+const u16 DecorMetatiles_CUPBOARD[] = {
+    DECORMETATILE_SPLIT(0x3000, 0x3001, 0x3004, 0x3005),
+    DECORMETATILE_SPLIT(0x3002, 0x3003, 0x3006, 0x3007),
+    DECORMETATILE_COVERED(0x3008, 0x3009, 0x300C, 0x300D),
+    DECORMETATILE_COVERED(0x300A, 0x300B, 0x300E, 0x300F),
+};
+
+const u32 DecorTiles_WOOD_DRESSER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/wood_dresser.4bpp");
+
+const u32 DecorTiles_PINK_DRESSER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pink_dresser.4bpp");
+const u16 DecorMetatiles_PINK_DRESSER[] = {
+    DECORMETATILE_SPLIT(0x2000, 0x2001, 0x2004, 0x2005),
+    DECORMETATILE_SPLIT(0x2002, 0x2003, 0x2006, 0x2007),
+    DECORMETATILE_COVERED(0x2008, 0x2009, 0x200C, 0x200D),
+    DECORMETATILE_COVERED(0x200A, 0x200B, 0x200E, 0x200F),
+};
+
+const u32 DecorTiles_REFRIGERATOR[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/refrigerator.4bpp");
+const u16 DecorMetatiles_REFRIGERATOR[] = {
+    DECORMETATILE_SPLIT(0x4000, 0x4001, 0x4002, 0x4003),
+    DECORMETATILE_COVERED(0x4004, 0x4005, 0x4006, 0x4007),
+};
+
+const u32 DecorTiles_PRETTY_SINK[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pretty_sink.4bpp");
+const u16 DecorMetatiles_PRETTY_SINK[] = {
+    DECORMETATILE_COVERED(0x2000, 0x2001, 0x2004, 0x2005),
+    DECORMETATILE_COVERED(0x2002, 0x2003, 0x2006, 0x2007),
+};
+
 #undef DECORMETATILE_COVERED
 #undef DECORMETATILE_SPLIT

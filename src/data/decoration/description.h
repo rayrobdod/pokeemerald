@@ -607,3 +607,26 @@ const u8 DecorDesc_REGION_MAP[] = _(
     "A large poster with\n"
         "a print depicting\n"
         "the region.");
+
+const u8 DecorDesc_CUPBOARD[] = _(
+    "A fancy cupboard\n"
+        "for storing\n"
+        "kitchenware.");
+
+const u8 DecorDesc_WOOD_DRESSER[] = _(
+    "A elegant dresser\n"
+        "made of wood.");
+
+const u8 DecorDesc_PINK_DRESSER[] = _(
+    "A fashionable\n"
+        "dresser in a pretty\n"
+        "pink color.");
+
+const u8 DecorDesc_REFRIGERATOR[] = _(
+    "A big, white toy\n"
+        "refrigerator. It is\n"
+        "very well made.");
+
+const u8 DecorDesc_PRETTY_SINK[] = _(
+    "A toy sink. It is\n"
+        "very well made.");

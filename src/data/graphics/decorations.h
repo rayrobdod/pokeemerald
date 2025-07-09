@@ -141,3 +141,18 @@ const u16 gDecorIconPalette_Candlestick[] = INCBIN_U16("graphics/decorations/can
 
 const u32 gDecorIcon_IcyDesk[] = INCBIN_U32("graphics/decorations/icy_desk.4bpp.lz");
 const u16 gDecorIconPalette_IcyDesk[] = INCBIN_U16("graphics/decorations/icy_desk.gbapal");
+
+const u32 gDecorIcon_Cupboard[] = INCBIN_U32("graphics/decorations/cupboard.4bpp.lz");
+const u16 gDecorIconPalette_Cupboard[] = INCBIN_U16("graphics/decorations/cupboard.gbapal");
+
+const u32 gDecorIcon_WoodDresser[] = INCBIN_U32("graphics/decorations/wood_dresser.4bpp.lz");
+const u16 gDecorIconPalette_WoodDresser[] = INCBIN_U16("graphics/decorations/wood_dresser.gbapal");
+
+const u32 gDecorIcon_PinkDresser[] = INCBIN_U32("graphics/decorations/pink_dresser.4bpp.lz");
+const u16 gDecorIconPalette_PinkDresser[] = INCBIN_U16("graphics/decorations/pink_dresser.gbapal");
+
+const u32 gDecorIcon_Refrigerator[] = INCBIN_U32("graphics/decorations/refrigerator.4bpp.lz");
+const u16 gDecorIconPalette_Refrigerator[] = INCBIN_U16("graphics/decorations/refrigerator.gbapal");
+
+const u32 gDecorIcon_PrettySink[] = INCBIN_U32("graphics/decorations/pretty_sink.4bpp.lz");
+const u16 gDecorIconPalette_PrettySink[] = INCBIN_U16("graphics/decorations/pretty_sink.gbapal");
