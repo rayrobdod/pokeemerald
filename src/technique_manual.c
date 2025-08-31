@@ -263,9 +263,9 @@ enum {
     WIN_DUMMY,
 };
 
-static const u32 sMenuTechniqueManual_Gfx[] = INCBIN_U32("build/graphics/technique_manual/background.4bpp.lz");
+static const u32 sMenuTechniqueManual_Gfx[] = INCBIN_U32("build/graphics/technique_manual/background.4bpp.smol");
 static const u32 sMenuTechniqueManual_Pal[] = INCBIN_U32("build/graphics/technique_manual/background.gbapal");
-static const u32 sMenuTechniqueManual_Tilemap[] = INCBIN_U32("build/graphics/technique_manual/background.tilemap.lz");
+static const u32 sMenuTechniqueManual_Tilemap[] = INCBIN_U32("build/graphics/technique_manual/background.tilemap.smol");
 
 static const u16 sCheckmarkTechniqueManual_Gfx[] = INCBIN_U16("graphics/technique_manual/checkmark.4bpp");
 static const u16 sAButtonTechniqueManual_Gfx[] = INCBIN_U16("graphics/technique_manual/a_button.4bpp");
@@ -502,7 +502,7 @@ static bool8 InitTechniqueManual(void)
     case 7:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            LZDecompressWram(sMenuTechniqueManual_Tilemap, sTechniqueManualMenu->tilemap);
+            DecompressDataWithHeaderWram(sMenuTechniqueManual_Tilemap, sTechniqueManualMenu->tilemap);
             gMain.state++;
         }
         break;
