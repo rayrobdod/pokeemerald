@@ -12,9 +12,11 @@
 #include "battle_tv.h"
 #include "cable_club.h"
 #include "event_object_movement.h"
+#include "item.h"
 #include "link.h"
 #include "link_rfu.h"
 #include "m4a.h"
+#include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
 #include "recorded_battle.h"
@@ -25,6 +27,7 @@
 #include "util.h"
 #include "text.h"
 #include "constants/abilities.h"
+#include "constants/item_effects.h"
 #include "constants/songs.h"
 #include "pokemon_animation.h"
 
@@ -294,7 +297,7 @@ static void InitSinglePlayerBtlControllers(void)
             {
                 u8 multiplayerId;
 
-                for (multiplayerId = gRecordedBattleMultiplayerId, i = 0; i < MAX_BATTLERS_COUNT; i++)
+                for (multiplayerId = gRecordedBattleMultiplayerId, i = 0; i < MAX_LINK_PLAYERS; i++)
                 {
                     switch (gLinkPlayers[i].id)
                     {
@@ -536,7 +539,7 @@ static void InitLinkBtlControllers(void)
         if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
             gBattleMainFunc = BeginBattleIntro;
 
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < MAX_LINK_PLAYERS; i++)
         {
             switch (gLinkPlayers[i].id)
             {
@@ -956,7 +959,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
         switch (BYTE_TO_RECEIVE(0))
         {
         case B_COMM_TO_CONTROLLER:
-            if (IS_BATTLE_CONTROLLER_ACTIVE_ON_LOCAL(battler))
+            if (IsBattleControllerActiveOnLocal(battler))
                 return;
 
             memcpy(gBattleResources->bufferA[battler], &BYTE_TO_RECEIVE(LINK_BUFF_DATA), blockSize);
@@ -975,7 +978,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
             break;
         case B_COMM_CONTROLLER_IS_DONE:
             playerId = BYTE_TO_RECEIVE(LINK_BUFF_DATA);
-            MARK_BATTLE_CONTROLLER_IDLE_FOR_PLAYER(battler, playerId);
+            MarkBattleControllerIdleForPlayer(battler, playerId);
             break;
         }
 
@@ -1415,8 +1418,11 @@ void BtlController_EmitChosenMonReturnValue(u32 battler, u32 bufferId, u8 partyI
 
     gBattleResources->transferBuffer[0] = CONTROLLER_CHOSENMONRETURNVALUE;
     gBattleResources->transferBuffer[1] = partyId;
-    for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
-        gBattleResources->transferBuffer[2 + i] = battlePartyOrder[i];
+    if (battlePartyOrder != NULL)
+    {
+        for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
+            gBattleResources->transferBuffer[2 + i] = battlePartyOrder[i];
+    }
     PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 5);
 }
 
@@ -1649,7 +1655,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
             u32 side = GetBattlerSide(battler);
             u32 partyIndex = gBattlerPartyIndexes[battler];
             if (TestRunner_Battle_GetForcedAbility(side, partyIndex))
-                gBattleMons[battler].ability = gDisableStructs[battler].overwrittenAbility = TestRunner_Battle_GetForcedAbility(side, partyIndex);
+                gBattleMons[battler].ability = TestRunner_Battle_GetForcedAbility(side, partyIndex);
         }
         #endif
         break;
@@ -2169,9 +2175,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearTransform, bool32 dontClearSu
 
     ClearTemporarySpeciesSpriteData(battler, dontClearTransform, dontClearSubstituteBit);
     gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
-    species = GetIllusionMonSpecies(battler);
-    if (species == SPECIES_NONE)
-        species = GetMonData(mon, MON_DATA_SPECIES);
+    species = GetBattlerVisualSpecies(battler);
     gBattleControllerData[battler] = CreateInvisibleSpriteWithCallback(SpriteCB_WaitForBattlerBallReleaseAnim);
     // Load sprite for opponent only, player sprite is expected to be already loaded.
     if (!IsOnPlayerSide(battler))
@@ -2487,7 +2491,7 @@ void BtlController_HandleSetRawMonData(u32 battler)
 void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u32 battler))
 {
     struct Pokemon *mon = GetBattlerMon(battler);
-    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    u16 species = GetBattlerVisualSpecies(battler);
 
     BattleLoadMonSpriteGfx(mon, battler);
     SetMultiuseSpriteTemplateToPokemon(species, GetBattlerPosition(battler));
@@ -3121,6 +3125,8 @@ static void LaunchKOAnimation(u32 battlerId, u16 animId, bool32 isFront)
     u32 species = GetBattlerVisualSpecies(battlerId);
     u32 spriteId = gBattlerSpriteIds[battlerId];
 
+    gBattleStruct->battlerKOAnimsRunning++;
+
     if (isFront)
     {
         LaunchAnimationTaskForFrontSprite(&gSprites[spriteId], animId);
@@ -3150,7 +3156,7 @@ void TrySetBattlerShadowSpriteCallback(u32 battler)
     if (gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback == SpriteCallbackDummy
      && (B_ENEMY_MON_SHADOW_STYLE <= GEN_3 || P_GBA_STYLE_SPECIES_GFX == TRUE
       || gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback == SpriteCallbackDummy))
-        SetBattlerShadowSpriteCallback(battler, GetMonData(GetBattlerMon(battler), MON_DATA_SPECIES));
+        SetBattlerShadowSpriteCallback(battler, GetBattlerVisualSpecies(battler));
 }
 
 bool32 TryShinyAnimAfterMonAnimUtil(u32 battler)
@@ -3253,7 +3259,50 @@ bool32 SwitchIn_TryShinyAnimUtil(u32 battler)
     DestroySprite(&gSprites[gBattleControllerData[battler]]);
 
     if (GetBattlerSide(battler) == B_SIDE_OPPONENT)
-        SetBattlerShadowSpriteCallback(battler, GetMonData(GetBattlerMon(battler), MON_DATA_SPECIES));
+        SetBattlerShadowSpriteCallback(battler, GetBattlerVisualSpecies(battler));
 
     return TRUE;
+}
+
+void UpdateFriendshipFromXItem(u32 battler)
+{
+    struct Pokemon *party = GetBattlerParty(battler);
+
+    u8 friendship;
+    gBattleResources->bufferA[battler][1] = REQUEST_FRIENDSHIP_BATTLE;
+    GetBattlerMonData(battler, party, gBattlerPartyIndexes[battler], &friendship);
+
+    u16 heldItem;
+    gBattleResources->bufferA[battler][1] = REQUEST_HELDITEM_BATTLE;
+    GetBattlerMonData(battler, party, gBattlerPartyIndexes[battler], (u8*)&heldItem);
+
+    if (friendship < X_ITEM_MAX_FRIENDSHIP)
+    {
+        if (GetItemHoldEffect(heldItem) == HOLD_EFFECT_FRIENDSHIP_UP)
+            friendship += 150 * X_ITEM_FRIENDSHIP_INCREASE / 100;
+        else
+            friendship += X_ITEM_FRIENDSHIP_INCREASE;
+
+        u8 pokeball;
+        gBattleResources->bufferA[battler][1] = REQUEST_POKEBALL_BATTLE;
+        GetBattlerMonData(battler, party, gBattlerPartyIndexes[battler], &pokeball);
+
+        if (pokeball == BALL_LUXURY)
+            friendship++;
+
+        u8 metLocation;
+        gBattleResources->bufferA[battler][1] = REQUEST_MET_LOCATION_BATTLE;
+        GetBattlerMonData(battler, party, gBattlerPartyIndexes[battler], &metLocation);
+
+        if (metLocation == GetCurrentRegionMapSectionId())
+            friendship++;
+
+        if (friendship > MAX_FRIENDSHIP)
+            friendship = MAX_FRIENDSHIP;
+
+        gBattleMons[battler].friendship = friendship;
+        gBattleResources->bufferA[battler][3] = friendship;
+        gBattleResources->bufferA[battler][1] = REQUEST_FRIENDSHIP_BATTLE;
+        SetBattlerMonData(battler, GetBattlerParty(battler), gBattlerPartyIndexes[battler]);
+    }
 }
