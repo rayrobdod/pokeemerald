@@ -843,9 +843,9 @@ void DoSecretBasePCTurnOffEffect(void)
     PlaySE(SE_PC_OFF);
 
     if (!VarGet(VAR_CURRENT_SECRET_BASE))
-        MapGridSetMetatileIdAt(x, y, METATILE_SecretBase_PC | MAPGRID_COLLISION_MASK);
+        MapGridSetMetatileIdAt(x, y, METATILE_SecretBase_PC | MAPGRID_IMPASSABLE);
     else
-        MapGridSetMetatileIdAt(x, y, METATILE_SecretBase_RegisterPC | MAPGRID_COLLISION_MASK);
+        MapGridSetMetatileIdAt(x, y, METATILE_SecretBase_RegisterPC | MAPGRID_IMPASSABLE);
 
     CurrentMapDrawMetatileAt(x, y);
 }
@@ -1110,7 +1110,7 @@ static void SpriteCB_SandPillar_BreakBase(struct Sprite *sprite)
     else
     {
         u16 metatileId = MapGridGetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
-        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], (metatileId - 2) | MAPGRID_COLLISION_MASK);
+        MapGridSetMetatileIdAt(gFieldEffectArguments[5], gFieldEffectArguments[6], (metatileId - 2) | MAPGRID_IMPASSABLE);
         CurrentMapDrawMetatileAt(gFieldEffectArguments[5], gFieldEffectArguments[6]);
         sprite->data[0] = 0;
         sprite->callback = SpriteCB_SandPillar_End;
