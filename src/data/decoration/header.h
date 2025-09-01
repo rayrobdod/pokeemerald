@@ -1785,4 +1785,32 @@ const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
         .metatiles = DecorMetatiles_PRETTY_SINK,
         .attributes = DecorAttributes_PrettySink,
     },
+
+    [DECOR_WATERMELON_MAT] =
+    {
+        .id = DECOR_WATERMELON_MAT,
+        .name = _("WATERMELON MAT"),
+        .permission = DECORPERM_PASS_FLOOR,
+        .shape = DECORSHAPE_3x3,
+        .category = DECORCAT_MAT,
+        .price = 4000,
+        .description = DecorDesc_WATERMELON_MAT,
+        .tiles = DecorTiles_WATERMELON_MAT,
+        .metatiles = DecorMetatiles_MAT_3x3_PAL2,
+        .attributes = DecorAttributes_Mat_3x3,
+    },
+
+    [DECOR_POKEBALL_MAT] =
+    {
+        .id = DECOR_POKEBALL_MAT,
+        .name = _("POKé BALL MAT"),
+        .permission = DECORPERM_PASS_FLOOR,
+        .shape = DECORSHAPE_3x3,
+        .category = DECORCAT_MAT,
+        .price = 4000,
+        .description = DecorDesc_POKEBALL_MAT,
+        .tiles = DecorTiles_POKEBALL_MAT,
+        .metatiles = DecorMetatiles_VERTICAL_SYMMETRICAL_MAT_PAL2,
+        .attributes = DecorAttributes_Mat_3x3,
+    },
 };

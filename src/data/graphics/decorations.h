@@ -156,3 +156,9 @@ const u16 gDecorIconPalette_Refrigerator[] = INCBIN_U16("graphics/decorations/re
 
 const u32 gDecorIcon_PrettySink[] = INCBIN_U32("graphics/decorations/pretty_sink.4bpp.lz");
 const u16 gDecorIconPalette_PrettySink[] = INCBIN_U16("graphics/decorations/pretty_sink.gbapal");
+
+const u32 gDecorIcon_WatermelonMat[] = INCBIN_U32("graphics/decorations/watermelon_mat.4bpp.lz");
+const u16 gDecorIconPalette_WatermelonMat[] = INCBIN_U16("graphics/decorations/watermelon_mat.gbapal");
+
+const u32 gDecorIcon_PokeballMat[] = INCBIN_U32("graphics/decorations/pokeball_mat.4bpp.lz");
+const u16 gDecorIconPalette_PokeballMat[] = INCBIN_U16("graphics/decorations/pokeball_mat.gbapal");

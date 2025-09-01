@@ -134,4 +134,6 @@ const struct DecorIcon gDecorIconTable[NUM_DECORATIONS_PLUS_ONE] =
     [DECOR_PINK_DRESSER]    = {gDecorIcon_PinkDresser, gDecorIconPalette_PinkDresser},
     [DECOR_REFRIGERATOR]    = {gDecorIcon_Refrigerator, gDecorIconPalette_Refrigerator},
     [DECOR_PRETTY_SINK]     = {gDecorIcon_PrettySink, gDecorIconPalette_PrettySink},
+    [DECOR_WATERMELON_MAT]  = {gDecorIcon_WatermelonMat, gDecorIconPalette_WatermelonMat},
+    [DECOR_POKEBALL_MAT]    = {gDecorIcon_PokeballMat, gDecorIconPalette_PokeballMat},
 };

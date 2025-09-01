@@ -630,3 +630,13 @@ const u8 DecorDesc_REFRIGERATOR[] = _(
 const u8 DecorDesc_PRETTY_SINK[] = _(
     "A toy sink. It is\n"
         "very well made.");
+
+const u8 DecorDesc_WATERMELON_MAT[] = _(
+    "A mat with a foreign\n"
+        "berry image design.\n"
+        "Put items on top.");
+
+const u8 DecorDesc_POKEBALL_MAT[] = _(
+    "A mat designed with\n"
+        "a POKé BALL image.\n"
+        "Put items on top.");

@@ -420,6 +420,8 @@ const u32 DecorTiles_POWDER_SNOW_MAT[DecorTilesSize] = INCBIN_U32("graphics/deco
 const u32 DecorTiles_ATTRACT_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/attract_mat.4bpp");
 const u32 DecorTiles_FISSURE_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/fissure_mat.4bpp");
 const u32 DecorTiles_SPIKES_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/spikes_mat.4bpp");
+const u32 DecorTiles_WATERMELON_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/watermelon_mat.4bpp");
+const u32 DecorTiles_POKEBALL_MAT[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/pokeball_mat.4bpp");
 
 const u16 DecorMetatiles_MAT_3x3_PAL2[] = {
     DECORMETATILE_COVERED(0x2000, 0x2001, 0x2003, 0x2004),
@@ -467,6 +469,18 @@ const u16 DecorMetatiles_MAT_3x3_PAL5[] = {
     DECORMETATILE_COVERED(0x5803, 0x5804, 0x5800, 0x5801),
     DECORMETATILE_COVERED(0x5805, 0x5C05, 0x5802, 0x5C02),
     DECORMETATILE_COVERED(0x5C04, 0x5C03, 0x5C01, 0x5C00),
+};
+
+const u16 DecorMetatiles_VERTICAL_SYMMETRICAL_MAT_PAL2[] = {
+    DECORMETATILE_COVERED(0x2000, 0x2001, 0x2003, 0x2004),
+    DECORMETATILE_COVERED(0x2002, 0x2402, 0x2005, 0x2405),
+    DECORMETATILE_COVERED(0x2401, 0x2400, 0x2404, 0x2403),
+    DECORMETATILE_COVERED(0x2006, 0x2007, 0x2009, 0x200A),
+    DECORMETATILE_COVERED(0x2008, 0x2408, 0x200B, 0x240B),
+    DECORMETATILE_COVERED(0x2407, 0x2406, 0x240A, 0x2409),
+    DECORMETATILE_COVERED(0x200C, 0x200D, 0x200F, 0x2010),
+    DECORMETATILE_COVERED(0x200E, 0x240E, 0x2011, 0x2411),
+    DECORMETATILE_COVERED(0x240D, 0x240C, 0x2410, 0x240F),
 };
 
 const u32 DecorTiles_BALL_POSTER[DecorTilesSize] = INCBIN_U32("graphics/decorations/tiles/ball_poster.4bpp");
