@@ -1,7 +1,8 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_transition.h"
-#include "battle_transition_frontier.h"
+#include "battle_transition_shared.h"
+#include "battle_transition_tasks/_index.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_object_movement.h"
@@ -31,9 +32,6 @@
 
 #define B_TRANS_DMA_FLAGS (1 | ((DMA_SRC_INC | DMA_DEST_FIXED | DMA_REPEAT | DMA_16BIT | DMA_START_HBLANK | DMA_ENABLE) << 16))
 
-// Used by each transition task to determine which of its functions to call
-#define tState          data[0]
-
 // Below are data defines for InitBlackWipe and UpdateBlackWipe, for the TransitionData data array.
 // These will be re-used by any transitions that use these functions.
 #define tWipeStartX data[0]
@@ -48,35 +46,6 @@
 #define tWipeYDist  data[9]
 #define tWipeTemp   data[10]
 
-#define SET_TILE(ptr, posY, posX, tile) \
-{                                       \
-    u32 index = (posY) * 32 + posX;     \
-    ptr[index] = tile | (0xF0 << 8);    \
-}
-
-struct TransitionData
-{
-    vu8 VBlank_DMA;
-    u16 WININ;
-    u16 WINOUT;
-    u16 WIN0H;
-    u16 WIN0V;
-    u16 unused1;
-    u16 unused2;
-    u16 BLDCNT;
-    u16 BLDALPHA;
-    u16 BLDY;
-    s16 cameraX;
-    s16 cameraY;
-    s16 BG0HOFS_Lower;
-    s16 BG0HOFS_Upper;
-    s16 BG0VOFS; // used but not set
-    s16 unused3;
-    s16 counter;
-    s16 unused4;
-    s16 data[11];
-};
-
 struct RectangularSpiralLine
 {
     u8 state;
@@ -86,8 +55,6 @@ struct RectangularSpiralLine
     bool8 outward;
 };
 
-typedef bool8 (*TransitionStateFunc)(struct Task *task);
-typedef bool8 (*TransitionSpriteCallback)(struct Sprite *sprite);
 typedef bool8 (*TransitionSpriteCallbackPartner)(struct Sprite *sprite);
 
 static bool8 Transition_StartIntro(struct Task *);
@@ -128,7 +95,6 @@ static void Task_FrontierLogoWave(u8);
 static void Task_FrontierSquares(u8);
 static void Task_FrontierSquaresScroll(u8);
 static void Task_FrontierSquaresSpiral(u8);
-static void VBlankCB_BattleTransition(void);
 static void VBlankCB_Swirl(void);
 static void HBlankCB_Swirl(void);
 static void VBlankCB_Shuffle(void);
@@ -261,14 +227,8 @@ static void Mugshots_CreateTrainerPics(struct Task *);
 static void VBlankCB_Mugshots(void);
 static void VBlankCB_MugshotsFadeOut(void);
 static void HBlankCB_Mugshots(void);
-static void InitTransitionData(void);
-static void FadeScreenBlack(void);
 static void CreateIntroTask(s16, s16, s16, s16, s16);
-static void SetCircularMask(u16 *, s16, s16, s16);
-static void SetSinWave(s16 *, s16, s16, s16, s16, s16);
-static void GetBg0TilemapDst(u16 **);
 static void InitBlackWipe(s16 *, s16, s16, s16, s16, s16, s16);
-static bool8 UpdateBlackWipe(s16 *, bool8, bool8);
 static void SetTrainerPicSlideDirection(s16, s16);
 static void IncrementTrainerPicState(s16);
 static s16 IsTrainerPicSlideDone(s16);
@@ -292,7 +252,7 @@ static u8 sTestingTransitionId;
 static u8 sTestingTransitionState;
 static struct RectangularSpiralLine sRectangularSpiralLines[4];
 
-EWRAM_DATA static struct TransitionData *sTransitionData = NULL;
+EWRAM_DATA struct TransitionData *sTransitionData = NULL;
 
 static const u32 sBigPokeball_Tileset[] = INCBIN_U32("graphics/battle_transitions/big_pokeball.4bpp");
 static const u32 sPokeballTrail_Tileset[] = INCBIN_U32("graphics/battle_transitions/pokeball_trail.4bpp");
@@ -338,51 +298,14 @@ static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transi
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 {
-    [0 ... B_TRANSITION_COUNT - 1] = &Task_Intro
+    #include "battle_transition_tasks_intro/_index.h"
 };
 
 // After the intro each transition has a unique main task.
 // This task will call the functions that do the transition effects.
 static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 {
-    [B_TRANSITION_BLUR] = Task_Blur,
-    [B_TRANSITION_SWIRL] = Task_Swirl,
-    [B_TRANSITION_SHUFFLE] = Task_Shuffle,
-    [B_TRANSITION_BIG_POKEBALL] = Task_BigPokeball,
-    [B_TRANSITION_POKEBALLS_TRAIL] = Task_PokeballsTrail,
-    [B_TRANSITION_CLOCKWISE_WIPE] = Task_ClockwiseWipe,
-    [B_TRANSITION_RIPPLE] = Task_Ripple,
-    [B_TRANSITION_WAVE] = Task_Wave,
-    [B_TRANSITION_SLICE] = Task_Slice,
-    [B_TRANSITION_WHITE_BARS_FADE] = Task_WhiteBarsFade,
-    [B_TRANSITION_GRID_SQUARES] = Task_GridSquares,
-    [B_TRANSITION_ANGLED_WIPES] = Task_AngledWipes,
-    [B_TRANSITION_MUGSHOT] = Task_Mugshot,
-    [B_TRANSITION_AQUA] = Task_Aqua,
-    [B_TRANSITION_MAGMA] = Task_Magma,
-    [B_TRANSITION_REGICE] = Task_Regice,
-    [B_TRANSITION_REGISTEEL] = Task_Registeel,
-    [B_TRANSITION_REGIROCK] = Task_Regirock,
-    [B_TRANSITION_KYOGRE] = Task_Kyogre,
-    [B_TRANSITION_GROUDON] = Task_Groudon,
-    [B_TRANSITION_RAYQUAZA] = Task_Rayquaza,
-    [B_TRANSITION_SHRED_SPLIT] = Task_ShredSplit,
-    [B_TRANSITION_BLACKHOLE] = Task_Blackhole,
-    [B_TRANSITION_BLACKHOLE_PULSATE] = Task_BlackholePulsate,
-    [B_TRANSITION_RECTANGULAR_SPIRAL] = Task_RectangularSpiral,
-    [B_TRANSITION_FRONTIER_LOGO_WIGGLE] = Task_FrontierLogoWiggle,
-    [B_TRANSITION_FRONTIER_LOGO_WAVE] = Task_FrontierLogoWave,
-    [B_TRANSITION_FRONTIER_SQUARES] = Task_FrontierSquares,
-    [B_TRANSITION_FRONTIER_SQUARES_SCROLL] = Task_FrontierSquaresScroll,
-    [B_TRANSITION_FRONTIER_SQUARES_SPIRAL] = Task_FrontierSquaresSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_MEET] = Task_FrontierCirclesMeet,
-    [B_TRANSITION_FRONTIER_CIRCLES_CROSS] = Task_FrontierCirclesCross,
-    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL] = Task_FrontierCirclesAsymmetricSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL] = Task_FrontierCirclesSymmetricSpiral,
-    [B_TRANSITION_FRONTIER_CIRCLES_MEET_IN_SEQ] = Task_FrontierCirclesMeetInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ] = Task_FrontierCirclesCrossInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesAsymmetricSpiralInSeq,
-    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesSymmetricSpiralInSeq,
+    #include "battle_transition_tasks_main/_index.h"
 };
 
 static const TransitionStateFunc sTaskHandlers[] =
@@ -4110,20 +4033,20 @@ static bool8 TransitionIntro_FadeFromGray(struct Task *task)
 // General transition functions
 //-----------------------------------
 
-static void InitTransitionData(void)
+void InitTransitionData(void)
 {
     memset(sTransitionData, 0, sizeof(*sTransitionData));
     GetCameraOffsetWithPan(&sTransitionData->cameraX, &sTransitionData->cameraY);
 }
 
-static void VBlankCB_BattleTransition(void)
+void VBlankCB_BattleTransition(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
 }
 
-static void GetBg0TilemapDst(u16 **tileset)
+void GetBg0TilemapDst(u16 **tileset)
 {
     u16 charBase = REG_BG0CNT >> 2;
     charBase <<= 14;
@@ -4142,19 +4065,19 @@ void GetBg0TilesDst(u16 **tilemap, u16 **tileset)
     *tileset = (u16 *)(BG_VRAM + charBase);
 }
 
-static void FadeScreenBlack(void)
+void FadeScreenBlack(void)
 {
     BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
 }
 
-static void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, s16 amplitude, s16 arrSize)
+void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, s16 amplitude, s16 arrSize)
 {
     u8 i;
     for (i = 0; arrSize > 0; arrSize--, i++, index += indexIncrementer)
         array[i] = sinAdd + Sin(index & 0xFF, amplitude);
 }
 
-static void SetCircularMask(u16 *buffer, s16 centerX, s16 centerY, s16 radius)
+void SetCircularMask(u16 *buffer, s16 centerX, s16 centerY, s16 radius)
 {
     s16 i;
 
@@ -4233,7 +4156,7 @@ static void InitBlackWipe(s16 *data, s16 startX, s16 startY, s16 endX, s16 endY,
     tWipeTemp = 0;
 }
 
-static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
+bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
 {
     u8 numFinished;
 
