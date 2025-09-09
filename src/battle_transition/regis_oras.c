@@ -43,6 +43,18 @@ static const struct regi_params regi_params[REGI_COUNT] = {
     },
 };
 
+// `-mabi=apcs-gnu` means that any real `struct` is minimum four bytes long, hence the type being `u8` instead of a `struct`.
+// Each nibble is an index into `regi_params[n].eye_pattern`, and is which eye to start drawing in that loop
+static const u8 eye_sequence[] = {
+    0x0F,
+    0xFF,
+    0x1F,
+    0x2F,
+    0x34,
+    0x56,
+    0xFF,
+};
+
 static const struct CompressedSpriteSheet sSpriteSheet_Regi =
 {
     .data = sRegisEye_Tileset,
@@ -103,22 +115,8 @@ static const struct SpriteTemplate sSpriteTemplate_EyeGem =
 static bool8 RegisOras_Init(struct Task *);
 static bool8 RegisOras_FramesCountdown(struct Task *);
 static bool8 RegisOras_DoBlendFade(struct Task *);
-static bool8 RegisOras_SetupEyeFade0(struct Task *);
-static bool8 RegisOras_EndEyeFade0(struct Task *);
-static bool8 RegisOras_SetupEyeFade1(struct Task *);
-static bool8 RegisOras_EndEyeFade1(struct Task *);
-static bool8 RegisOras_SetupEyeFade2(struct Task *);
-static bool8 RegisOras_EndEyeFade2(struct Task *);
-static bool8 RegisOras_SetupEyeFade3(struct Task *);
-static bool8 RegisOras_EndEyeFade3(struct Task *);
-static bool8 RegisOras_SetupEyeFade4(struct Task *);
-static bool8 RegisOras_EndEyeFade4(struct Task *);
-static bool8 RegisOras_SetupEyeFade5(struct Task *);
-static bool8 RegisOras_EndEyeFade5(struct Task *);
-static bool8 RegisOras_SetupEyeFade6(struct Task *);
-static bool8 RegisOras_EndEyeFade6(struct Task *);
-static bool8 RegisOras_SetupEyeFade7(struct Task *);
-static bool8 RegisOras_EndEyeFade7(struct Task *);
+static bool8 RegisOras_SetupEyeFade(struct Task *);
+static bool8 RegisOras_EndEyeFade(struct Task *);
 static bool8 RegisOras_SetupFadeToGlow(struct Task *);
 static bool8 RegisOras_DoFadeToGlow(struct Task *);
 static bool8 RegisOras_SetupFadeToBlack(struct Task *);
@@ -126,30 +124,9 @@ static bool8 RegisOras_DoFadeToBlack(struct Task *);
 
 static const TransitionStateFunc sRegisOras_Funcs[] = {
     RegisOras_Init,
-    RegisOras_SetupEyeFade0,
+    RegisOras_SetupEyeFade, // start loop
     RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade0,
-    RegisOras_SetupEyeFade1,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade1,
-    RegisOras_SetupEyeFade2,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade2,
-    RegisOras_SetupEyeFade3,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade3,
-    RegisOras_SetupEyeFade4,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade4,
-    RegisOras_SetupEyeFade5,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade5,
-    RegisOras_SetupEyeFade6,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade6,
-    RegisOras_SetupEyeFade7,
-    RegisOras_DoBlendFade,
-    RegisOras_EndEyeFade7,
+    RegisOras_EndEyeFade, // end loop
     RegisOras_FramesCountdown,
     RegisOras_SetupFadeToGlow,
     RegisOras_DoFadeToGlow,
@@ -161,6 +138,7 @@ static const TransitionStateFunc sRegisOras_Funcs[] = {
 #define tBlendTarget1 data[1]
 #define tBlendTarget2 data[2]
 #define tBlendDelay   data[3]
+#define tEyeSequenceIndex data[5]
 #define tSpritePalette data[6]
 #define tPatternIndex data[7]
 #define tEndDelay     data[8]
@@ -298,297 +276,103 @@ static bool8 RegisOras_DoBlendFade(struct Task *task)
     return FALSE;
 }
 
-static bool8 RegisOras_SetupEyeFade0(struct Task *task)
+static bool8 RegisOras_SetupEyeFade(struct Task *task)
 {
+    unsigned eye_sequence_entry;
     u16 *tilemap, *tileset;
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[0],
-        1 | (0xF << 12));
 
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
+    GetBg0TilesDst(&tilemap, &tileset);
+    if (task->tEyeSequenceIndex >= 2)
+    {
+        eye_sequence_entry = eye_sequence[task->tEyeSequenceIndex - 2];
+        if ((eye_sequence_entry & 0x0F) < EYE_COUNT)
+            RegisOras_ClearEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry & 0x0F)]);
+        if ((eye_sequence_entry >> 4) < EYE_COUNT)
+            RegisOras_ClearEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry >> 4)]);
+    }
+    if (task->tEyeSequenceIndex >= 1)
+    {
+        eye_sequence_entry = eye_sequence[task->tEyeSequenceIndex - 1];
+        if ((eye_sequence_entry & 0x0F) < EYE_COUNT)
+            RegisOras_DrawEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry & 0x0F)],
+                (1+16) | (0xF << 12));
+        if ((eye_sequence_entry >> 4) < EYE_COUNT)
+            RegisOras_DrawEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry >> 4)],
+                (1+16) | (0xF << 12));
+    }
+
+    {
+        eye_sequence_entry = eye_sequence[task->tEyeSequenceIndex];
+        if ((eye_sequence_entry & 0x0F) < EYE_COUNT)
+            RegisOras_DrawEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry & 0x0F)],
+                1 | (0xF << 12));
+        if ((eye_sequence_entry >> 4) < EYE_COUNT)
+            RegisOras_DrawEye(
+                tilemap,
+                regi_params[task->tPatternIndex].eye_pattern[(eye_sequence_entry >> 4)],
+                1 | (0xF << 12));
+    }
+
     task->tState++;
     return FALSE;
 }
 
-static bool8 RegisOras_EndEyeFade0(struct Task *task)
+static bool8 RegisOras_EndEyeFade(struct Task *task)
 {
-    task->tSpriteId(0) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[0].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[0].y,
-        1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(0)], 0);
+    unsigned eye_sequence_entry;
+    if (task->tEyeSequenceIndex >= 1)
+    {
+        eye_sequence_entry = eye_sequence[task->tEyeSequenceIndex - 1];
+        if ((eye_sequence_entry & 0x0F) < EYE_COUNT)
+            StartSpriteAnim(&gSprites[task->tSpriteId(eye_sequence_entry & 0x0F)], 1);
+        if ((eye_sequence_entry >> 4) < EYE_COUNT)
+            StartSpriteAnim(&gSprites[task->tSpriteId(eye_sequence_entry >> 4)], 1);
+    }
+
+    eye_sequence_entry = eye_sequence[task->tEyeSequenceIndex];
+    if ((eye_sequence_entry & 0x0F) < EYE_COUNT)
+    {
+        task->tSpriteId(eye_sequence_entry & 0x0F) = CreateSprite(
+            &sSpriteTemplate_EyeGem,
+            16 + 8 * regi_params[task->tPatternIndex].eye_pattern[eye_sequence_entry & 0x0F].x,
+            16 + 8 * regi_params[task->tPatternIndex].eye_pattern[eye_sequence_entry & 0x0F].y,
+            1);
+        StartSpriteAnim(&gSprites[task->tSpriteId(eye_sequence_entry & 0x0F)], 0);
+    }
+    if ((eye_sequence_entry >> 4) < EYE_COUNT)
+    {
+        task->tSpriteId(eye_sequence_entry >> 4) = CreateSprite(
+            &sSpriteTemplate_EyeGem,
+            16 + 8 * regi_params[task->tPatternIndex].eye_pattern[eye_sequence_entry >> 4].x,
+            16 + 8 * regi_params[task->tPatternIndex].eye_pattern[eye_sequence_entry >> 4].y,
+            1);
+        StartSpriteAnim(&gSprites[task->tSpriteId(eye_sequence_entry >> 4)], 0);
+    }
 
     task->tBlendTarget1 = 0;
     task->tBlendTarget2 = 16;
     sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
 
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade1(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[0],
-        (1+16) | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade1(struct Task *task)
-{
-    StartSpriteAnim(&gSprites[task->tSpriteId(0)], 1);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade2(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[0]);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[1],
-        1 | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade2(struct Task *task)
-{
-    task->tSpriteId(1) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[1].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[1].y,
-        1);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade3(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[1],
-        (1+16) | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[2],
-        1 | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade3(struct Task *task)
-{
-    task->tSpriteId(2) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[2].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[2].y,
-        1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(1)], 1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(2)], 0);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade4(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[1]);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[2],
-        (1+16) | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[3],
-        1 | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[4],
-        1 | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade4(struct Task *task)
-{
-    task->tSpriteId(3) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[3].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[3].y,
-        1);
-    task->tSpriteId(4) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[4].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[4].y,
-        1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(2)], 1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(3)], 0);
-    StartSpriteAnim(&gSprites[task->tSpriteId(4)], 0);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade5(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[2]);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[3],
-        (1+16) | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[4],
-        (1+16) | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[5],
-        1 | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[6],
-        1 | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade5(struct Task *task)
-{
-    task->tSpriteId(5) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[5].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[5].y,
-        1);
-    task->tSpriteId(6) = CreateSprite(
-        &sSpriteTemplate_EyeGem,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[6].x,
-        16 + 8 * regi_params[task->tPatternIndex].eye_pattern[6].y,
-        1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(3)], 1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(4)], 1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(5)], 0);
-    StartSpriteAnim(&gSprites[task->tSpriteId(6)], 0);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade6(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[3]);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[4]);
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[5],
-        (1+16) | (0xF << 12));
-    RegisOras_DrawEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[6],
-        (1+16) | (0xF << 12));
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade6(struct Task *task)
-{
-    StartSpriteAnim(&gSprites[task->tSpriteId(5)], 1);
-    StartSpriteAnim(&gSprites[task->tSpriteId(6)], 1);
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
-
-    return FALSE;
-}
-
-static bool8 RegisOras_SetupEyeFade7(struct Task *task)
-{
-    u16 *tilemap, *tileset;
-
-    GetBg0TilesDst(&tilemap, &tileset);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[5]);
-    RegisOras_ClearEye(
-        tilemap,
-        regi_params[task->tPatternIndex].eye_pattern[6]);
-
-    task->tState++;
-    return FALSE;
-}
-
-static bool8 RegisOras_EndEyeFade7(struct Task *task)
-{
-    task->tEndDelay = 8;
-
-    task->tBlendTarget1 = 0;
-    task->tBlendTarget2 = 16;
-    sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget1, task->tBlendTarget2);
-    task->tState++;
+    ++task->tEyeSequenceIndex;
+    if (task->tEyeSequenceIndex < ARRAY_COUNT(eye_sequence))
+    {
+        task->tState -= 2;
+    }
+    else
+    {
+        task->tEndDelay = 8;
+        task->tState++;
+    }
 
     return FALSE;
 }
