@@ -124,10 +124,6 @@ static const struct OamData sOamData_Eye =
     .affineParam = 0,
 };
 
-static void dummySpriteCB(struct Sprite *sprite)
-{
-}
-
 static const struct SpriteTemplate sSpriteTemplate_EyeGem =
 {
     .tileTag = TILETAG_REGI_EYE,
@@ -136,7 +132,7 @@ static const struct SpriteTemplate sSpriteTemplate_EyeGem =
     .anims = sAnimTable_Eye,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = dummySpriteCB,
+    .callback = SpriteCallbackDummy,
 };
 
 static bool8 RegisOras_Init(struct Task *);
