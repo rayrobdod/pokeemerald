@@ -13,6 +13,7 @@
 static const u32 sRegisEye_Tileset[] = INCBIN_U32("graphics/battle_transitions/regis_oras.4bpp.lz");
 static const u32 sRegisGlow_Tileset[] = INCBIN_U32("graphics/battle_transitions/regis_oras_glow.4bpp.lz");
 static const u32 sRegiceGlow_Tilemap[] = INCBIN_U32("graphics/battle_transitions/regice_oras.bin.lz");
+static const u32 sRegielekiGlow_Tilemap[] = INCBIN_U32("graphics/battle_transitions/regieleki_oras.bin.lz");
 
 #define PALTAG_REGI_EYE (0xE7E5)
 #define TILETAG_REGI_EYE (0xE7E5)
@@ -23,6 +24,8 @@ enum {
     REGI_REGIROCK,
     REGI_REGICE,
     REGI_REGISTEEL,
+    REGI_REGIELEKI,
+    REGI_REGIDRAGO,
     REGI_COUNT
 };
 
@@ -66,6 +69,30 @@ static const struct regi_params regi_params[REGI_COUNT] = {
             {8, 14},
             {8, 2},
             {18, 14},
+        }
+    },
+    [REGI_REGIELEKI] = {
+        .palette = INCBIN_U16("graphics/battle_transitions/regieleki_oras.gbapal"),
+        .eye_pattern = {
+            {.x = 13, .y = 8},
+            {18, 8},
+            {8, 8},
+            {23, 4},
+            {3, 12},
+            {23, 12},
+            {3, 4},
+        }
+    },
+    [REGI_REGIDRAGO] = {
+        .palette = INCBIN_U16("graphics/battle_transitions/regidrago_oras.gbapal"),
+        .eye_pattern = {
+            {.x = 13, .y = 3},
+            {13, 9},
+            {13, 15},
+            {7, 7},
+            {19, 7},
+            {5, 1},
+            {21, 1},
         }
     },
 };
@@ -182,6 +209,18 @@ void Task_RegiceOras(u8 taskId)
 void Task_RegisteelOras(u8 taskId)
 {
     gTasks[taskId].tPatternIndex = REGI_REGISTEEL;
+    while (sRegisOras_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+void Task_RegielekiOras(u8 taskId)
+{
+    gTasks[taskId].tPatternIndex = REGI_REGIELEKI;
+    while (sRegisOras_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+void Task_RegidragoOras(u8 taskId)
+{
+    gTasks[taskId].tPatternIndex = REGI_REGIDRAGO;
     while (sRegisOras_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
@@ -420,7 +459,9 @@ static bool8 RegisOras_SetupFadeToGlow(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     LZ77UnCompVram(sRegisGlow_Tileset, tileset + GLOW_TILES_START * TILE_SIZE_4BPP / sizeof(u16));
     if (REGI_REGICE == task->tPatternIndex)
-        LZ77UnCompVram(sRegiceGlow_Tilemap, tilemap + 64);
+        LZ77UnCompVram(sRegiceGlow_Tilemap, tilemap + 32 * 2);
+    else if (REGI_REGIELEKI == task->tPatternIndex)
+        LZ77UnCompVram(sRegielekiGlow_Tilemap, tilemap + 32 * 3);
     else
         for (i = 0; i < EYE_COUNT; i++)
             RegisOras_DrawEyeGlow(tilemap, regi_params[task->tPatternIndex].eye_pattern[i]);

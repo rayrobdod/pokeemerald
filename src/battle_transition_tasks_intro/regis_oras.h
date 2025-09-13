@@ -1,3 +1,5 @@
     [B_TRANSITION_REGIROCK_ORAS] = &Task_Intro,
     [B_TRANSITION_REGICE_ORAS] = &Task_Intro,
     [B_TRANSITION_REGISTEEL_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGIELEKI_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGIDRAGO_ORAS] = &Task_Intro,
