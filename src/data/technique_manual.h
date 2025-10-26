@@ -8,12 +8,12 @@ const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
         .tasks = {
             {
                 .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
-                .storage_index = 0,
+                .storage_index = TM_SPECIES_TACKLE,
                 .requirement = 3,
             },
             {
                 .type = TM_TASK_SEEN,
-                .storage_index = 0,
+                .storage_index = TM_COUNTER_TACKLE_SEEN,
                 .requirement = 20,
             },
         }
@@ -24,12 +24,12 @@ const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
         .tasks = {
             {
                 .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
-                .storage_index = 3,
+                .storage_index = TM_SPECIES_POUND,
                 .requirement = 3,
             },
             {
                 .type = TM_TASK_SEEN,
-                .storage_index = 1,
+                .storage_index = TM_COUNTER_POUND_SEEN,
                 .requirement = 20,
             },
         }
@@ -40,17 +40,17 @@ const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
         .tasks = {
             {
                 .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
-                .storage_index = 6,
+                .storage_index = TM_SPECIES_THUNDER,
                 .requirement = 3,
             },
             {
                 .type = TM_TASK_SEEN,
-                .storage_index = 2,
+                .storage_index = TM_COUNTER_THUNDER_SEEN,
                 .requirement = 30,
             },
             {
                 .type = TM_TASK_SEEN_RAIN,
-                .storage_index = 3,
+                .storage_index = TM_COUNTER_THUNDER_SEEN_RAIN,
                 .requirement = 3,
             },
         }
@@ -61,17 +61,17 @@ const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
         .tasks = {
             {
                 .type = TM_TASK_SEEN_DIFFERENT_SPECIES,
-                .storage_index = 9,
+                .storage_index = TM_SPECIES_SOLAR_BEAM,
                 .requirement = 3,
             },
             {
                 .type = TM_TASK_SEEN,
-                .storage_index = 4,
+                .storage_index = TM_COUNTER_SOLAR_BEAM_SEEN,
                 .requirement = 30,
             },
             {
                 .type = TM_TASK_SEEN_SUN,
-                .storage_index = 5,
+                .storage_index = TM_COUNTER_SOLAR_BEAM_SEEN_SUN,
                 .requirement = 3,
             },
         }
