@@ -1,6 +1,7 @@
 #ifndef GUARD_BATTLE_TRANSITION_TRIANGLE_TESSELLATION_H
 #define GUARD_BATTLE_TRANSITION_TRIANGLE_TESSELLATION_H
 
+void Task_TriangleTessellationCentered(u8 taskId);
 void Task_TriangleTessellationZARoyale(u8 taskId);
 
 #endif // GUARD_BATTLE_TRANSITION_TRIANGLE_TESSELLATION_H

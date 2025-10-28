@@ -17,9 +17,23 @@
 #define tCycle data[1]
 
 static bool8 TriangleTessellation_Init(struct Task *);
+static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task);
+static bool8 TriangleTessellationCentered_Darken(struct Task *);
 static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task);
 static bool8 TriangleTessellationZARoyale_Darken(struct Task *);
 static bool8 TriangleTessellation_End(struct Task *);
+
+static const TransitionStateFunc sTriangleTessellationCentered_Funcs[] = {
+    TriangleTessellation_Init,
+    TriangleTessellationCentered_DrawTriangle,
+    TriangleTessellationCentered_Darken,
+    TriangleTessellation_End,
+};
+
+void Task_TriangleTessellationCentered(u8 taskId)
+{
+    while (sTriangleTessellationCentered_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
 
 static const TransitionStateFunc sTriangleTessellationZARoyale_Funcs[] = {
     TriangleTessellation_Init,
@@ -96,6 +110,42 @@ static signed TriangleTessellation_offh(signed column, unsigned y_in_row, bool32
     return offh;
 }
 
+static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task)
+{
+    unsigned y;
+    signed off0h, off1h;
+    signed column0, column1;
+
+    signed row = 0;
+    unsigned y_in_row = 20;
+
+    sTransitionData->VBlank_DMA = FALSE;
+    for (y = 0; y < DISPLAY_HEIGHT; y++)
+    {
+        y_in_row++;
+        if (y_in_row >= TRIANGLE_HEIGHT)
+        {
+            y_in_row = 0;
+            row++;
+        }
+        if (y_in_row == 0 || y == 0)
+        {
+            column0 = task->tCycle - abs(2 - row) - 1;
+            column1 = column0 + 1 + (task->tCycle == 7 ? 1 : 0);
+        }
+
+        off0h = TriangleTessellation_offh(column0, y_in_row, (column0 + row) % 2);
+        gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN0H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off0h, DISPLAY_WIDTH / 2 + off0h);
+
+        off1h = TriangleTessellation_offh(column1, y_in_row, (column1 + row) % 2);
+        gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN1H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off1h, DISPLAY_WIDTH / 2 + off1h);
+    }
+    sTransitionData->BLDY = 1;
+    sTransitionData->VBlank_DMA = TRUE;
+    task->tState++;
+    return FALSE;
+}
+
 static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task)
 {
     unsigned y;
@@ -147,6 +197,26 @@ static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task)
     sTransitionData->VBlank_DMA = TRUE;
     task->tState++;
     return FALSE;
+}
+
+static bool8 TriangleTessellationCentered_Darken(struct Task *task)
+{
+    if (sTransitionData->BLDY < 16)
+    {
+        sTransitionData->BLDY += 2;
+        return FALSE;
+    }
+    else if (task->tCycle > 6)
+    {
+        task->tState++;
+        return TRUE;
+    }
+    else
+    {
+        task->tCycle++;
+        task->tState--;
+        return TRUE;
+    }
 }
 
 static bool8 TriangleTessellationZARoyale_Darken(struct Task *task)
