@@ -52,13 +52,14 @@ static void VBlankCB_TriangleTessellation(void)
     VBlankCB_BattleTransition();
 
     REG_BLDY = sTransitionData->BLDY;
-    REG_WIN0H = gScanlineEffectRegBuffers[1][EFFECTREG_WIN0H_OFFSET];
-    REG_WIN1H = gScanlineEffectRegBuffers[1][EFFECTREG_WIN1H_OFFSET];
 
     if (sTransitionData->VBlank_DMA)
     {
         DmaCopy16(3, gScanlineEffectRegBuffers[0], gScanlineEffectRegBuffers[1], EFFECTREG_MAX * 2);
     }
+
+    REG_WIN0H = gScanlineEffectRegBuffers[1][EFFECTREG_WIN0H_OFFSET];
+    REG_WIN1H = gScanlineEffectRegBuffers[1][EFFECTREG_WIN1H_OFFSET];
 }
 
 static void HBlankCB_TriangleTessellation(void)
