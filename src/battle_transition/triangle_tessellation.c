@@ -202,9 +202,19 @@ static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task)
 
 static bool8 TriangleTessellationCentered_Darken(struct Task *task)
 {
-    if (sTransitionData->BLDY < 16)
+    if (sTransitionData->BLDY < 4)
+    {
+        sTransitionData->BLDY += 1;
+        return FALSE;
+    }
+    else if (sTransitionData->BLDY < 10)
     {
         sTransitionData->BLDY += 2;
+        return FALSE;
+    }
+    else if (sTransitionData->BLDY < 16)
+    {
+        sTransitionData->BLDY += 3;
         return FALSE;
     }
     else if (task->tCycle > 6)
