@@ -1,0 +1,1 @@
+    [B_TRANSITION_DOUBLE_CLOCK_WIPE_POKEBALL] = &Task_DoubleClockWipePokeball,
