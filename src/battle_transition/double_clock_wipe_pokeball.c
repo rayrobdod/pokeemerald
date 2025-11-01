@@ -10,25 +10,6 @@
 #include "task.h"
 #include "trig.h"
 
-static inline s16 Cotan(s16 index, s16 y)
-{
-    s16 sin, cos;
-    s32 retval;
-
-    sin = gSineTable[index];
-    if (0 == sin) {
-        return DISPLAY_WIDTH / 2;
-    }
-    cos = gSineTable[index + 64];
-
-    retval = (y * (cos << 8) / sin) >> 8;
-    if (retval > DISPLAY_WIDTH / 2)
-        return DISPLAY_WIDTH / 2;
-    if (retval < -DISPLAY_WIDTH / 2)
-        return -DISPLAY_WIDTH / 2;
-    return retval;
-}
-
 #define EFFECTREG_WIN0H_OFFSET (0)
 #define EFFECTREG_WIN1H_OFFSET (DISPLAY_HEIGHT + EFFECTREG_WIN0H_OFFSET)
 #define EFFECTREG_MAXCOPY (DISPLAY_HEIGHT + EFFECTREG_WIN1H_OFFSET)
@@ -174,6 +155,33 @@ static void HBlankCB_DoubleClockWipe(void)
     }
 }
 
+static inline s32 Cotan(s16 index)
+{
+    s16 sin, cos;
+    s32 retval;
+
+    sin = gSineTable[index];
+    if (0 == sin) {
+        return (DISPLAY_WIDTH / 2) << 8;
+    }
+    cos = gSineTable[index + 64];
+
+    retval = (cos << 8) / sin;
+    retval = min((DISPLAY_WIDTH / 2) << 8, retval);
+    retval = max(-(DISPLAY_WIDTH / 2) << 8, retval);
+    return retval;
+}
+
+static inline s32 MultiplyBoundedToHalfwidth(u32 y, s32 cotan)
+{
+    s32 retval;
+    retval = y * cotan;
+    retval = retval >> 8;
+    retval = min((DISPLAY_WIDTH / 2), retval);
+    retval = max(-(DISPLAY_WIDTH / 2), retval);
+    return retval;
+}
+
 inline static unsigned CircleXAt(unsigned radius, unsigned y)
 {
     return (y > radius ? 0 : Sqrt(radius * radius - y * y));
@@ -236,15 +244,13 @@ static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
     unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = 0; y < DISPLAY_HEIGHT / 2; y++)
     {
         x = max(
-            Cotan(angle2, DISPLAY_HEIGHT / 2 - y),
+            MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot),
             gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]);
 
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, DISPLAY_WIDTH / 2 + x);
@@ -323,17 +329,14 @@ static bool8 DoubleClockWipePokeball_North1(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_NorthWest1(struct Task *task)
 {
-    unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = 0; y < DISPLAY_HEIGHT / 2; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, DISPLAY_WIDTH / 2 + x);
     }
     sTransitionData->VBlank_DMA = TRUE;
@@ -436,14 +439,12 @@ static bool8 DoubleClockWipePokeball_South1(struct Task *task)
 {
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(DISPLAY_WIDTH / 2 - x, DISPLAY_WIDTH);
     }
 
@@ -459,11 +460,7 @@ static bool8 DoubleClockWipePokeball_South1(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_East1(struct Task *task)
 {
-    s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT; y++)
@@ -481,24 +478,21 @@ static bool8 DoubleClockWipePokeball_East1(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_NorthEast2(struct Task *task)
 {
-    unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]));
     }
     for (; y < DISPLAY_HEIGHT / 2 - RADIUS_BUTTON; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
             DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
@@ -508,7 +502,7 @@ static bool8 DoubleClockWipePokeball_NorthEast2(struct Task *task)
     }
     for (; y < DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y],
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]));
@@ -518,7 +512,7 @@ static bool8 DoubleClockWipePokeball_NorthEast2(struct Task *task)
     }
     for (; y < DISPLAY_HEIGHT / 2; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]));
@@ -544,31 +538,28 @@ static bool8 DoubleClockWipePokeball_North2(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_NorthWest2(struct Task *task)
 {
-    unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 + min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]));
     }
     for (; y < DISPLAY_HEIGHT / 2 - RADIUS_BUTTON; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 + min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
             DISPLAY_WIDTH / 2 + min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]));
     }
     for (; y < DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 + min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]),
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]));
@@ -578,7 +569,7 @@ static bool8 DoubleClockWipePokeball_NorthWest2(struct Task *task)
     }
     for (; y < DISPLAY_HEIGHT / 2; y++)
     {
-        x = Cotan(angle2, DISPLAY_HEIGHT / 2 - y);
+        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 + min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
             DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]));
@@ -648,24 +639,21 @@ static bool8 DoubleClockWipePokeball_West2(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_SouthWest2(struct Task *task)
 {
-    unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]);
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1]);
@@ -675,14 +663,14 @@ static bool8 DoubleClockWipePokeball_SouthWest2(struct Task *task)
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1]));
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE + 2; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]);
@@ -708,24 +696,21 @@ static bool8 DoubleClockWipePokeball_South2(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_SouthEast2(struct Task *task)
 {
-    unsigned i;
     s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
+    const s32 cot = Cotan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 - min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]));
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 - min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1]));
@@ -735,14 +720,14 @@ static bool8 DoubleClockWipePokeball_SouthEast2(struct Task *task)
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 - min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]));
     }
     for (; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE + 2; y++)
     {
-        x = Cotan(angle2, y - DISPLAY_HEIGHT / 2);
+        x = MultiplyBoundedToHalfwidth(y - DISPLAY_HEIGHT / 2, cot);
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
             DISPLAY_WIDTH / 2 - min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]),
             DISPLAY_WIDTH / 2 - min(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]));
@@ -757,11 +742,7 @@ static bool8 DoubleClockWipePokeball_SouthEast2(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_East2(struct Task *task)
 {
-    s32 x;
     u32 y;
-    unsigned angle2;
-
-    angle2 = task->tAngle * 256 / FRAMES_PER_ROTATION;
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT; y++)
