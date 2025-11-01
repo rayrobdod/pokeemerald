@@ -11,15 +11,12 @@
 #define EFFECTREG_WIN1H_OFFSET (DISPLAY_HEIGHT + EFFECTREG_WIN0H_OFFSET)
 #define EFFECTREG_MAX (DISPLAY_HEIGHT + EFFECTREG_WIN1H_OFFSET)
 
-#define TRIANGLE_HEIGHT (40)
-#define TRIANGLE_WIDTH (46)
-
 #define tCycle data[1]
 
 static bool8 TriangleTessellation_Init(struct Task *);
-static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task);
+static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *);
 static bool8 TriangleTessellationCentered_Darken(struct Task *);
-static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task);
+static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *);
 static bool8 TriangleTessellationZARoyale_Darken(struct Task *);
 static bool8 TriangleTessellation_End(struct Task *);
 
@@ -93,7 +90,9 @@ static bool8 TriangleTessellation_Init(struct Task *task)
     return TRUE;
 }
 
-static signed TriangleTessellation_offh(signed column, unsigned y_in_row, bool32 flip)
+static inline signed TriangleTessellation_offh(
+	signed column, unsigned y_in_row, bool32 flip,
+	unsigned triangleHeight, unsigned triangleWidth)
 {
     signed offh;
 
@@ -101,9 +100,9 @@ static signed TriangleTessellation_offh(signed column, unsigned y_in_row, bool32
         return 0;
 
     if (flip)
-        y_in_row = TRIANGLE_HEIGHT - y_in_row;
+        y_in_row = triangleHeight - y_in_row;
 
-    offh = y_in_row * TRIANGLE_WIDTH / 2 / TRIANGLE_HEIGHT + TRIANGLE_WIDTH / 2 * column;
+    offh = y_in_row * triangleWidth / 2 / triangleHeight + triangleWidth / 2 * column;
 
     if (offh > DISPLAY_WIDTH / 2)
         offh = DISPLAY_WIDTH / 2;
@@ -113,12 +112,16 @@ static signed TriangleTessellation_offh(signed column, unsigned y_in_row, bool32
 
 static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task)
 {
+    const int TRIANGLE_HEIGHT = 40;
+    const int TRIANGLE_WIDTH = TRIANGLE_HEIGHT * 1.1547; // √(4÷3) ratio for equilateral triangle
+    const int NUM_ROWS = DISPLAY_HEIGHT / TRIANGLE_HEIGHT;
+
     unsigned y;
     signed off0h, off1h;
     signed column0, column1;
 
     signed row = 0;
-    unsigned y_in_row = 20;
+    unsigned y_in_row = TRIANGLE_HEIGHT - (((DISPLAY_HEIGHT - TRIANGLE_HEIGHT) / 2) % TRIANGLE_HEIGHT);
 
     sTransitionData->VBlank_DMA = FALSE;
     for (y = 0; y < DISPLAY_HEIGHT; y++)
@@ -131,14 +134,14 @@ static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task)
         }
         if (y_in_row == 0 || y == 0)
         {
-            column0 = task->tCycle - abs(2 - row) - 1;
+            column0 = task->tCycle - abs((NUM_ROWS / 2) - row) - 1;
             column1 = column0 + 1 + (task->tCycle == 7 ? 1 : 0);
         }
 
-        off0h = TriangleTessellation_offh(column0, y_in_row, (column0 + row) % 2);
+        off0h = TriangleTessellation_offh(column0, y_in_row, (column0 + row) % 2, TRIANGLE_HEIGHT, TRIANGLE_WIDTH);
         gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN0H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off0h, DISPLAY_WIDTH / 2 + off0h);
 
-        off1h = TriangleTessellation_offh(column1, y_in_row, (column1 + row) % 2);
+        off1h = TriangleTessellation_offh(column1, y_in_row, (column1 + row) % 2, TRIANGLE_HEIGHT, TRIANGLE_WIDTH);
         gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN1H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off1h, DISPLAY_WIDTH / 2 + off1h);
     }
     sTransitionData->BLDY = 1;
@@ -149,6 +152,9 @@ static bool8 TriangleTessellationCentered_DrawTriangle(struct Task *task)
 
 static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task)
 {
+    const int TRIANGLE_HEIGHT = 40;
+    const int TRIANGLE_WIDTH = TRIANGLE_HEIGHT * 1.1547; // √(4÷3) ratio for equilateral triangle
+
     unsigned y;
     signed off0h, off1h;
     signed column0, column1;
@@ -188,10 +194,10 @@ static bool8 TriangleTessellationZARoyale_DrawTriangle(struct Task *task)
             }
         }
 
-        off0h = TriangleTessellation_offh(column0, y_in_row, (column0 + row) % 2);
+        off0h = TriangleTessellation_offh(column0, y_in_row, (column0 + row) % 2, TRIANGLE_HEIGHT, TRIANGLE_WIDTH);
         gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN0H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off0h, DISPLAY_WIDTH / 2 + off0h);
 
-        off1h = TriangleTessellation_offh(column1, y_in_row, (column1 + row) % 2);
+        off1h = TriangleTessellation_offh(column1, y_in_row, (column1 + row) % 2, TRIANGLE_HEIGHT, TRIANGLE_WIDTH);
         gScanlineEffectRegBuffers[0][y + EFFECTREG_WIN1H_OFFSET] = WIN_RANGE(DISPLAY_WIDTH / 2 - off1h, DISPLAY_WIDTH / 2 + off1h);
     }
     sTransitionData->BLDY = 1;
