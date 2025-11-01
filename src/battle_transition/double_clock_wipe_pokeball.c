@@ -48,22 +48,14 @@ static inline s16 Cotan(s16 index, s16 y)
 #define SPRITE_ID_OFFSET (7)
 
 #define TILETAG_POKEBALL_FRAGMENT_MASK (0xFA57)
-#define PALTAG_POKEBALL_FRAGMENT_MASK (0xFA57)
 
 static const u32 sSprite_Mask[] = INCBIN_U32("graphics/battle_transitions/double_clock_wipe_pokeball_mask.4bpp.lz");
-static const u16 sPalette_Mask[16] = {0x7C1F, 0};
 
 static const struct CompressedSpriteSheet sSpriteSheet_Mask =
 {
     .data = sSprite_Mask,
     .size = 8 * 4 * 4 * 4 * 3,
     .tag = TILETAG_POKEBALL_FRAGMENT_MASK,
-};
-
-static const struct SpritePalette sSpritePalette_Mask =
-{
-    .data = sPalette_Mask,
-    .tag = PALTAG_POKEBALL_FRAGMENT_MASK,
 };
 
 static const struct OamData sOamData_Mask =
@@ -111,7 +103,7 @@ static const union AnimCmd *const sAnimTable_Mask[] =
 static const struct SpriteTemplate sSpriteTemplate_Mask =
 {
     .tileTag = TILETAG_POKEBALL_FRAGMENT_MASK,
-    .paletteTag = PALTAG_POKEBALL_FRAGMENT_MASK,
+    .paletteTag = TAG_NONE,
     .oam = &sOamData_Mask,
     .anims = sAnimTable_Mask,
     .images = NULL,
@@ -261,7 +253,6 @@ static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
 
     if (task->tAngle == 2)
     {
-        LoadSpritePalette(&sSpritePalette_Mask);
         LoadCompressedSpriteSheet(&sSpriteSheet_Mask);
     }
     if (task->tAngle == 3)
@@ -789,7 +780,6 @@ static bool8 DoubleClockWipePokeball_East2(struct Task *task)
 
 static bool8 DoubleClockWipePokeball_End(struct Task *task)
 {
-    FreeSpritePaletteByTag(PALTAG_POKEBALL_FRAGMENT_MASK);
     FreeSpriteTilesByTag(TILETAG_POKEBALL_FRAGMENT_MASK);
     FadeScreenBlack();
     DestroyTask(FindTaskIdByFunc(task->func));
