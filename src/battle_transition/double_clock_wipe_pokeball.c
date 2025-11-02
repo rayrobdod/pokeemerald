@@ -23,7 +23,8 @@
 #define RADIUS_BUTTON (24)
 #define HALFWIDTH_BELT (4)
 
-#define FRAMES_PER_ROTATION (34)
+// Special cases for horizontal frames means assume this is a multiple of 2
+#define FRAMES_PER_ROTATION (44)
 
 #define tAngle data[2]
 #define SPRITE_ID_OFFSET (7)
