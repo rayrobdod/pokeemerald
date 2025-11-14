@@ -631,71 +631,43 @@ static bool8 DoubleClockWipePokeball_NorthEast2(struct Task *task)
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
-    for (y = 0; y < DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y++)
-    {
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE; y++)
+    for (y = DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y < DISPLAY_HEIGHT / 2; y++)
     {
         x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
 
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
-            (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y] ?
-                WIN_RANGE(0, 0) :
-                WIN_RANGE(
+        if (y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE || y >= DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT)
+        {
+            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
+                (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y] ?
+                    WIN_RANGE(0, 0) :
+                    WIN_RANGE(
+                        DISPLAY_WIDTH / 2 + x,
+                        DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
+                );
+        }
+        else
+        {
+            if (x < gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y],
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
+            else if (x < gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
                     DISPLAY_WIDTH / 2 + x,
-                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            );
-    }
-    for (; y < DISPLAY_HEIGHT / 2 - RADIUS_BUTTON; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
+            else
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
 
-        if (x < gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y],
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
-        else if (x < gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + x,
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        if (x < gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + x,
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
-
-
-        if (x < gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y],
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
-        else if (x < gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + x,
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-    }
-    for (; y < DISPLAY_HEIGHT / 2; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
-            (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y] ?
-                WIN_RANGE(0, 0) :
-                WIN_RANGE(
-                    DISPLAY_WIDTH / 2 + x,
-                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            );
+            if (y >= DISPLAY_HEIGHT / 2 - RADIUS_BUTTON)
+            {
+                if (x < gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y])
+                    gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
+                        DISPLAY_WIDTH / 2 + x,
+                        DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]);
+                else
+                    gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
+            }
+        }
     }
     sTransitionData->VBlank_DMA = TRUE;
 
@@ -740,61 +712,39 @@ static bool8 DoubleClockWipePokeball_SouthEast2(struct Task *task)
     u32 y;
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
-    for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT; y++)
+    sTransitionData->VBlank_DMA = FALSE;
+    for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE; y++)
     {
         x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
 
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2,
-                DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            );
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2,
-                DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1])
-            );
-
-        if (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]);
-        else if (x > gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + x);
+        if (y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT || y >= DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE)
+        {
+            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
+                WIN_RANGE(
+                    DISPLAY_WIDTH / 2,
+                    DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
+                );
+        }
         else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
+        {
+            if (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]);
+            else if (x > gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
+                    DISPLAY_WIDTH / 2 + x);
+            else
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
 
-        if (x > gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1]);
-        else if (x > gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + x);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2,
-                DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            );
+            if (y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON)
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
+                    WIN_RANGE(
+                        DISPLAY_WIDTH / 2,
+                        DISPLAY_WIDTH / 2 + min(x, gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1])
+                    );
+        }
     }
     sTransitionData->VBlank_DMA = TRUE;
 
@@ -828,61 +778,39 @@ static bool8 DoubleClockWipePokeball_SouthWest2(struct Task *task)
     u32 y;
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
-    for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT; y++)
+    sTransitionData->VBlank_DMA = FALSE;
+    for (y = DISPLAY_HEIGHT / 2; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE; y++)
     {
         x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
 
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            );
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1])
-            );
-
-        if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-        else if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + x);
+        if (y < DISPLAY_HEIGHT / 2 + HALFWIDTH_BELT || y >= DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE)
+        {
+            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
+                WIN_RANGE(
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
+                    DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
+                );
+        }
         else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1]);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_INNER_EDGE; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
+        {
+            if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
+            else if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
+                    DISPLAY_WIDTH / 2 + x);
+            else
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1]);
 
-        if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
-        else if (x < -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + x);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + DISPLAY_HEIGHT - y - 1]);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 + RADIUS_OUTER_EDGE; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1],
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + DISPLAY_HEIGHT - y - 1])
-            );
+            if (y < DISPLAY_HEIGHT / 2 + RADIUS_BUTTON)
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
+                    WIN_RANGE(
+                        DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1],
+                        DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + DISPLAY_HEIGHT - y - 1])
+                    );
+        }
     }
     sTransitionData->VBlank_DMA = TRUE;
 
@@ -913,61 +841,39 @@ static bool8 DoubleClockWipePokeball_NorthWest2(struct Task *task)
     u32 y;
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
-    for (y = DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE; y++)
+    sTransitionData->VBlank_DMA = FALSE;
+    for (y = DISPLAY_HEIGHT / 2 - RADIUS_OUTER_EDGE; y < DISPLAY_HEIGHT / 2; y++)
     {
         x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
 
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
-                DISPLAY_WIDTH / 2
-            );
-    }
-    for (; y < DISPLAY_HEIGHT / 2 - RADIUS_BUTTON; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
-        else if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + x,
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
+        if (y < DISPLAY_HEIGHT / 2 - RADIUS_INNER_EDGE || y >= DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT)
+        {
+            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
+                WIN_RANGE(
+                    DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
+                    DISPLAY_WIDTH / 2
+                );
+        }
         else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
-    }
-    for (; y < DISPLAY_HEIGHT / 2 - HALFWIDTH_BELT; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
+        {
+            if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(0, 0);
+            else if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 + x,
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
+            else
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] = WIN_RANGE(
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
+                    DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
 
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]),
-                DISPLAY_WIDTH / 2
-            );
-
-        if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
-        else if (x > -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y])
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 + x,
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
-        else
-            gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y],
-                DISPLAY_WIDTH / 2 - gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + y]);
-    }
-    for (; y < DISPLAY_HEIGHT / 2; y++)
-    {
-        x = MultiplyBoundedToHalfwidth(DISPLAY_HEIGHT / 2 - y, tan);
-
-        gScanlineEffectRegBuffers[0][EFFECTREG_WIN0H_OFFSET + y] =
-            WIN_RANGE(
-                DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + y]),
-                DISPLAY_WIDTH / 2
-            );
+            if (y >= DISPLAY_HEIGHT / 2 - RADIUS_BUTTON)
+                gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] =
+                    WIN_RANGE(
+                        DISPLAY_WIDTH / 2 + max(x, -gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + y]),
+                        DISPLAY_WIDTH / 2
+                    );
+        }
     }
     sTransitionData->VBlank_DMA = TRUE;
 
