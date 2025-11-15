@@ -252,7 +252,7 @@ static bool8 DoubleClockWipePokeball_Init(struct Task *task)
 static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
 {
     s32 x1, x2;
-    u32 y;
+    u32 y, x;
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -270,6 +270,26 @@ static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
     if (task->tAngle == 2)
     {
         LoadCompressedSpriteSheet(&sSpriteSheet_Mask);
+    }
+    if (task->tAngle == 8)
+    {
+        volatile u16 *canvas = (volatile u16*) (OBJ_VRAM0 + TILE_OFFSET_4BPP(
+                GetSpriteTileStartByTag(TILETAG_POKEBALL_FRAGMENT_MASK) + 16 * 3));
+
+        for (y = 0; y < 32; y++)
+        {
+            u32 buttonBorder = gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + (DISPLAY_HEIGHT / 2) - 32 + y];
+            for (x = 0; x < 32; x += 4)
+            {
+                u32 i = (x / 4) % 2 + (x / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
+                if (buttonBorder <= x)
+                    canvas[i] = 0x0000;
+                else if (buttonBorder - 4 < x)
+                    canvas[i] = (0xFFFFu << (32 - (buttonBorder - x) * 4)) >> (32 - (buttonBorder - x) * 4);
+                else
+                    canvas[i] = 0xFFFF;
+            }
+        }
     }
 
     task->tAngle++;
@@ -615,7 +635,7 @@ static bool8 DoubleClockWipePokeball_North1(struct Task *task)
         gSprites[task->data[SPRITE_ID_OFFSET]].x = 120 - 16;
         gSprites[task->data[SPRITE_ID_OFFSET]].y = 80 - 16 + 1;
         gSprites[task->data[SPRITE_ID_OFFSET]].vFlip = FALSE;
-        gSprites[task->data[SPRITE_ID_OFFSET]].hFlip = FALSE;
+        gSprites[task->data[SPRITE_ID_OFFSET]].hFlip = TRUE;
     }
 
     task->tState++;
@@ -699,7 +719,7 @@ static bool8 DoubleClockWipePokeball_East2(struct Task *task)
         gSprites[task->data[SPRITE_ID_OFFSET]].x = 120 - 16;
         gSprites[task->data[SPRITE_ID_OFFSET]].y = 80 + 16 + 1;
         gSprites[task->data[SPRITE_ID_OFFSET]].vFlip = TRUE;
-        gSprites[task->data[SPRITE_ID_OFFSET]].hFlip = FALSE;
+        gSprites[task->data[SPRITE_ID_OFFSET]].hFlip = TRUE;
     }
 
     task->tState++;
