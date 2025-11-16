@@ -23,6 +23,13 @@
 #define RADIUS_BUTTON (24)
 #define HALFWIDTH_BELT (4)
 
+#define MASK_SPRITE_1_X (48)
+#define MASK_SPRITE_1_Y (48)
+#define MASK_SPRITE_2_X (40)
+#define MASK_SPRITE_2_Y (16)
+#define MASK_SPRITE_3_X (8)
+#define MASK_SPRITE_3_Y (16)
+
 // Special cases for horizontal frames means assume this is a multiple of 2
 #define FRAMES_PER_ROTATION (44)
 
@@ -31,12 +38,12 @@
 
 #define TILETAG_POKEBALL_FRAGMENT_MASK (0xFA57)
 
-static const u32 sSprite_Mask[] = INCBIN_U32("graphics/battle_transitions/double_clock_wipe_pokeball_mask.4bpp.lz");
-
-static const struct CompressedSpriteSheet sSpriteSheet_Mask =
+static const struct SpriteSheet sSpriteSheet_Mask =
 {
-    .data = sSprite_Mask,
-    .size = 8 * 4 * 4 * 4 * 4,
+    // just reserving space with an associated tag
+    // The data is rewritten before the sprites are used, so the data value does not matter
+    .data = &sSpriteSheet_Mask,
+    .size = TILE_SIZE_4BPP * 16 * 4,
     .tag = TILETAG_POKEBALL_FRAGMENT_MASK,
 };
 
@@ -252,7 +259,7 @@ static bool8 DoubleClockWipePokeball_Init(struct Task *task)
 static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
 {
     s32 x1, x2;
-    u32 y, x;
+    u32 y;
     const s32 tan = Tan(task->tAngle * 256 / FRAMES_PER_ROTATION);
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -267,9 +274,87 @@ static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
     }
     sTransitionData->VBlank_DMA = TRUE;
 
-    if (task->tAngle == 2)
+    if (task->tAngle == 4)
     {
-        LoadCompressedSpriteSheet(&sSpriteSheet_Mask);
+        LoadSpriteSheet(&sSpriteSheet_Mask);
+    }
+    if (task->tAngle == 5)
+    {
+        volatile u16 *canvas = (volatile u16*) (OBJ_VRAM0 + TILE_OFFSET_4BPP(
+                GetSpriteTileStartByTag(TILETAG_POKEBALL_FRAGMENT_MASK) + 16 * 0));
+
+        for (y = 0; y < 32; y++)
+        {
+            s32 outer = gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + MASK_SPRITE_1_Y - 1 + y] - MASK_SPRITE_1_X;
+            s32 inner = gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + MASK_SPRITE_1_Y - 1 + y] - MASK_SPRITE_1_X;
+            for (x1 = 0; x1 < 32; x1 += 4)
+            {
+                u32 i = (x1 / 4) % 2 + (x1 / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
+
+                if (outer - x1 <= 0)
+                    canvas[i] = 0x0000;
+                else if (outer - x1 < 4)
+                    canvas[i] = (0xFFFFu << (32 - (outer - x1) * 4)) >> (32 - (outer - x1) * 4);
+                else if (inner - x1 <= 0)
+                    canvas[i] = 0xFFFF;
+                else if (inner - x1 < 4)
+                    canvas[i] = (0xFFFFu >> ((inner - x1) * 4)) << ((inner - x1) * 4);
+                else
+                    canvas[i] = 0x0000;
+            }
+        }
+    }
+    if (task->tAngle == 6)
+    {
+        volatile u16 *canvas = (volatile u16*) (OBJ_VRAM0 + TILE_OFFSET_4BPP(
+                GetSpriteTileStartByTag(TILETAG_POKEBALL_FRAGMENT_MASK) + 16 * 1));
+
+        for (y = 0; y < 32; y++)
+        {
+            s32 outer = gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + MASK_SPRITE_2_Y - 1 + y] - MASK_SPRITE_2_X;
+            s32 inner = gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + MASK_SPRITE_2_Y - 1 + y] - MASK_SPRITE_2_X;
+            for (x1 = 0; x1 < 32; x1 += 4)
+            {
+                u32 i = (x1 / 4) % 2 + (x1 / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
+
+                if (outer - x1 <= 0)
+                    canvas[i] = 0x0000;
+                else if (outer - x1 < 4)
+                    canvas[i] = (0xFFFFu << (32 - (outer - x1) * 4)) >> (32 - (outer - x1) * 4);
+                else if (inner - x1 <= 0)
+                    canvas[i] = 0xFFFF;
+                else if (inner - x1 < 4)
+                    canvas[i] = (0xFFFFu >> ((inner - x1) * 4)) << ((inner - x1) * 4);
+                else
+                    canvas[i] = 0x0000;
+            }
+        }
+    }
+    if (task->tAngle == 7)
+    {
+        volatile u16 *canvas = (volatile u16*) (OBJ_VRAM0 + TILE_OFFSET_4BPP(
+                GetSpriteTileStartByTag(TILETAG_POKEBALL_FRAGMENT_MASK) + 16 * 2));
+
+        for (y = 0; y < 32; y++)
+        {
+            s32 outer = gScanlineEffectRegBuffers[0][EFFECTREG_OUTER_EDGE + MASK_SPRITE_3_Y - 1 + y] - MASK_SPRITE_3_X;
+            s32 inner = gScanlineEffectRegBuffers[0][EFFECTREG_INNER_EDGE + MASK_SPRITE_3_Y - 1 + y] - MASK_SPRITE_3_X;
+            for (x1 = 0; x1 < 32; x1 += 4)
+            {
+                u32 i = (x1 / 4) % 2 + (x1 / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
+
+                if (outer - x1 <= 0)
+                    canvas[i] = 0x0000;
+                else if (outer - x1 < 4)
+                    canvas[i] = (0xFFFFu << (32 - (outer - x1) * 4)) >> (32 - (outer - x1) * 4);
+                else if (inner - x1 <= 0)
+                    canvas[i] = 0xFFFF;
+                else if (inner - x1 < 4)
+                    canvas[i] = (0xFFFFu >> ((inner - x1) * 4)) << ((inner - x1) * 4);
+                else
+                    canvas[i] = 0x0000;
+            }
+        }
     }
     if (task->tAngle == 8)
     {
@@ -278,14 +363,14 @@ static bool8 DoubleClockWipePokeball_NorthEast1(struct Task *task)
 
         for (y = 0; y < 32; y++)
         {
-            u32 buttonBorder = gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + (DISPLAY_HEIGHT / 2) - 32 + y];
-            for (x = 0; x < 32; x += 4)
+            s32 buttonBorder = gScanlineEffectRegBuffers[0][EFFECTREG_BUTTON + (DISPLAY_HEIGHT / 2) - 32 + y];
+            for (x1 = 0; x1 < 32; x1 += 4)
             {
-                u32 i = (x / 4) % 2 + (x / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
-                if (buttonBorder <= x)
+                u32 i = (x1 / 4) % 2 + (x1 / 8) * 16 + (y % 8) * 2 + (y / 8) * 64;
+                if (buttonBorder - x1 <= 0)
                     canvas[i] = 0x0000;
-                else if (buttonBorder - 4 < x)
-                    canvas[i] = (0xFFFFu << (32 - (buttonBorder - x) * 4)) >> (32 - (buttonBorder - x) * 4);
+                else if (buttonBorder - x1 < 4)
+                    canvas[i] = (0xFFFFu << (32 - (buttonBorder - x1) * 4)) >> (32 - (buttonBorder - x1) * 4);
                 else
                     canvas[i] = 0xFFFF;
             }
@@ -426,9 +511,9 @@ static bool8 DoubleClockWipePokeball_South1(struct Task *task)
     }
     sTransitionData->VBlank_DMA = TRUE;
 
-    task->data[SPRITE_ID_OFFSET + 0] = CreateSprite(&sSpriteTemplate_Mask, 168 + 16, DISPLAY_HEIGHT + 2 - 48 - 16, 0);
-    task->data[SPRITE_ID_OFFSET + 1] = CreateSprite(&sSpriteTemplate_Mask, 160 + 16, DISPLAY_HEIGHT + 2 - 16 - 16, 0);
-    task->data[SPRITE_ID_OFFSET + 2] = CreateSprite(&sSpriteTemplate_Mask, 128 + 16, DISPLAY_HEIGHT + 2 - 16 - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 0] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 + MASK_SPRITE_1_X + 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_1_Y - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 1] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 + MASK_SPRITE_2_X + 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_2_Y - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 2] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 + MASK_SPRITE_3_X + 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_3_Y - 16, 0);
     for (i = 0; i < 3; i++)
         if (MAX_SPRITES != task->data[SPRITE_ID_OFFSET + i])
         {
@@ -436,9 +521,9 @@ static bool8 DoubleClockWipePokeball_South1(struct Task *task)
             gSprites[task->data[SPRITE_ID_OFFSET + i]].vFlip = TRUE;
         }
 
-    task->data[SPRITE_ID_OFFSET + 3] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 168 - 16, DISPLAY_HEIGHT + 2 - 48 - 16, 0);
-    task->data[SPRITE_ID_OFFSET + 4] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 160 - 16, DISPLAY_HEIGHT + 2 - 16 - 16, 0);
-    task->data[SPRITE_ID_OFFSET + 5] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 128 - 16, DISPLAY_HEIGHT + 2 - 16 - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 3] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_1_X - 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_1_Y - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 4] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_2_X - 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_2_Y - 16, 0);
+    task->data[SPRITE_ID_OFFSET + 5] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_3_X - 16, DISPLAY_HEIGHT + 2 - MASK_SPRITE_3_Y - 16, 0);
     for (i = 3; i < 6; i++)
         if (MAX_SPRITES != task->data[SPRITE_ID_OFFSET + i])
         {
@@ -529,9 +614,9 @@ static bool8 DoubleClockWipePokeball_West1(struct Task *task)
         gScanlineEffectRegBuffers[0][EFFECTREG_WIN1H_OFFSET + y] = WIN_RANGE(0, 0);
     }
 
-    task->data[SPRITE_ID_OFFSET + 6] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 168 - 16, 48 + 16, 0);
-    task->data[SPRITE_ID_OFFSET + 7] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 160 - 16, 16 + 16, 0);
-    task->data[SPRITE_ID_OFFSET + 8] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH - 128 - 16, 16 + 16, 0);
+    task->data[SPRITE_ID_OFFSET + 6] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_1_X - 16, MASK_SPRITE_1_Y + 16, 0);
+    task->data[SPRITE_ID_OFFSET + 7] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_2_X - 16, MASK_SPRITE_2_Y + 16, 0);
+    task->data[SPRITE_ID_OFFSET + 8] = CreateSprite(&sSpriteTemplate_Mask, DISPLAY_WIDTH / 2 - MASK_SPRITE_3_X - 16, MASK_SPRITE_3_Y + 16, 0);
     for (i = 6; i < 9; i++)
         if (MAX_SPRITES != task->data[SPRITE_ID_OFFSET + i])
         {
