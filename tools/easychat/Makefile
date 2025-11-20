@@ -4,7 +4,7 @@ CXXFLAGS := -Wall -std=c++17 -O2
 
 INCLUDES := -I .
 
-SRCS := easychat.cpp json11.cpp util.cpp mode/wordinfo.cpp
+SRCS := easychat.cpp json11.cpp util.cpp mode/pokemon.cpp mode/wordinfo.cpp
 
 HEADERS := global.h json11.h mode.h util.h
 

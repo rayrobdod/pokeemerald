@@ -10,6 +10,8 @@ easy_chat_group_hobbies.h
 easy_chat_group_lifestyle.h
 easy_chat_group_misc.h
 easy_chat_group_people.h
+easy_chat_group_pokemon.h
+easy_chat_group_pokemon2.h
 easy_chat_group_speech.h
 easy_chat_group_status.h
 easy_chat_group_time.h

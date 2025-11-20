@@ -1,3 +1,4 @@
+#include "mode.h"
 
 #include "global.h"
 #include "json11.h"
