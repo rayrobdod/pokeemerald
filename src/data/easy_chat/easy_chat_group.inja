@@ -26,7 +26,7 @@ const struct EasyChatWordInfo {{label}}[] = {
     [EC_INDEX({{word.id}})] =
     {
         .text = {{word.text_label}},
-        .alphabeticalOrder = {{indexOf(texts, at(texts_sorted, loop.index))}},
+        .alphabeticalOrder = EC_INDEX({{at(words, indexOf(texts, at(texts_sorted, loop.index))).id}}),
         .enabled = {% if default(word.enabled, true) %}TRUE{% else %}FALSE{% endif %},
     },
 ## endfor
