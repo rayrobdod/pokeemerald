@@ -146,6 +146,7 @@ PREPROC   := $(TOOLS_DIR)/preproc/preproc$(EXE)
 RAMSCRGEN := $(TOOLS_DIR)/ramscrgen/ramscrgen$(EXE)
 FIX       := $(TOOLS_DIR)/gbafix/gbafix$(EXE)
 MAPJSON   := $(TOOLS_DIR)/mapjson/mapjson$(EXE)
+EASYCHAT  := $(TOOLS_DIR)/easychat/easychat$(EXE)
 JSONPROC  := $(TOOLS_DIR)/jsonproc/jsonproc$(EXE)
 
 PERL := perl
@@ -257,6 +258,7 @@ tidymodern:
 	rm -rf $(MODERN_OBJ_DIR_NAME)
 
 # Other rules
+include easychat_data_rules.mk
 include graphics_file_rules.mk
 include map_data_rules.mk
 include spritesheet_rules.mk
