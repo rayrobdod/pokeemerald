@@ -1,6 +1,6 @@
 
 #include "global.h"
-#include "mode.h"
+#include "wordinfo.h"
 #include <filesystem>
 
 using std::string;
@@ -19,31 +19,33 @@ int main(int argc, char *argv[])
         std::filesystem::path input_file(argv[2]);
         std::filesystem::path output_file(argv[3]);
 
-        mode_wordinfo(input_file, output_file);
+        WordInfoList data = parseJson(input_file);
+        writeWordInfo(output_file, data, input_file);
     }
     else if (mode == "pokemon")
     {
         if (argc != 6)
-            FATAL_ERROR("USAGE: easychat pokemon regional|national <species_names_file> <pokedex_constants_file> <output_file>\n");
+            FATAL_ERROR("USAGE: easychat pokemon hoenn|kantojohto <species_names_file> <pokedex_constants_file> <output_file>\n");
 
-        string group_str(argv[2]);
-        enum DexGroup group;
-        if (group_str == "hoenn")
-            group = DexGroup::HOENN;
-        else if (group_str == "kantojohto")
-            group = DexGroup::KANTOJOHTO;
+        string dex_group_str(argv[2]);
+        enum DexGroup dex_group;
+        if (dex_group_str == "hoenn")
+            dex_group = DexGroup::HOENN;
+        else if (dex_group_str == "kantojohto")
+            dex_group = DexGroup::KANTOJOHTO;
         else
-            FATAL_ERROR("USAGE: easychat pokemon regional|national <species_names_file> <pokedex_constants_file> <output_file>\n");
+            FATAL_ERROR("USAGE: easychat pokemon hoenn|kantojohto <species_names_file> <pokedex_constants_file> <output_file>\n");
 
         std::filesystem::path species_names_file(argv[3]);
         std::filesystem::path pokedex_constants_file(argv[4]);
         std::filesystem::path output_file(argv[5]);
 
-        mode_pokemon(group, species_names_file, pokedex_constants_file, output_file);
+        WordInfoList data = parsePokemon(dex_group, species_names_file, pokedex_constants_file);
+        writeValueList(output_file, data, {species_names_file, pokedex_constants_file});
     }
     else
     {
-        FATAL_ERROR("ERROR: <mode> must be 'wordinfo'.\n");
+        FATAL_ERROR("ERROR: <mode> must be 'wordinfo', 'pokemon'.\n");
     }
 
     return 0;

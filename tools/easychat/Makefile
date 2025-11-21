@@ -4,9 +4,15 @@ CXXFLAGS := -Wall -std=c++17 -O2
 
 INCLUDES := -I .
 
-SRCS := easychat.cpp json11.cpp util.cpp mode/pokemon.cpp mode/wordinfo.cpp
+SRCS += easychat.cpp
+SRCS += json11.cpp
+SRCS += util.cpp
+SRCS += wordinfo.cpp
 
-HEADERS := global.h json11.h mode.h util.h
+HEADERS += global.h
+HEADERS += json11.h
+HEADERS += util.h
+HEADERS += wordinfo.h
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
