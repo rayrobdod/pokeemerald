@@ -406,11 +406,7 @@ void writeWordInfo(
 
 void writeValueList(const std::filesystem::path& output_file, const WordInfoList& data, const DoNotModifyHeader& header)
 {
-    std::map<string, string> text_indexes;
-    for (WordInfo word : data.words)
-    {
-        text_indexes.emplace(word.clean_text(), word.index);
-    }
+    std::set<WordInfo, WordInfoCmpByText> sorted_words(data.words.begin(), data.words.end());
 
     std::ofstream output_stream(output_file);
 
@@ -422,11 +418,11 @@ void writeValueList(const std::filesystem::path& output_file, const WordInfoList
         << "[] = {"
         << std::endl;
 
-    for (std::pair<string, string> valueKey : text_indexes)
+    for (WordInfo word : sorted_words)
     {
         output_stream
             << "    "
-            << valueKey.second
+            << word.index
             << ","
             << std::endl;
     }
