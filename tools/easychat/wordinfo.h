@@ -21,6 +21,8 @@ public:
         std::string text,
         std::string text_label,
         bool enabled);
+
+    std::string clean_text() const;
 };
 
 struct WordInfoList {
@@ -46,12 +48,17 @@ public:
     {
         os
             << "//" << std::endl
-            << "// DO NOT MODIFY THIS FILE! It is auto-generated from ";
-        for (auto f : this->from_files) {
-            os << f << ", ";
+            << "// DO NOT MODIFY THIS FILE! It is auto-generated ";
+        if (! this->from_files.empty())
+        {
+            os << "from ";
+            for (auto f : this->from_files)
+            {
+                os << f << ", ";
+            }
         }
         os
-            << " by tools/easychat/easychat"
+            << "by tools/easychat/easychat"
             << std::endl
             << "//" << std::endl
             << std::endl;
@@ -79,8 +86,21 @@ WordInfoList parsePokemon(
         const std::filesystem::path& species_names_file,
         const std::filesystem::path& pokedex_file);
 
+WordInfoList parseMoves(
+        const std::filesystem::path& move_names_file,
+        const std::filesystem::path& move_order_file);
+
+std::vector<std::string> parseUnusedLettersFile(
+        const std::filesystem::path& unused_letters_file);
+
 void writeWordInfo(const std::filesystem::path& output_file, const WordInfoList&, const DoNotModifyHeader&);
 
 void writeValueList(const std::filesystem::path& output_file, const WordInfoList&, const DoNotModifyHeader&);
+
+void writeByLetter(
+        const std::filesystem::path& output_file,
+        const std::vector<WordInfoList>&,
+        const std::vector<std::string>& unused_letter_suffixes,
+        const DoNotModifyHeader&);
 
 #endif // WORDINFO_H

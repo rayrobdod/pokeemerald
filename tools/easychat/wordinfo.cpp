@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <fstream>
 #include <regex>
+#include <set>
+#include <iostream>
 
 using std::string;
 using json11::Json;
@@ -23,6 +25,15 @@ WordInfo::WordInfo(
     enabled(enabled)
 {}
 
+string WordInfo::clean_text() const
+{
+    string retval = this->text;
+    search_replace_all(retval, "…", "...");
+    search_replace_all(retval, "{", "");
+    search_replace_all(retval, "}", "");
+    return retval;
+}
+
 WordInfoList::WordInfoList(
         std::string label,
         std::vector<WordInfo> words) :
@@ -36,6 +47,28 @@ DoNotModifyHeader::DoNotModifyHeader(const std::filesystem::path& from_file) : f
 DoNotModifyHeader::DoNotModifyHeader(const std::initializer_list<std::filesystem::path>& from_files) : from_files(from_files)
 {}
 
+struct WordInfoCmpByText
+{
+    bool operator()(const WordInfo& lhs, const WordInfo& rhs) const
+    {
+        if (lhs.clean_text() != rhs.clean_text())
+        {
+            return lhs.clean_text() < rhs.clean_text();
+        }
+        else if (lhs.id != rhs.id)
+        {
+            if (lhs.id == "EC_WORD_PSYCHIC")
+                return true;
+            if (rhs.id == "EC_WORD_PSYCHIC")
+                return false;
+            return lhs.id < rhs.id;
+        }
+        else
+        {
+            return false;
+        }
+    }
+};
 
 WordInfoList parseJson(const std::filesystem::path& input_file)
 {
@@ -194,7 +227,7 @@ WordInfoList parsePokemon(
                 string id;
                 id += pokemonGroupMacro(dex_group);
                 id += "(";
-                id += index;
+                id += i->str(1);
                 id += ")";
 
                 words_out.emplace_back(
@@ -213,6 +246,94 @@ WordInfoList parsePokemon(
     return retval;
 }
 
+WordInfoList parseMoves(
+        const std::filesystem::path& move_names_file,
+        const std::filesystem::path& move_order_file)
+{
+    string move_order_str = read_text_file(move_order_file);
+    std::vector<string> moves;
+    {
+        std::regex entry_regex("MOVE_(\\w+),");
+        auto entries_begin = std::sregex_iterator(move_order_str.cbegin(), move_order_str.cend(), entry_regex);
+        auto entries_end = std::sregex_iterator();
+
+        for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
+        {
+            moves.push_back(i->str(1));
+        }
+    }
+
+    string label;
+    string label_number;
+    {
+        std::regex label_regex("const u16 (gEasyChatGroup_Move)(\\d)\\[\\] = \\{");
+        std::smatch m;
+        std::regex_search(move_order_str.cbegin(), move_order_str.cend(), m, label_regex);
+        if (m.empty())
+            FATAL_ERROR("malformed input: did not find declaration\n");
+        label = m.str(1) + m.str(2);
+        label_number = m.str(2);
+    }
+
+    string move_names_str = read_text_file(move_names_file);
+    std::vector<WordInfo> words_out;
+    {
+        std::regex entry_regex("\\[MOVE_(\\w+)\\]\\s*=\\s*_\\(\"([^\"]+)\"\\),");
+        auto entries_begin = std::sregex_iterator(move_names_str.cbegin(), move_names_str.cend(), entry_regex);
+        auto entries_end = std::sregex_iterator();
+
+        for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
+        {
+            if (moves.end() != std::find(moves.begin(), moves.end(), i->str(1)))
+            {
+                string index("MOVE_");
+                index += i->str(1);
+
+                string id;
+                id += "EC_MOVE";
+                if ("1" != label_number)
+                    id += label_number;
+                id += "(";
+                id += i->str(1);
+                id += ")";
+
+                words_out.emplace_back(
+                    id,
+                    index,
+                    i->str(2),
+                    "",
+                    true);
+            }
+        }
+    }
+
+    WordInfoList retval(
+        label,
+        words_out);
+    return retval;
+}
+
+std::vector<std::string> parseUnusedLettersFile(
+        const std::filesystem::path& unused_letters_file)
+{
+    std::vector<string> unused_letter_suffixes;
+    if (std::filesystem::exists(unused_letters_file))
+    {
+        string unused_letters_str = read_text_file(unused_letters_file);
+        {
+            std::regex entry_regex("const u16 gEasyChatWordsByLetter_(\\w+)\\[\\] = \\{");
+            auto entries_begin = std::sregex_iterator(unused_letters_str.cbegin(), unused_letters_str.cend(), entry_regex);
+            auto entries_end = std::sregex_iterator();
+
+            for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
+            {
+                unused_letter_suffixes.push_back(i->str(1));
+            }
+        }
+    }
+    return unused_letter_suffixes;
+}
+
 void writeWordInfo(
         const std::filesystem::path& output_file,
         const WordInfoList& data,
@@ -221,11 +342,7 @@ void writeWordInfo(
     std::vector<string> texts;
     for (WordInfo word : data.words)
     {
-        string text = word.text;
-        search_replace_all(text, "…", "...");
-        search_replace_all(text, "{", "");
-        search_replace_all(text, "}", "");
-        texts.push_back(text);
+        texts.push_back(word.clean_text());
     }
     std::vector<string> sorted_texts(texts);
     std::sort(sorted_texts.begin(), sorted_texts.end());
@@ -292,12 +409,7 @@ void writeValueList(const std::filesystem::path& output_file, const WordInfoList
     std::map<string, string> text_indexes;
     for (WordInfo word : data.words)
     {
-        string text = word.text;
-        search_replace_all(text, "…", "...");
-        search_replace_all(text, "{", "");
-        search_replace_all(text, "}", "");
-
-        text_indexes.emplace(text, word.index);
+        text_indexes.emplace(word.clean_text(), word.index);
     }
 
     std::ofstream output_stream(output_file);
@@ -322,4 +434,142 @@ void writeValueList(const std::filesystem::path& output_file, const WordInfoList
     output_stream
         << "};"
         << std::endl;
+}
+
+void writeByLetter(
+        const std::filesystem::path& output_file,
+        const std::vector<WordInfoList>& datass,
+        const std::vector<string>& unused_letter_suffixes,
+        const DoNotModifyHeader& header)
+{
+    std::ofstream output_stream(output_file);
+
+    std::set<WordInfo, WordInfoCmpByText> sorted_words;
+
+    for (WordInfoList datas : datass)
+    for (WordInfo data : datas.words)
+    {
+        sorted_words.insert(data);
+    }
+
+    output_stream << header;
+
+    output_stream
+        << "#include \"easy_chat.h\""
+        << std::endl
+        << std::endl
+        << "#define DOUBLE_SPECIES_NAME EC_EMPTY_WORD, 2,"
+        << std::endl
+        << std::endl;
+
+    {
+        const char before_letter_str[2] = {'A', '\0'};
+        const char after_letter_str[2] = {static_cast<char>('Z' + 1), '\0'};
+
+        output_stream
+            << "const u16 gEasyChatWordsByLetter_Others[] = {"
+            << std::endl;
+
+        WordInfo before_letter_key("", "", before_letter_str, "", false);
+        WordInfo after_letter_key("", "", after_letter_str, "", false);
+
+        auto before_letter_bound = sorted_words.lower_bound(before_letter_key);
+        auto after_letter_bound = sorted_words.lower_bound(after_letter_key);
+
+        for (auto wordi = sorted_words.begin(); wordi != before_letter_bound; ++wordi)
+        {
+            output_stream << "    " << wordi->id << "," << std::endl;
+        }
+
+        for (auto wordi = after_letter_bound; wordi != sorted_words.end(); ++wordi)
+        {
+            output_stream << "    " << wordi->id << "," << std::endl;
+        }
+
+        output_stream
+            << "};"
+            << std::endl
+            << std::endl;
+    }
+
+    for (char letter_c = 'A'; letter_c <= 'Z'; ++letter_c)
+    {
+        const char letter[2] = {letter_c, '\0'};
+        const char next_letter[2] = {static_cast<char>(letter_c + 1), '\0'};
+
+        output_stream
+            << "const u16 gEasyChatWordsByLetter_"
+            << letter
+            << "[] = {"
+            << std::endl;
+
+        WordInfo lower_key("", "", letter, "", false);
+        WordInfo upper_key("", "", next_letter, "", false);
+
+        auto lower_bound = sorted_words.lower_bound(lower_key);
+        auto upper_bound = sorted_words.lower_bound(upper_key);
+
+        for (auto wordi = lower_bound; wordi != upper_bound; ++wordi)
+        {
+            string word_text(wordi->text);
+            ++wordi;
+            if (wordi != upper_bound)
+            {
+                if (wordi->text == word_text) {
+                    output_stream << "    DOUBLE_SPECIES_NAME" << std::endl;
+                }
+            }
+            --wordi;
+
+            output_stream
+                << "    "
+                << wordi->id
+                << ","
+                << std::endl;
+        }
+
+        output_stream
+            << "};"
+            << std::endl
+            << std::endl;
+    }
+
+    if (0 != unused_letter_suffixes.size())
+    {
+        output_stream
+                << "#include \"easy_chat_words_by_letter_unused.h\""
+                << std::endl
+                << std::endl;
+    }
+
+    std::vector<string> group_suffixes;
+    group_suffixes.emplace_back("Others");
+    for (char letter_c = 'A'; letter_c <= 'Z'; ++letter_c)
+    {
+        const char letter_s[2] = {letter_c, '\0'};
+        group_suffixes.emplace_back(letter_s);
+    }
+    for (string unusedLetterSuffix : unused_letter_suffixes)
+    {
+        group_suffixes.emplace_back(unusedLetterSuffix);
+    }
+
+    output_stream
+            << "const struct EasyChatWordsByLetter gEasyChatWordsByLetterPointers[EC_NUM_ALPHABET_GROUPS + " << unused_letter_suffixes.size() << "] = { // " << unused_letter_suffixes.size() << " unused JP groups"
+            << std::endl;
+
+    for (string group_suffix : group_suffixes)
+    {
+        string group_label("gEasyChatWordsByLetter_");
+        group_label += group_suffix;
+
+        output_stream
+            << "    {" << std::endl
+            << "        .words = " << group_label << "," << std::endl
+            << "        .numWords = ARRAY_COUNT(" << group_label << ")," << std::endl
+            << "    }," << std::endl
+            ;
+    }
+
+    output_stream << "};" << std::endl;
 }
