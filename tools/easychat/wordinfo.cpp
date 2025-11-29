@@ -70,6 +70,33 @@ struct WordInfoCmpByText
     }
 };
 
+static string text_to_label_suffix(const string& text)
+{
+    string buffer(text);
+    search_replace_all(buffer, "!", "_EXCL_");
+    search_replace_all(buffer, "?", "_QUES_");
+    search_replace_all(buffer, "…", "_ELLIPSIS_");
+    search_replace_all(buffer, "-", "_DASH_");
+    search_replace_all(buffer, " ", "_");
+    search_replace_all(buffer, "'", "_");
+    search_replace_all(buffer, "___", "_");
+    search_replace_all(buffer, "__", "_");
+    if ('_' == buffer[0])
+        buffer = buffer.substr(1);
+    if ('_' == buffer[buffer.size() - 1])
+        buffer = buffer.substr(0, buffer.size() - 1);
+
+    string retval;
+    retval.reserve(buffer.size());
+    for (char c : buffer)
+    {
+        if (('A' <= c && c <= 'Z') || '_' == c)
+            retval.push_back(c);
+    }
+
+    return retval;
+}
+
 WordInfoList parseJson(const std::filesystem::path& input_file)
 {
     string input_err;
@@ -96,6 +123,13 @@ WordInfoList parseJson(const std::filesystem::path& input_file)
         if (enabled_ptr != word_as_map.end())
             enabled = enabled_ptr->second.bool_value();
 
+        string label = word["text_label"].string_value();
+        if (label.empty())
+        {
+            label = "gEasyChatWord_";
+            label += text_to_label_suffix(word["text"].string_value());
+        }
+
         string index;
         index += "EC_INDEX(";
         index += word["id"].string_value();
@@ -105,7 +139,7 @@ WordInfoList parseJson(const std::filesystem::path& input_file)
                word["id"].string_value(),
                index,
                word["text"].string_value(),
-               word["text_label"].string_value(),
+               label,
                enabled);
     }
 
