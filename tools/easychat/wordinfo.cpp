@@ -35,9 +35,13 @@ string WordInfo::clean_text() const
 }
 
 WordInfoList::WordInfoList(
+        std::string id,
         std::string label,
+        WordInfoListType type,
         std::vector<WordInfo> words) :
+    id(id),
     label(label),
+    type(type),
     words(words)
 {}
 
@@ -144,7 +148,9 @@ WordInfoList parseJson(const std::filesystem::path& input_file)
     }
 
     WordInfoList retval(
+        input_data["id"].string_value(),
         input_data["label"].string_value(),
+        WordInfoListType::WORDS,
         words_out);
     return retval;
 }
@@ -158,6 +164,18 @@ static string pokemonGroupLabel(DexGroup dex_group)
         return "gEasyChatGroup_Pokemon";
     case DexGroup::KANTOJOHTO:
         return "gEasyChatGroup_Pokemon2";
+    }
+    FATAL_ERROR("illegal argument\n");
+}
+
+static string pokemonGroupId(DexGroup dex_group)
+{
+    switch (dex_group)
+    {
+    case DexGroup::HOENN:
+        return "EC_GROUP_POKEMON";
+    case DexGroup::KANTOJOHTO:
+        return "EC_GROUP_POKEMON_NATIONAL";
     }
     FATAL_ERROR("illegal argument\n");
 }
@@ -275,7 +293,9 @@ WordInfoList parsePokemon(
     }
 
     WordInfoList retval(
+        pokemonGroupId(dex_group),
         pokemonGroupLabel(dex_group),
+        WordInfoListType::VALUE_LIST,
         words_out);
     return retval;
 }
@@ -297,6 +317,7 @@ WordInfoList parseMoves(
         }
     }
 
+    string id;
     string label;
     string label_number;
     {
@@ -307,6 +328,8 @@ WordInfoList parseMoves(
             FATAL_ERROR("malformed input: did not find declaration\n");
         label = m.str(1) + m.str(2);
         label_number = m.str(2);
+        id = "EC_GROUP_MOVE_";
+        id += label_number;
     }
 
     string move_names_str = read_text_file(move_names_file);
@@ -342,7 +365,9 @@ WordInfoList parseMoves(
     }
 
     WordInfoList retval(
+        id,
         label,
+        WordInfoListType::VALUE_LIST,
         words_out);
     return retval;
 }
@@ -366,6 +391,27 @@ std::vector<std::string> parseUnusedLettersFile(
         }
     }
     return unused_letter_suffixes;
+}
+
+std::map<string, int> parseGroupConstants(
+        const std::filesystem::path& easy_chat_constants_file)
+{
+    std::map<string, int> group_constants;
+    if (std::filesystem::exists(easy_chat_constants_file))
+    {
+        string easy_chat_constants_str = read_text_file(easy_chat_constants_file);
+        {
+            std::regex entry_regex("#define (EC_GROUP_\\w+) +(\\d+)");
+            auto entries_begin = std::sregex_iterator(easy_chat_constants_str.cbegin(), easy_chat_constants_str.cend(), entry_regex);
+            auto entries_end = std::sregex_iterator();
+
+            for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
+            {
+                group_constants.emplace(i->str(1), atoi(i->str(2).c_str()));
+            }
+        }
+    }
+    return group_constants;
 }
 
 void writeWordInfo(
@@ -464,6 +510,78 @@ void writeValueList(const std::filesystem::path& output_file, const WordInfoList
     output_stream
         << "};"
         << std::endl;
+}
+
+void writeGroups(
+        const std::filesystem::path& output_file,
+        const std::vector<WordInfoList>& datass,
+        const DoNotModifyHeader& header)
+{
+    std::ofstream output_stream(output_file);
+
+    output_stream << header
+            << "#include \"easy_chat.h\"" << std::endl
+            << std::endl
+            << "#include \"easy_chat_group_pokemon.h\"" << std::endl
+            << "#include \"easy_chat_group_trainer.h\"" << std::endl
+            << "#include \"easy_chat_group_status.h\"" << std::endl
+            << "#include \"easy_chat_group_battle.h\"" << std::endl
+            << "#include \"easy_chat_group_greetings.h\"" << std::endl
+            << "#include \"easy_chat_group_people.h\"" << std::endl
+            << "#include \"easy_chat_group_voices.h\"" << std::endl
+            << "#include \"easy_chat_group_speech.h\"" << std::endl
+            << "#include \"easy_chat_group_endings.h\"" << std::endl
+            << "#include \"easy_chat_group_feelings.h\"" << std::endl
+            << "#include \"easy_chat_group_conditions.h\"" << std::endl
+            << "#include \"easy_chat_group_actions.h\"" << std::endl
+            << "#include \"easy_chat_group_lifestyle.h\"" << std::endl
+            << "#include \"easy_chat_group_hobbies.h\"" << std::endl
+            << "#include \"easy_chat_group_time.h\"" << std::endl
+            << "#include \"easy_chat_group_misc.h\"" << std::endl
+            << "#include \"easy_chat_group_adjectives.h\"" << std::endl
+            << "#include \"easy_chat_group_events.h\"" << std::endl
+            << "#include \"easy_chat_group_move_1.h\"" << std::endl
+            << "#include \"easy_chat_group_move_2.h\"" << std::endl
+            << "#include \"easy_chat_group_trendy_saying.h\"" << std::endl
+            << "#include \"easy_chat_group_pokemon2.h\"" << std::endl
+            << std::endl
+            << "const struct EasyChatGroup gEasyChatGroups[] = {"
+            << std::endl;
+
+    for (WordInfoList datas : datass)
+    {
+        output_stream
+            << "    [" << datas.id << "] =" << std::endl
+            << "    {" << std::endl;
+
+        switch (datas.type)
+        {
+        case WordInfoListType::VALUE_LIST:
+            output_stream
+                << "        .wordData = {.valueList = " << datas.label << "}," << std::endl;
+            break;
+        case WordInfoListType::WORDS:
+            output_stream
+                << "        .wordData = {.words = " << datas.label << "}," << std::endl;
+            break;
+        }
+
+        output_stream
+            << "        .numWords = ARRAY_COUNT(" << datas.label << ")," << std::endl;
+
+        unsigned num_enabled_words = std::count_if(
+            datas.words.begin(), datas.words.end(),
+            [](WordInfo word) { return word.enabled; }
+        );
+
+        output_stream
+            << "        .numEnabledWords = " << num_enabled_words << "," << std::endl;
+
+        output_stream
+            << "    }," << std::endl;
+    }
+
+    output_stream << "};" << std::endl;
 }
 
 void writeByLetter(

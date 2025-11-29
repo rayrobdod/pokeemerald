@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <initializer_list>
+#include <map>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -25,13 +26,22 @@ public:
     std::string clean_text() const;
 };
 
+enum class WordInfoListType {
+	VALUE_LIST,
+	WORDS,
+};
+
 struct WordInfoList {
 public:
+    std::string id;
     std::string label;
+    WordInfoListType type;
     std::vector<WordInfo> words;
 
     WordInfoList(
+        std::string id,
         std::string label,
+        WordInfoListType type,
         std::vector<WordInfo> words);
 };
 
@@ -93,9 +103,17 @@ WordInfoList parseMoves(
 std::vector<std::string> parseUnusedLettersFile(
         const std::filesystem::path& unused_letters_file);
 
+std::map<std::string, int> parseGroupConstants(
+        const std::filesystem::path& easy_chat_constants_file);
+
 void writeWordInfo(const std::filesystem::path& output_file, const WordInfoList&, const DoNotModifyHeader&);
 
 void writeValueList(const std::filesystem::path& output_file, const WordInfoList&, const DoNotModifyHeader&);
+
+void writeGroups(
+        const std::filesystem::path& output_file,
+        const std::vector<WordInfoList>&,
+        const DoNotModifyHeader&);
 
 void writeByLetter(
         const std::filesystem::path& output_file,

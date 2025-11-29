@@ -8,6 +8,25 @@
 
 using std::string;
 
+class WordsOrdering
+{
+    std::map<std::string, int> idToValue;
+public:
+    WordsOrdering(std::map<std::string, int> idToValue) : idToValue(idToValue) {}
+    bool operator()(WordInfoList a, WordInfoList b) const {
+        auto aPos = idToValue.find(a.id);
+        auto bPos = idToValue.find(b.id);
+
+        if (aPos == idToValue.end() && bPos == idToValue.end())
+            return false;
+        if (aPos == idToValue.end())
+            return true;
+        if (bPos == idToValue.end())
+            return false;
+        return aPos->second < bPos->second;
+    }
+};
+
 int main(int argc, char *argv[])
 {
     if (argc < 2)
@@ -46,10 +65,46 @@ int main(int argc, char *argv[])
         WordInfoList data = parsePokemon(dex_group, species_names_file, pokedex_constants_file);
         writeValueList(output_file, data, {species_names_file, pokedex_constants_file});
     }
+    else if (mode == "groups")
+    {
+        if (argc != 8)
+            FATAL_ERROR("USAGE: easychat groups <in_dir> <species_names> <pokedex_constants> <move_names> <easy_chat_constants_file> <output_file>\n");
+
+        const std::string moves_filename_prefix("easy_chat_group_move_");
+
+        std::filesystem::path input_directory(argv[2]);
+        std::filesystem::path species_names_file(argv[3]);
+        std::filesystem::path pokedex_constants_file(argv[4]);
+        std::filesystem::path move_names_file(argv[5]);
+        std::filesystem::path easy_chat_constants_file(argv[6]);
+        std::filesystem::path output_file(argv[7]);
+
+        std::vector<WordInfoList> wordss;
+        wordss.push_back(parsePokemon(DexGroup::HOENN, species_names_file, pokedex_constants_file));
+        wordss.push_back(parsePokemon(DexGroup::KANTOJOHTO, species_names_file, pokedex_constants_file));
+
+        for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{input_directory}) {
+            if (dir_entry.is_regular_file()) {
+                if (dir_entry.path().extension() == ".json") {
+                    wordss.push_back(parseJson(dir_entry));
+                }
+                if (dir_entry.path().extension() == ".h" && moves_filename_prefix == dir_entry.path().stem().string().substr(0, moves_filename_prefix.size())) {
+                    wordss.push_back(parseMoves(move_names_file, dir_entry));
+                }
+            }
+        }
+
+        WordsOrdering words_ordering(
+            parseGroupConstants(easy_chat_constants_file));
+
+        std::sort(wordss.begin(), wordss.end(), words_ordering);
+
+        writeGroups(output_file, wordss, {});
+    }
     else if (mode == "by_letter")
     {
         if (argc != 7)
-            FATAL_ERROR("USAGE: easychat by_letter <...>\n");
+            FATAL_ERROR("USAGE: easychat by_letter <in_dir> <species_names> <pokedex_constants> <move_names> <output_file>\n");
 
         const std::string moves_filename_prefix("easy_chat_group_move_");
 

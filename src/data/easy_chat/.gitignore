@@ -18,4 +18,5 @@ easy_chat_group_time.h
 easy_chat_group_trainer.h
 easy_chat_group_trendy_saying.h
 easy_chat_group_voices.h
+easy_chat_groups.h
 easy_chat_words_by_letter.h

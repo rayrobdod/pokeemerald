@@ -5,6 +5,7 @@ EASY_CHAT_SRCS := $(wildcard $(EASY_CHAT_SUBDIR)/*.json)
 SPECIES_NAMES := $(DATA_SRC_SUBDIR)/text/species_names.h
 MOVE_NAMES := $(DATA_SRC_SUBDIR)/text/move_names.h
 POKEDEX_CONSTANTS := include/constants/pokedex.h
+EASY_CHAT_CONSTANTS := include/constants/easy_chat.h
 
 define EASY_CHAT_WORD_INFO
 AUTO_GEN_TARGETS += $1
@@ -21,6 +22,10 @@ $(EASY_CHAT_SUBDIR)/easy_chat_group_pokemon.h: $(SPECIES_NAMES) $(POKEDEX_CONSTA
 AUTO_GEN_TARGETS += $(EASY_CHAT_SUBDIR)/easy_chat_group_pokemon2.h
 $(EASY_CHAT_SUBDIR)/easy_chat_group_pokemon2.h: $(SPECIES_NAMES) $(POKEDEX_CONSTANTS) $(EASYCHAT)
 	$(EASYCHAT) pokemon kantojohto $(SPECIES_NAMES) $(POKEDEX_CONSTANTS) $@
+
+AUTO_GEN_TARGETS += $(EASY_CHAT_SUBDIR)/easy_chat_groups.h
+$(EASY_CHAT_SUBDIR)/easy_chat_groups.h: $(EASY_CHAT_SRCS) $(SPECIES_NAMES) $(MOVE_NAMES) $(POKEDEX_CONSTANTS) $(EASYCHAT)
+	$(EASYCHAT) groups $(EASY_CHAT_SUBDIR) $(SPECIES_NAMES) $(POKEDEX_CONSTANTS) $(MOVE_NAMES) $(EASY_CHAT_CONSTANTS) $@
 
 AUTO_GEN_TARGETS += $(EASY_CHAT_SUBDIR)/easy_chat_words_by_letter.h
 $(EASY_CHAT_SUBDIR)/easy_chat_words_by_letter.h: $(EASY_CHAT_SRCS) $(SPECIES_NAMES) $(MOVE_NAMES) $(POKEDEX_CONSTANTS) $(EASYCHAT)
