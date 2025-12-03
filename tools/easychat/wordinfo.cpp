@@ -156,87 +156,59 @@ WordInfoList parseJson(const std::filesystem::path& input_file)
 }
 
 
-static string pokemonGroupLabel(DexGroup dex_group)
+struct PokemonGroupData
+{
+    std::string id;
+    std::string label;
+    std::regex pokemonEnumEntryRegex;
+    std::regex pokemonCountRegex;
+    std::string pokemonCountHint;
+    std::string macro;
+};
+
+static const struct PokemonGroupData hoennPokemonGroupData
+{
+    .id = "EC_GROUP_POKEMON",
+    .label = "gEasyChatGroup_Pokemon",
+    .pokemonEnumEntryRegex = std::regex("HOENN_DEX_(\\w+),"),
+    .pokemonCountRegex = std::regex("#define HOENN_DEX_COUNT +HOENN_DEX_(\\w+)"),
+    .pokemonCountHint = "HOENN_DEX_COUNT",
+    .macro = "EC_POKEMON",
+};
+static const struct PokemonGroupData kantoJohtoPokemonGroupData
+{
+    .id = "EC_GROUP_POKEMON_NATIONAL",
+    .label = "gEasyChatGroup_Pokemon2",
+    .pokemonEnumEntryRegex = std::regex("NATIONAL_DEX_(\\w+),"),
+    .pokemonCountRegex = std::regex("#define JOHTO_DEX_COUNT +NATIONAL_DEX_(\\w+)"),
+    .pokemonCountHint = "JOHTO_DEX_COUNT",
+    .macro = "EC_POKEMON_NATIONAL",
+};
+
+static const PokemonGroupData& pokemonGroupData(DexGroup dex_group)
 {
     switch (dex_group)
     {
     case DexGroup::HOENN:
-        return "gEasyChatGroup_Pokemon";
+        return hoennPokemonGroupData;
     case DexGroup::KANTOJOHTO:
-        return "gEasyChatGroup_Pokemon2";
+        return kantoJohtoPokemonGroupData;
     }
     FATAL_ERROR("illegal argument\n");
 }
 
-static string pokemonGroupId(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return "EC_GROUP_POKEMON";
-    case DexGroup::KANTOJOHTO:
-        return "EC_GROUP_POKEMON_NATIONAL";
-    }
-    FATAL_ERROR("illegal argument\n");
-}
-
-static std::regex pokemonEnumEntryRegex(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return std::regex("HOENN_DEX_(\\w+),");
-    case DexGroup::KANTOJOHTO:
-        return std::regex("NATIONAL_DEX_(\\w+),");
-    }
-    FATAL_ERROR("illegal argument\n");
-}
-
-static std::regex pokemonCountRegex(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return std::regex("#define HOENN_DEX_COUNT +HOENN_DEX_(\\w+)");
-    case DexGroup::KANTOJOHTO:
-        return std::regex("#define JOHTO_DEX_COUNT +NATIONAL_DEX_(\\w+)");
-    }
-    FATAL_ERROR("illegal argument\n");
-}
-
-static std::string pokemonCountHint(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return "HOENN_DEX_COUNT";
-    case DexGroup::KANTOJOHTO:
-        return "JOHTO_DEX_COUNT";
-    }
-    FATAL_ERROR("illegal argument\n");
-}
-
-static std::string pokemonGroupMacro(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return "EC_POKEMON";
-    case DexGroup::KANTOJOHTO:
-        return "EC_POKEMON_NATIONAL";
-    }
-    FATAL_ERROR("illegal argument\n");
-}
 
 WordInfoList parsePokemon(
         DexGroup dex_group,
         const std::filesystem::path& species_names_file,
         const std::filesystem::path& pokedex_file)
 {
+    const PokemonGroupData& dex_group_data = pokemonGroupData(dex_group);
+
     string pokedex_str = read_text_file(pokedex_file);
     std::vector<string> full_dex;
     {
-        std::regex entry_regex(pokemonEnumEntryRegex(dex_group));
+        std::regex entry_regex(dex_group_data.pokemonEnumEntryRegex);
         auto entries_begin = std::sregex_iterator(pokedex_str.cbegin(), pokedex_str.cend(), entry_regex);
         auto entries_end = std::sregex_iterator();
 
@@ -251,11 +223,11 @@ WordInfoList parsePokemon(
 
     string dex_count;
     {
-        std::regex dex_count_regex(pokemonCountRegex(dex_group));
+        std::regex dex_count_regex(dex_group_data.pokemonCountRegex);
         std::smatch m;
         std::regex_search(pokedex_str.cbegin(), pokedex_str.cend(), m, dex_count_regex);
         if (m.empty())
-            FATAL_ERROR("malformed input: did not find %s\n", pokemonCountHint(dex_group).c_str());
+            FATAL_ERROR("malformed input: did not find %s\n", dex_group_data.pokemonCountHint.c_str());
         dex_count = m.str(1);
     }
 
@@ -277,7 +249,7 @@ WordInfoList parsePokemon(
                 index += i->str(1);
 
                 string id;
-                id += pokemonGroupMacro(dex_group);
+                id += dex_group_data.macro;
                 id += "(";
                 id += i->str(1);
                 id += ")";
@@ -293,8 +265,8 @@ WordInfoList parsePokemon(
     }
 
     WordInfoList retval(
-        pokemonGroupId(dex_group),
-        pokemonGroupLabel(dex_group),
+        dex_group_data.id,
+        dex_group_data.label,
         WordInfoListType::VALUE_LIST,
         words_out);
     return retval;
