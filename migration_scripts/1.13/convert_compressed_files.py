@@ -9,7 +9,7 @@ if not os.path.exists("Makefile"):
 
 primaryTileset_pattern = re.compile(r"(.*\"data/tilesets/primary/.+\.4bpp\.)lz(\".*)")
 secondaryTileset_pattern = re.compile(r"(.*\"data/tilesets/secondary/.+\.4bpp\.)lz(\".*)")
-tilemap_pattern = re.compile(r"(.*\"graphics/.+\.bin\.)(?:lz|rl)(\".*)")
+tilemap_pattern = re.compile(r"(.*\"(?:build/)?graphics/.+\.bin\.)(?:lz|rl)(\".*)")
 lzuncomp_pattern = re.compile(r"(.*)\bLZ77UnComp([WV])ram\b(\(.*)")
 lzdecomp_pattern = re.compile(r"(.*)\bLZDecompress([WV])ram\b(\(.*)")
 rluncomp_pattern = re.compile(r"(.*)\bRLUnComp([WV])ram\b(\(.*)")
