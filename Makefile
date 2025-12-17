@@ -140,13 +140,15 @@ DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 TEST_BUILDDIR = $(OBJ_DIR)/$(TEST_SUBDIR)
+GENERATED_HEADER_BUILDDIR = $(OBJ_DIR)/include
 
 SHELL := bash -o pipefail
 
 # Set flags for tools
 ASFLAGS := -mcpu=arm7tdmi -march=armv4t -meabi=5 --defsym MODERN=1 --defsym $(GAME_VERSION)=1
 
-INCLUDE_DIRS := include
+INCLUDE_DIR := include
+INCLUDE_DIRS := $(INCLUDE_DIR) $(GENERATED_HEADER_BUILDDIR)
 INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
@@ -238,17 +240,21 @@ WILD_ENCOUNTERS_TOOL_DIR := $(TOOLS_DIR)/wild_encounters
 AUTO_GEN_TARGETS += $(DATA_SRC_SUBDIR)/wild_encounters.h
 
 MISC_TOOL_DIR := $(TOOLS_DIR)/misc
-AUTO_GEN_TARGETS +=  $(INCLUDE_DIRS)/constants/script_commands.h
+AUTO_GEN_TARGETS +=  $(INCLUDE_DIR)/constants/script_commands.h
 
-$(DATA_SRC_SUBDIR)/wild_encounters.h: $(DATA_SRC_SUBDIR)/wild_encounters.json $(WILD_ENCOUNTERS_TOOL_DIR)/wild_encounters_to_header.py $(INCLUDE_DIRS)/config/overworld.h $(INCLUDE_DIRS)/config/dexnav.h
+$(DATA_SRC_SUBDIR)/wild_encounters.h: $(DATA_SRC_SUBDIR)/wild_encounters.json $(WILD_ENCOUNTERS_TOOL_DIR)/wild_encounters_to_header.py $(INCLUDE_DIR)/config/overworld.h $(INCLUDE_DIR)/config/dexnav.h
 	python3 $(WILD_ENCOUNTERS_TOOL_DIR)/wild_encounters_to_header.py
 
-$(INCLUDE_DIRS)/constants/script_commands.h: $(MISC_TOOL_DIR)/make_scr_cmd_constants.py $(DATA_ASM_SUBDIR)/script_cmd_table.inc
+$(INCLUDE_DIR)/constants/script_commands.h: $(MISC_TOOL_DIR)/make_scr_cmd_constants.py $(DATA_ASM_SUBDIR)/script_cmd_table.inc
 	python3  $(MISC_TOOL_DIR)/make_scr_cmd_constants.py
 
+AUTO_GEN_TARGETS += $(GENERATED_HEADER_BUILDDIR)/data/pokemon/regional_to_national.h
+$(GENERATED_HEADER_BUILDDIR)/data/pokemon/regional_to_national.h: $(MISC_TOOL_DIR)/to_national_order.py $(INCLUDE_DIR)/constants/pokedex.h
+	python3 $^ $@
+
 $(C_BUILDDIR)/wild_encounter.o: c_dep += $(DATA_SRC_SUBDIR)/wild_encounters.h
-$(C_BUILDDIR)/trainer_see.o: c_dep += $(INCLUDE_DIRS)/constants/script_commands.h
-$(C_BUILDDIR)/vs_seeker.o: c_dep += $(INCLUDE_DIRS)/constants/script_commands.h
+$(C_BUILDDIR)/trainer_see.o: c_dep += $(INCLUDE_DIR)/constants/script_commands.h
+$(C_BUILDDIR)/vs_seeker.o: c_dep += $(INCLUDE_DIR)/constants/script_commands.h
 
 PERL := perl
 SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
@@ -528,7 +534,7 @@ $(OBJ_DIR)/sym_common.ld: sym_common.txt $(C_OBJS) $(wildcard common_syms/*.txt)
 $(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
 	$(RAMSCRGEN) ewram_data $< ENGLISH > $@
 
-TEACHABLE_DEPS := $(ALL_LEARNABLES_JSON) $(shell find data/ -type f -name '*.inc') $(INCLUDE_DIRS)/constants/tms_hms.h $(INCLUDE_DIRS)/config/pokemon.h $(C_SUBDIR)/pokemon.c
+TEACHABLE_DEPS := $(ALL_LEARNABLES_JSON) $(shell find data/ -type f -name '*.inc') $(INCLUDE_DIR)/constants/tms_hms.h $(INCLUDE_DIR)/config/pokemon.h $(C_SUBDIR)/pokemon.c
 
 $(LEARNSET_HELPERS_BUILD_DIR):
 	@mkdir -p $@
