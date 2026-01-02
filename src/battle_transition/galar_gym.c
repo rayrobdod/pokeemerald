@@ -164,43 +164,36 @@ static int clamp(int min, int value, int max)
     return value;
 }
 
-struct point
+static inline uint16_t pattern_tile_at(const struct GalarGymPattern* pattern, signed x, signed y)
 {
-    signed x;
-    signed y;
-};
-
-static inline struct point detesselate_pattern(const struct GalarGymPattern* pattern, signed x, signed y)
-{
-    struct point retval;
-    retval.x = x;
-    retval.y = y;
-
     while (1)
     {
-        if (retval.x < 0)
+        if (x < 0)
         {
-            retval.x += pattern->pattern_width;
-            retval.y += pattern->pattern_y_offset;
+            x += pattern->pattern_width;
+            y += pattern->pattern_y_offset;
         }
-        else if (retval.y < 0)
+        else if (y < 0)
         {
-            retval.y += pattern->pattern_height;
-            retval.x += pattern->pattern_x_offset;
+            y += pattern->pattern_height;
+            x += pattern->pattern_x_offset;
         }
-        else if (retval.x >= pattern->pattern_tilemap_width)
+        else if (x >= pattern->pattern_tilemap_width)
         {
-            retval.x -= pattern->pattern_width;
-            retval.y -= pattern->pattern_y_offset;
+            x -= pattern->pattern_width;
+            y -= pattern->pattern_y_offset;
         }
-        else if (retval.y >= pattern->pattern_tilemap_height)
+        else if (y >= pattern->pattern_tilemap_height)
         {
-            retval.y -= pattern->pattern_height;
-            retval.x -= pattern->pattern_x_offset;
+            y -= pattern->pattern_height;
+            x -= pattern->pattern_x_offset;
         }
         else
         {
-            return retval;
+            if (pattern->pattern_tilemap)
+                return pattern->pattern_tilemap[y * pattern->pattern_tilemap_width + x];
+            else
+                return 0xF000 | (y * pattern->pattern_tilemap_width + x);
         }
     }
 }
@@ -357,11 +350,7 @@ static void GalarGym_ScrollPattern(struct Task *task)
         GetBg0TilesDst(&tilemap, &tileset);
         for (y = 0; y < 32; y++)
         {
-            struct point effective = detesselate_pattern(&sGrass_Params, logical_x, y);
-            if (sGrass_Params.pattern_tilemap)
-                tilemap[y * 32 + physical_x] = sGrass_Params.pattern_tilemap[effective.y * sGrass_Params.pattern_tilemap_width + effective.x];
-            else
-                tilemap[y * 32 + physical_x] = 0xF000 | (effective.y * sGrass_Params.pattern_tilemap_width + effective.x);
+            tilemap[y * 32 + physical_x] = pattern_tile_at(&sGrass_Params, logical_x, y);
         }
     }
 
@@ -504,11 +493,7 @@ static bool8 GalarGym_LoadPattern1(struct Task *task)
     {
         for (x = 0; x < DISPLAY_TILE_WIDTH; x++)
         {
-            struct point effective = detesselate_pattern(&sGrass_Params, x, y);
-            if (sGrass_Params.pattern_tilemap)
-                tilemap[y * 32 + x] = sGrass_Params.pattern_tilemap[effective.y * sGrass_Params.pattern_tilemap_width + effective.x];
-            else
-                tilemap[y * 32 + x] = 0xF000 | (effective.y * sGrass_Params.pattern_tilemap_width + effective.x);
+            tilemap[y * 32 + x] = pattern_tile_at(&sGrass_Params, x, y);
         }
     }
 
@@ -532,11 +517,7 @@ static bool8 GalarGym_LoadPattern2(struct Task *task)
     {
         for (x = 0; x < DISPLAY_TILE_WIDTH; x++)
         {
-            struct point effective = detesselate_pattern(&sGrass_Params, x, y);
-            if (sGrass_Params.pattern_tilemap)
-                tilemap[y * 32 + x] = sGrass_Params.pattern_tilemap[effective.y * sGrass_Params.pattern_tilemap_width + effective.x];
-            else
-                tilemap[y * 32 + x] = 0xF000 | (effective.y * sGrass_Params.pattern_tilemap_width + effective.x);
+            tilemap[y * 32 + x] = pattern_tile_at(&sGrass_Params, x, y);
         }
     }
 
