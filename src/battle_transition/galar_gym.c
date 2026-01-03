@@ -9,6 +9,12 @@
 #include "scanline_effect.h"
 #include "task.h"
 
+enum galar_gym_transition_variant
+{
+	GALAR_GYM_GRASS,
+	GALAR_GYM_ROCK,
+};
+
 enum effectreg_offset
 {
     EFFECTREG_WIN0H_OFFSET = 0,
@@ -41,6 +47,7 @@ enum
 #define tBottomBarVelocity data[6]
 #define tSpritePosition data[8]
 #define tSpriteOpacity data[10]
+#define tVariant data[13]
 #define tSprite data[14]
 #define tTimer data[15]
 
@@ -108,8 +115,8 @@ struct GalarGymPattern
     u8 pattern_height;
     s8 pattern_x_offset;
     s8 pattern_y_offset;
-    s8 pattern_tilemap_width;
-    s8 pattern_tilemap_height;
+    u8 pattern_tilemap_width;
+    u8 pattern_tilemap_height;
     const u16 *pattern_palette;
     const u32 *pattern_tileset;
     const u16 *pattern_tilemap;
@@ -123,19 +130,42 @@ static const u16 sGrassPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitio
 static const u16 sGrassLogo_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_grass_logo.gbapal");
 static const u32 sGrassLogo_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_grass_logo.4bpp.lz");
 
-static const struct GalarGymPattern sGrass_Params =
+static const u16 sRockPattern_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.gbapal");
+static const u32 sRockPattern_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_rock_pattern.4bpp.lz");
+static const u16 sRockPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.bin");
+static const u16 sRockLogo_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_logo.gbapal");
+static const u32 sRockLogo_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_rock_logo.4bpp.lz");
+
+static const struct GalarGymPattern sVariants[] =
 {
-    .pattern_width = 5,
-    .pattern_height = 21,
-    .pattern_x_offset = -1,
-    .pattern_y_offset = 2,
-    .pattern_tilemap_width = 5,
-    .pattern_tilemap_height = 23,
-    .pattern_palette = sGrassPattern_Palette,
-    .pattern_tileset = sGrassPattern_Tileset,
-    .pattern_tilemap = sGrassPattern_Tilemap,
-    .logo_palette = sGrassLogo_Palette,
-    .logo_tiles = sGrassLogo_Tileset,
+    [GALAR_GYM_GRASS] =
+    {
+        .pattern_width = 5,
+        .pattern_height = 21,
+        .pattern_x_offset = -1,
+        .pattern_y_offset = 2,
+        .pattern_tilemap_width = 5,
+        .pattern_tilemap_height = 23,
+        .pattern_palette = sGrassPattern_Palette,
+        .pattern_tileset = sGrassPattern_Tileset,
+        .pattern_tilemap = sGrassPattern_Tilemap,
+        .logo_palette = sGrassLogo_Palette,
+        .logo_tiles = sGrassLogo_Tileset,
+    },
+    [GALAR_GYM_ROCK] =
+    {
+        .pattern_width = 9,
+        .pattern_height = 12,
+        .pattern_x_offset = 3,
+        .pattern_y_offset = 5,
+        .pattern_tilemap_width = 12,
+        .pattern_tilemap_height = 12,
+        .pattern_palette = sRockPattern_Palette,
+        .pattern_tileset = sRockPattern_Tileset,
+        .pattern_tilemap = sRockPattern_Tilemap,
+        .logo_palette = sRockLogo_Palette,
+        .logo_tiles = sRockLogo_Tileset,
+    },
 };
 
 static const TransitionStateFunc sGalarGym_Funcs[] =
@@ -350,7 +380,7 @@ static void GalarGym_ScrollPattern(struct Task *task)
         GetBg0TilesDst(&tilemap, &tileset);
         for (y = 0; y < 32; y++)
         {
-            tilemap[y * 32 + physical_x] = pattern_tile_at(&sGrass_Params, logical_x, y);
+            tilemap[y * 32 + physical_x] = pattern_tile_at(&sVariants[task->tVariant], logical_x, y);
         }
     }
 
@@ -421,6 +451,8 @@ static bool8 GalarGym_Init(struct Task *task)
     SetHBlankCallback(HBlankCB_GalarGym);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_HBLANK);
 
+    task->tVariant = GALAR_GYM_ROCK;
+
     task->tTopBarPosition = 0;
     task->tTopBarVelocity = 0;
     task->tBottomBarPosition = DISPLAY_HEIGHT;
@@ -447,12 +479,12 @@ static bool8 GalarGym_LoadSprite(struct Task *task)
 {
     const struct SpritePalette spritePalette =
     {
-        .data = sGrass_Params.logo_palette,
+        .data = sVariants[task->tVariant].logo_palette,
         .tag = PALTAG_GALAR_GYM_LOGO,
     };
     const struct CompressedSpriteSheet spriteSheet =
     {
-        .data = sGrass_Params.logo_tiles,
+        .data = sVariants[task->tVariant].logo_tiles,
         .size = 64 * 64 * 4 / 8,
         .tag = TILETAG_GALAR_GYM_LOGO,
     };
@@ -487,13 +519,13 @@ static bool8 GalarGym_LoadPattern1(struct Task *task)
     REG_WININ = (WININ_WIN0_ALL & ~WININ_WIN0_BG0) | WININ_WIN1_BG0 | WININ_WIN1_OBJ;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LZ77UnCompVram(sGrass_Params.pattern_tileset, tileset);
+    LZ77UnCompVram(sVariants[task->tVariant].pattern_tileset, tileset);
 
     for (y = 0; y < 16; y++)
     {
         for (x = 0; x < DISPLAY_TILE_WIDTH; x++)
         {
-            tilemap[y * 32 + x] = pattern_tile_at(&sGrass_Params, x, y);
+            tilemap[y * 32 + x] = pattern_tile_at(&sVariants[task->tVariant], x, y);
         }
     }
 
@@ -511,13 +543,13 @@ static bool8 GalarGym_LoadPattern2(struct Task *task)
     sTransitionData->VBlank_DMA = TRUE;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sGrass_Params.pattern_palette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+    LoadPalette(sVariants[task->tVariant].pattern_palette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
 
     for (y = 16; y < 32; y++)
     {
         for (x = 0; x < DISPLAY_TILE_WIDTH; x++)
         {
-            tilemap[y * 32 + x] = pattern_tile_at(&sGrass_Params, x, y);
+            tilemap[y * 32 + x] = pattern_tile_at(&sVariants[task->tVariant], x, y);
         }
     }
 
