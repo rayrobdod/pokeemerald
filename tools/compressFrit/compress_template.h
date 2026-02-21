@@ -214,9 +214,9 @@ struct ByteArray COMPRESS_FUNCTION_NAME(WORDARRAY src) {
     dest.buffer[0] = _Generic(
         (WORD) 1,
             unsigned short :
-                0x42,
+                0x40,
             unsigned char :
-                0x41
+                0x50
         );
     dest.buffer[1] = size_in_bytes;
     dest.buffer[2] = size_in_bytes >> 8;

@@ -3,6 +3,7 @@
 #include "data.h"
 #include "decompress.h"
 #include "decompress_error_handler.h"
+#include "decompress_frit.h"
 #include "pokemon.h"
 #include "pokemon_sprite_visualizer.h"
 #include "text.h"
@@ -264,7 +265,12 @@ void DecompressDataWithHeaderVram(const u32 *src, void *dest)
     switch (header.smol.mode)
     {
         case MODE_LZ77:
-            LZ77UnCompVram(src, dest);
+            if (0x40 == header.lz77.lz77IdBits)
+                Frit16UnComp(src, dest);
+            else if (0x50 == header.lz77.lz77IdBits)
+                Frit8UnCompVram(src, dest);
+            else
+                LZ77UnCompVram(src, dest);
             break;
         case IS_TILEMAP:
             SmolDecompressTilemap(&header.smolTilemap, &src[2], dest);
@@ -292,7 +298,12 @@ void DecompressDataWithHeaderWram(const u32 *src, void *dest)
     switch (header.smol.mode)
     {
         case MODE_LZ77:
-            FastLZ77UnCompWram(src, dest);
+            if (0x40 == header.lz77.lz77IdBits)
+                Frit16UnComp(src, dest);
+            else if (0x50 == header.lz77.lz77IdBits)
+                Frit8UnCompWram(src, dest);
+            else
+                FastLZ77UnCompWram(src, dest);
             break;
         case IS_TILEMAP:
             SmolDecompressTilemap(&header.smolTilemap, &src[2], dest);

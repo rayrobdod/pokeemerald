@@ -15,8 +15,7 @@
 #define SMOL_IMAGE_SIZE_MULTIPLIER 4
 
 struct LZ77Header {
-    u32 lz77IdBits:5;
-    u32 padding:3;
+    u32 lz77IdBits:8;
     u32 size:24;
 };
 

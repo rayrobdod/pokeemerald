@@ -1,5 +1,7 @@
 import glob
 import re
+import subprocess
+import sys
 import os
 from pathlib import Path
 
@@ -9,12 +11,13 @@ if not os.path.exists("Makefile"):
 
 primaryTileset_pattern = re.compile(r"(.*\"data/tilesets/primary/.+\.4bpp\.)lz(\".*)")
 secondaryTileset_pattern = re.compile(r"(.*\"data/tilesets/secondary/.+\.4bpp\.)lz(\".*)")
-tilemap_pattern = re.compile(r"(.*\"graphics/.+\.bin\.)(?:lz|rl)(\".*)")
+tilemap_pattern = re.compile(r"(.*\")(graphics/.+\.bin\.)(?:lz|rl|smolTM|fastSmol|frit8|frit16)(\".*)")
 lzuncomp_pattern = re.compile(r"(.*)\bLZ77UnComp([WV])ram\b(\(.*)")
 lzdecomp_pattern = re.compile(r"(.*)\bLZDecompress([WV])ram\b(\(.*)")
 rluncomp_pattern = re.compile(r"(.*)\bRLUnComp([WV])ram\b(\(.*)")
 
 def handle_file(fileInput):
+    changed = False
     fileTest = Path(fileInput)
     if not fileTest.is_file():
         return False
@@ -24,6 +27,8 @@ def handle_file(fileInput):
         needs_decompress_h = False
 
         while line:=file.readline():
+            original_line = line
+
             if line.strip() == "#include \"decompress.h\"":
                 has_decompress_h = True
             elif match := secondaryTileset_pattern.match(line):
@@ -31,7 +36,24 @@ def handle_file(fileInput):
             elif match := primaryTileset_pattern.match(line):
                 line = match.group(1) + "smol" + match.group(2) + "\n"
             elif match := tilemap_pattern.match(line):
-                line = match.group(1) + "smolTM" + match.group(2) + "\n"
+                exts = ['smolTM', 'fastSmol', 'frit16', 'frit8']
+                files = [match.group(2) + ext for ext in exts]
+                make_cmd = files.copy()
+                make_cmd.insert(0, 'make')
+
+                subprocess.run(make_cmd, stdout = sys.stdout, stderr = sys.stderr)
+
+                smallestFile = files[0]
+                smallestFileSize = 0x7FFFFFFF
+                for f in files:
+                    size = os.stat(f).st_size
+                    if size < smallestFileSize:
+                        if f != smallestFile:
+                            print(f + ": " + str(smallestFileSize - size))
+                        smallestFile = f
+                        smallestFileSize = size
+
+                line = match.group(1) + smallestFile + match.group(3) + "\n"
             elif ".4bpp.lz" in line:
                 line = line.replace(".4bpp.lz", ".4bpp.smol")
             elif ".4bpp.rl" in line:
@@ -53,6 +75,8 @@ def handle_file(fileInput):
             else:
                 pass
 
+            changed = changed or original_line != line
+
             allLines.append(line)
 
         if needs_decompress_h and not has_decompress_h:
@@ -64,9 +88,10 @@ def handle_file(fileInput):
                 i += 1
             allLines.insert(i, "#include \"decompress.h\"\n")
 
-    with open(fileInput, 'w', encoding='UTF-8') as file:
-        for line in allLines:
-            file.write(line)
+    if changed:
+        with open(fileInput, 'w', encoding='UTF-8') as file:
+            for line in allLines:
+                file.write(line)
     return True
 
 for path in glob.glob("src/**/*.c", recursive=True):
