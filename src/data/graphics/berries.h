@@ -2,7 +2,7 @@ const u32 gBerryCheck_Gfx[] = INCBIN_U32("graphics/bag/check_berry.4bpp.smol");
 const u16 gBerryCheck_Pal[] = INCBIN_U16("graphics/bag/check_berry.gbapal");
 
 const u32 gBerryTag_Gfx[] = INCBIN_U32("graphics/bag/berry_tag.bin.smolTM");
-const u32 gBerryTag_Tilemap[] = INCBIN_U32("graphics/bag/berry_tag_title.bin.smolTM");
+const u32 gBerryTag_Tilemap[] = INCBIN_U32("graphics/bag/berry_tag_title.bin.frit16");
 
 const u32 gBerryCheckCircle_Gfx[] = INCBIN_U32("graphics/bag/check_berry_circle.4bpp.smol");
 

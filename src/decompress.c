@@ -270,7 +270,7 @@ void DecompressDataWithHeaderVram(const u32 *src, void *dest)
             else if (0x50 == header.lz77.lz77IdBits)
                 Frit8UnCompVram(src, dest);
             else
-                LZ77UnCompVram(src, dest);
+                DecompressDataWithHeaderVram(src, dest);
             break;
         case IS_TILEMAP:
             SmolDecompressTilemap(&header.smolTilemap, &src[2], dest);

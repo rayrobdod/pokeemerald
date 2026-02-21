@@ -586,8 +586,8 @@ static const u32 sCrusherBase_Gfx[]     = INCBIN_U32("graphics/berry_crush/crush
 static const u32 sImpact_Gfx[]          = INCBIN_U32("graphics/berry_crush/impact.4bpp.smol");
 static const u32 sSparkle_Gfx[]         = INCBIN_U32("graphics/berry_crush/sparkle.4bpp.smol");
 static const u32 sTimerDigits_Gfx[]     = INCBIN_U32("graphics/berry_crush/timer_digits.4bpp.smol");
-static const u8 sCrusherTop_Tilemap[]   = INCBIN_U8("graphics/berry_crush/crusher_top.bin.smolTM");
-static const u8 sContainerCap_Tilemap[] = INCBIN_U8("graphics/berry_crush/container_cap.bin.smolTM");
+static const u8 sCrusherTop_Tilemap[]   = INCBIN_U8("graphics/berry_crush/crusher_top.bin.frit16");
+static const u8 sContainerCap_Tilemap[] = INCBIN_U8("graphics/berry_crush/container_cap.bin.frit16");
 static const u8 sBg_Tilemap[]           = INCBIN_U8("graphics/berry_crush/bg.bin.smolTM");
 
 // Takes the number of players - 2 and a player id and returns the

@@ -418,7 +418,7 @@ static void SpriteCB_Taillow(struct Sprite *);
 
 static const u16 sWheel_Pal[] = INCBIN_U16("graphics/roulette/wheel.gbapal"); // also palette for grid
 static const u32 sGrid_Tilemap[] = INCBIN_U32("graphics/roulette/grid.bin.smolTM");
-static const u32 sWheel_Tilemap[] = INCBIN_U32("graphics/roulette/wheel.bin.smolTM");
+static const u32 sWheel_Tilemap[] = INCBIN_U32("graphics/roulette/wheel.bin.frit8");
 static const struct BgTemplate sBgTemplates[] =
 {
     // Text box

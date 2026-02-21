@@ -10,17 +10,17 @@ const u16 gRaySceneDuoFight_Kyogre_Pal[]            = INCBIN_U16("graphics/rayqu
 const u32 gRaySceneDuoFight_Clouds_Gfx[]            = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds.4bpp.smol");
 const u16 gRaySceneDuoFight_Clouds_Pal[]            = INCBIN_U16("graphics/rayquaza_scene/scene_1/clouds.gbapal"); // pal 1 clouds, pal 2 rain
 const u32 gRaySceneDuoFight_Clouds1_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds1.bin.smolTM");
-const u32 gRaySceneDuoFight_Clouds2_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds2.bin.smolTM");
-const u32 gRaySceneDuoFight_Clouds3_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds3.bin.smolTM");
+const u32 gRaySceneDuoFight_Clouds2_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds2.bin.frit16");
+const u32 gRaySceneDuoFight_Clouds3_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_1/clouds3.bin.fastSmol");
 
 // Scene 2 (RAY_ANIM_TAKES_FLIGHT)
 const u32 gRaySceneTakesFlight_Smoke_Gfx[]        = INCBIN_U32("graphics/rayquaza_scene/scene_2/smoke.4bpp.smol");
 const u16 gRaySceneTakesFlight_Smoke_Pal[]        = INCBIN_U16("graphics/rayquaza_scene/scene_2/smoke.gbapal");
 const u32 gRaySceneTakesFlight_Rayquaza_Gfx[]     = INCBIN_U32("graphics/rayquaza_scene/scene_2/rayquaza.8bpp.smol");
 const u16 gRaySceneTakesFlight_Rayquaza_Pal[]     = INCBIN_U16("graphics/rayquaza_scene/scene_2/rayquaza.gbapal");
-const u32 gRaySceneTakesFlight_Rayquaza_Tilemap[] = INCBIN_U32("graphics/rayquaza_scene/scene_2/rayquaza.bin.smolTM");
+const u32 gRaySceneTakesFlight_Rayquaza_Tilemap[] = INCBIN_U32("graphics/rayquaza_scene/scene_2/rayquaza.bin.frit8");
 const u32 gRaySceneTakesFlight_Bg_Gfx[]           = INCBIN_U32("graphics/rayquaza_scene/scene_2/bg.4bpp.smol"); // uses pal 2 of gRaySceneTakesFlight_Rayquaza_Pal
-const u32 gRaySceneTakesFlight_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_2/bg.bin.smolTM");
+const u32 gRaySceneTakesFlight_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_2/bg.bin.frit16");
 
 // Scene 3 (RAY_ANIM_DESCENDS)
 const u32 gRaySceneDescends_Rayquaza_Gfx[]     = INCBIN_U32("graphics/rayquaza_scene/scene_3/rayquaza.4bpp.smol");
@@ -28,16 +28,16 @@ const u32 gRaySceneDescends_RayquazaTail_Gfx[] = INCBIN_U32("graphics/rayquaza_s
 const u32 gRaySceneDescends_Bg_Gfx[]           = INCBIN_U32("graphics/rayquaza_scene/scene_3/bg.4bpp.smol");
 const u32 gRaySceneDescends_Light_Gfx[]        = INCBIN_U32("graphics/rayquaza_scene/scene_3/light.4bpp.smol"); // uses pal 2 of gRaySceneDescends_Bg_Pal
 const u16 gRaySceneDescends_Bg_Pal[]           = INCBIN_U16("graphics/rayquaza_scene/scene_3/bg.gbapal");
-const u32 gRaySceneDescends_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_3/bg.bin.smolTM");
-const u32 gRaySceneDescends_Light_Tilemap[]    = INCBIN_U32("graphics/rayquaza_scene/scene_3/light.bin.smolTM");
+const u32 gRaySceneDescends_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_3/bg.bin.frit16");
+const u32 gRaySceneDescends_Light_Tilemap[]    = INCBIN_U32("graphics/rayquaza_scene/scene_3/light.bin.frit16");
 
 // Scene 4 (RAY_ANIM_CHARGES)
 const u32 gRaySceneCharges_Bg_Gfx[]           = INCBIN_U32("graphics/rayquaza_scene/scene_4/bg.4bpp.smol");
-const u32 gRaySceneCharges_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_4/bg.bin.smolTM");
+const u32 gRaySceneCharges_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_4/bg.bin.fastSmol");
 const u32 gRaySceneCharges_Streaks_Gfx[]      = INCBIN_U32("graphics/rayquaza_scene/scene_4/streaks.4bpp.smol");
-const u32 gRaySceneCharges_Streaks_Tilemap[]  = INCBIN_U32("graphics/rayquaza_scene/scene_4/streaks.bin.smolTM");
+const u32 gRaySceneCharges_Streaks_Tilemap[]  = INCBIN_U32("graphics/rayquaza_scene/scene_4/streaks.bin.fastSmol");
 const u32 gRaySceneCharges_Rayquaza_Gfx[]     = INCBIN_U32("graphics/rayquaza_scene/scene_4/rayquaza.4bpp.smol");
-const u32 gRaySceneCharges_Rayquaza_Tilemap[] = INCBIN_U32("graphics/rayquaza_scene/scene_4/rayquaza.bin.smolTM");
+const u32 gRaySceneCharges_Rayquaza_Tilemap[] = INCBIN_U32("graphics/rayquaza_scene/scene_4/rayquaza.bin.frit16");
 const u32 gRaySceneCharges_Orbs_Tilemap[]     = INCBIN_U32("graphics/rayquaza_scene/scene_4/orbs.bin.smolTM");
 const u16 gRaySceneCharges_Bg_Pal[]           = INCBIN_U16("graphics/rayquaza_scene/scene_4/bg.gbapal");
 
@@ -54,7 +54,7 @@ const u16 gRaySceneChasesAway_Rayquaza_Pal[]     = INCBIN_U16("graphics/rayquaza
 const u16 gRaySceneChasesAway_KyogreSplash_Pal[] = INCBIN_U16("graphics/rayquaza_scene/scene_5/kyogre_splash.gbapal");
 const u32 gRaySceneChasesAway_Light_Gfx[]        = INCBIN_U32("graphics/rayquaza_scene/scene_5/light.4bpp.smol");
 const u32 gRaySceneChasesAway_Ring_Gfx[]         = INCBIN_U32("graphics/rayquaza_scene/scene_5/ring.8bpp.smol");
-const u32 gRaySceneChasesAway_Light_Tilemap[]    = INCBIN_U32("graphics/rayquaza_scene/scene_5/light.bin.smolTM");
-const u32 gRaySceneChasesAway_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_5/bg.bin.smolTM");
-const u32 gRaySceneChasesAway_Ring_Tilemap[]     = INCBIN_U32("graphics/rayquaza_scene/scene_5/ring.bin.smolTM");
+const u32 gRaySceneChasesAway_Light_Tilemap[]    = INCBIN_U32("graphics/rayquaza_scene/scene_5/light.bin.frit16");
+const u32 gRaySceneChasesAway_Bg_Tilemap[]       = INCBIN_U32("graphics/rayquaza_scene/scene_5/bg.bin.frit16");
+const u32 gRaySceneChasesAway_Ring_Tilemap[]     = INCBIN_U32("graphics/rayquaza_scene/scene_5/ring.bin.frit8");
 const u16 gRaySceneChasesAway_Bg_Pal[]           = INCBIN_U16("graphics/rayquaza_scene/scene_5/bg.gbapal");
