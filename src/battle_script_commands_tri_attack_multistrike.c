@@ -3,8 +3,6 @@
 
 void BS_SetMultistrikeTriAttackType(void)
 {
-    NATIVE_ARGS();
-
     switch (gMultiHitCounter) {
     case 3:
         gBattleStruct->dynamicMoveType = TYPE_FIRE | F_DYNAMIC_TYPE_SET;
@@ -19,5 +17,5 @@ void BS_SetMultistrikeTriAttackType(void)
         gBattleStruct->dynamicMoveType = TYPE_NORMAL | F_DYNAMIC_TYPE_SET;
     }
 
-    gBattlescriptCurrInstr = cmd->nextInstr;
+    gBattlescriptCurrInstr += 5;
 }

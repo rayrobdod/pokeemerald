@@ -578,6 +578,12 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 0, // TODO: Assign points
     },
 
+    [EFFECT_LUNAR_DANCE] =
+    {
+        .battleScript = BattleScript_EffectHealingWish,
+        .battleTvScore = 0, // TODO: Assign points
+    },
+
     [EFFECT_PROTECT] =
     {
         .battleScript = BattleScript_EffectProtect,
@@ -2201,7 +2207,7 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectMultistrikeTriAttack,
         .battleTvScore = 1,
     },
-    
+
     [EFFECT_RECOIL] =
     {
         .battleScript = BattleScript_EffectHit,
