@@ -197,3 +197,18 @@ SINGLE_BATTLE_TEST("Tri Attack continues even if the defender is immune to the f
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
+
+SINGLE_BATTLE_TEST("Tri Attack affects Ghost types")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_DUSKNOIR);
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRI_ATTACK); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        MESSAGE("The Pokémon was hit 3 time(s)!");
+    }
+}
