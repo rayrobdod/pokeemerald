@@ -220,6 +220,26 @@ SINGLE_BATTLE_TEST("Pixilate doesn't affect Terrain Pulse's type")
     }
 }
 
+SINGLE_BATTLE_TEST("Pixilate doesn't affect Tri Attack Multistrike's type", s16 damage)
+{
+    enum Ability ability;
+    PARAMETRIZE { ability = ABILITY_STURDY; }
+    PARAMETRIZE { ability = ABILITY_PIXILATE; }
+    GIVEN {
+        ASSUME(gMovesInfo[MOVE_TRI_ATTACK].effect == EFFECT_MULTISTRIKE_TRI_ATTACK);
+        ASSUME(gMovesInfo[MOVE_TRI_ATTACK].strikeCount == 3);
+        ASSUME(GetSpeciesType(SPECIES_KOMMO_O, 0) == TYPE_DRAGON);
+        PLAYER(SPECIES_SYLVEON) { Level(5); Ability(ability); }
+        OPPONENT(SPECIES_KOMMO_O);
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRI_ATTACK); }
+    } SCENE {
+        HP_BAR(opponent, captureDamage: &results[i].damage);
+    } FINALLY {
+        EXPECT_EQ(results[0].damage, results[1].damage);
+    }
+}
+
 SINGLE_BATTLE_TEST("Pixilate doesn't affect damaging Z-Move types")
 {
     GIVEN {

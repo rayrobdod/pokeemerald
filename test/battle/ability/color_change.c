@@ -154,6 +154,24 @@ SINGLE_BATTLE_TEST("Color Change changes the type to Normal when a Pokemon is hi
     }
 }
 
+// if/when color change config is implemented
+TO_DO_BATTLE_TEST("Color Change changes type for each strike when hit by Multistrike Tri Attack (Gen 3-4)");
+
+SINGLE_BATTLE_TEST("Color Change changes type to the type of Tri Attack's final strike when hit by Multistrike Tri Attack (Gen 5+)")
+{
+    GIVEN {
+        ASSUME(gMovesInfo[MOVE_TRI_ATTACK].effect == EFFECT_MULTISTRIKE_TRI_ATTACK);
+        ASSUME(gMovesInfo[MOVE_TRI_ATTACK].strikeCount == 3);
+        PLAYER(SPECIES_WOBBUFFET)
+        OPPONENT(SPECIES_KECLEON) { Ability(ABILITY_COLOR_CHANGE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRI_ATTACK); }
+    } SCENE {
+        ABILITY_POPUP(opponent, ABILITY_COLOR_CHANGE);
+        MESSAGE("The opposing Kecleon's Color Change made it the Electric type!");
+    }
+}
+
 SINGLE_BATTLE_TEST("Color Change does not change the type to Normal when a Pokemon is hit by Struggle")
 {
     GIVEN {

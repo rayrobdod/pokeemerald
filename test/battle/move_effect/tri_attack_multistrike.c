@@ -181,22 +181,70 @@ SINGLE_BATTLE_TEST("Tri Attack's third hit can inflict paralysis")
     }
 }
 
-SINGLE_BATTLE_TEST("Tri Attack continues even if the defender is immune to the first hit")
+SINGLE_BATTLE_TEST("Flash Fire/Well-baked body absorbs Tri Attack's first strike but not the other two strikes")
 {
+    u32 ability, species;
+    PARAMETRIZE { ability = ABILITY_FLASH_FIRE; species = SPECIES_ARCANINE; }
+    PARAMETRIZE { ability = ABILITY_WELL_BAKED_BODY; species = SPECIES_DACHSBUN; }
+
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_ARCANINE) { Ability(ABILITY_FLASH_FIRE); };
+        OPPONENT(species) { Ability(ability); };
     } WHEN {
         TURN { MOVE(player, MOVE_TRI_ATTACK); }
-        TURN {}
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_FLASH_FIRE);
-        MESSAGE("The opposing Arcanine's Flash Fire\nraised the power of Fire-type moves!");
+        ABILITY_POPUP(opponent, ability);
+        if (species == SPECIES_ARCANINE)
+            MESSAGE("The opposing Arcanine's Flash Fire\nraised the power of Fire-type moves!");
+        else
+            MESSAGE("The opposing Dachsbun's Defense sharply rose!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
+
+SINGLE_BATTLE_TEST("Primordial Sea blocks Tri Attack's first strike but not the other two strikes")
+{
+    KNOWN_FAILING;
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_KYOGRE)  { Item(ITEM_BLUE_ORB); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRI_ATTACK); }
+    } SCENE {
+        ABILITY_POPUP(opponent, ABILITY_PRIMORDIAL_SEA);
+        MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        MESSAGE("The Pokémon was hit 3 time(s)!");
+    }
+}
+
+SINGLE_BATTLE_TEST("Volt Absorb/Motor Drive absorbs Tri Attack's third strike but not the other two strikes")
+{
+    u32 ability, species;
+    PARAMETRIZE { ability = ABILITY_VOLT_ABSORB; species = SPECIES_JOLTEON; }
+    PARAMETRIZE { ability = ABILITY_MOTOR_DRIVE; species = SPECIES_ELECTIVIRE; }
+
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(species) { Ability(ability); };
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRI_ATTACK); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        ABILITY_POPUP(opponent, ability);
+        if (species == SPECIES_JOLTEON)
+            MESSAGE("The opposing Jolteon restored HP using its Volt Absorb!");
+        else
+            MESSAGE("The opposing Electivire's Speed rose!");
+        MESSAGE("The Pokémon was hit 3 time(s)!");
+    }
+}
+
+TO_DO_BATTLE_TEST("Lightningrod redirects Tri Attack's third strike but not the other two strikes")
 
 SINGLE_BATTLE_TEST("Tri Attack affects Ghost types")
 {
