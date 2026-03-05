@@ -944,6 +944,8 @@ bool32 ProteanTryChangeType(enum BattlerId battler, enum Ability ability, enum M
          && (gBattleMons[battler].types[0] != moveType || gBattleMons[battler].types[1] != moveType
              || (gBattleMons[battler].types[2] != moveType && gBattleMons[battler].types[2] != TYPE_MYSTERY))
          && move != MOVE_STRUGGLE
+         && (gMovesInfo[move].effect != EFFECT_MULTISTRIKE_TRI_ATTACK
+             || gMovesInfo[move].strikeCount == 0 || moveType != TYPE_NORMAL)
          && GetActiveGimmick(battler) != GIMMICK_TERA)
     {
         SET_BATTLER_TYPE(battler, moveType);

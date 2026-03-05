@@ -79,25 +79,32 @@ SINGLE_BATTLE_TEST("Protean/Libero changes the type of the user only once per sw
 
 SINGLE_BATTLE_TEST("Protean/Libero changes the type of the user to each of Tri Attack's strikes (Gen6-8)")
 {
-    KNOWN_FAILING;
     u32 ability, species;
     PARAMETRIZE { ability = ABILITY_PROTEAN; species = SPECIES_FROAKIE; }
     PARAMETRIZE { ability = ABILITY_LIBERO;  species = SPECIES_RABOOT; }
     GIVEN {
         ASSUME(gMovesInfo[MOVE_TRI_ATTACK].effect == EFFECT_MULTISTRIKE_TRI_ATTACK);
         ASSUME(gMovesInfo[MOVE_TRI_ATTACK].strikeCount == 3);
-        WITH_CONFIG(B_PROTEAN_LIBERO, GEN_9);
+        ASSUME(gSpeciesInfo[SPECIES_RABOOT].types[0] == TYPE_FIRE);
+        WITH_CONFIG(B_PROTEAN_LIBERO, GEN_6);
         PLAYER(SPECIES_REGIROCK);
         OPPONENT(species) { Ability(ability); }
-        OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_TRI_ATTACK); }
     } SCENE {
-        ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_FROAKIE)
+        {
+            ABILITY_POPUP(opponent, ability);
             MESSAGE("The opposing Froakie transformed into the Fire type!");
+        }
         else
-            MESSAGE("The opposing Raboot transformed into the Fire type!");
+        {
+            // Raboot is already Fire, so will not become Fire type
+            NONE_OF {
+                ABILITY_POPUP(opponent, ability);
+                MESSAGE("The opposing Raboot transformed into the Fire type!");
+            }
+        }
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, opponent);
         ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_FROAKIE)
@@ -115,29 +122,43 @@ SINGLE_BATTLE_TEST("Protean/Libero changes the type of the user to each of Tri A
 
 SINGLE_BATTLE_TEST("Protean/Libero changes the type of the user to Tri Attack's first strike (Gen9+)")
 {
-    KNOWN_FAILING;
     u32 ability, species;
     PARAMETRIZE { ability = ABILITY_PROTEAN; species = SPECIES_FROAKIE; }
     PARAMETRIZE { ability = ABILITY_LIBERO;  species = SPECIES_RABOOT; }
     GIVEN {
         ASSUME(gMovesInfo[MOVE_TRI_ATTACK].effect == EFFECT_MULTISTRIKE_TRI_ATTACK);
         ASSUME(gMovesInfo[MOVE_TRI_ATTACK].strikeCount == 3);
+        ASSUME(gSpeciesInfo[SPECIES_RABOOT].types[0] == TYPE_FIRE);
         WITH_CONFIG(B_PROTEAN_LIBERO, GEN_9);
         PLAYER(SPECIES_REGIROCK);
         OPPONENT(species) { Ability(ability); }
-        OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_TRI_ATTACK); }
     } SCENE {
-        ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_FROAKIE)
-            MESSAGE("The opposing Froakie transformed into the Fire type!");
-        else
-            MESSAGE("The opposing Raboot transformed into the Fire type!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, opponent);
-        NONE_OF {
+        {
             ABILITY_POPUP(opponent, ability);
-            MESSAGE("The opposing Froakie transformed into the Ice type!");
+            MESSAGE("The opposing Froakie transformed into the Fire type!");
+        }
+        else
+        {
+            // Raboot is already Fire, so will not become Fire type
+            NONE_OF {
+                ABILITY_POPUP(opponent, ability);
+                MESSAGE("The opposing Raboot transformed into the Fire type!");
+            }
+        }
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, opponent);
+        if (species == SPECIES_FROAKIE)
+        {
+            NONE_OF {
+                ABILITY_POPUP(opponent, ability);
+                MESSAGE("The opposing Froakie transformed into the Ice type!");
+            }
+        }
+        else
+        {
+            ABILITY_POPUP(opponent, ability);
             MESSAGE("The opposing Raboot transformed into the Ice type!");
         }
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, opponent);

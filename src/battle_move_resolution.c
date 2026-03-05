@@ -1895,7 +1895,7 @@ static enum CancelerResult CancelerMultihitMoves(struct BattleContext *ctx)
     SetPossibleNewSmartTarget(ctx->move);
 
     if (IsBattlerUnaffectedByMove(gBattlerTarget) // Dragon Darts can still hit partner
-        && (gMovesInfo[gCurrentMove].effect != EFFECT_MULTISTRIKE_TRI_ATTACK))
+        && (gMovesInfo[ctx->move].effect != EFFECT_MULTISTRIKE_TRI_ATTACK))
     {
         gMultiHitCounter = 0;
     }
@@ -1972,7 +1972,7 @@ static enum CancelerResult CancelerMultihitMoves(struct BattleContext *ctx)
     return CANCELER_RESULT_SUCCESS;
 }
 
-static enum CancelerResult (*const sMoveSuccessOrderCancelers[])(struct BattleContext *ctx) =
+enum CancelerResult (*const sMoveSuccessOrderCancelers[])(struct BattleContext *ctx) =
 {
     [CANCELER_CLEAR_FLAGS] = CancelerClearFlags,
     [CANCELER_STANCE_CHANGE_1] = CancelerStanceChangeOne,

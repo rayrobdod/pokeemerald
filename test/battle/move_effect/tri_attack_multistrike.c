@@ -198,15 +198,20 @@ SINGLE_BATTLE_TEST("Flash Fire/Well-baked body absorbs Tri Attack's first strike
             MESSAGE("The opposing Arcanine's Flash Fire\nraised the power of Fire-type moves!");
         else
             MESSAGE("The opposing Dachsbun's Defense sharply rose!");
+        NONE_OF {
+            MESSAGE("Wobbuffet's attack missed!");
+        };
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        };
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
 
 SINGLE_BATTLE_TEST("Primordial Sea blocks Tri Attack's first strike but not the other two strikes")
 {
-    KNOWN_FAILING;
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_KYOGRE)  { Item(ITEM_BLUE_ORB); }

@@ -24,9 +24,19 @@ void BS_SetMultistrikeTriAttackType(void)
     gBattlescriptCurrInstr += 5;
 }
 
-void BS_TryBlockMultistrikeTriAttack(void)
+void BS_TriAttackStrikeCancelerPrologue(void)
 {
-    const u8 *nextInstr = gBattlescriptCurrInstr + 5;
+    gBattleStruct->eventState.atkStrikeCanceler = CANCELER_WEATHER_PRIMAL;
+    gBattleStruct->eventState.atkCancelerBattler = 0;
+    gBattleStruct->battlerState[gBattlerAttacker].targetsDone[gBattlerTarget] = FALSE;
+    gBattlescriptCurrInstr += 5;
+}
+
+extern enum CancelerResult (*const sMoveSuccessOrderCancelers[])(struct BattleContext *ctx);
+
+void BS_TriAttackStrikeCanceler(void)
+{
+    enum CancelerResult result = CANCELER_RESULT_SUCCESS;
 
     struct BattleContext ctx = {0};
     ctx.battlerAtk = gBattlerAttacker;
@@ -37,14 +47,19 @@ void BS_TryBlockMultistrikeTriAttack(void)
     ctx.abilityDef = GetBattlerAbility(ctx.battlerDef);
     ctx.holdEffectAtk = GetBattlerHoldEffect(ctx.battlerAtk);
     ctx.holdEffectDef = GetBattlerHoldEffect(ctx.battlerDef);
-    ctx.runScript = TRUE;
-    s32 movePriority = GetChosenMovePriority(ctx.battlerAtk, ctx.abilityAtk);
 
-    gBattlescriptCurrInstr = BattleScript_MoveEnd;
-    // the Instr to push onto the call stack must be set before
-    // CanMoveBeBlockedByTarget calls the ability script
-    if (! CanMoveBeBlockedByTarget(&ctx, movePriority))
+    while (gBattleStruct->eventState.atkStrikeCanceler < CANCELER_MULTIHIT_MOVES && result == CANCELER_RESULT_SUCCESS)
     {
-        gBattlescriptCurrInstr = nextInstr;
+        result = sMoveSuccessOrderCancelers[gBattleStruct->eventState.atkStrikeCanceler](&ctx);
+        if (result != CANCELER_RESULT_PAUSE)
+            gBattleStruct->eventState.atkStrikeCanceler++;
+    }
+
+    if (CANCELER_RESULT_SUCCESS == result)
+    {
+        if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_AVOIDED_ATTACK)
+            gBattlescriptCurrInstr = BattleScript_MoveEnd;
+        else
+            gBattlescriptCurrInstr += 5;
     }
 }
