@@ -15735,6 +15735,11 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u32 gMonBackPic_Manaphy[] = INCBIN_U32("graphics/pokemon/manaphy/back.4bpp.smol");
     const u16 gMonShinyPalette_Manaphy[] = INCBIN_U16("graphics/pokemon/manaphy/shiny.gbapal");
     const u8 gMonIcon_Manaphy[] = INCBIN_U8("graphics/pokemon/manaphy/icon.4bpp");
+    const u8 gMonEggIcon_Manaphy[] = INCBIN_U8("graphics/pokemon/manaphy/icon_egg.4bpp");
+    const u32 gMonEggGfx_Manaphy[] = INCBIN_U32("graphics/pokemon/manaphy/egg_sprite.4bpp.smol");
+    const u16 gMonEggPal_Manaphy[] = INCBIN_U16("graphics/pokemon/manaphy/egg_sprite.gbapal");
+    const u32 gMonHatchGfx_Manaphy[] = INCBIN_U32("graphics/pokemon/manaphy/hatch.4bpp.smol");
+    const u16 gMonHatchPal_Manaphy[] = INCBIN_U16("graphics/pokemon/manaphy/hatch.gbapal");
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Manaphy[] = INCBIN_U8("graphics/pokemon/manaphy/footprint.1bpp");
 #endif //P_FOOTPRINTS
@@ -19386,7 +19391,7 @@ const u32 gObjectEventPic_Substitute[] = INCBIN_COMP("graphics/pokemon/question_
     const u16 gMonPalette_VivillonIcySnow[] = INCBIN_U16("graphics/pokemon/vivillon/normal.gbapal");
     const u32 gMonBackPic_VivillonIcySnow[] = INCBIN_U32("graphics/pokemon/vivillon/back.4bpp.smol");
     const u16 gMonShinyPalette_VivillonIcySnow[] = INCBIN_U16("graphics/pokemon/vivillon/shiny.gbapal");
-    const u8 gMonIcon_VivillonIcySnow[] = INCBIN_U8("graphics/pokemon/vivillon/meadow/icon.4bpp");
+    const u8 gMonIcon_VivillonIcySnow[] = INCBIN_U8("graphics/pokemon/vivillon/icon.4bpp");
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Vivillon[] = INCBIN_U8("graphics/pokemon/vivillon/footprint.1bpp");
 #endif //P_FOOTPRINTS
