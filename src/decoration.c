@@ -1568,7 +1568,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetLayerType(decoration->metatiles[(mapY - 1 - i) * mapX + j]);
+                layerType = GetAttributeByMetatileIdAndMapLayout(NUM_TILES_IN_PRIMARY + decoration->metatiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE, FALSE);
                 if (!IsFloorOrBoardAndHole(behaviorAt, decoration))
                     return FALSE;
 
@@ -1589,7 +1589,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetLayerType(decoration->metatiles[(mapY - 1 - i) * mapX + j]);
+                layerType = GetAttributeByMetatileIdAndMapLayout(decoration->metatiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE, FALSE);
                 if (!MetatileBehavior_IsNormal(behaviorAt) && !IsSecretBaseTrainerSpot(behaviorAt, layerType))
                     return FALSE;
 
@@ -1606,7 +1606,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
         {
             curX = gTasks[taskId].tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-            layerType = GetLayerType(decoration->metatiles[j]);
+            layerType = GetAttributeByMetatileIdAndMapLayout(decoration->metatiles[j], METATILE_ATTRIBUTE_LAYER_TYPE, FALSE);
             if (!MetatileBehavior_CanBeBehindDecoration(behaviorAt))
                 return FALSE;
 
