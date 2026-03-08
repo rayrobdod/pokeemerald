@@ -26,9 +26,11 @@ void BS_SetMultistrikeTriAttackType(void)
 
 void BS_TriAttackStrikeCancelerPrologue(void)
 {
-    gBattleStruct->eventState.atkStrikeCanceler = CANCELER_WEATHER_PRIMAL;
+    gBattleStruct->eventState.atkStrikeCanceler = CANCELER_SET_TARGETS;
     gBattleStruct->eventState.atkCancelerBattler = 0;
-    gBattleStruct->battlerState[gBattlerAttacker].targetsDone[gBattlerTarget] = FALSE;
+    for (unsigned i = 0; i < MAX_BATTLERS_COUNT; i++)
+        gBattleStruct->battlerState[gBattlerAttacker].targetsDone[i] = FALSE;
+
     gBattlescriptCurrInstr += 5;
 }
 
@@ -50,6 +52,12 @@ void BS_TriAttackStrikeCanceler(void)
 
     while (gBattleStruct->eventState.atkStrikeCanceler < CANCELER_MULTIHIT_MOVES && result == CANCELER_RESULT_SUCCESS)
     {
+        if (CANCELER_PPDEDUCTION == gBattleStruct->eventState.atkStrikeCanceler)
+        {
+            gBattleStruct->eventState.atkStrikeCanceler++;
+            continue;
+        }
+
         result = sMoveSuccessOrderCancelers[gBattleStruct->eventState.atkStrikeCanceler](&ctx);
         if (result != CANCELER_RESULT_PAUSE)
             gBattleStruct->eventState.atkStrikeCanceler++;

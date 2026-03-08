@@ -231,8 +231,10 @@ SINGLE_BATTLE_TEST("Volt Absorb/Motor Drive absorbs Tri Attack's third strike bu
     u32 ability, species;
     PARAMETRIZE { ability = ABILITY_VOLT_ABSORB; species = SPECIES_JOLTEON; }
     PARAMETRIZE { ability = ABILITY_MOTOR_DRIVE; species = SPECIES_ELECTIVIRE; }
+    PARAMETRIZE { ability = ABILITY_LIGHTNING_ROD; species = SPECIES_RAICHU; }
 
     GIVEN {
+        WITH_CONFIG(B_REDIRECT_ABILITY_IMMUNITY, GEN_5);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(species) { Ability(ability); };
     } WHEN {
@@ -243,13 +245,43 @@ SINGLE_BATTLE_TEST("Volt Absorb/Motor Drive absorbs Tri Attack's third strike bu
         ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_JOLTEON)
             MESSAGE("The opposing Jolteon restored HP using its Volt Absorb!");
-        else
+        else if (species == SPECIES_ELECTIVIRE)
             MESSAGE("The opposing Electivire's Speed rose!");
+        else
+            MESSAGE("The opposing Raichu's Sp. Atk rose!");
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
 
-TO_DO_BATTLE_TEST("Lightningrod redirects Tri Attack's third strike but not the other two strikes")
+DOUBLE_BATTLE_TEST("Lightningrod redirects Tri Attack's third strike but not the other two strikes")
+{
+    u32 config;
+    PARAMETRIZE { config = GEN_5; }
+    PARAMETRIZE { config = GEN_4; }
+    GIVEN {
+        WITH_CONFIG(B_REDIRECT_ABILITY_IMMUNITY, config);
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_RAICHU) { Ability(ABILITY_LIGHTNING_ROD); };
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_TRI_ATTACK, target: opponentRight); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, playerLeft);
+        HP_BAR(opponentRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, playerLeft);
+        HP_BAR(opponentRight);
+        MESSAGE("The opposing Raichu's Lightning Rod took the attack!");
+        if (config >= GEN_5) {
+            ABILITY_POPUP(opponentLeft, ABILITY_LIGHTNING_ROD);
+            MESSAGE("The opposing Raichu's Sp. Atk rose!");
+        } else {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, playerLeft);
+            HP_BAR(opponentLeft);
+        }
+        MESSAGE("The Pokémon was hit 3 time(s)!");
+    }
+}
 
 SINGLE_BATTLE_TEST("Tri Attack affects Ghost types")
 {
