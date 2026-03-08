@@ -1894,19 +1894,19 @@ void CheckInteractedWithFriendsPosterDecor(void)
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     switch (CurrentSecretBaseMetatileIdToDecorId(MapGridGetMetatileIdAt(x, y)))
     {
-        case DECOR_PIKA_POSTER:
-        case DECOR_LONG_POSTER:
-        case DECOR_SEA_POSTER:
-        case DECOR_SKY_POSTER:
-        case DECOR_KISS_POSTER:
-        case DECOR_BALL_POSTER:
-        case DECOR_GREEN_POSTER:
-        case DECOR_RED_POSTER:
-        case DECOR_BLUE_POSTER:
-        case DECOR_CUTE_POSTER:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_POSTER);
-            break;
+    case DECOR_PIKA_POSTER:
+    case DECOR_LONG_POSTER:
+    case DECOR_SEA_POSTER:
+    case DECOR_SKY_POSTER:
+    case DECOR_KISS_POSTER:
+    case DECOR_BALL_POSTER:
+    case DECOR_GREEN_POSTER:
+    case DECOR_RED_POSTER:
+    case DECOR_BLUE_POSTER:
+    case DECOR_CUTE_POSTER:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_POSTER);
+        break;
     }
 }
 
@@ -1917,46 +1917,46 @@ void CheckInteractedWithFriendsFurnitureBottom(void)
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     switch (CurrentSecretBaseMetatileIdToDecorId(MapGridGetMetatileIdAt(x, y)))
     {
-        case DECOR_GLASS_ORNAMENT:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GLASS_ORNAMENT);
-            break;
-        case DECOR_RED_PLANT:
-        case DECOR_TROPICAL_PLANT:
-        case DECOR_PRETTY_FLOWERS:
-        case DECOR_COLORFUL_PLANT:
-        case DECOR_BIG_PLANT:
-        case DECOR_GORGEOUS_PLANT:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_PLANT);
-            break;
-        case DECOR_FENCE_LENGTH:
-        case DECOR_FENCE_WIDTH:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_FENCE);
-            break;
-        case DECOR_TIRE:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
-            break;
-        case DECOR_RED_BRICK:
-        case DECOR_YELLOW_BRICK:
-        case DECOR_BLUE_BRICK:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
-            break;
-        case DECOR_SMALL_DESK:
-        case DECOR_POKEMON_DESK:
-        case DECOR_HEAVY_DESK:
-        case DECOR_RAGGED_DESK:
-        case DECOR_COMFORT_DESK:
-        case DECOR_BRICK_DESK:
-        case DECOR_CAMP_DESK:
-        case DECOR_HARD_DESK:
-        case DECOR_PRETTY_DESK:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
-            break;
+    case DECOR_GLASS_ORNAMENT:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_GLASS_ORNAMENT);
+        break;
+    case DECOR_RED_PLANT:
+    case DECOR_TROPICAL_PLANT:
+    case DECOR_PRETTY_FLOWERS:
+    case DECOR_COLORFUL_PLANT:
+    case DECOR_BIG_PLANT:
+    case DECOR_GORGEOUS_PLANT:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_PLANT);
+        break;
+    case DECOR_FENCE_LENGTH:
+    case DECOR_FENCE_WIDTH:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_FENCE);
+        break;
+    case DECOR_TIRE:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
+        break;
+    case DECOR_RED_BRICK:
+    case DECOR_YELLOW_BRICK:
+    case DECOR_BLUE_BRICK:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
+        break;
+    case DECOR_SMALL_DESK:
+    case DECOR_POKEMON_DESK:
+    case DECOR_HEAVY_DESK:
+    case DECOR_RAGGED_DESK:
+    case DECOR_COMFORT_DESK:
+    case DECOR_BRICK_DESK:
+    case DECOR_CAMP_DESK:
+    case DECOR_HARD_DESK:
+    case DECOR_PRETTY_DESK:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
+        break;
     }
 }
 
@@ -1967,16 +1967,16 @@ void CheckInteractedWithFriendsFurnitureMiddle(void)
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     switch (CurrentSecretBaseMetatileIdToDecorId(MapGridGetMetatileIdAt(x, y)))
     {
-        case DECOR_HEAVY_DESK:
-        case DECOR_RAGGED_DESK:
-        case DECOR_COMFORT_DESK:
-        case DECOR_BRICK_DESK:
-        case DECOR_CAMP_DESK:
-        case DECOR_HARD_DESK:
-        case DECOR_PRETTY_DESK:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
-            break;
+    case DECOR_HEAVY_DESK:
+    case DECOR_RAGGED_DESK:
+    case DECOR_COMFORT_DESK:
+    case DECOR_BRICK_DESK:
+    case DECOR_CAMP_DESK:
+    case DECOR_HARD_DESK:
+    case DECOR_PRETTY_DESK:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
+        break;
     }
 }
 
@@ -1987,26 +1987,26 @@ void CheckInteractedWithFriendsFurnitureTop(void)
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     switch (CurrentSecretBaseMetatileIdToDecorId(MapGridGetMetatileIdAt(x, y)))
     {
-        case DECOR_HEAVY_DESK:
-        case DECOR_RAGGED_DESK:
-        case DECOR_COMFORT_DESK:
-        case DECOR_BRICK_DESK:
-        case DECOR_CAMP_DESK:
-        case DECOR_HARD_DESK:
-        case DECOR_PRETTY_DESK:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
-            break;
-        case DECOR_TIRE:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
-            break;
-        case DECOR_RED_BRICK:
-        case DECOR_YELLOW_BRICK:
-        case DECOR_BLUE_BRICK:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
-            break;
+    case DECOR_HEAVY_DESK:
+    case DECOR_RAGGED_DESK:
+    case DECOR_COMFORT_DESK:
+    case DECOR_BRICK_DESK:
+    case DECOR_CAMP_DESK:
+    case DECOR_HARD_DESK:
+    case DECOR_PRETTY_DESK:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_DESK);
+        break;
+    case DECOR_TIRE:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_TIRE);
+        break;
+    case DECOR_RED_BRICK:
+    case DECOR_YELLOW_BRICK:
+    case DECOR_BLUE_BRICK:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_BRICK);
+        break;
     }
 }
 
@@ -2017,9 +2017,9 @@ void CheckInteractedWithFriendsSandOrnament(void)
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     switch (CurrentSecretBaseMetatileIdToDecorId(MapGridGetMetatileIdAt(x, y)))
     {
-        case DECOR_SAND_ORNAMENT:
-            if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
-                VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_SAND_ORNAMENT);
-            break;
+    case DECOR_SAND_ORNAMENT:
+        if (VarGet(VAR_CURRENT_SECRET_BASE) != 0)
+            VarSet(VAR_SECRET_BASE_HIGH_TV_FLAGS, VarGet(VAR_SECRET_BASE_HIGH_TV_FLAGS) | SECRET_BASE_USED_SAND_ORNAMENT);
+        break;
     }
 }
