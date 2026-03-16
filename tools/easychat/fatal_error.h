@@ -1,7 +1,7 @@
 // Copyright (c) 2015 YamaArashi
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef FATAL_ERROR_H
+#define FATAL_ERROR_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +14,6 @@ do {                                      \
     exit(1);                              \
 } while (0)
 
-#define UNUSED
-
 #else
 
 #define FATAL_ERROR(format, ...)            \
@@ -24,8 +22,6 @@ do {                                        \
     exit(1);                                \
 } while (0)
 
-#define UNUSED __attribute__((__unused__))
-
 #endif // _MSC_VER
 
-#endif // GLOBAL_H
+#endif // FATAL_ERROR_H

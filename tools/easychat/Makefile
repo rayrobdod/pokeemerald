@@ -1,6 +1,16 @@
 CXX ?= g++
+CC ?= gcc
 
 CXXFLAGS := -Wall -std=c++17 -O2
+
+CCFLAGS += -Wno-int-to-pointer-cast
+CCFLAGS += -D__INTELLISENSE__
+CCFLAGS += -std=c17
+CCFLAGS += -O2
+CCFLAGS += -ffunction-sections
+CCFLAGS += -fdata-sections
+
+LDFLAGS += -Wl,--gc-sections
 
 INCLUDES := -I .
 
@@ -9,7 +19,7 @@ SRCS += json11.cpp
 SRCS += util.cpp
 SRCS += wordinfo.cpp
 
-HEADERS += global.h
+HEADERS += fatal_error.h
 HEADERS += json11.h
 HEADERS += util.h
 HEADERS += wordinfo.h
@@ -25,8 +35,14 @@ endif
 all: easychat$(EXE)
 	@:
 
-easychat$(EXE): $(SRCS) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(SRCS) -o $@ $(LDFLAGS)
+pokemon.o: ../../src/pokemon.c Makefile
+	$(CC) $(CCFLAGS) -I ../../include $< -c -o $@
+
+wordinfo_pokemon.o: wordinfo_pokemon.cpp
+	$(CXX) $(CXXFLAGS) -I ../../include $(INCLUDES) $< -c -o $@
+
+easychat$(EXE): $(SRCS) $(HEADERS) pokemon.o wordinfo_pokemon.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(SRCS) pokemon.o wordinfo_pokemon.o -o $@ $(LDFLAGS)
 
 clean:
 	$(RM) easychat easychat.exe

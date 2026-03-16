@@ -91,10 +91,7 @@ enum class DexGroup {
 
 WordInfoList parseJson(const std::filesystem::path& input_file);
 
-WordInfoList parsePokemon(
-        DexGroup dex_group,
-        const std::filesystem::path& species_names_file,
-        const std::filesystem::path& pokedex_file);
+WordInfoList listPokemon(DexGroup dex_group);
 
 WordInfoList parseMoves(
         const std::filesystem::path& move_names_file,

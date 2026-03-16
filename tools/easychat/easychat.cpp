@@ -1,5 +1,5 @@
 
-#include "global.h"
+#include "fatal_error.h"
 #include "wordinfo.h"
 #include "util.h"
 #include <filesystem>
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         std::filesystem::path pokedex_constants_file(argv[4]);
         std::filesystem::path output_file(argv[5]);
 
-        WordInfoList data = parsePokemon(dex_group, species_names_file, pokedex_constants_file);
+        WordInfoList data = listPokemon(dex_group);
         writeValueList(output_file, data, {species_names_file, pokedex_constants_file});
     }
     else if (mode == "groups")
@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
         std::filesystem::path output_file(argv[7]);
 
         std::vector<WordInfoList> wordss;
-        wordss.push_back(parsePokemon(DexGroup::HOENN, species_names_file, pokedex_constants_file));
-        wordss.push_back(parsePokemon(DexGroup::KANTOJOHTO, species_names_file, pokedex_constants_file));
+        wordss.push_back(listPokemon(DexGroup::HOENN));
+        wordss.push_back(listPokemon(DexGroup::KANTOJOHTO));
 
         for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{input_directory}) {
             if (dir_entry.is_regular_file()) {
@@ -115,8 +115,8 @@ int main(int argc, char *argv[])
         std::filesystem::path output_file(argv[6]);
 
         std::vector<WordInfoList> wordss;
-        wordss.push_back(parsePokemon(DexGroup::HOENN, species_names_file, pokedex_constants_file));
-        wordss.push_back(parsePokemon(DexGroup::KANTOJOHTO, species_names_file, pokedex_constants_file));
+        wordss.push_back(listPokemon(DexGroup::HOENN));
+        wordss.push_back(listPokemon(DexGroup::KANTOJOHTO));
 
         for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{input_directory}) {
             if (dir_entry.is_regular_file()) {

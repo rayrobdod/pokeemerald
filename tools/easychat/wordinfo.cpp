@@ -1,6 +1,6 @@
 #include "wordinfo.h"
 
-#include "global.h"
+#include "fatal_error.h"
 #include "json11.h"
 #include "util.h"
 #include <algorithm>
@@ -155,122 +155,6 @@ WordInfoList parseJson(const std::filesystem::path& input_file)
     return retval;
 }
 
-
-struct PokemonGroupData
-{
-    std::string id;
-    std::string label;
-    std::regex pokemonEnumEntryRegex;
-    std::regex pokemonCountRegex;
-    std::string pokemonCountHint;
-    std::string macro;
-};
-
-static const struct PokemonGroupData hoennPokemonGroupData
-{
-    .id = "EC_GROUP_POKEMON",
-    .label = "gEasyChatGroup_Pokemon",
-    .pokemonEnumEntryRegex = std::regex("HOENN_DEX_(\\w+),"),
-    .pokemonCountRegex = std::regex("#define HOENN_DEX_COUNT +HOENN_DEX_(\\w+)"),
-    .pokemonCountHint = "HOENN_DEX_COUNT",
-    .macro = "EC_POKEMON",
-};
-static const struct PokemonGroupData kantoJohtoPokemonGroupData
-{
-    .id = "EC_GROUP_POKEMON_NATIONAL",
-    .label = "gEasyChatGroup_Pokemon2",
-    .pokemonEnumEntryRegex = std::regex("NATIONAL_DEX_(\\w+),"),
-    .pokemonCountRegex = std::regex("#define JOHTO_DEX_COUNT +NATIONAL_DEX_(\\w+)"),
-    .pokemonCountHint = "JOHTO_DEX_COUNT",
-    .macro = "EC_POKEMON_NATIONAL",
-};
-
-static const PokemonGroupData& pokemonGroupData(DexGroup dex_group)
-{
-    switch (dex_group)
-    {
-    case DexGroup::HOENN:
-        return hoennPokemonGroupData;
-    case DexGroup::KANTOJOHTO:
-        return kantoJohtoPokemonGroupData;
-    }
-    FATAL_ERROR("illegal argument\n");
-}
-
-
-WordInfoList parsePokemon(
-        DexGroup dex_group,
-        const std::filesystem::path& species_names_file,
-        const std::filesystem::path& pokedex_file)
-{
-    const PokemonGroupData& dex_group_data = pokemonGroupData(dex_group);
-
-    string pokedex_str = read_text_file(pokedex_file);
-    std::vector<string> full_dex;
-    {
-        std::regex entry_regex(dex_group_data.pokemonEnumEntryRegex);
-        auto entries_begin = std::sregex_iterator(pokedex_str.cbegin(), pokedex_str.cend(), entry_regex);
-        auto entries_end = std::sregex_iterator();
-
-        for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
-        {
-            if (i->str(1) == "NONE")
-                continue;
-
-            full_dex.push_back(i->str(1));
-        }
-    }
-
-    string dex_count;
-    {
-        std::regex dex_count_regex(dex_group_data.pokemonCountRegex);
-        std::smatch m;
-        std::regex_search(pokedex_str.cbegin(), pokedex_str.cend(), m, dex_count_regex);
-        if (m.empty())
-            FATAL_ERROR("malformed input: did not find %s\n", dex_group_data.pokemonCountHint.c_str());
-        dex_count = m.str(1);
-    }
-
-    std::vector<string>::iterator split = std::find(full_dex.begin(), full_dex.end(), dex_count) + 1;
-    std::vector<string> dex(full_dex.begin(), split);
-
-    string species_names_str = read_text_file(species_names_file);
-    std::vector<WordInfo> words_out;
-    {
-        std::regex entry_regex("\\[SPECIES_(\\w+)\\]\\s*=\\s*_\\(\"([^\"]+)\"\\),");
-        auto entries_begin = std::sregex_iterator(species_names_str.cbegin(), species_names_str.cend(), entry_regex);
-        auto entries_end = std::sregex_iterator();
-
-        for (std::sregex_iterator i = entries_begin; i != entries_end; ++i)
-        {
-            if (dex.end() != std::find(dex.begin(), dex.end(), i->str(1)))
-            {
-                string index("SPECIES_");
-                index += i->str(1);
-
-                string id;
-                id += dex_group_data.macro;
-                id += "(";
-                id += i->str(1);
-                id += ")";
-
-                words_out.emplace_back(
-                    id,
-                    index,
-                    i->str(2),
-                    "",
-                    true);
-            }
-        }
-    }
-
-    WordInfoList retval(
-        dex_group_data.id,
-        dex_group_data.label,
-        WordInfoListType::VALUE_LIST,
-        words_out);
-    return retval;
-}
 
 WordInfoList parseMoves(
         const std::filesystem::path& move_names_file,
