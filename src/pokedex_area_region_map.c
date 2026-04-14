@@ -17,7 +17,7 @@ static const u32 sPokedexAreaMapAffine_Tilemap[] = INCBIN_U32("build/graphics/re
 void LoadPokedexAreaMapGfx(const struct PokedexAreaMapTemplate *template)
 {
     u8 mode;
-    void * tilemap;
+    void *tilemap;
     sPokedexAreaMapBgNum = Alloc(sizeof(sPokedexAreaMapBgNum));
     mode = template->mode;
 

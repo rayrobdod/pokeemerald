@@ -385,6 +385,9 @@ graphics/pokemon_jump/bg.4bpp: %.4bpp: %.png
 $(MISCGFXDIR)/japanese_hof.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 29 -Wnum_tiles
 
+$(MISCGFXDIR)/mirage_tower.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -num_tiles 73 -Wnum_tiles
+
 $(BATINTGFXDIR)/textbox.gbapal: $(BATINTGFXDIR)/textbox_0.gbapal \
                                 $(BATINTGFXDIR)/textbox_1.gbapal
 	@cat $^ >$@
@@ -498,7 +501,7 @@ $(RAYQUAZAGFXDIR)/scene_3/rayquaza.4bpp: %.4bpp: %.png
 
 $(RAYQUAZAGFXDIR)/scene_3/rayquaza_tail_fix.4bpp: $(RAYQUAZAGFXDIR)/scene_3/rayquaza_tail.4bpp
 	cp $< $@
-	head -c 12 /dev/zero >> $@
+	dd if=/dev/zero bs=1 count=12 >> $@
 
 $(RAYQUAZAGFXDIR)/scene_4/streaks.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 19 -Wnum_tiles
