@@ -8,11 +8,11 @@
 
 static EWRAM_DATA u8 *sPokedexAreaMapBgNum = NULL;
 
-static const u16 ALIGNED(4) sPokedexAreaMap_Pal[] = INCBIN_U16("build/graphics/region_map/hoenn_base.gbapal");
-static const u32 sPokedexAreaMap_Gfx[] = INCBIN_U32("build/graphics/region_map/hoenn_text.8bpp.lz");
-static const u32 sPokedexAreaMap_Tilemap[] = INCBIN_U32("build/graphics/region_map/hoenn_text.tilemap.lz");
-static const u32 sPokedexAreaMapAffine_Gfx[] = INCBIN_U32("build/graphics/region_map/hoenn_affine.8bpp.lz");
-static const u32 sPokedexAreaMapAffine_Tilemap[] = INCBIN_U32("build/graphics/region_map/hoenn_affine.tilemap.lz");
+static const u16 ALIGNED(4) sPokedexAreaMap_Pal[] = INCBIN_U16("build/assets/graphics/region_map/hoenn_base.gbapal");
+static const u32 sPokedexAreaMap_Gfx[] = INCBIN_U32("build/assets/graphics/region_map/hoenn_text.8bpp.lz");
+static const u32 sPokedexAreaMap_Tilemap[] = INCBIN_U32("build/assets/graphics/region_map/hoenn_text.tilemap.lz");
+static const u32 sPokedexAreaMapAffine_Gfx[] = INCBIN_U32("build/assets/graphics/region_map/hoenn_affine.8bpp.lz");
+static const u32 sPokedexAreaMapAffine_Tilemap[] = INCBIN_U32("build/assets/graphics/region_map/hoenn_affine.tilemap.lz");
 
 void LoadPokedexAreaMapGfx(const struct PokedexAreaMapTemplate *template)
 {

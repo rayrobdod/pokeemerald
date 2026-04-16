@@ -25,8 +25,6 @@ NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/pokemon/spinda/spots
 TITLESCREENGFXDIR := graphics/title_screen
 
-REGIONGFXBUILDDIR := build/graphics/region_map
-
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
 
@@ -303,10 +301,10 @@ $(FONTGFXDIR)/frlg_female.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_female.png
 
 ### Region Map ###
 
-$(REGIONGFXBUILDDIR):
-	mkdir -p $(REGIONGFXBUILDDIR)
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR):
+	mkdir -p $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)
 
-$(REGIONGFXBUILDDIR)/%_base.gbapal: $(REGIONGFXDIR)/%.png | $(REGIONGFXBUILDDIR)
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_base.gbapal: $(REGIONGFXDIR)/%.png | $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)
 	$(FAMICONV) palette \
 		--mode gba_affine \
 		--palettes 1 \
@@ -314,36 +312,36 @@ $(REGIONGFXBUILDDIR)/%_base.gbapal: $(REGIONGFXDIR)/%.png | $(REGIONGFXBUILDDIR)
 		--in-image $< \
 		--out-data $@
 
-$(REGIONGFXBUILDDIR)/empty_112.gbapal: | $(REGIONGFXBUILDDIR)
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/empty_112.gbapal: | $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)
 	dd if=/dev/zero of=$@ bs=1 count=224 status=none
 
-$(REGIONGFXBUILDDIR)/%_padded.gbapal: $(REGIONGFXBUILDDIR)/empty_112.gbapal $(REGIONGFXBUILDDIR)/%_base.gbapal
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_padded.gbapal: $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/empty_112.gbapal $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_base.gbapal
 	cat $^ >$@
 
-$(REGIONGFXBUILDDIR)/%_text.8bpp : \
-		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_text.8bpp : \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_padded.gbapal \
 		$(REGIONGFXDIR)/%.png
 	$(FAMICONV) tiles \
 		--mode gba \
 		--bpp 8 \
 		--in-image $(REGIONGFXDIR)/$*.png \
-		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
-		--out-image $(REGIONGFXBUILDDIR)/$*_text_tiles.png \
+		--in-palette $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_padded.gbapal \
+		--out-image $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_text_tiles.png \
 		--out-data $@
 
-$(REGIONGFXBUILDDIR)/%_affine.8bpp : \
-		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_affine.8bpp : \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_padded.gbapal \
 		$(REGIONGFXDIR)/%.png
 	$(FAMICONV) tiles \
 		--mode gba_affine \
 		--in-image $(REGIONGFXDIR)/$*.png \
-		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
-		--out-image $(REGIONGFXBUILDDIR)/$*_affine_tiles.png \
+		--in-palette $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_padded.gbapal \
+		--out-image $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_affine_tiles.png \
 		--out-data $@
 
-$(REGIONGFXBUILDDIR)/%_text.tilemap : \
-		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
-		$(REGIONGFXBUILDDIR)/%_text.8bpp \
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_text.tilemap : \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_padded.gbapal \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_text.8bpp \
 		$(REGIONGFXDIR)/%.png
 	$(FAMICONV) map \
 		--mode gba \
@@ -351,13 +349,13 @@ $(REGIONGFXBUILDDIR)/%_text.tilemap : \
 		--map-width 32 \
 		--map-height 32 \
 		--in-image $(REGIONGFXDIR)/$*.png \
-		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
-		--in-tiles $(REGIONGFXBUILDDIR)/$*_text.8bpp \
+		--in-palette $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_padded.gbapal \
+		--in-tiles $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_text.8bpp \
 		--out-data $@
 
-$(REGIONGFXBUILDDIR)/%_affine.tilemap : \
-		$(REGIONGFXBUILDDIR)/%_padded.gbapal \
-		$(REGIONGFXBUILDDIR)/%_affine.8bpp \
+$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_affine.tilemap : \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_padded.gbapal \
+		$(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/%_affine.8bpp \
 		$(REGIONGFXDIR)/%.png
 	$(FAMICONV) map \
 		--mode gba_affine \
@@ -366,8 +364,8 @@ $(REGIONGFXBUILDDIR)/%_affine.tilemap : \
 		--split-width 64 \
 		--split-height 64 \
 		--in-image $(REGIONGFXDIR)/$*.png \
-		--in-palette $(REGIONGFXBUILDDIR)/$*_padded.gbapal \
-		--in-tiles $(REGIONGFXBUILDDIR)/$*_affine.8bpp \
+		--in-palette $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_padded.gbapal \
+		--in-tiles $(ASSETS_DIR_NAME)/$(REGIONGFXDIR)/$*_affine.8bpp \
 		--out-data $@
 
 
