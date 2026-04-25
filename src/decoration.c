@@ -219,6 +219,7 @@ static void DecorationItemsMenuAction_AttemptToss(u8 taskId);
 static void TossDecorationPrompt(u8 taskId);
 static void TossDecoration(u8 taskId);
 
+#include "data/decoration/description_newdecor.h"
 #include "data/decoration/attributes.h"
 #include "data/decoration/tiles.h"
 #include "data/decoration/description.h"
