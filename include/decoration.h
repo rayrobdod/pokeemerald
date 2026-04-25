@@ -47,6 +47,12 @@ struct DecorMetatileAttributes
     u16 elevation : 4;
 };
 
+struct DecorIcon
+{
+    const u32 *pic;
+    const u16 *pal;
+};
+
 struct Decoration
 {
     u8 id;
@@ -60,6 +66,7 @@ struct Decoration
     const u16 *metatiles;
     const struct DecorMetatileAttributes *attributes;
     u16 objEvent;
+    struct DecorIcon icon;
 };
 
 extern const struct Decoration gDecorations[];
