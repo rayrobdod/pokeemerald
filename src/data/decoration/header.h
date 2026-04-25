@@ -462,20 +462,6 @@ const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
         .attributes = DecorAttributes_Tent,
     },
 
-    [DECOR_GREEN_TENT] =
-    {
-        .id = DECOR_GREEN_TENT,
-        .name = _("GREEN TENT"),
-        .permission = DECORPERM_BEHIND_FLOOR,
-        .shape = DECORSHAPE_3x3,
-        .category = DECORCAT_ORNAMENT,
-        .price = 10000,
-        .description = DecorDesc_GREEN_TENT,
-        .tiles = DecorTiles_GREEN_TENT,
-        .metatiles = DecorMetatiles_GREEN_TENT,
-        .attributes = DecorAttributes_Tent,
-    },
-
     [DECOR_SOLID_BOARD] =
     {
         .id = DECOR_SOLID_BOARD,
@@ -1644,6 +1630,20 @@ const struct Decoration gDecorations[NUM_DECORATIONS_PLUS_ONE] =
         .tiles = DecorTiles_BIG_BOOKSHELF,
         .metatiles = DecorMetatiles_COLORFUL_PLANT,
         .attributes = DecorAttributes_Plant_2x2,
+    },
+
+    [DECOR_GREEN_TENT] =
+    {
+        .id = DECOR_GREEN_TENT,
+        .name = _("GREEN TENT"),
+        .permission = DECORPERM_BEHIND_FLOOR,
+        .shape = DECORSHAPE_3x3,
+        .category = DECORCAT_ORNAMENT,
+        .price = 10000,
+        .description = DecorDesc_GREEN_TENT,
+        .tiles = DecorTiles_GREEN_TENT,
+        .metatiles = DecorMetatiles_GREEN_TENT,
+        .attributes = DecorAttributes_Tent,
     },
 
     [DECOR_DADS_SCROLL] =

@@ -52,9 +52,6 @@ const u16 gDecorIconPalette_RedTent[] = INCBIN_U16("graphics/decorations/red_ten
 const u32 gDecorIcon_BlueTent[] = INCBIN_U32("graphics/decorations/blue_tent.4bpp.lz");
 const u16 gDecorIconPalette_BlueTent[] = INCBIN_U16("graphics/decorations/blue_tent.gbapal");
 
-const u32 gDecorIcon_GreenTent[] = INCBIN_U32("graphics/decorations/green_tent.4bpp.lz");
-const u16 gDecorIconPalette_GreenTent[] = INCBIN_U16("graphics/decorations/green_tent.gbapal");
-
 const u32 gDecorIcon_SolidBoard[] = INCBIN_U32("graphics/decorations/solid_board.4bpp.lz");
 const u16 gDecorIconPalette_SolidBoard[] = INCBIN_U16("graphics/decorations/solid_board.gbapal");
 
@@ -132,6 +129,9 @@ const u16 gDecorIconPalette_SmallBookshelf[] = INCBIN_U16("graphics/decorations/
 
 const u32 gDecorIcon_BigBookshelf[] = INCBIN_U32("graphics/decorations/big_bookshelf.4bpp.lz");
 const u16 gDecorIconPalette_BigBookshelf[] = INCBIN_U16("graphics/decorations/big_bookshelf.gbapal");
+
+const u32 gDecorIcon_GreenTent[] = INCBIN_U32("graphics/decorations/green_tent.4bpp.lz");
+const u16 gDecorIconPalette_GreenTent[] = INCBIN_U16("graphics/decorations/green_tent.gbapal");
 
 const u32 gDecorIcon_DadsScroll[] = INCBIN_U32("graphics/decorations/dads_scroll.4bpp.lz");
 const u16 gDecorIconPalette_DadsScroll[] = INCBIN_U16("graphics/decorations/dads_scroll.gbapal");
