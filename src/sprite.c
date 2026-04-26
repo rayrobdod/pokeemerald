@@ -4,6 +4,8 @@
 #include "palette.h"
 #include "string_util.h"
 #include "text.h"
+#include "battle_anim.h"
+#include "test/test.h"
 
 #define MAX_SPRITE_COPY_REQUESTS 64
 
@@ -28,11 +30,11 @@
 
 #define SPRITE_TILE_IS_ALLOCATED(n) ((sSpriteTileAllocBitmap[(n) / 8] >> ((n) % 8)) & 1)
 
-#if T_SHOULD_RUN_MOVE_ANIM
+#if TESTING
 EWRAM_DATA bool32 gLoadFail = FALSE;
 EWRAM_DATA bool32 gCountAllocs = FALSE;
 EWRAM_DATA s32 gSpriteAllocs = 0;
-#endif // T_SHOULD_RUN_MOVE_ANIM
+#endif // TESTING
 
 struct SpriteCopyRequest
 {
@@ -429,9 +431,15 @@ static void SortSprites(u32 *spritePriorities, s32 n)
 
 u32 CreateSprite(const struct SpriteTemplate *template, s16 x, s16 y, u32 subpriority)
 {
-    u32 i;
+    u32 spriteId = CreateSpriteUnchecked(template, x, y, subpriority);
 
-    for (i = 0; i < MAX_SPRITES; i++)
+    assertf(spriteId < MAX_SPRITES, "Out of sprite slots");
+    return spriteId;
+}
+
+u32 CreateSpriteUnchecked(const struct SpriteTemplate *template, s16 x, s16 y, u32 subpriority)
+{
+    for (u32 i = 0; i < MAX_SPRITES; i++)
         if (!gSprites[i].inUse)
             return CreateSpriteAt(i, template, x, y, subpriority);
 
@@ -440,9 +448,15 @@ u32 CreateSprite(const struct SpriteTemplate *template, s16 x, s16 y, u32 subpri
 
 u32 CreateSpriteAtEnd(const struct SpriteTemplate *template, s16 x, s16 y, u32 subpriority)
 {
-    s32 i;
+    u32 spriteId = CreateSpriteAtEndUnchecked(template, x, y, subpriority);
 
-    for (i = MAX_SPRITES - 1; i > -1; i--)
+    assertf(spriteId < MAX_SPRITES, "Out of sprite slots");
+    return spriteId;
+}
+
+u32 CreateSpriteAtEndUnchecked(const struct SpriteTemplate *template, s16 x, s16 y, u32 subpriority)
+{
+    for (s32 i = MAX_SPRITES - 1; i > -1; i--)
         if (!gSprites[i].inUse)
             return CreateSpriteAt(i, template, x, y, subpriority);
 
@@ -467,6 +481,14 @@ u32 CreateInvisibleSprite(void (*callback)(struct Sprite *))
 
 u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 y, u32 subpriority)
 {
+    if (TESTING && template->tileTag > ANIM_SPRITES_START && template->tileTag < ANIM_TAG_COUNT && !IsGfxLoaded(template->tileTag))
+    {
+        assertf(FALSE, "createsprite with unloaded gfx: %u", template->tileTag);
+    }
+    if (TESTING && template->paletteTag > ANIM_SPRITES_START && template->paletteTag < ANIM_TAG_COUNT && !IsPalLoaded(template->paletteTag))
+    {
+        assertf(FALSE, "createsprite with unloaded pal: %u", template->paletteTag);
+    }
     struct Sprite *sprite = &gSprites[index];
 
     ResetSprite(sprite);
@@ -1454,7 +1476,6 @@ static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset
 #if T_SHOULD_RUN_MOVE_ANIM
         gLoadFail = TRUE;
 #endif // T_SHOULD_RUN_MOVE_ANIM
-        DebugPrintf("Tile: %u", sheet->tag);
         return 0;
     }
     else
@@ -1495,13 +1516,13 @@ void LoadSpriteSheets(const struct SpriteSheet *sheets)
 
 void FreeSpriteTilesByTag(u16 tag)
 {
-#if T_SHOULD_RUN_MOVE_ANIM
-    if (gCountAllocs)
-        gSpriteAllocs--;
-#endif
     u8 index = IndexOfSpriteTileTag(tag);
     if (index != 0xFF)
     {
+#if TESTING
+        if (gCountAllocs)
+            gSpriteAllocs--;
+#endif
         u16 i;
         u16 *rangeStarts;
         u16 *rangeCounts;
@@ -1564,7 +1585,7 @@ u16 GetSpriteTileTagByTileStart(u16 start)
 
 void AllocSpriteTileRange(u16 tag, u16 start, u16 count)
 {
-#if T_SHOULD_RUN_MOVE_ANIM
+#if TESTING
     if (gCountAllocs)
         gSpriteAllocs++;
 #endif
@@ -1880,6 +1901,12 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
     u32 color = 0;
     bool32 isColor = FALSE;
 
+    // Bit masks for fast modulus division, this is posible
+    // since all posible values for the sprite
+    // width and height in the GBA are a power of two
+    u32 widthMask = spriteWidth - 1;
+    u32 heightMask = spriteHeight - 1;
+
     u32 *src = NULL;
 
     switch (mode)
@@ -1949,8 +1976,8 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
             //  Separate out the case that doesn't need to mask the pixels
             for (u32 row = 0; row < height; row++)
             {
-                u32 spriteX = (currStart - (currStart % PIXELS_PER_TILE)) % spriteWidth;
-                u32 spriteY = (top + row) % spriteHeight;
+                u32 spriteX = (currStart - (currStart % PIXELS_PER_TILE)) & widthMask;
+                u32 spriteY = (top + row) & heightMask;
                 if (isColor)
                     tiles[CURRENT_SPRITE_POS] = color;
                 else
@@ -1963,7 +1990,7 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
                     if (!isColor)
                         src = GetSrcPtrFromSprite(&gSprites[currSpriteId]);
                 }
-                else if ((top + row) % spriteHeight == spriteHeight - 1)
+                else if (((top + row) & heightMask) == heightMask)
                 {
                     //  Switch sprite along Y-axis
                     currSpriteId = gSprites[currSpriteId].nextY;
@@ -1978,8 +2005,8 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
             //  Mask these since it's needed
             for (u32 row = 0; row < height; row++)
             {
-                u32 spriteX = (currStart - (currStart % PIXELS_PER_TILE)) % spriteWidth;
-                u32 spriteY = (top + row) % spriteHeight;
+                u32 spriteX = (currStart - (currStart % PIXELS_PER_TILE)) & widthMask;
+                u32 spriteY = (top + row) & heightMask;
                 u32 orig = tiles[CURRENT_SPRITE_POS] & dstMask;
                 u32 new;
                 if (isColor)
@@ -1995,7 +2022,7 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
                     if (!isColor)
                         src = GetSrcPtrFromSprite(&gSprites[currSpriteId]);
                 }
-                else if ((top + row) % spriteHeight == spriteHeight - 1)
+                else if (((top + row) & heightMask) == heightMask)
                 {
                     //  Switch sprite along Y-axis
                     currSpriteId = gSprites[currSpriteId].nextY;
@@ -2009,7 +2036,7 @@ static void FillSpriteRect(u32 spriteId, u32 left, u32 top, u32 width, u32 heigh
         remainingWidth -= currWidth;
         currStart += currWidth;
         //  Handle switching sprites along X-axis
-        if (currStart > 0 && (currStart % spriteWidth) == 0)
+        if (currStart > 0 && (currStart & widthMask) == 0)
         {
             spriteId = gSprites[spriteId].nextX;
             tiles = (u32 *)((OBJ_VRAM0) + gSprites[spriteId].oam.tileNum * TILE_SIZE_4BPP);

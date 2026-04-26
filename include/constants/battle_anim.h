@@ -452,6 +452,7 @@ enum AnimBattler
 //          127
 //
 #define SOUND_PAN_ATTACKER -64
+#define SOUND_PAN_MIDDLE     0
 #define SOUND_PAN_TARGET    63
 
 // move background ids
@@ -605,7 +606,8 @@ enum AnimBattler
 #define B_ANIM_SAFARI_REACTION          60
 #define B_ANIM_FORM_CHANGE_INSTANT      61
 #define B_ANIM_FORM_CHANGE_DISGUISE     62
-#define NUM_B_ANIMS_GENERAL             63
+#define B_ANIM_HELD_ITEM_BERRY          63
+#define NUM_B_ANIMS_GENERAL             64
 
 // special animations table (sBattleAnims_Special)
 #define B_ANIM_LVL_UP                   0
@@ -716,5 +718,10 @@ enum SpeciesGfxChange
 
 enum { SHAKE_BG_X, SHAKE_BG_Y, SHAKE_MON_X, SHAKE_MON_Y };
 enum { SHAKE_MON_ATTACKER, SHAKE_MON_TARGET, SHAKE_MON_BOTH };
+
+//  Max number of tile and palette allocations for battle animations
+//  These values must be even
+#define ANIM_SPRITE_GFX_COUNT 8
+#define ANIM_SPRITE_PAL_COUNT 8
 
 #endif // GUARD_CONSTANTS_BATTLE_ANIM_H
