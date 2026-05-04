@@ -1,6 +1,7 @@
 #include "global.h"
 #include "test/test.h"
 
+#include "battle_setup.h"
 #include "battle_transition.h"
 #include "palette.h"
 #include "sprite.h"
@@ -21,6 +22,10 @@ TEST("Battle Transition")
     {
         PARAMETRIZE_LABEL("%d", i) { transition = i; }
     }
+
+    memset(&gTrainerBattleParameter, 0, sizeof(TrainerBattleParameter));
+    gTrainerBattleParameter.params.opponentA = 1;
+    gPartnerTrainerId = TRAINER_NONE;
 
     ResetTasks();
     ResetPaletteFadeControl();
