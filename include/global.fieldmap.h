@@ -11,6 +11,15 @@
 #define MAPGRID_COLLISION_SHIFT  10
 #define MAPGRID_ELEVATION_SHIFT  12
 
+enum
+{
+    ELEVATION_TRANSITION = 0,
+    ELEVATION_SURF = 1,
+    ELEVATION_DEFAULT = 3,
+    ELEVATION_MULTI_LEVEL = 15,
+    ELEVATION_INVALID = 0xFFFF
+};
+
 #define PACK_METATILE(metatileId) PACK(metatileId, MAPGRID_METATILE_ID_SHIFT, MAPGRID_METATILE_ID_MASK)
 #define PACK_COLLISION(collision) PACK(collision, MAPGRID_COLLISION_SHIFT, MAPGRID_COLLISION_MASK)
 #define PACK_ELEVATION(elevation) PACK(elevation, MAPGRID_ELEVATION_SHIFT, MAPGRID_ELEVATION_MASK)
@@ -167,7 +176,7 @@ struct MapHeader
     /* 0x0C */ const struct MapConnections *connections;
     /* 0x10 */ u16 music;
     /* 0x12 */ u16 mapLayoutId;
-    /* 0x14 */ u8 regionMapSectionId;
+    /* 0x14 */ mapsec_u8_t regionMapSectionId;
     /* 0x15 */ u8 cave;
     /* 0x16 */ u8 weather;
     /* 0x17 */ u8 mapType;
@@ -229,8 +238,8 @@ struct ObjectEvent
              u16 movementDirection:4;
              struct __attribute__((packed))
              {
-                u16 rangeX:4;
-                u16 rangeY:4;
+                u8 rangeX:4;
+                u8 rangeY:4;
              } range;
     /*0x1A*/ u8 fieldEffectSpriteId;
     /*0x1B*/ u8 warpArrowSpriteId;

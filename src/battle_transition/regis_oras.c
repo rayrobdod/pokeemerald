@@ -10,10 +10,10 @@
 #include "scanline_effect.h"
 #include "task.h"
 
-static const u32 sRegisEye_Tileset[] = INCBIN_U32("graphics/battle_transitions/regis_oras.4bpp.lz");
-static const u32 sRegisGlow_Tileset[] = INCBIN_U32("graphics/battle_transitions/regis_oras_glow.4bpp.lz");
-static const u32 sRegiceGlow_Tilemap[] = INCBIN_U32("graphics/battle_transitions/regice_oras.bin.lz");
-static const u32 sRegielekiGlow_Tilemap[] = INCBIN_U32("graphics/battle_transitions/regieleki_oras.bin.lz");
+static const u32 sRegisEye_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras.png", ".4bpp.lz");
+static const u32 sRegisGlow_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras_glow.png", ".4bpp.lz");
+static const u32 sRegiceGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regice_oras.bin", ".lz");
+static const u32 sRegielekiGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regieleki_oras.bin", ".lz");
 
 #define PALTAG_REGI_EYE (0xE7E5)
 #define TILETAG_REGI_EYE (0xE7E5)
@@ -36,7 +36,7 @@ struct regi_params {
 };
 static const struct regi_params regi_params[REGI_COUNT] = {
     [REGI_REGIROCK] = {
-        .palette = INCBIN_U16("graphics/battle_transitions/regirock_oras.gbapal"),
+        .palette = INCGFX_U16("graphics/battle_transitions/regirock_oras.pal", ".gbapal"),
         .eye_pattern = {
             {.x = 13, .y = 8},
             {6, 8},
@@ -48,7 +48,7 @@ static const struct regi_params regi_params[REGI_COUNT] = {
         }
     },
     [REGI_REGICE] = {
-        .palette = INCBIN_U16("graphics/battle_transitions/regice_oras.gbapal"),
+        .palette = INCGFX_U16("graphics/battle_transitions/regice_oras.pal", ".gbapal"),
         .eye_pattern = {
             {.x = 13, .y = 8},
             {13, 3},
@@ -60,7 +60,7 @@ static const struct regi_params regi_params[REGI_COUNT] = {
         }
     },
     [REGI_REGISTEEL] = {
-        .palette = INCBIN_U16("graphics/battle_transitions/registeel_oras.gbapal"),
+        .palette = INCGFX_U16("graphics/battle_transitions/registeel_oras.pal", ".gbapal"),
         .eye_pattern = {
             {.x = 13, .y = 8},
             {4, 8},
@@ -72,7 +72,7 @@ static const struct regi_params regi_params[REGI_COUNT] = {
         }
     },
     [REGI_REGIELEKI] = {
-        .palette = INCBIN_U16("graphics/battle_transitions/regieleki_oras.gbapal"),
+        .palette = INCGFX_U16("graphics/battle_transitions/regieleki_oras.pal", ".gbapal"),
         .eye_pattern = {
             {.x = 13, .y = 8},
             {18, 8},
@@ -84,7 +84,7 @@ static const struct regi_params regi_params[REGI_COUNT] = {
         }
     },
     [REGI_REGIDRAGO] = {
-        .palette = INCBIN_U16("graphics/battle_transitions/regidrago_oras.gbapal"),
+        .palette = INCGFX_U16("graphics/battle_transitions/regidrago_oras.pal", ".gbapal"),
         .eye_pattern = {
             {.x = 13, .y = 3},
             {13, 9},
