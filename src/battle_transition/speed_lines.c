@@ -23,10 +23,10 @@
 #define JERK (Q_12_4(0))
 #define START_FADE_VELOCITY (INITIAL_VELOCITY + Q_12_4(INITIAL_ACCELERATION * 3))
 
-static const u16 sSpeedLines_Palette[] = INCBIN_U16("graphics/battle_transitions/speedlines_bg.gbapal");
-static const u32 sSpeedLines_Bg_Tileset[] = INCBIN_U32("graphics/battle_transitions/speedlines_bg.4bpp.lz");
-static const u32 sSpeedLines_Bg_Small_Tileset[] = INCBIN_U32("graphics/battle_transitions/speedlines_bg_small.4bpp.lz");
-static const u32 sSpeedLines_Sprites[] = INCBIN_U32("graphics/battle_transitions/speedlines_sprites.4bpp.lz");
+static const u16 sSpeedLines_Palette[] = INCGFX_U16("graphics/battle_transitions/speedlines_bg.png", ".gbapal");
+static const u32 sSpeedLines_Bg_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg.png", ".4bpp.lz");
+static const u32 sSpeedLines_Bg_Small_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg_small.png", ".4bpp.lz");
+static const u32 sSpeedLines_Sprites[] = INCGFX_U32("graphics/battle_transitions/speedlines_sprites.png", ".4bpp.lz");
 
 static bool8 SpeedLines_Init(struct Task *);
 static bool8 SpeedLines_ConstantVelocityUntilTimerZero(struct Task *);

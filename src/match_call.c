@@ -134,7 +134,7 @@ static u32 GetCurrentTotalMinutes(struct Time *);
 static u32 GetNumRegisteredTrainers(void);
 static u32 GetActiveMatchCallTrainerId(u32);
 static int GetTrainerMatchCallId(int);
-static u16 GetRematchTrainerLocation(int);
+static mapsec_u16_t GetRematchTrainerLocation(int);
 static bool32 TrainerIsEligibleForRematch(int);
 static void StartMatchCall(void);
 static void ExecuteMatchCall(u8);
@@ -1194,10 +1194,10 @@ static void StartMatchCall(void)
     CreateTask(ExecuteMatchCall, 1);
 }
 
-static const u16 sMatchCallWindow_Pal[] = INCBIN_U16("graphics/pokenav/match_call/window.gbapal");
-static const u8 sMatchCallWindow_Gfx[] = INCBIN_U8("graphics/pokenav/match_call/window.4bpp");
-static const u16 sPokenavIcon_Pal[] = INCBIN_U16("graphics/pokenav/match_call/nav_icon.gbapal");
-static const u32 sPokenavIcon_Gfx[] = INCBIN_U32("graphics/pokenav/match_call/nav_icon.4bpp.lz");
+static const u16 sMatchCallWindow_Pal[] = INCGFX_U16("graphics/pokenav/match_call/window.png", ".gbapal");
+static const u8 sMatchCallWindow_Gfx[] = INCGFX_U8("graphics/pokenav/match_call/window.png", ".4bpp");
+static const u16 sPokenavIcon_Pal[] = INCGFX_U16("graphics/pokenav/match_call/nav_icon.png", ".gbapal");
+static const u32 sPokenavIcon_Gfx[] = INCGFX_U32("graphics/pokenav/match_call/nav_icon.png", ".4bpp.lz");
 
 static const u8 sText_PokenavCallEllipsis[] = _("………………\p");
 
@@ -1463,7 +1463,7 @@ static bool32 TrainerIsEligibleForRematch(int matchCallId)
     return gSaveBlock1Ptr->trainerRematches[matchCallId] > 0;
 }
 
-static u16 GetRematchTrainerLocation(int matchCallId)
+static mapsec_u16_t GetRematchTrainerLocation(int matchCallId)
 {
     const struct MapHeader *mapHeader = Overworld_GetMapHeaderByGroupAndId(gRematchTable[matchCallId].mapGroup, gRematchTable[matchCallId].mapNum);
     return mapHeader->regionMapSectionId;
