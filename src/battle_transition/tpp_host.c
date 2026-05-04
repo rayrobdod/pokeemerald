@@ -15,8 +15,8 @@ static bool8 TppHost_Main3(struct Task *);
 static bool8 TppHost_FadeOut(struct Task *);
 static bool8 TppHost_End(struct Task *);
 
-static const u16 sTppHost_Palette[] = INCBIN_U16("graphics/battle_transitions/tpp_host.gbapal");
-static const u32 sTppHost_Tileset[] = INCBIN_U32("graphics/battle_transitions/tpp_host.4bpp.lz");
+static const u16 sTppHost_Palette[] = INCGFX_U16("graphics/battle_transitions/tpp_host.png", ".gbapal");
+static const u32 sTppHost_Tileset[] = INCGFX_U32("graphics/battle_transitions/tpp_host.png", ".4bpp.lz");
 
 #define INPUT_TYPES (8)
 #define WINDOW_SPEED_DOWN (3)
