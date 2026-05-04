@@ -124,17 +124,17 @@ struct GalarGymPattern
     const u32 *logo_tiles;
 };
 
-static const u16 sGrassPattern_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_grass_pattern.gbapal");
-static const u32 sGrassPattern_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_grass_pattern.4bpp.lz");
+static const u16 sGrassPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_grass_pattern.png", ".gbapal");
+static const u32 sGrassPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_pattern.png", ".4bpp.lz");
 static const u16 sGrassPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_grass_pattern.bin");
-static const u16 sGrassLogo_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_grass_logo.gbapal");
-static const u32 sGrassLogo_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_grass_logo.4bpp.lz");
+static const u16 sGrassLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_grass_logo.png", ".gbapal");
+static const u32 sGrassLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_logo.png", ".4bpp.lz");
 
-static const u16 sRockPattern_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.gbapal");
-static const u32 sRockPattern_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_rock_pattern.4bpp.lz");
+static const u16 sRockPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_rock_pattern.png", ".gbapal");
+static const u32 sRockPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_pattern.png", ".4bpp.lz");
 static const u16 sRockPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.bin");
-static const u16 sRockLogo_Palette[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_logo.gbapal");
-static const u32 sRockLogo_Tileset[] = INCBIN_U32("graphics/battle_transitions/galar_gym_rock_logo.4bpp.lz");
+static const u16 sRockLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_rock_logo.png", ".gbapal");
+static const u32 sRockLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_logo.png", ".4bpp.lz");
 
 static const struct GalarGymPattern sVariants[] =
 {
