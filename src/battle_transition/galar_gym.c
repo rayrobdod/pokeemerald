@@ -11,8 +11,9 @@
 
 enum galar_gym_transition_variant
 {
-	GALAR_GYM_GRASS,
-	GALAR_GYM_ROCK,
+    GALAR_GYM_GRASS,
+    GALAR_GYM_WATER,
+    GALAR_GYM_ROCK,
 };
 
 enum effectreg_offset
@@ -130,6 +131,12 @@ static const u16 sGrassPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitio
 static const u16 sGrassLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_grass_logo.png", ".gbapal");
 static const u32 sGrassLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_logo.png", ".4bpp.lz");
 
+static const u16 sWaterPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_water_pattern.png", ".gbapal");
+static const u32 sWaterPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_pattern.png", ".4bpp.lz", "-num_tiles 56");
+static const u16 sWaterPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_water_pattern.bin");
+static const u16 sWaterLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_water_logo.png", ".gbapal");
+static const u32 sWaterLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_logo.png", ".4bpp.lz");
+
 static const u16 sRockPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_rock_pattern.png", ".gbapal");
 static const u32 sRockPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_pattern.png", ".4bpp.lz");
 static const u16 sRockPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.bin");
@@ -151,6 +158,20 @@ static const struct GalarGymPattern sVariants[] =
         .pattern_tilemap = sGrassPattern_Tilemap,
         .logo_palette = sGrassLogo_Palette,
         .logo_tiles = sGrassLogo_Tileset,
+    },
+    [GALAR_GYM_WATER] =
+    {
+        .pattern_width = 9,
+        .pattern_height = 8,
+        .pattern_x_offset = 4,
+        .pattern_y_offset = -2,
+        .pattern_tilemap_width = 9,
+        .pattern_tilemap_height = 10,
+        .pattern_palette = sWaterPattern_Palette,
+        .pattern_tileset = sWaterPattern_Tileset,
+        .pattern_tilemap = sWaterPattern_Tilemap,
+        .logo_palette = sWaterLogo_Palette,
+        .logo_tiles = sWaterLogo_Tileset,
     },
     [GALAR_GYM_ROCK] =
     {
