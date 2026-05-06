@@ -203,8 +203,21 @@ static const TransitionStateFunc sGalarGym_Funcs[] =
     GalarGym_End,
 };
 
-void Task_GalarGym(u8 taskId)
+void Task_GalarGymGrass(u8 taskId)
 {
+    gTasks[taskId].tVariant = GALAR_GYM_GRASS;
+    while (sGalarGym_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+void Task_GalarGymWater(u8 taskId)
+{
+    gTasks[taskId].tVariant = GALAR_GYM_WATER;
+    while (sGalarGym_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+void Task_GalarGymRock(u8 taskId)
+{
+    gTasks[taskId].tVariant = GALAR_GYM_ROCK;
     while (sGalarGym_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
@@ -471,8 +484,6 @@ static bool8 GalarGym_Init(struct Task *task)
     SetVBlankCallback(VBlankCB_GalarGym);
     SetHBlankCallback(HBlankCB_GalarGym);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_HBLANK);
-
-    task->tVariant = GALAR_GYM_ROCK;
 
     task->tTopBarPosition = 0;
     task->tTopBarVelocity = 0;
