@@ -195,9 +195,9 @@ SINGLE_BATTLE_TEST("Flash Fire/Well-baked body absorbs Tri Attack's first strike
     } SCENE {
         ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_ARCANINE)
-            MESSAGE("The opposing Arcanine's Flash Fire\nraised the power of Fire-type moves!");
+            MESSAGE("The power of The opposing Arcanine's Fire-type moves rose!");
         else
-            MESSAGE("The opposing Dachsbun's Defense sharply rose!");
+            MESSAGE("The opposing Dachsbun's Defense rose sharply!");
         NONE_OF {
             MESSAGE("Wobbuffet's attack missed!");
         };
@@ -222,6 +222,9 @@ SINGLE_BATTLE_TEST("Primordial Sea blocks Tri Attack's first strike but not the 
         MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        };
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
@@ -241,14 +244,19 @@ SINGLE_BATTLE_TEST("Volt Absorb/Motor Drive absorbs Tri Attack's third strike bu
         TURN { MOVE(player, MOVE_TRI_ATTACK); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        HP_BAR(opponent);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        HP_BAR(opponent);
         ABILITY_POPUP(opponent, ability);
         if (species == SPECIES_JOLTEON)
-            MESSAGE("The opposing Jolteon restored HP using its Volt Absorb!");
+            MESSAGE("The opposing Jolteon had its HP restored.");
         else if (species == SPECIES_ELECTIVIRE)
             MESSAGE("The opposing Electivire's Speed rose!");
         else
             MESSAGE("The opposing Raichu's Sp. Atk rose!");
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+        };
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
@@ -271,7 +279,7 @@ DOUBLE_BATTLE_TEST("Lightningrod redirects Tri Attack's third strike but not the
         HP_BAR(opponentRight);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, playerLeft);
         HP_BAR(opponentRight);
-        MESSAGE("The opposing Raichu's Lightning Rod took the attack!");
+        MESSAGE("The opposing Raichu took the attack!");
         if (config >= GEN_5) {
             ABILITY_POPUP(opponentLeft, ABILITY_LIGHTNING_ROD);
             MESSAGE("The opposing Raichu's Sp. Atk rose!");
