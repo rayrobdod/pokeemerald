@@ -950,6 +950,14 @@ static const struct SpriteTemplate sSpriteTemplate_HeldItem =
     .anims = sSpriteAnimTable_HeldItem,
 };
 
+static const u32 sPartyMenuPokeballOutline_Gfx[] = INCGFX_U32("graphics/party_menu/pokeballs_outline.png", ".4bpp.smol");
+
+static const u32 * const sPartyMenuPokeballCenters_Gfx[POKEBALL_COUNT] =
+{
+    [BALL_STRANGE] = (const u32[]) INCGFX_U32("graphics/party_menu/balls/strangeball.png", ".4bpp.smol"),
+    [BALL_POKE] = (const u32[]) INCGFX_U32("graphics/party_menu/balls/pokeball.png", ".4bpp.smol"),
+};
+
 static const struct OamData sOamData_MenuPokeball =
 {
     .y = 0,
@@ -985,23 +993,9 @@ static const union AnimCmd *const sSpriteAnimTable_MenuPokeball[] =
     sPokeballAnim_Open
 };
 
-static const struct CompressedSpriteSheet sSpriteSheet_MenuPokeball =
-{
-    gPartyMenuPokeball_Gfx, 0x400, TAG_POKEBALL
-};
-
 static const struct SpritePalette sSpritePalette_MenuPokeball =
 {
     gPartyMenuPokeball_Pal, TAG_POKEBALL
-};
-
-// Used for the Poké Ball sprite on each party slot / Cancel button
-static const struct SpriteTemplate sSpriteTemplate_MenuPokeball =
-{
-    .tileTag = TAG_POKEBALL,
-    .paletteTag = TAG_POKEBALL,
-    .oam = &sOamData_MenuPokeball,
-    .anims = sSpriteAnimTable_MenuPokeball,
 };
 
 static const struct OamData sOamData_MenuPokeballSmall =

@@ -139,9 +139,9 @@ enum {
 };
 
 enum {
-    TAG_POKEBALL = 1200,
-    TAG_POKEBALL_SMALL,
+    TAG_POKEBALL_SMALL = 1200,
     TAG_STATUS_ICONS,
+    TAG_POKEBALL,
 };
 
 #define TAG_HELD_ITEM 55120
@@ -276,7 +276,7 @@ static void DisplayPartyPokemonMaxHP(u16, struct PartyMenuBox *);
 static void DisplayPartyPokemonHPBar(u16, u16, struct PartyMenuBox *);
 static void CreatePartyMonIconSpriteParameterized(enum Species species, u32 pid, bool32 isEgg, struct PartyMenuBox *menuBox, u8 priority);
 static void CreatePartyMonHeldItemSpriteParameterized(enum Species, enum Item, struct PartyMenuBox *);
-static void CreatePartyMonPokeballSpriteParameterized(enum Species, struct PartyMenuBox *);
+static void CreatePartyMonPokeballSpriteParameterized(enum Species, struct PartyMenuBox *, enum PokeBall);
 static void CreatePartyMonStatusSpriteParameterized(enum Species, u8, struct PartyMenuBox *);
 // These next 4 functions are essentially redundant with the above 4
 // The only difference is that rather than receive the data directly they retrieve it from the mon struct
@@ -286,7 +286,7 @@ static void CreatePartyMonIconSprite(struct Pokemon *, struct PartyMenuBox *);
 static void CreatePartyMonStatusSprite(struct Pokemon *, struct PartyMenuBox *);
 static u8 CreateSmallPokeballButtonSprite(u8, u8);
 static void DrawCancelConfirmButtons(void);
-static u8 CreatePokeballButtonSprite(u8, u8);
+static u8 CreatePokeballButtonSprite(enum PokeBall ball, u8, u8);
 static void AnimateSelectedPartyIcon(u8, u8);
 static void PartyMenuStartSpriteAnim(u8, u8);
 static u8 GetPartyBoxPaletteFlags(u8, u8);
@@ -1261,7 +1261,7 @@ static void CreatePartyMonSprites(u8 slot)
         {
             CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[partySlot].species, gMultiPartnerParty[partySlot].personality, FALSE, &sPartyMenuBoxes[slot], 0);
             CreatePartyMonHeldItemSpriteParameterized(gMultiPartnerParty[partySlot].species, gMultiPartnerParty[partySlot].heldItem, &sPartyMenuBoxes[slot]);
-            CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[partySlot].species, &sPartyMenuBoxes[slot]);
+            CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[partySlot].species, &sPartyMenuBoxes[slot], BALL_POKE);
             if (gMultiPartnerParty[partySlot].hp == 0)
                 status = AILMENT_FNT;
             else
@@ -1277,7 +1277,7 @@ static void CreatePartyMonSprites(u8 slot)
         {
             CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[partySlot].species, gMultiPartnerParty[partySlot].personality, FALSE, &sPartyMenuBoxes[slot], 0);
             CreatePartyMonHeldItemSpriteParameterized(gMultiPartnerParty[partySlot].species, gMultiPartnerParty[partySlot].heldItem, &sPartyMenuBoxes[slot]);
-            CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[partySlot].species, &sPartyMenuBoxes[slot]);
+            CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[partySlot].species, &sPartyMenuBoxes[slot], BALL_POKE);
             if (gMultiPartnerParty[partySlot].hp == 0)
                 status = AILMENT_FNT;
             else
@@ -1321,7 +1321,7 @@ static void CreateCancelConfirmPokeballSprites(void)
         }
         else
         {
-            sPartyMenuInternal->spriteIdCancelPokeball = CreatePokeballButtonSprite(198, 148);
+            sPartyMenuInternal->spriteIdCancelPokeball = CreatePokeballButtonSprite(BALL_POKE, 198, 148);
         }
         AnimatePartySlot(gPartyMenu.slotId, 1);
     }
@@ -4562,28 +4562,130 @@ static void SpriteCB_HeldItem(struct Sprite *sprite)
     }
 }
 
+void BuildPartyMonPokeballSprite(u16 *buffer, enum PokeBall ball)
+{
+    DecompressDataWithHeaderVram(sPartyMenuPokeballOutline_Gfx, buffer);
+
+    const u32 *centerComp = sPartyMenuPokeballCenters_Gfx[BALL_STRANGE];
+    if (ball < POKEBALL_COUNT && NULL != sPartyMenuPokeballCenters_Gfx[ball])
+        centerComp = sPartyMenuPokeballCenters_Gfx[ball];
+
+    u16 *center = (u16 *) AllocZeroed(GetDecompressedDataSize(centerComp));
+    DecompressDataWithHeaderWram(centerComp, center);
+
+    for (u32 fromY = 0; fromY < 16; fromY++)
+    {
+        u32 toYClosed = fromY + 4;
+        u32 toYOpen = fromY + 34 + (fromY / 8) * 4;
+
+        for (u32 fromX = 0; fromX < 4; fromX++)
+        {
+            u32 fromIdx = fromY * 2 + (fromY / 8) * 16 + fromX % 2 + (fromX / 2) * 16;
+
+            u32 toX = fromX + 1;
+
+            u32 toIdxClosed = toYClosed * 2 + (toYClosed / 8) * 48 + (toX / 2) * 16 + toX % 2;
+            u32 toIdxOpen = toYOpen * 2 + (toYOpen / 8) * 48 + (toX / 2) * 16 + toX % 2;
+
+            buffer[toIdxClosed] = center[fromIdx];
+            buffer[toIdxOpen] = center[fromIdx];
+        }
+    }
+
+    void CopyOneMaskedOpenBottom(u32 fromX, u32 fromY, u16 mask, u16 blit)
+    {
+        u32 toYOpen = fromY + 38;
+
+        u32 toX = fromX + 1;
+
+        u32 fromIdx = fromY * 2 + (fromY / 8) * 16 + fromX % 2 + (fromX / 2) * 16;
+        u32 toIdxOpen = toYOpen * 2 + (toYOpen / 8) * 48 + (toX / 2) * 16 + toX % 2;
+
+        u16 v = center[fromIdx];
+        v &= mask;
+        v |= blit;
+        buffer[toIdxOpen] = v;
+    }
+    void CopyOneMaskedOpenTop(u32 fromX, u32 fromY, u16 mask, u16 blit)
+    {
+        u32 toYOpen = fromY + 34;
+
+        u32 toX = fromX + 1;
+
+        u32 fromIdx = fromY * 2 + (fromY / 8) * 16 + fromX % 2 + (fromX / 2) * 16;
+        u32 toIdxOpen = toYOpen * 2 + (toYOpen / 8) * 48 + (toX / 2) * 16 + toX % 2;
+
+        u16 v = center[fromIdx];
+        v &= mask;
+        v |= blit;
+        buffer[toIdxOpen] = v;
+    }
+
+    CopyOneMaskedOpenTop(1, 8, 0xFFF0, 0x000F);
+    CopyOneMaskedOpenBottom(1, 8, 0x000F, 0x00F0);
+    CopyOneMaskedOpenTop(2, 8, 0x0FFF, 0xF000);
+    CopyOneMaskedOpenBottom(2, 8, 0xF000, 0x0F00);
+    CopyOneMaskedOpenTop(1, 9, 0xFFF0, 0x000F);
+    CopyOneMaskedOpenBottom(1, 9, 0x00FF, 0xFF00);
+    CopyOneMaskedOpenTop(2, 9, 0x0FFF, 0xF000);
+    CopyOneMaskedOpenBottom(2, 9, 0xFF00, 0x00FF);
+    CopyOneMaskedOpenTop(1, 10, 0xFF00, 0x00F0);
+    CopyOneMaskedOpenTop(2, 10, 0x00FF, 0x0F00);
+
+    Free(center);
+}
+
+static void LoadPartyPokeballSprite(u16 tag, enum PokeBall ball)
+{
+    struct SpriteSheet dest;
+    void *buffer;
+
+    if (IndexOfSpriteTileTag(tag) < MAX_SPRITES)
+        return;
+
+    buffer = Alloc(TILE_SIZE_4BPP * 4 * 4 * 2);
+    BuildPartyMonPokeballSprite(buffer, ball);
+
+    dest.data = buffer;
+    dest.size = TILE_SIZE_4BPP * 4 * 4 * 2;
+    dest.tag = tag;
+
+    LoadSpriteSheet(&dest);
+    Free(buffer);
+}
+
 static void CreatePartyMonPokeballSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
-        menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
+    {
+        enum PokeBall ball = GetMonData(mon, MON_DATA_POKEBALL);
+        menuBox->pokeballSpriteId = CreatePokeballButtonSprite(ball, menuBox->spriteCoords[6], menuBox->spriteCoords[7]);
+    }
 }
 
-static void CreatePartyMonPokeballSpriteParameterized(enum Species species, struct PartyMenuBox *menuBox)
+static void CreatePartyMonPokeballSpriteParameterized(enum Species species, struct PartyMenuBox *menuBox, enum PokeBall ball)
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
+        menuBox->pokeballSpriteId = CreatePokeballButtonSprite(ball, menuBox->spriteCoords[6], menuBox->spriteCoords[7]);
         gSprites[menuBox->pokeballSpriteId].oam.priority = 0;
     }
 }
 
-// For Cancel when Confirm isnt present
-static u8 CreatePokeballButtonSprite(u8 x, u8 y)
+static u8 CreatePokeballButtonSprite(enum PokeBall ball, u8 x, u8 y)
 {
-    u8 spriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, x, y, 8);
+    u16 tag = TAG_POKEBALL + ball;
+    LoadPartyPokeballSprite(tag, ball);
 
-    gSprites[spriteId].oam.priority = 2;
-    return spriteId;
+    const struct SpriteTemplate spriteTemplate =
+    {
+        .tileTag = tag,
+        .paletteTag = TAG_POKEBALL,
+        .oam = &sOamData_MenuPokeball,
+        .anims = sSpriteAnimTable_MenuPokeball,
+    };
+
+    return CreateSprite(&spriteTemplate, x, y, 8);
 }
 
 // For Confirm and Cancel when both are present
@@ -4619,7 +4721,6 @@ static void UNUSED SpriteCB_BounceConfirmCancelButton(u8 spriteId, u8 spriteId2,
 
 static void LoadPartyMenuPokeballGfx(void)
 {
-    LoadCompressedSpriteSheet(&sSpriteSheet_MenuPokeball);
     LoadCompressedSpriteSheet(&sSpriteSheet_MenuPokeballSmall);
     LoadSpritePalette(&sSpritePalette_MenuPokeball);
 }
