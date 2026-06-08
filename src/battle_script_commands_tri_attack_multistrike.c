@@ -29,7 +29,10 @@ void BS_TriAttackStrikeCancelerPrologue(void)
     gBattleStruct->eventState.atkStrikeCanceler = CANCELER_SET_TARGETS;
     gBattleStruct->eventState.atkCancelerBattler = 0;
     for (unsigned i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
         gBattleStruct->battlerState[gBattlerAttacker].targetsDone[i] = FALSE;
+        gBattleStruct->moveResultFlags[i] = 0;
+    }
 
     gBattlescriptCurrInstr += 5;
 }
