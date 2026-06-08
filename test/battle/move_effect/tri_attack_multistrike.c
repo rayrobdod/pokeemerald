@@ -305,3 +305,22 @@ SINGLE_BATTLE_TEST("Tri Attack affects Ghost types")
         MESSAGE("The Pokémon was hit 3 time(s)!");
     }
 }
+
+SINGLE_BATTLE_TEST("Tri Attack can still miss")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN {
+            MOVE(opponent, MOVE_SAND_ATTACK);
+            MOVE(player, MOVE_TRI_ATTACK, hit: FALSE);
+        }
+    } SCENE {
+        MESSAGE("The opposing Wobbuffet avoided the attack!");
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_TRI_ATTACK, player);
+            MESSAGE("The Pokémon was hit 3 time(s)!");
+        }
+    }
+}

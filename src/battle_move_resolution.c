@@ -3254,8 +3254,10 @@ static enum MoveEndResult MoveEndMultihitMove(struct BattleCalcValues *cv)
         gBattleScripting.multihitString[4]++;
         if (gMultiHitCounter == 0)
         {
-            BattleScriptCall(BattleScript_MultiHitPrintStrings);
-            result = MOVEEND_RESULT_RUN_SCRIPT;
+            if (!(gBattleStruct->moveResultFlags[cv->battlerDef] & MOVE_RESULT_MISSED)) {
+                BattleScriptCall(BattleScript_MultiHitPrintStrings);
+                result = MOVEEND_RESULT_RUN_SCRIPT;
+            }
         }
         else
         {
