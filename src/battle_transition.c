@@ -141,7 +141,7 @@ static bool8 Groudon_PaletteBrighten(struct Task *);
 static bool8 WeatherDuo_FadeOut(struct Task *);
 static bool8 WeatherDuo_End(struct Task *);
 static bool8 BigPokeball_Init(struct Task *);
-static bool8 BigPokeball_SetGfx(struct Task *);
+bool8 BigPokeball_SetGfx(struct Task *);
 static bool8 PatternWeave_Blend1(struct Task *);
 static bool8 PatternWeave_Blend2(struct Task *);
 static bool8 PatternWeave_FinishAppear(struct Task *);
@@ -1372,7 +1372,7 @@ static bool8 BigPokeball_Init(struct Task *task)
     return FALSE;
 }
 
-static bool8 BigPokeball_SetGfx(struct Task *task)
+bool8 BigPokeball_SetGfx(struct Task *task)
 {
     s16 i, j;
     u16 *tilemap, *tileset;
