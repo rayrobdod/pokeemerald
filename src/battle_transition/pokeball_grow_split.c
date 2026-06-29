@@ -130,7 +130,8 @@ static void PokeballGrowSplit_MoveSprites(void)
         struct Sprite *sprite = &gSprites[sprite_i];
         if (sprite->inUse)
         {
-            if (sprite->oam.y < DISPLAY_HEIGHT / 2)
+            if (sprite->oam.y < DISPLAY_HEIGHT / 2 ||
+                (sprite->oam.y + sOamHeights[sprite->oam.shape][sprite->oam.size]) > DISPLAY_HEIGHT)
             {
                 sprite->x2 += SPLIT_VELOCITY;
             }
