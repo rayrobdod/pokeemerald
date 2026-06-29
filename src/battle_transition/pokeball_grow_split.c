@@ -21,10 +21,37 @@ static const u16 sFieldEffectPal_Pokeball[] = INCGFX_U16("graphics/field_effects
 static const u32 sGrowingPokeball_Tileset[] = INCGFX_U32("graphics/battle_transitions/pokeball_64.png", ".4bpp.lz");
 static const u16 sGrowingPokeball_Palette[] = INCGFX_U16("graphics/battle_transitions/pokeball_64.png", ".gbapal");
 
+static const u8 sOamHeights[3][4] =
+{
+    [ST_OAM_SQUARE] =
+    {
+        [SPRITE_SIZE(8x8)]   =  8,
+        [SPRITE_SIZE(16x16)] = 16,
+        [SPRITE_SIZE(32x32)] = 32,
+        [SPRITE_SIZE(64x64)] = 64,
+    },
+    [ST_OAM_H_RECTANGLE] =
+    {
+        [SPRITE_SIZE(16x8)]  =  8,
+        [SPRITE_SIZE(32x8)]  =  8,
+        [SPRITE_SIZE(32x16)] = 16,
+        [SPRITE_SIZE(64x32)] = 32,
+    },
+    [ST_OAM_V_RECTANGLE] =
+    {
+        [SPRITE_SIZE(8x16)]  = 16,
+        [SPRITE_SIZE(8x32)]  = 32,
+        [SPRITE_SIZE(16x32)] = 32,
+        [SPRITE_SIZE(32x64)] = 64,
+    },
+};
+
 enum
 {
     PALTAG_GROWING_POKEBALL = 0xFA5A,
     TILETAG_GROWING_POKEBALL = 0xFA5A,
+
+    SPLIT_VELOCITY = 8,
 };
 
 static const struct CompressedSpriteSheet sSpriteSheet_GrowingPokeball =
@@ -89,6 +116,32 @@ static const TransitionStateFunc sPokeballGrowSplit_Funcs[] = {
     PokeballGrowSplit_Split,
 };
 
+#define tSpriteId data[2]
+#define tTimer data[3]
+#define tOffset data[4]
+
+#define tWIN0H_Upper data[1]
+
+static void PokeballGrowSplit_MoveSprites(void)
+{
+    unsigned sprite_i;
+    for (sprite_i = 0; sprite_i < ARRAY_COUNT(gSprites); sprite_i++)
+    {
+        struct Sprite *sprite = &gSprites[sprite_i];
+        if (sprite->inUse)
+        {
+            if ((sprite->oam.y + sOamHeights[sprite->oam.shape][sprite->oam.size]) % 256 < DISPLAY_HEIGHT / 2)
+            {
+                sprite->x2 += SPLIT_VELOCITY;
+            }
+            else
+            {
+                sprite->x2 -= SPLIT_VELOCITY;
+            }
+        }
+    }
+}
+
 static void VBlankCB_PokeballGrowSplit_Split(void)
 {
     VBlankCB_BattleTransition();
@@ -96,31 +149,23 @@ static void VBlankCB_PokeballGrowSplit_Split(void)
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
     REG_WIN1V = sTransitionData->WIN0V;
-}
 
-#define tWIN1H data[0]
-#define tWIN0H_Upper data[1]
-#define tWIN1H_Upper data[2]
+    REG_BG0HOFS = sTransitionData->BG0HOFS_Upper;
+    REG_BG1HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
+    REG_BG2HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
+    REG_BG3HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
+    REG_WIN0H = sTransitionData->tWIN0H_Upper;
+}
 
 static void HBlankCB_PokeballGrowSplit_Split(void)
 {
-    if (REG_VCOUNT < DISPLAY_HEIGHT / 2 || REG_VCOUNT > DISPLAY_HEIGHT)
+    if (REG_VCOUNT == DISPLAY_HEIGHT / 2)
     {
         REG_BG0HOFS = sTransitionData->BG0HOFS_Lower;
         REG_BG1HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_BG2HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_BG3HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_WIN0H = sTransitionData->WIN0H;
-        REG_WIN1H = sTransitionData->tWIN1H;
-    }
-    else
-    {
-        REG_BG0HOFS = sTransitionData->BG0HOFS_Upper;
-        REG_BG1HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
-        REG_BG2HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
-        REG_BG3HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Upper;
-        REG_WIN0H = sTransitionData->tWIN0H_Upper;
-        REG_WIN1H = sTransitionData->tWIN1H_Upper;
     }
 }
 
@@ -128,10 +173,6 @@ void Task_PokeballGrowSplit(u8 taskId)
 {
     while (sPokeballGrowSplit_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
-
-#define tSpriteId data[2]
-#define tTimer data[3]
-#define tOffset data[4]
 
 static bool8 PokeballGrowSplit_Init(struct Task *task)
 {
@@ -170,16 +211,15 @@ static bool8 PokeballGrowSplit_Wait(struct Task *task)
 {
     if (0 == --task->tTimer)
     {
-        sTransitionData->WININ = WININ_WIN0_BG_ALL | WININ_WIN1_OBJ;
+        sTransitionData->WININ = WININ_WIN0_BG_ALL | WININ_WIN0_OBJ;
         sTransitionData->WINOUT = 0;
         sTransitionData->WIN0V = WIN_RANGE(0, DISPLAY_HEIGHT);
         sTransitionData->WIN0H = WIN_RANGE(0, DISPLAY_WIDTH);
-        sTransitionData->tWIN1H = WIN_RANGE(0, DISPLAY_WIDTH);
         sTransitionData->tWIN0H_Upper = WIN_RANGE(0, DISPLAY_WIDTH);
-        sTransitionData->tWIN1H_Upper = WIN_RANGE(0, DISPLAY_WIDTH);
         EnableInterrupts(INTR_FLAG_HBLANK);
         SetVBlankCallback(VBlankCB_PokeballGrowSplit_Split);
         SetHBlankCallback(HBlankCB_PokeballGrowSplit_Split);
+
         task->tState++;
     }
     return FALSE;
@@ -187,18 +227,17 @@ static bool8 PokeballGrowSplit_Wait(struct Task *task)
 
 static bool8 PokeballGrowSplit_Split(struct Task *task)
 {
-    task->tOffset += 8;
+    task->tOffset += SPLIT_VELOCITY;
 
     sTransitionData->VBlank_DMA = FALSE;
-    sTransitionData->BG0HOFS_Lower = task->tOffset;
+    sTransitionData->BG0HOFS_Lower = task->tOffset - SPLIT_VELOCITY;
     sTransitionData->BG0HOFS_Upper = -task->tOffset;
-    sTransitionData->WIN0H = WIN_RANGE(0, DISPLAY_WIDTH - task->tOffset);
-    sTransitionData->tWIN1H = WIN_RANGE(0, max(0, DISPLAY_WIDTH / 2 - task->tOffset));
+    sTransitionData->WIN0H = WIN_RANGE(0, DISPLAY_WIDTH - task->tOffset + SPLIT_VELOCITY);
     sTransitionData->tWIN0H_Upper = WIN_RANGE(task->tOffset, DISPLAY_WIDTH);
-    sTransitionData->tWIN1H_Upper = WIN_RANGE(min(DISPLAY_WIDTH, task->tOffset + DISPLAY_WIDTH / 2), DISPLAY_WIDTH);
     sTransitionData->VBlank_DMA = TRUE;
+    PokeballGrowSplit_MoveSprites();
 
-    if (task->tOffset >= DISPLAY_WIDTH)
+    if (task->tOffset > DISPLAY_WIDTH)
     {
         FadeScreenBlack();
         DestroyTask(FindTaskIdByFunc(Task_PokeballGrowSplit));
