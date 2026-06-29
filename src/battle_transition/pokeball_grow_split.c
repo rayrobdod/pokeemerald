@@ -130,7 +130,7 @@ static void PokeballGrowSplit_MoveSprites(void)
         struct Sprite *sprite = &gSprites[sprite_i];
         if (sprite->inUse)
         {
-            if ((sprite->oam.y + sOamHeights[sprite->oam.shape][sprite->oam.size]) % 256 < DISPLAY_HEIGHT / 2)
+            if (sprite->oam.y < DISPLAY_HEIGHT / 2)
             {
                 sprite->x2 += SPLIT_VELOCITY;
             }
@@ -140,6 +140,23 @@ static void PokeballGrowSplit_MoveSprites(void)
             }
         }
     }
+}
+
+static void PokeballGrowSplit_PrepareOamShear(unsigned offset)
+{
+    unsigned sprite_i;
+    unsigned buffer_i = 0;
+    struct OamData *oam = (struct OamData *) OAM;
+
+    for (sprite_i = 0; sprite_i < (OAM_SIZE / sizeof(struct OamData)); sprite_i++, oam++) {
+        if (oam->y < DISPLAY_HEIGHT / 2 &&
+            (oam->y + sOamHeights[oam->shape][oam->size]) % 256 > DISPLAY_HEIGHT / 2)
+        {
+            gScanlineEffectRegBuffers[0][buffer_i++] = sprite_i;
+            gScanlineEffectRegBuffers[0][buffer_i++] = oam->x - 2 * offset;
+        }
+    }
+    gScanlineEffectRegBuffers[0][buffer_i] = 0xFF;
 }
 
 static void VBlankCB_PokeballGrowSplit_Split(void)
@@ -161,11 +178,22 @@ static void HBlankCB_PokeballGrowSplit_Split(void)
 {
     if (REG_VCOUNT == DISPLAY_HEIGHT / 2)
     {
+        struct OamData *oams = (struct OamData*)OAM;
+        unsigned buffer_i = 0;
+
         REG_BG0HOFS = sTransitionData->BG0HOFS_Lower;
         REG_BG1HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_BG2HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_BG3HOFS = sTransitionData->cameraX + sTransitionData->BG0HOFS_Lower;
         REG_WIN0H = sTransitionData->WIN0H;
+
+        while (0xFF != gScanlineEffectRegBuffers[0][buffer_i])
+        {
+            unsigned sprite_i = gScanlineEffectRegBuffers[0][buffer_i++];
+            unsigned new_x = gScanlineEffectRegBuffers[0][buffer_i++];
+
+            oams[sprite_i].x = new_x;
+        }
     }
 }
 
@@ -211,6 +239,7 @@ static bool8 PokeballGrowSplit_Wait(struct Task *task)
 {
     if (0 == --task->tTimer)
     {
+        gScanlineEffectRegBuffers[0][0] = 0xFF;
         sTransitionData->WININ = WININ_WIN0_BG_ALL | WININ_WIN0_OBJ;
         sTransitionData->WINOUT = 0;
         sTransitionData->WIN0V = WIN_RANGE(0, DISPLAY_HEIGHT);
@@ -229,13 +258,12 @@ static bool8 PokeballGrowSplit_Split(struct Task *task)
 {
     task->tOffset += SPLIT_VELOCITY;
 
-    sTransitionData->VBlank_DMA = FALSE;
     sTransitionData->BG0HOFS_Lower = task->tOffset - SPLIT_VELOCITY;
     sTransitionData->BG0HOFS_Upper = -task->tOffset;
     sTransitionData->WIN0H = WIN_RANGE(0, DISPLAY_WIDTH - task->tOffset + SPLIT_VELOCITY);
     sTransitionData->tWIN0H_Upper = WIN_RANGE(task->tOffset, DISPLAY_WIDTH);
-    sTransitionData->VBlank_DMA = TRUE;
     PokeballGrowSplit_MoveSprites();
+    PokeballGrowSplit_PrepareOamShear(task->tOffset - SPLIT_VELOCITY);
 
     if (task->tOffset > DISPLAY_WIDTH)
     {
