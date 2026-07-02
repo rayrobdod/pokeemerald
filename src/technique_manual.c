@@ -61,7 +61,7 @@ struct ResearchTask
 
 struct TechniqueManualPage
 {
-    u16 move;
+    enum Move move;
     struct ResearchTask tasks[TASKS_PER_PAGE];
 };
 
@@ -74,9 +74,9 @@ struct TechniqueManualPage
 #include "data/technique_manual.h"
 
 /** Returns which TM is associated with a particular move. Returns TM_NONE if no TM for the move */
-static u8 MoveToTm(u16 move)
+static enum TmPages MoveToTm(enum Move move)
 {
-    u8 i;
+    enum TmPages i;
     for (i = 0; i < TM_COUNT; i++)
     {
         if (sTechniqueManualPages[i].move == move)
@@ -85,9 +85,9 @@ static u8 MoveToTm(u16 move)
     return TM_NONE;
 }
 
-void TmIncrementSeenStats(u16 move, u16 attackerSpecies)
+void TmIncrementSeenStats(enum Move move, u16 attackerSpecies)
 {
-    u8 tmIndex = MoveToTm(move);
+    enum TmPages tmIndex = MoveToTm(move);
 
     if (TM_NONE != tmIndex)
     {
@@ -373,7 +373,7 @@ static const u8 sTextColor[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, T
 #include "data/text/technique_manual.h"
 
 
-u16 TmCurrentlySelectedMove(void)
+enum Move TmCurrentlySelectedMove(void)
 {
     unsigned id = sSavedTechniqueManualData.scrollOffset
         + sSavedTechniqueManualData.selectedRow;
