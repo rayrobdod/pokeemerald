@@ -6,6 +6,35 @@
 #include "constants/technique_manual_flags.h"
 #include "constants/technique_manual_pages.h"
 
+enum ResearchTaskType
+{
+    TM_TASK_NONE,
+    TM_TASK_SCRIPT_FLAG,
+    TM_TASK_BATTLE_SPECIAL,
+    TM_TASK_SEEN,
+    TM_TASK_SEEN_DIFFERENT_SPECIES,
+    TM_TASK_SEEN_RAIN,
+    TM_TASK_SEEN_SUN,
+
+    TM_TASK_COUNT,
+};
+
+struct ResearchTask
+{
+    enum ResearchTaskType type;
+    u8 storage_index;
+    u8 requirement;
+    const u8* description;
+};
+
+struct TechniqueManualPage
+{
+    enum Move move;
+    struct ResearchTask tasks[TASKS_PER_PAGE];
+};
+
+extern const struct TechniqueManualPage gTechniqueManualPages[TM_COUNT];
+
 /** Increments counters about the currently-being-used battle move */
 void TmIncrementSeenStats(enum Move move, u16 attackerSpecies);
 /** Sets a TM flag */

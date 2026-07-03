@@ -34,36 +34,6 @@
 #include "gba/isagbprint.h"
 
 #define gSaveBlockTm gSaveBlock3Ptr->techniqueManual
-#define TASKS_PER_PAGE (3)
-#define MAX_SPECIES_REQUIREMENT (5)
-
-enum ResearchTaskType
-{
-    TM_TASK_NONE,
-    TM_TASK_SCRIPT_FLAG,
-    TM_TASK_BATTLE_SPECIAL,
-    TM_TASK_SEEN,
-    TM_TASK_SEEN_DIFFERENT_SPECIES,
-    TM_TASK_SEEN_RAIN,
-    TM_TASK_SEEN_SUN,
-
-    TM_TASK_COUNT,
-};
-
-struct ResearchTask
-{
-    // considering that the main `ResearchTask` variable is rodata, I'd like this enum to be a rodata
-    enum ResearchTaskType type;
-    u8 storage_index;
-    u8 requirement;
-    const u8* description;
-};
-
-struct TechniqueManualPage
-{
-    enum Move move;
-    struct ResearchTask tasks[TASKS_PER_PAGE];
-};
 
 #define SATURATING_INCREMENT_COUNTER(counter) \
     if ((counter) < 0xFF) \
@@ -79,7 +49,7 @@ static enum TmPages MoveToTm(enum Move move)
     enum TmPages i;
     for (i = 0; i < TM_COUNT; i++)
     {
-        if (sTechniqueManualPages[i].move == move)
+        if (gTechniqueManualPages[i].move == move)
             return i;
     }
     return TM_NONE;
@@ -93,7 +63,7 @@ void TmIncrementSeenStats(enum Move move, u16 attackerSpecies)
     {
         for (unsigned taskIndex = 0; taskIndex < TASKS_PER_PAGE; taskIndex++)
         {
-            const struct ResearchTask task = sTechniqueManualPages[tmIndex].tasks[taskIndex];
+            const struct ResearchTask task = gTechniqueManualPages[tmIndex].tasks[taskIndex];
 
             switch (task.type) {
             case TM_TASK_SEEN_DIFFERENT_SPECIES:
@@ -154,7 +124,7 @@ bool8 TmIsMastered(enum TmPages tmIndex)
 
     for (i = 0; i < TASKS_PER_PAGE; i++)
     {
-        const struct ResearchTask* task = &(sTechniqueManualPages[tmIndex].tasks[i]);
+        const struct ResearchTask* task = &(gTechniqueManualPages[tmIndex].tasks[i]);
 
         switch (task->type) {
         case TM_TASK_NONE:
@@ -189,7 +159,7 @@ static bool8 TmShouldDisplayName(enum TmPages tmIndex)
 
     for (i = 0; i < TASKS_PER_PAGE; i++)
     {
-        const struct ResearchTask task = sTechniqueManualPages[tmIndex].tasks[i];
+        const struct ResearchTask task = gTechniqueManualPages[tmIndex].tasks[i];
 
         switch (task.type) {
         case TM_TASK_SEEN_DIFFERENT_SPECIES:
@@ -379,7 +349,7 @@ enum Move TmCurrentlySelectedMove(void)
         + sSavedTechniqueManualData.selectedRow;
 
     if (id < TM_COUNT)
-        return sTechniqueManualPages[id].move;
+        return gTechniqueManualPages[id].move;
     return MOVE_NONE;
 }
 
@@ -606,7 +576,7 @@ static void UpdateTechniqueManualList(void)
     for (i = 0; i < TM_COUNT; i++)
     {
         if (TmShouldDisplayName(i))
-            sTechniqueManualMenu->items[i].name = gMovesInfo[sTechniqueManualPages[i].move].name;
+            sTechniqueManualMenu->items[i].name = gMovesInfo[gTechniqueManualPages[i].move].name;
         else
             sTechniqueManualMenu->items[i].name = sText_UndiscoveredMove;
         sTechniqueManualMenu->items[i].id = i;
@@ -769,7 +739,7 @@ static void DrawMoveInfo(enum TmPages tmIndex)
     {
         for (int taskIndex = 0; taskIndex < TASKS_PER_PAGE; taskIndex++)
         {
-            const struct ResearchTask *task = &(sTechniqueManualPages[tmIndex].tasks[taskIndex]);
+            const struct ResearchTask *task = &(gTechniqueManualPages[tmIndex].tasks[taskIndex]);
 
             if (TM_TASK_NONE == task->type)
                 continue;

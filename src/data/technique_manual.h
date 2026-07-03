@@ -1,6 +1,6 @@
 #include "constants/moves.h"
 
-const struct TechniqueManualPage sTechniqueManualPages[TM_COUNT] =
+const struct TechniqueManualPage gTechniqueManualPages[TM_COUNT] =
 {
     [TM_TACKLE] =
     {

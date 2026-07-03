@@ -4,5 +4,7 @@
 #define TM_SPECIES_COUNT 20
 #define TM_COUNTERS_COUNT 20
 #define TM_FLAGS_COUNT 20
+#define TASKS_PER_PAGE (3)
+#define MAX_SPECIES_REQUIREMENT (5)
 
 #endif
