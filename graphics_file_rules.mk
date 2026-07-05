@@ -24,7 +24,7 @@ NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/pokemon/spinda/spots
 TITLESCREENGFXDIR := graphics/title_screen
 
-TMGFXBUILDDIR := build/$(TMGFXDIR)
+TMGFXBUILDDIR := $(ASSETS_DIR_NAME)/$(TMGFXDIR)
 
 types := none normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy stellar
 contest_types := cool beauty cute smart tough
