@@ -11,6 +11,7 @@ static const u8 * const sTaskDefaultDesc[TM_TASK_COUNT] =
     [TM_TASK_NONE] = COMPOUND_STRING(""),
     [TM_TASK_SCRIPT_FLAG] = COMPOUND_STRING("Be taught"),
     [TM_TASK_SPECIAL_COUNTER] = COMPOUND_STRING("Special"),
+    [TM_TASK_MASTER_MOVE] = COMPOUND_STRING("Master ????"),
     [TM_TASK_SEEN] = COMPOUND_STRING("See the move used"),
     [TM_TASK_SEEN_DIFFERENT_SPECIES] = COMPOUND_STRING("See the move used by\ndifferent species"),
     [TM_TASK_SEEN_RAIN] = COMPOUND_STRING("See the move used\nin rain"),

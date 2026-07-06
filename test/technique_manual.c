@@ -48,6 +48,9 @@ TEST("Technique Manual: All used flags/counters/species are in-bounds")
         case TM_TASK_SCRIPT_FLAG:
             EXPECT(task->storage_index < TM_FLAGS_COUNT);
             break;
+        case TM_TASK_MASTER_MOVE:
+            EXPECT(task->storage_index < TM_TASK_COUNT);
+            break;
         case TM_TASK_SEEN_DIFFERENT_SPECIES:
             EXPECT(task->storage_index + task->requirement < TM_SPECIES_COUNT);
             EXPECT(task->requirement < MAX_SPECIES_REQUIREMENT);

@@ -88,6 +88,41 @@ const struct TechniqueManualPage gTechniqueManualPages[TM_COUNT] =
             },
         }
     },
+    [TM_FLING] =
+    {
+        .move = MOVE_FLING,
+        .tasks = {
+            {
+                .type = TM_TASK_SEEN,
+                .storage_index = TM_COUNTER_FLING_SEEN,
+                .requirement = 10,
+            },
+        }
+    },
+    [TM_PAY_DAY] =
+    {
+        .move = MOVE_PAY_DAY,
+        .tasks = {
+            {
+                .type = TM_TASK_MASTER_MOVE,
+                .storage_index = TM_FLING,
+                .requirement = 1,
+                .description = COMPOUND_STRING("Master Fling"),
+            },
+            {
+                .type = TM_TASK_SCRIPT_FLAG,
+                .storage_index = TM_FLAG_FLING_AMULET_COIN,
+                .requirement = 1,
+                .description = COMPOUND_STRING("Fling an Amulet Coin"),
+            },
+            {
+                .type = TM_TASK_SPECIAL_COUNTER,
+                .storage_index = TM_COUNTER_ACTIVATE_PICKUP,
+                .requirement = 5,
+                .description = COMPOUND_STRING("Obtain item after\nbattle with Pickup\nor Honey Gather"),
+            },
+        }
+    },
     [TM_CUT] =
     {
         .move = MOVE_CUT,

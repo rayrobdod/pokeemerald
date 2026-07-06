@@ -117,6 +117,11 @@ bool8 TmIsFlagSet(enum TmFlags tmFlagIndex)
     return 0 != (gSaveBlockTm.flags[tmFlagIndex / 8] & (1 << (tmFlagIndex % 8)));
 }
 
+void TmIncrementCounter(enum TmCounter counterIndex)
+{
+    SATURATING_INCREMENT_COUNTER(gSaveBlockTm.counters[counterIndex]);
+}
+
 bool8 TmIsMastered(enum TmPages tmIndex)
 {
     unsigned start, end;
@@ -131,6 +136,10 @@ bool8 TmIsMastered(enum TmPages tmIndex)
             break;
         case TM_TASK_SCRIPT_FLAG:
             if (! TmIsFlagSet(task->storage_index))
+                return FALSE;
+            break;
+        case TM_TASK_MASTER_MOVE:
+            if (! TmIsMastered(task->storage_index))
                 return FALSE;
             break;
         case TM_TASK_SEEN_DIFFERENT_SPECIES:
@@ -176,6 +185,7 @@ static bool8 TmShouldDisplayName(enum TmPages tmIndex)
         case TM_TASK_NONE:
         case TM_TASK_COUNT:
         case TM_TASK_SPECIAL_COUNTER:
+        case TM_TASK_MASTER_MOVE:
             break;
         }
     }
@@ -763,6 +773,14 @@ static void DrawMoveInfo(enum TmPages tmIndex)
             switch (task->type) {
             case TM_TASK_SCRIPT_FLAG:
                 if (TmIsFlagSet(task->storage_index))
+                {
+                    int tileOffset = ((y / 8) + 1) * sWindowTemplates[WIN_COUNTER_DESCS].width - 4;
+                    BlitCheckmark(tileOffset);
+                }
+                break;
+
+            case TM_TASK_MASTER_MOVE:
+                if (TmIsMastered(task->storage_index))
                 {
                     int tileOffset = ((y / 8) + 1) * sWindowTemplates[WIN_COUNTER_DESCS].width - 4;
                     BlitCheckmark(tileOffset);

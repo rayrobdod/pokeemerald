@@ -49,6 +49,7 @@
 #include "field_specials.h"
 #include "pokemon_summary_screen.h"
 #include "pokenav.h"
+#include "technique_manual.h"
 #include "menu_specialized.h"
 #include "data.h"
 #include "config_changes.h"
@@ -3009,6 +3010,10 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
             case HOLD_EFFECT_MENTAL_HERB:
             case HOLD_EFFECT_WHITE_HERB:
                 ItemBattleEffects(effectBattler, 0, holdEffect, IsOnFlingActivation);
+                break;
+            case HOLD_EFFECT_DOUBLE_PRIZE:
+                if (0 <= TM_FLAG_FLING_AMULET_COIN)
+                    TmSetFlag(TM_FLAG_FLING_AMULET_COIN);
                 break;
             default:
                 break;
@@ -9440,6 +9445,8 @@ static void Cmd_pickup(void)
                 && heldItem == ITEM_NONE
                 && (Random() % 10) == 0)
             {
+                if (0 <= TM_COUNTER_ACTIVATE_PICKUP)
+                    TmIncrementCounter(TM_COUNTER_ACTIVATE_PICKUP);
                 if (isInPyramid)
                 {
                     heldItem = GetBattlePyramidPickupItemId();
@@ -9468,6 +9475,8 @@ static void Cmd_pickup(void)
             {
                 if ((lvlDivBy10 + 1 ) * 5 > Random() % 100)
                 {
+                    if (0 <= TM_COUNTER_ACTIVATE_PICKUP)
+                        TmIncrementCounter(TM_COUNTER_ACTIVATE_PICKUP);
                     heldItem = ITEM_HONEY;
                     SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM, &heldItem);
                 }

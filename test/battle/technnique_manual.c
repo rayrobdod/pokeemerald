@@ -10,6 +10,7 @@ SINGLE_BATTLE_TEST("Technique Manual: TM_TASK_SEEN: Seeing a move increments tha
 {
     enum Move move = 0;
     u32 counter = 0;
+    enum Item item = ITEM_NONE;
 
     for (unsigned page = 0; page < TM_COUNT; page++)
     for (unsigned task = 0; task < TASKS_PER_PAGE; task++)
@@ -19,12 +20,14 @@ SINGLE_BATTLE_TEST("Technique Manual: TM_TASK_SEEN: Seeing a move increments tha
             PARAMETRIZE {
                 move = gTechniqueManualPages[page].move;
                 counter = gTechniqueManualPages[page].tasks[task].storage_index;
+                if (MOVE_FLING == move)
+                    item = ITEM_SNOWBALL;
             }
         }
     }
 
     GIVEN {
-        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WOBBUFFET) {Item(item);};
         OPPONENT(SPECIES_WOBBUFFET);
         gSaveBlockTm.counters[counter] = 2;
     }
@@ -237,5 +240,34 @@ SINGLE_BATTLE_TEST("Technique Manual: TM_COUNTER_WATER_USING_ICE increments if a
     THEN {
         EXPECT_EQ(gSaveBlockTm.counters[TM_COUNTER_WATER_USING_ICE],
             (species == SPECIES_VAPOREON && move == MOVE_ICE_BEAM ? 3 : 2));
+    }
+}
+
+SINGLE_BATTLE_TEST("Technique Manual: TM_FLAG_FLING_AMULET_COIN set if someone flings an amulet coin or luck incense")
+{
+    enum Item item = ITEM_NONE;
+
+    PARAMETRIZE {item = ITEM_SNOWBALL;}
+    PARAMETRIZE {item = ITEM_AMULET_COIN;}
+    PARAMETRIZE {item = ITEM_LUCK_INCENSE;}
+
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_FLING) == EFFECT_FLING);
+        ASSUME(0 <= TM_FLAG_FLING_AMULET_COIN);
+        ASSUME((0 == i) == (GetItemHoldEffect(item) != HOLD_EFFECT_DOUBLE_PRIZE));
+        gSaveBlockTm.flags[TM_FLAG_FLING_AMULET_COIN] = FALSE;
+
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) {Item(item);};
+    }
+    WHEN {
+        TURN { MOVE(opponent, MOVE_FLING); }
+    }
+    SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FLING, opponent);
+    }
+    THEN {
+        EXPECT((GetItemHoldEffect(item) == HOLD_EFFECT_DOUBLE_PRIZE) ==
+            TmIsFlagSet(TM_FLAG_FLING_AMULET_COIN));
     }
 }

@@ -11,6 +11,7 @@ enum ResearchTaskType
     TM_TASK_NONE,
     TM_TASK_SCRIPT_FLAG,
     TM_TASK_SPECIAL_COUNTER,
+    TM_TASK_MASTER_MOVE,
     TM_TASK_SEEN,
     TM_TASK_SEEN_DIFFERENT_SPECIES,
     TM_TASK_SEEN_RAIN,
@@ -41,6 +42,8 @@ void TmIncrementSeenStats(enum Move move, enum Species attackerSpecies);
 void TmSetFlag(enum TmFlags tmFlagIndex);
 /** Returns whether a TM flag has been set */
 bool8 TmIsFlagSet(enum TmFlags tmFlagIndex);
+/** Increments a TM counter */
+void TmIncrementCounter(enum TmCounter);
 /** Returns whether all the quests for the specified tm have been completed */
 bool8 TmIsMastered(enum TmPages tmIndex);
 

@@ -7,6 +7,8 @@ enum TmPages {
     TM_THUNDER,
     TM_SOLAR_BEAM,
     TM_CHILLING_WATER,
+    TM_FLING,
+    TM_PAY_DAY,
     TM_CUT,
     TM_ROCK_TOMB,
 
