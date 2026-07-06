@@ -81,7 +81,7 @@ const struct TechniqueManualPage gTechniqueManualPages[TM_COUNT] =
         .move = MOVE_CHILLING_WATER,
         .tasks = {
             {
-                .type = TM_TASK_BATTLE_SPECIAL,
+                .type = TM_TASK_SPECIAL_COUNTER,
                 .storage_index = TM_COUNTER_WATER_USING_ICE,
                 .requirement = 30,
                 .description = COMPOUND_STRING("See a Water Pokémon\nuse an Ice move"),

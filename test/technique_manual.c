@@ -52,7 +52,7 @@ TEST("Technique Manual: All used flags/counters/species are in-bounds")
             EXPECT(task->storage_index + task->requirement < TM_SPECIES_COUNT);
             EXPECT(task->requirement < MAX_SPECIES_REQUIREMENT);
             break;
-        case TM_TASK_BATTLE_SPECIAL:
+        case TM_TASK_SPECIAL_COUNTER:
         case TM_TASK_SEEN:
         case TM_TASK_SEEN_RAIN:
         case TM_TASK_SEEN_SUN:

@@ -175,7 +175,7 @@ static bool8 TmShouldDisplayName(enum TmPages tmIndex)
         case TM_TASK_SCRIPT_FLAG:
         case TM_TASK_NONE:
         case TM_TASK_COUNT:
-        case TM_TASK_BATTLE_SPECIAL:
+        case TM_TASK_SPECIAL_COUNTER:
             break;
         }
     }
