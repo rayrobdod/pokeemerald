@@ -55,7 +55,7 @@ static enum TmPages MoveToTm(enum Move move)
     return TM_NONE;
 }
 
-void TmIncrementSeenStats(enum Move move, u16 attackerSpecies)
+void TmIncrementSeenStats(enum Move move, enum Species attackerSpecies)
 {
     enum TmPages tmIndex = MoveToTm(move);
 
@@ -237,8 +237,8 @@ static const u32 sMenuTechniqueManual_Gfx[] = INCBIN_U32("build/assets/graphics/
 static const u32 sMenuTechniqueManual_Pal[] = INCBIN_U32("build/assets/graphics/technique_manual/background.gbapal");
 static const u32 sMenuTechniqueManual_Tilemap[] = INCBIN_U32("build/assets/graphics/technique_manual/background.tilemap.smol");
 
-static const u16 sCheckmarkTechniqueManual_Gfx[] = INCBIN_U16("graphics/technique_manual/checkmark.4bpp");
-static const u16 sAButtonTechniqueManual_Gfx[] = INCBIN_U16("graphics/technique_manual/a_button.4bpp");
+static const u16 sCheckmarkTechniqueManual_Gfx[] = INCGFX_U16("graphics/technique_manual/checkmark.png", ".4bpp");
+static const u16 sAButtonTechniqueManual_Gfx[] = INCGFX_U16("graphics/technique_manual/a_button.png", ".4bpp");
 
 static const struct BgTemplate sBgTemplatesForTechniqueManualMenu[] =
 {

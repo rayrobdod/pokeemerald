@@ -36,7 +36,7 @@ struct TechniqueManualPage
 extern const struct TechniqueManualPage gTechniqueManualPages[TM_COUNT];
 
 /** Increments counters about the currently-being-used battle move */
-void TmIncrementSeenStats(enum Move move, u16 attackerSpecies);
+void TmIncrementSeenStats(enum Move move, enum Species attackerSpecies);
 /** Sets a TM flag */
 void TmSetFlag(enum TmFlags tmFlagIndex);
 /** Returns whether a TM flag has been set */
