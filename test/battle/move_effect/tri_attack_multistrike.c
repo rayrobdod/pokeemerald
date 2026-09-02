@@ -110,6 +110,9 @@ SINGLE_BATTLE_TEST("Tri Attack reports the effectiveness of each hit individuall
         HP_BAR(opponent, captureDamage: &secondHit);
         MESSAGE("It's super effective!");
         MESSAGE("It doesn't affect the\nopposing Mudsdale…");
+        NONE_OF {
+            MESSAGE("It doesn't affect the\nopposing Mudsdale…");
+        }
         MESSAGE("The Pokémon was hit 3 time(s)!");
     } THEN {
         // Ground is neutral to fire, weak to ice and immune to electric
