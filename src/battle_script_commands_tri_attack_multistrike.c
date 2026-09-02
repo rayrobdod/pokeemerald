@@ -43,8 +43,9 @@ static bool32 IsCancellerPerStrike(enum CancelerState state)
 {
     return
         state >= CANCELER_SET_TARGETS &&
-        state < CANCELER_MULTIHIT_MOVES &&
         state != CANCELER_PPDEDUCTION &&
+        state != CANCELER_MULTIHIT_MOVES &&
+        state != CANCELER_ACCURACY_CHECK &&
         TRUE;
 }
 
@@ -120,7 +121,7 @@ void BS_TriAttackStrikeCanceler(void)
         cv.holdEffects[battler] = GetBattlerHoldEffect(battler);
     }
 
-    while (gBattleStruct->eventState.atkStrikeCanceler < CANCELER_MULTIHIT_MOVES && result == CANCELER_RESULT_SUCCESS)
+    while (gBattleStruct->eventState.atkStrikeCanceler < CANCELER_END && result == CANCELER_RESULT_SUCCESS)
     {
         if (! IsCancellerPerStrike(gBattleStruct->eventState.atkStrikeCanceler))
         {
