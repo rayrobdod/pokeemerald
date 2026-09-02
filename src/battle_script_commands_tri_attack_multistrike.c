@@ -39,6 +39,72 @@ void BS_TriAttackStrikeCancelerPrologue(void)
 
 extern enum CancelerResult (*const sMoveSuccessOrderCancelers[])(struct BattleCalcValues *cv);
 
+static bool32 IsCancellerPerStrike(enum CancelerState state)
+{
+    return
+        state >= CANCELER_SET_TARGETS &&
+        state < CANCELER_MULTIHIT_MOVES &&
+        state != CANCELER_PPDEDUCTION &&
+        TRUE;
+}
+
+void BS_TriAttackMoveCanceler(void)
+{
+    if (gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem)
+    {
+        gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem = FALSE;
+        gCurrentActionFuncId = B_ACTION_TRY_FINISH;
+        return;
+    }
+
+    if (gBattleOutcome != 0)
+    {
+        gCurrentActionFuncId = B_ACTION_FINISHED;
+        return;
+    }
+
+
+    enum CancelerResult result = CANCELER_RESULT_SUCCESS;
+
+    struct BattleCalcValues cv = {0};
+    cv.battlerAtk = gBattlerAttacker;
+    cv.battlerDef = gBattlerTarget;
+    cv.move = gCurrentMove;
+    cv.moveEffect = GetMoveEffect(cv.move);
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        cv.abilities[battler] = GetBattlerAbility(battler);
+        cv.holdEffects[battler] = GetBattlerHoldEffect(battler);
+    }
+
+    while (gBattleStruct->eventState.atkCanceler < CANCELER_END && result == CANCELER_RESULT_SUCCESS)
+    {
+        if (IsCancellerPerStrike(gBattleStruct->eventState.atkCanceler))
+        {
+            gBattleStruct->eventState.atkCanceler++;
+            continue;
+        }
+
+        result = sMoveSuccessOrderCancelers[gBattleStruct->eventState.atkCanceler](&cv);
+
+        if (result != CANCELER_RESULT_RUN_SCRIPT)
+            gBattleStruct->eventState.atkCanceler++;
+    }
+
+    if (CANCELER_RESULT_FAILURE == result)
+    {
+        gBattleStruct->unableToUseMove = TRUE;
+        gBattleStruct->pledgeState = PLEDGE_COMBO_NONE;
+    }
+    else if (CANCELER_RESULT_SUCCESS == result)
+    {
+        if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_AVOIDED_ATTACK)
+            gBattlescriptCurrInstr = BattleScript_MoveEnd;
+        else
+            gBattlescriptCurrInstr += 5;
+    }
+}
+
 void BS_TriAttackStrikeCanceler(void)
 {
     enum CancelerResult result = CANCELER_RESULT_SUCCESS;
@@ -56,7 +122,7 @@ void BS_TriAttackStrikeCanceler(void)
 
     while (gBattleStruct->eventState.atkStrikeCanceler < CANCELER_MULTIHIT_MOVES && result == CANCELER_RESULT_SUCCESS)
     {
-        if (CANCELER_PPDEDUCTION == gBattleStruct->eventState.atkStrikeCanceler)
+        if (! IsCancellerPerStrike(gBattleStruct->eventState.atkStrikeCanceler))
         {
             gBattleStruct->eventState.atkStrikeCanceler++;
             continue;

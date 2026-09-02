@@ -5,7 +5,7 @@
 
 BattleScript_EffectMultistrikeTriAttack::
 	clearmoveresultflags MOVE_RESULT_FAILED
-	attackcanceler
+	callnative BS_TriAttackMoveCanceler
 	setmultistriketriattacktype
 	callnative BS_TriAttackStrikeCancelerPrologue
 	callnative BS_TriAttackStrikeCanceler

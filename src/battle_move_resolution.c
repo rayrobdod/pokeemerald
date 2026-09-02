@@ -2313,8 +2313,7 @@ static enum CancelerResult CancelerMultihitMoves(struct BattleCalcValues *cv)
 {
     SetPossibleNewSmartTarget(cv->move);
 
-    if (IsBattlerUnaffectedByMove(gBattlerTarget) // Dragon Darts can still hit partner
-        && (cv->moveEffect != EFFECT_MULTISTRIKE_TRI_ATTACK))
+    if (IsBattlerUnaffectedByMove(gBattlerTarget)) // Dragon Darts can still hit partner
     {
         gMultiHitCounter = 0;
     }
