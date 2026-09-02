@@ -1661,6 +1661,7 @@ BattleScript_RoarBlockedByDynamax:
 BattleScript_MultiHitPrintStrings::
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
+BattleScript_MultiHitPrintHitXTimesString::
 	copyarray gBattleTextBuff1, sMULTIHIT_STRING, 6
 	printstring STRINGID_HITXTIMES
 	waitmessage B_WAIT_TIME_LONG

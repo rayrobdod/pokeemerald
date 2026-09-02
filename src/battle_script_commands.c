@@ -1915,7 +1915,7 @@ static void Cmd_resultmessage(void)
                     stringId = STRINGID_ITDOESNTAFFECT;
                 }
             }
-            else if ((!gMultiHitCounter) || (gMovesInfo[gCurrentMove].effect != EFFECT_MULTISTRIKE_TRI_ATTACK))
+            else
             {
                 TryInitializeTrainerSlideEnemyMonUnaffected(gBattlerTarget);
                 stringId = STRINGID_ITDOESNTAFFECT;
