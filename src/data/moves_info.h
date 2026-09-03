@@ -4412,7 +4412,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .strikeCount = 3,
         #if B_UPDATED_MOVE_DATA >= GEN_2
             .additionalEffects = ADDITIONAL_EFFECTS({
-                .moveEffect = MOVE_EFFECT_TRI_ATTACK,
+                .moveEffect = MOVE_EFFECT_SEQUENTIAL_FROM_LIST,
                 .chance = 10,
             }),
         #endif

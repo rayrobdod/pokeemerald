@@ -2478,17 +2478,27 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
             MOVE_EFFECT_FREEZE_OR_FROSTBITE,
             MOVE_EFFECT_PARALYSIS
         };
-        u32 chosenMoveEffect;
-        if (gMultiHitCounter)
-            chosenMoveEffect = 3 - gMultiHitCounter;
-        else
-            chosenMoveEffect = RandomUniform(RNG_TRI_ATTACK, 0, ARRAY_COUNT(sTriAttackEffects) - 1);
-
+        u32 chosenMoveEffect = RandomUniform(RNG_TRI_ATTACK, 0, ARRAY_COUNT(sTriAttackEffects) - 1);
         if (sTriAttackEffects[chosenMoveEffect] == MOVE_EFFECT_BURN)
             gBattleStruct->triAttackBurn = TRUE;
 
         if (!gBattleMons[effectBattler].status1)
             SetMoveEffect(battlerAtk, effectBattler, sTriAttackEffects[chosenMoveEffect], battleScript, effectFlags);
+        break;
+    }
+    case MOVE_EFFECT_SEQUENTIAL_FROM_LIST:
+    {
+        static const u8 sSequentialFromListEffects[] =
+        {
+            MOVE_EFFECT_BURN,
+            MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            MOVE_EFFECT_PARALYSIS
+        };
+        u32 chosenMoveEffect = gMovesInfo[SanitizeMoveId(gCurrentMove)].strikeCount - gMultiHitCounter;
+        if (sSequentialFromListEffects[chosenMoveEffect] == MOVE_EFFECT_BURN)
+            gBattleStruct->triAttackBurn = TRUE;
+
+        SetMoveEffect(battlerAtk, effectBattler, sSequentialFromListEffects[chosenMoveEffect], battleScript, effectFlags);
         break;
     }
     case MOVE_EFFECT_WRAP:
