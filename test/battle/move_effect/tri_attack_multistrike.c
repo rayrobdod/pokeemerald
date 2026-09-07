@@ -29,6 +29,7 @@ SINGLE_BATTLE_TEST("Tri Attack hits 3 times")
         HP_BAR(opponent, captureDamage: &thirdHit);
         MESSAGE("The Pokémon was hit 3 time(s)!");
     } THEN {
+        EXPECT_EQ(player->pp[0], gMovesInfo[MOVE_TRI_ATTACK].pp - 1);
         EXPECT_MUL_EQ(firstHit, Q_4_12(1.0), secondHit);
         EXPECT_MUL_EQ(firstHit, Q_4_12(1.0), thirdHit);
     }
