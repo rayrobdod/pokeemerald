@@ -1,0 +1,96 @@
+name: battle-transitions
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "22 18 * * SAT"
+  push:
+    branches:
+      - 'ci'
+      - 'battle_transition/**'
+jobs:
+  pret:
+    if: github.repository == 'rayrobdod/pokeemerald'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Configure git user and sbt remote repo
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Install binutils
+        run: |
+          sudo apt update
+          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      #    filter: 'blob:none'
+          ref: 'battle_transition/base'
+
+      - name: Checkout agbcc
+        uses: actions/checkout@v7
+        with:
+          path: agbcc
+          repository: pret/agbcc
+
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: agbcc
+
+      - run: make compare -j$(nproc) -O
+
+      - run: make compare -O
+
+      - run: |
+          for b in $(git branch --remote --list "origin/battle_transition/*" --no-contains expansion/1.15.0); do
+            echo " "
+            echo " "
+            echo $b
+            echo " "
+            git merge --no-edit $b;
+          done
+
+      - run: make -j$(nproc) -O
+
+  expansion:
+    if: github.repository == 'rayrobdod/pokeemerald'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure git user and sbt remote repo
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Install binutils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends binutils-arm-none-eabi gcc-arm-none-eabi libnewlib-arm-none-eabi libpng-dev python3
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      #    filter: 'blob:none'
+          ref: 'battle_transition/base-expansion'
+
+      - run: make -j$(nproc) -O
+
+      - run: |
+          for b in $(git branch --remote --list "origin/battle_transition/*" --no-contains origin/battle_transition/refactored_intro --no-contains origin/battle_transition/swords_justice); do
+            echo " "
+            echo " "
+            echo $b
+            echo " "
+            git merge --no-edit $b;
+          done
+
+      - run: make -j$(nproc) -O
+
+      - run: python3 migration_scripts/1.13/convert_compressed_files.py
+
+      - run: git diff
+
+      - run: make -j$(nproc) -O
