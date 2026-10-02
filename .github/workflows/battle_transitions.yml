@@ -86,6 +86,11 @@ jobs:
             echo " "
             git merge --no-edit $b;
           done
+          echo " "
+          echo " "
+          echo origin/battle_transition_test
+          echo " "
+          git merge --no-edit origin/battle_transition_test
 
       - run: make -j$(nproc) -O
 
