@@ -10,6 +10,7 @@
 #include "graphics.h"
 #include "main.h"
 #include "malloc.h"
+#include "menu.h"
 #include "palette.h"
 #include "scanline_effect.h"
 #include "sprite.h"
@@ -61,6 +62,20 @@ static const struct BgTemplate sOverworldBgTemplates[] =
         .priority = 3,
         .baseTile = 0
     }
+};
+
+static const struct WindowTemplate sWindowTemplates[] =
+{
+    {
+        .bg = 0,
+        .tilemapLeft = 2,
+        .tilemapTop = 15,
+        .width = 27,
+        .height = 4,
+        .paletteNum = 15,
+        .baseBlock = 1
+    },
+    DUMMY_WIN_TEMPLATE
 };
 
 #define TAG_PLAYER (0x5000)
@@ -126,11 +141,11 @@ static void BattleTransitionTest_InitScreen()
 static void BattleTransitionTest_DrawScene()
 {
     FillPalette(RGB_MAGENTA, BG_PLTT_ID(0), PLTT_SIZEOF(16 * 32));
+
+    // draw ground tiles
     LoadPalette(gTileset_General.palettes, BG_PLTT_ID(0), PLTT_SIZEOF(16 * 7));
     FillPalette(RGB_BLACK, BG_PLTT_ID(0), PLTT_SIZEOF(1));
-
     DecompressDataWithHeaderVram(gTileset_General.tiles, (void*) BG_CHAR_ADDR(0));
-
     DmaFill16(3, 0, BG_CHAR_ADDR(2), TILE_SIZE_4BPP);
     DmaFill16(3, 0, BG_SCREEN_ADDR(28), BG_SCREEN_SIZE * 4);
 
@@ -140,6 +155,14 @@ static void BattleTransitionTest_DrawScene()
         bg[i] = v;
     }
 
+    // draw a dialog box on BG0
+    LoadMessageBoxAndBorderGfx();
+    InitWindows(sWindowTemplates);
+    PutWindowTilemap(0);
+    DrawDialogueFrame(0, FALSE);
+    CopyWindowToVram(0, COPYWIN_FULL);
+
+    // draw a sprite
     if (Random() % 2) {
         LoadSpritePalette(&sSpritePalette_Brendan);
         LoadSpriteSheet(&sSpriteSheet_Brendan);
@@ -256,4 +279,5 @@ TEST("Battle Transition")
         UnsetBgTilemapBuffer(0);
         Free(tilemapBuffer0);
     }
+    FreeAllWindowBuffers();
 }
