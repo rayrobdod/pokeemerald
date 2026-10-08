@@ -21,7 +21,8 @@
 #include "constants/rgb.h"
 
 // Battle Transition DebugPrintf switch
-#define T_BATTLE_TRANSITION_SHOULD_PRINT FALSE
+#define T_BATTLE_TRANSITION_SHOULD_PRINT_FRAME_COUNT FALSE
+#define T_BATTLE_TRANSITION_SHOULD_PRINT_CYCLE_COUNT FALSE
 
 
 static const struct BgTemplate sOverworldBgTemplates[] =
@@ -182,6 +183,13 @@ static void VBlankCB_Field(void)
     UpdatePaletteFade();
 }
 
+static IntrCallback sSavedVblankCallback = NULL;
+static void VBlankCB_StartCycleCount(void)
+{
+    CycleCountStart();
+    sSavedVblankCallback();
+}
+
 
 TEST("Battle Transition")
 {
@@ -238,9 +246,15 @@ TEST("Battle Transition")
     while (! IsBattleTransitionDone())
     {
 #ifndef NDEBUG
-        if (T_BATTLE_TRANSITION_SHOULD_PRINT)
-            CycleCountStart();
+        if (T_BATTLE_TRANSITION_SHOULD_PRINT_CYCLE_COUNT
+                && gMain.vblankCallback != VBlankCB_StartCycleCount)
+        {
+            sSavedVblankCallback = gMain.vblankCallback;
+            SetVBlankCallback(VBlankCB_StartCycleCount);
+        }
 #endif
+
+        VBlankIntrWait();
 
         RunTasks();
 
@@ -249,15 +263,12 @@ TEST("Battle Transition")
         UpdatePaletteFade();
         TransferPlttBuffer();
 
-        VBlankIntrWait();
-
 #ifndef NDEBUG
-        if (T_BATTLE_TRANSITION_SHOULD_PRINT)
+        if (T_BATTLE_TRANSITION_SHOULD_PRINT_CYCLE_COUNT)
         {
             s32 timeTaken = CycleCountEnd();
             const unsigned CYCLES_PER_FRAME = 280896;
 
-            //if (B_TRANSITION_SWIRL == transition)
             //if (CYCLES_PER_FRAME * 7 / 10 < timeTaken)
             {
                 DebugPrintf(
@@ -268,10 +279,24 @@ TEST("Battle Transition")
                     timeTaken / CYCLES_PER_FRAME,
                     (timeTaken * 1000 / CYCLES_PER_FRAME) % 1000);
             }
+        }
+        if (T_BATTLE_TRANSITION_SHOULD_PRINT_CYCLE_COUNT
+                || T_BATTLE_TRANSITION_SHOULD_PRINT_FRAME_COUNT)
+        {
             ++frame;
         }
 #endif
     }
+
+#ifndef NDEBUG
+    if (T_BATTLE_TRANSITION_SHOULD_PRINT_FRAME_COUNT)
+    {
+        DebugPrintf(
+            "Transition %3d ; Frames %3d",
+            transition,
+            frame);
+    }
+#endif
 
     void* tilemapBuffer0 = GetBgTilemapBuffer(0);
     if (tilemapBuffer0)
