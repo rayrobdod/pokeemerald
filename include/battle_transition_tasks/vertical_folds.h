@@ -1,0 +1,7 @@
+#ifndef GUARD_BATTLE_TRANSITION_VERTICAL_FOLDS_H
+#define GUARD_BATTLE_TRANSITION_VERTICAL_FOLDS_H
+
+void Task_VerticalFolds(u8 taskId);
+void Task_VerticalFoldsCentered(u8 taskId);
+
+#endif // GUARD_BATTLE_TRANSITION_VERTICAL_FOLDS_H

@@ -1,0 +1,3 @@
+    [B_TRANSITION_GALAR_GYM_GRASS] = &Task_Intro,
+    [B_TRANSITION_GALAR_GYM_WATER] = &Task_Intro,
+    [B_TRANSITION_GALAR_GYM_ROCK] = &Task_Intro,

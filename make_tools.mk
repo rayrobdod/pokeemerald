@@ -7,6 +7,8 @@ MAKEFLAGS += --no-print-directory
 TOOLS_DIR := tools
 TOOL_NAMES := bin2c gbafix gbagfx jsonproc mapjson mid2agb preproc ramscrgen rsfont scaninc wav2agb
 
+TOOL_NAMES += justiceslash
+
 TOOLDIRS := $(TOOL_NAMES:%=$(TOOLS_DIR)/%)
 
 # Tool making doesnt require a pokeemerald dependency scan.
