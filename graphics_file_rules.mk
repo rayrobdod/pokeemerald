@@ -14,6 +14,9 @@ TITLESCREENGFXDIR := graphics/title_screen
 types := none normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy stellar
 contest_types := cool beauty cute smart tough
 
+BUILDBATTRANSGFXDIR := $(ASSETS_DIR_NAME)/$(BATTRANSGFXDIR)
+
+
 ### Miscellaneous ###
 
 $(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal
@@ -133,6 +136,25 @@ $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.
                                          $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
 	@cat $^ >$@
 
+
+### Swords of Justice Battle Transition ###
+
+$(shell mkdir -p $(BUILDBATTRANSGFXDIR))
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin
+AUTO_GEN_TARGETS += $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin
+
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin &: tools/justiceslash/justiceslash
+	$^ tiles 0 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_0.bin
+
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin &: tools/justiceslash/justiceslash
+	$^ tiles 1 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_1.bin
+
+$(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin &: tools/justiceslash/justiceslash
+	$^ tiles 2 $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.8bpp $(BUILDBATTRANSGFXDIR)/swords_justice_slash_page_2.bin
+
+$(patsubst %,$(BUILDBATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal,0 1 2 3 4 5 6 7 8 9 10 11 12 13 14): $(BUILDBATTRANSGFXDIR)/swords_justice_slash_anim_%.gbapal : tools/justiceslash/justiceslash
+	$^ palette $* $@
 
 
 ### Pokémon Storage System ###
