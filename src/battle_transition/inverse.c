@@ -31,6 +31,19 @@ static const TransitionStateFunc sInverseIntro_Funcs[] = {
     InverseIntro_End
 };
 
+static const TransitionStateFunc sInverseIntroWithClearBg0_Funcs[] = {
+    InverseIntro_Init,
+    InverseIntro_FadeToGray,
+    InverseIntro_FadeFromGray,
+    InverseIntro_FadeToGray,
+    InverseIntro_CopyInvertedPalette,
+    Intro_ClearBg0,
+    Intro_FadeFromGray,
+    Intro_FadeToGray,
+    Intro_FadeFromGray,
+    InverseIntro_End
+};
+
 #define tBlend                 data[1]  // see battle_transition/intro.c
 #define tInvertProgress        data[2]
 #define bufferDataElem         (3)
@@ -57,6 +70,11 @@ static u32 GetWordTaskArgPtr(struct Task *task, u8 dataElem)
 void Task_InverseIntro(u8 taskId)
 {
     while (sInverseIntro_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+void Task_InverseIntroWithClearBg0(u8 taskId)
+{
+    while (sInverseIntroWithClearBg0_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
 static bool8 InverseIntro_Init(struct Task *task)
