@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/airbrush_tile.h"
+#include "battle_transition_yoshord.h"
 #include "palette.h"
 #include "random.h"
 #include "scanline_effect.h"

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/intro.h"
 #include "palette.h"
 #include "task.h"
 #include "constants/rgb.h"
