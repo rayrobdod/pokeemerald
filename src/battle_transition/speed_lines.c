@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/speed_lines.h"
+#include "battle_transition_yoshord.h"
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "palette.h"

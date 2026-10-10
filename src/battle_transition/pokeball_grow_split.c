@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/pokeball_grow_split.h"
+#include "battle_transition_yoshord.h"
 #include "decompress.h"
 #include "scanline_effect.h"
 #include "task.h"

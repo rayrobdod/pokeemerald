@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/vertical_folds.h"
+#include "battle_transition_yoshord.h"
 #include "gpu_regs.h"
 #include "main.h"
 #include "scanline_effect.h"

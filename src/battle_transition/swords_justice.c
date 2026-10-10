@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/swords_justice.h"
+#include "battle_transition_yoshord.h"
 #include "gpu_regs.h"
 #include "palette.h"
 #include "scanline_effect.h"

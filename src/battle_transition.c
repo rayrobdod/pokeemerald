@@ -1,8 +1,9 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_transition.h"
+#include "battle_transition_frontier.h"
 #include "battle_transition_shared.h"
-#include "battle_transition_tasks/_index.h"
+#include "battle_transition_yoshord.h"
 #include "bg.h"
 #include "decompress.h"
 #include "event_object_movement.h"
@@ -229,7 +230,7 @@ static void InitBlackWipe(s16 *, s16, s16, s16, s16, s16, s16);
 static void SetTrainerPicSlideDirection(s16, s16);
 static void IncrementTrainerPicState(s16);
 static s16 IsTrainerPicSlideDone(s16);
-static bool16 UpdateRectangularSpiralLine(const s16 * const *, struct RectangularSpiralLine *);
+static bool16 UpdateRectangularSpiralLine(const s16 *const *, struct RectangularSpiralLine *);
 static void SpriteCB_FldEffPokeballTrail(struct Sprite *);
 static void SpriteCB_MugshotTrainerPic(struct Sprite *);
 static void SpriteCB_MugshotTrainerPicPartner(struct Sprite *);
@@ -292,14 +293,111 @@ static const u32 sFrontierSquares_Tilemap[] = INCBIN_U32("graphics/battle_transi
 // All battle transitions use the same intro
 static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 {
-    #include "battle_transition_tasks_intro/_index.h"
+    [B_TRANSITION_BLUR ... B_TRANSITION_SHUFFLE] = &Task_Intro,
+    [B_TRANSITION_BIG_POKEBALL] = &Task_IntroWithClearBg0,
+    [B_TRANSITION_POKEBALLS_TRAIL] = &Task_IntroWithClearBg0,
+    [B_TRANSITION_CLOCKWISE_WIPE ... B_TRANSITION_WHITE_BARS_FADE] = &Task_Intro,
+    [B_TRANSITION_GRID_SQUARES] = &Task_IntroWithClearBg0,
+    [B_TRANSITION_ANGLED_WIPES ... B_TRANSITION_FRONTIER_SQUARES_SPIRAL] = &Task_Intro,
+    [B_TRANSITION_DOUBLE_CLOCK_WIPE_POKEBALL] = &Task_Intro,
+    [B_TRANSITION_FRONTIER_CIRCLES_MEET ... B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = &Task_Intro,
+    // end base emerald transitions
+    // start yoshord transitions
+    [B_TRANSITION_TPP_HOST] = Task_Intro,
+    [B_TRANSITION_SWORDS_OF_JUSTICE] = &Task_Intro,
+    [B_TRANSITION_VERTICAL_FOLDS] = &Task_Intro,
+    [B_TRANSITION_VERTICAL_FOLDS_CENTERED] = &Task_Intro,
+    [B_TRANSITION_HORIZONTAL_FOLDS] = &Task_Intro,
+    [B_TRANSITION_HORIZONTAL_FOLDS_CENTERED] = &Task_Intro,
+    [B_TRANSITION_INVERSE_POKEBALLS_TRAIL] = &Task_InverseIntro,
+    [B_TRANSITION_INVERSE_ANGLED_WIPES] = &Task_InverseIntro,
+    [B_TRANSITION_SPEED_LINES] = &Task_Intro,
+    [B_TRANSITION_REGIROCK_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGICE_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGISTEEL_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGIELEKI_ORAS] = &Task_Intro,
+    [B_TRANSITION_REGIDRAGO_ORAS] = &Task_Intro,
+    [B_TRANSITION_TRIANGLE_TESSELLATION_CENTERED] = &Task_Intro,
+    [B_TRANSITION_TRIANGLE_TESSELLATION_ZAROYALE] = &Task_Intro,
+    [B_TRANSITION_WATER_DPP] = &Task_Intro,
+    [B_TRANSITION_AIRBRUSH_TILE] = &Task_Intro,
+    [B_TRANSITION_GALAR_GYM_GRASS] = &Task_Intro,
+    [B_TRANSITION_GALAR_GYM_WATER] = &Task_Intro,
+    [B_TRANSITION_GALAR_GYM_ROCK] = &Task_Intro,
+    [B_TRANSITION_POKEBALL_GROW_SPLIT] = &Task_Intro,
+
+    // end yoshord transitions
 };
 
 // After the intro each transition has a unique main task.
 // This task will call the functions that do the transition effects.
 static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 {
-    #include "battle_transition_tasks_main/_index.h"
+    [B_TRANSITION_BLUR] = Task_Blur,
+    [B_TRANSITION_SWIRL] = Task_Swirl,
+    [B_TRANSITION_SHUFFLE] = Task_Shuffle,
+    [B_TRANSITION_BIG_POKEBALL] = Task_BigPokeball,
+    [B_TRANSITION_POKEBALLS_TRAIL] = Task_PokeballsTrail,
+    [B_TRANSITION_CLOCKWISE_WIPE] = Task_ClockwiseWipe,
+    [B_TRANSITION_RIPPLE] = Task_Ripple,
+    [B_TRANSITION_WAVE] = Task_Wave,
+    [B_TRANSITION_SLICE] = Task_Slice,
+    [B_TRANSITION_WHITE_BARS_FADE] = Task_WhiteBarsFade,
+    [B_TRANSITION_GRID_SQUARES] = Task_GridSquares,
+    [B_TRANSITION_ANGLED_WIPES] = Task_AngledWipes,
+    [B_TRANSITION_MUGSHOT] = Task_Mugshot,
+    [B_TRANSITION_AQUA] = Task_Aqua,
+    [B_TRANSITION_MAGMA] = Task_Magma,
+    [B_TRANSITION_REGICE] = Task_Regice,
+    [B_TRANSITION_REGISTEEL] = Task_Registeel,
+    [B_TRANSITION_REGIROCK] = Task_Regirock,
+    [B_TRANSITION_KYOGRE] = Task_Kyogre,
+    [B_TRANSITION_GROUDON] = Task_Groudon,
+    [B_TRANSITION_RAYQUAZA] = Task_Rayquaza,
+    [B_TRANSITION_SHRED_SPLIT] = Task_ShredSplit,
+    [B_TRANSITION_BLACKHOLE] = Task_Blackhole,
+    [B_TRANSITION_BLACKHOLE_PULSATE] = Task_BlackholePulsate,
+    [B_TRANSITION_RECTANGULAR_SPIRAL] = Task_RectangularSpiral,
+    [B_TRANSITION_FRONTIER_LOGO_WIGGLE] = Task_FrontierLogoWiggle,
+    [B_TRANSITION_FRONTIER_LOGO_WAVE] = Task_FrontierLogoWave,
+    [B_TRANSITION_FRONTIER_SQUARES] = Task_FrontierSquares,
+    [B_TRANSITION_FRONTIER_SQUARES_SCROLL] = Task_FrontierSquaresScroll,
+    [B_TRANSITION_FRONTIER_SQUARES_SPIRAL] = Task_FrontierSquaresSpiral,
+    [B_TRANSITION_FRONTIER_CIRCLES_MEET] = Task_FrontierCirclesMeet,
+    [B_TRANSITION_FRONTIER_CIRCLES_CROSS] = Task_FrontierCirclesCross,
+    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL] = Task_FrontierCirclesAsymmetricSpiral,
+    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL] = Task_FrontierCirclesSymmetricSpiral,
+    [B_TRANSITION_FRONTIER_CIRCLES_MEET_IN_SEQ] = Task_FrontierCirclesMeetInSeq,
+    [B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ] = Task_FrontierCirclesCrossInSeq,
+    [B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesAsymmetricSpiralInSeq,
+    [B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ] = Task_FrontierCirclesSymmetricSpiralInSeq,
+    // end base emerald transitions
+    // start yoshord transitions
+    [B_TRANSITION_TPP_HOST] = Task_TppHost,
+    [B_TRANSITION_SWORDS_OF_JUSTICE] = Task_SwordsOfJustice,
+    [B_TRANSITION_VERTICAL_FOLDS] = Task_VerticalFolds,
+    [B_TRANSITION_VERTICAL_FOLDS_CENTERED] = Task_VerticalFoldsCentered,
+    [B_TRANSITION_HORIZONTAL_FOLDS] = Task_HorizontalFolds,
+    [B_TRANSITION_HORIZONTAL_FOLDS_CENTERED] = Task_HorizontalFoldsCentered,
+    [B_TRANSITION_INVERSE_POKEBALLS_TRAIL] = Task_PokeballsTrail,
+    [B_TRANSITION_INVERSE_ANGLED_WIPES] = Task_AngledWipes,
+    [B_TRANSITION_SPEED_LINES] = &Task_SpeedLines,
+    [B_TRANSITION_REGIROCK_ORAS] = &Task_RegirockOras,
+    [B_TRANSITION_REGICE_ORAS] = &Task_RegiceOras,
+    [B_TRANSITION_REGISTEEL_ORAS] = &Task_RegisteelOras,
+    [B_TRANSITION_REGIELEKI_ORAS] = &Task_RegielekiOras,
+    [B_TRANSITION_REGIDRAGO_ORAS] = &Task_RegidragoOras,
+    [B_TRANSITION_TRIANGLE_TESSELLATION_CENTERED] = &Task_TriangleTessellationCentered,
+    [B_TRANSITION_TRIANGLE_TESSELLATION_ZAROYALE] = &Task_TriangleTessellationZARoyale,
+    [B_TRANSITION_DOUBLE_CLOCK_WIPE_POKEBALL] = &Task_DoubleClockWipePokeball,
+    [B_TRANSITION_WATER_DPP] = &Task_WaterDpp,
+    [B_TRANSITION_AIRBRUSH_TILE] = &Task_AirbrushTile,
+    [B_TRANSITION_GALAR_GYM_GRASS] = &Task_GalarGymGrass,
+    [B_TRANSITION_GALAR_GYM_WATER] = &Task_GalarGymWater,
+    [B_TRANSITION_GALAR_GYM_ROCK] = &Task_GalarGymRock,
+    [B_TRANSITION_POKEBALL_GROW_SPLIT] = &Task_PokeballGrowSplit,
+
+    // end yoshord transitions
 };
 
 static const TransitionStateFunc sTaskHandlers[] =
