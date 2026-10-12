@@ -18,7 +18,7 @@ bool8 BigPokeball_SetGfx(struct Task *);
 static const u32 sBigPokeball_Tileset[] = INCGFX_U32("graphics/battle_transitions/big_pokeball.png", ".4bpp");
 static const u16 sFieldEffectPal_Pokeball[] = INCGFX_U16("graphics/field_effects/palettes/pokeball.pal", ".gbapal");
 
-static const u32 sGrowingPokeball_Tileset[] = INCGFX_U32("graphics/battle_transitions/pokeball_64.png", ".4bpp.lz");
+static const u32 sGrowingPokeball_Tileset[] = INCGFX_U32("graphics/battle_transitions/pokeball_64.png", ".4bpp.smol");
 static const u16 sGrowingPokeball_Palette[] = INCGFX_U16("graphics/battle_transitions/pokeball_64.png", ".gbapal");
 
 static const u8 sOamHeights[3][4] =

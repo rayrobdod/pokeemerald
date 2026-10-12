@@ -24,9 +24,9 @@
 #define START_FADE_VELOCITY (INITIAL_VELOCITY + Q_12_4(INITIAL_ACCELERATION * 3))
 
 static const u16 sSpeedLines_Palette[] = INCGFX_U16("graphics/battle_transitions/speedlines_bg.png", ".gbapal");
-static const u32 sSpeedLines_Bg_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg.png", ".4bpp.lz");
-static const u32 sSpeedLines_Bg_Small_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg_small.png", ".4bpp.lz");
-static const u32 sSpeedLines_Sprites[] = INCGFX_U32("graphics/battle_transitions/speedlines_sprites.png", ".4bpp.lz");
+static const u32 sSpeedLines_Bg_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg.png", ".4bpp.smol");
+static const u32 sSpeedLines_Bg_Small_Tileset[] = INCGFX_U32("graphics/battle_transitions/speedlines_bg_small.png", ".4bpp.smol");
+static const u32 sSpeedLines_Sprites[] = INCGFX_U32("graphics/battle_transitions/speedlines_sprites.png", ".4bpp.smol");
 
 static bool8 SpeedLines_Init(struct Task *);
 static bool8 SpeedLines_ConstantVelocityUntilTimerZero(struct Task *);
@@ -181,7 +181,7 @@ static bool8 SpeedLines_Init(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sSpeedLines_Palette, BG_PLTT_ID(15), sizeof(sSpeedLines_Palette));
-    LZ77UnCompVram(sSpeedLines_Bg_Small_Tileset, tileset);
+    DecompressDataWithHeaderVram(sSpeedLines_Bg_Small_Tileset, tileset);
 
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
 
@@ -268,7 +268,7 @@ static bool8 SpeedLines_SwapToFullSize(struct Task *task)
 {
     u16 *tilemap, *tileset;
     GetBg0TilesDst(&tilemap, &tileset);
-    LZ77UnCompVram(sSpeedLines_Bg_Tileset, tileset);
+    DecompressDataWithHeaderVram(sSpeedLines_Bg_Tileset, tileset);
     task->tState++;
     task->tTimer = SPEEDLINE_INITIAL_SPEED_FRAMES;
     return TRUE;

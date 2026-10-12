@@ -2,6 +2,7 @@
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
 #include "battle_transition_yoshord.h"
+#include "decompress.h"
 #include "gpu_regs.h"
 #include "palette.h"
 #include "scanline_effect.h"
@@ -17,9 +18,9 @@ static bool8 SwordsOfJustice_End(struct Task *);
 static const u32 sSwordsOfJustice_Slash0_Tileset[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_0.8bpp.lz");
 static const u32 sSwordsOfJustice_Slash1_Tileset[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_1.8bpp.lz");
 static const u32 sSwordsOfJustice_Slash2_Tileset[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_2.8bpp.lz");
-static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_0.bin.rl");
-static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_1.bin.rl");
-static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_2.bin.rl");
+static const u32 sSwordsOfJustice_Slash0_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_0.bin.smolTM");
+static const u32 sSwordsOfJustice_Slash1_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_1.bin.smolTM");
+static const u32 sSwordsOfJustice_Slash2_Tilemap[] = INCBIN_U32("build/assets/graphics/battle_transitions/swords_justice_slash_page_2.bin.smolTM");
 
 static const struct { const u32* tileset; const u32* tilemap; } sSwordsOfJustice_Slash_Tiles[] = {
     [0] = {
@@ -173,8 +174,8 @@ static bool8 SwordsOfJustice_SetSlashGfx(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LZ77UnCompVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tileset, tileset);
-    RLUnCompVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tilemap, tilemap);
+    DecompressDataWithHeaderVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tileset, tileset);
+    DecompressDataWithHeaderVram(sSwordsOfJustice_Slash_Tiles[task->tScene].tilemap, tilemap);
 
     task->tState++;
     task->tScene++;

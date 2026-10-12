@@ -10,10 +10,10 @@
 #include "scanline_effect.h"
 #include "task.h"
 
-static const u32 sRegisEye_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras.png", ".4bpp.lz");
-static const u32 sRegisGlow_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras_glow.png", ".4bpp.lz");
-static const u32 sRegiceGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regice_oras.bin", ".lz");
-static const u32 sRegielekiGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regieleki_oras.bin", ".lz");
+static const u32 sRegisEye_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras.png", ".4bpp.smol");
+static const u32 sRegisGlow_Tileset[] = INCGFX_U32("graphics/battle_transitions/regis_oras_glow.png", ".4bpp.smol");
+static const u32 sRegiceGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regice_oras.bin", ".smol");
+static const u32 sRegielekiGlow_Tilemap[] = INCGFX_U32("graphics/battle_transitions/regieleki_oras.bin", ".smol");
 
 #define PALTAG_REGI_EYE (0xE7E5)
 #define TILETAG_REGI_EYE (0xE7E5)
@@ -301,7 +301,7 @@ static bool8 RegisOras_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     CpuFill16(0, tileset, TILE_SIZE_4BPP / sizeof(u16));
-    LZ77UnCompVram(sSpriteSheet_Regi.data, tileset + TILE_SIZE_4BPP / sizeof(u16));
+    DecompressDataWithHeaderVram(sSpriteSheet_Regi.data, tileset + TILE_SIZE_4BPP / sizeof(u16));
 
     spritePalette.data = regi_params[task->tPatternIndex].palette;
     spritePalette.tag = PALTAG_REGI_EYE;
@@ -457,11 +457,11 @@ static bool8 RegisOras_SetupFadeToGlow(struct Task *task)
     unsigned i, palettes_to_fade;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LZ77UnCompVram(sRegisGlow_Tileset, tileset + GLOW_TILES_START * TILE_SIZE_4BPP / sizeof(u16));
+    DecompressDataWithHeaderVram(sRegisGlow_Tileset, tileset + GLOW_TILES_START * TILE_SIZE_4BPP / sizeof(u16));
     if (REGI_REGICE == task->tPatternIndex)
-        LZ77UnCompVram(sRegiceGlow_Tilemap, tilemap + 32 * 2);
+        DecompressDataWithHeaderVram(sRegiceGlow_Tilemap, tilemap + 32 * 2);
     else if (REGI_REGIELEKI == task->tPatternIndex)
-        LZ77UnCompVram(sRegielekiGlow_Tilemap, tilemap + 32 * 3);
+        DecompressDataWithHeaderVram(sRegielekiGlow_Tilemap, tilemap + 32 * 3);
     else
         for (i = 0; i < EYE_COUNT; i++)
             RegisOras_DrawEyeGlow(tilemap, regi_params[task->tPatternIndex].eye_pattern[i]);

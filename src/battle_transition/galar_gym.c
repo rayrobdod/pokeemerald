@@ -126,22 +126,22 @@ struct GalarGymPattern
 };
 
 static const u16 sGrassPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_grass_pattern.png", ".gbapal");
-static const u32 sGrassPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_pattern.png", ".4bpp.lz");
+static const u32 sGrassPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_pattern.png", ".4bpp.smol");
 static const u16 sGrassPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_grass_pattern.bin");
 static const u16 sGrassLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_grass_logo.png", ".gbapal");
-static const u32 sGrassLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_logo.png", ".4bpp.lz");
+static const u32 sGrassLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_grass_logo.png", ".4bpp.smol");
 
 static const u16 sWaterPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_water_pattern.png", ".gbapal");
-static const u32 sWaterPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_pattern.png", ".4bpp.lz", "-num_tiles 56");
+static const u32 sWaterPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_pattern.png", ".4bpp.smol", "-num_tiles 56");
 static const u16 sWaterPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_water_pattern.bin");
 static const u16 sWaterLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_water_logo.png", ".gbapal");
-static const u32 sWaterLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_logo.png", ".4bpp.lz");
+static const u32 sWaterLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_water_logo.png", ".4bpp.smol");
 
 static const u16 sRockPattern_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_rock_pattern.png", ".gbapal");
-static const u32 sRockPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_pattern.png", ".4bpp.lz");
+static const u32 sRockPattern_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_pattern.png", ".4bpp.smol");
 static const u16 sRockPattern_Tilemap[] = INCBIN_U16("graphics/battle_transitions/galar_gym_rock_pattern.bin");
 static const u16 sRockLogo_Palette[] = INCGFX_U16("graphics/battle_transitions/galar_gym_rock_logo.png", ".gbapal");
-static const u32 sRockLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_logo.png", ".4bpp.lz");
+static const u32 sRockLogo_Tileset[] = INCGFX_U32("graphics/battle_transitions/galar_gym_rock_logo.png", ".4bpp.smol");
 
 static const struct GalarGymPattern sVariants[] =
 {
@@ -551,7 +551,7 @@ static bool8 GalarGym_LoadPattern1(struct Task *task)
     REG_WININ = (WININ_WIN0_ALL & ~WININ_WIN0_BG0) | WININ_WIN1_BG0 | WININ_WIN1_OBJ;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LZ77UnCompVram(sVariants[task->tVariant].pattern_tileset, tileset);
+    DecompressDataWithHeaderVram(sVariants[task->tVariant].pattern_tileset, tileset);
 
     for (y = 0; y < 16; y++)
     {

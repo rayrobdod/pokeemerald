@@ -2,6 +2,7 @@
 #include "battle_transition.h"
 #include "battle_transition_shared.h"
 #include "battle_transition_yoshord.h"
+#include "decompress.h"
 #include "palette.h"
 #include "random.h"
 #include "scanline_effect.h"
@@ -16,7 +17,7 @@ static bool8 TppHost_FadeOut(struct Task *);
 static bool8 TppHost_End(struct Task *);
 
 static const u16 sTppHost_Palette[] = INCGFX_U16("graphics/battle_transitions/tpp_host.png", ".gbapal");
-static const u32 sTppHost_Tileset[] = INCGFX_U32("graphics/battle_transitions/tpp_host.png", ".4bpp.lz");
+static const u32 sTppHost_Tileset[] = INCGFX_U32("graphics/battle_transitions/tpp_host.png", ".4bpp.smol");
 
 #define INPUT_TYPES (8)
 #define WINDOW_SPEED_DOWN (3)
@@ -66,7 +67,7 @@ static bool8 TppHost_Init(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sTppHost_Palette, BG_PLTT_ID(15), sizeof(sTppHost_Palette));
-    LZ77UnCompVram(sTppHost_Tileset, tileset);
+    DecompressDataWithHeaderVram(sTppHost_Tileset, tileset);
 
     task->tState++;
     return FALSE;
