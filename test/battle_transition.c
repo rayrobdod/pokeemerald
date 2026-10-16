@@ -135,8 +135,39 @@ static void BattleTransitionTest_InitScreen()
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG3
                                | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_BLEND);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(13, 7));
-    ChangeBgX(0, 0, BG_COORD_SET);
-    ChangeBgY(0, 0, BG_COORD_SET);
+    ChangeBgX(0, 0 << 8, BG_COORD_SET);
+    ChangeBgY(0, 0 << 8, BG_COORD_SET);
+    ChangeBgX(1, 160 << 8, BG_COORD_SET);
+    ChangeBgY(1, 160 << 8, BG_COORD_SET);
+    ChangeBgX(2, 160 << 8, BG_COORD_SET);
+    ChangeBgY(2, 160 << 8, BG_COORD_SET);
+    ChangeBgX(3, 160 << 8, BG_COORD_SET);
+    ChangeBgY(3, 160 << 8, BG_COORD_SET);
+}
+
+static void BattleTransitionTest_DrawATree(u32 left, u32 top)
+{
+    u16 *bg;
+    bg = (u16*) BG_SCREEN_ADDR(29);
+    bg[(left + 1) + 32 * (top + 1)] = 0x20CC;
+    bg[(left + 2) + 32 * (top + 1)] = 0x20CD;
+    bg = (u16*) BG_SCREEN_ADDR(28);
+    bg[(left + 0) + 32 * (top + 2)] = 0x2008;
+    bg[(left + 1) + 32 * (top + 2)] = 0x2009;
+    bg[(left + 2) + 32 * (top + 2)] = 0x200A;
+    bg[(left + 3) + 32 * (top + 2)] = 0x200B;
+    bg[(left + 0) + 32 * (top + 3)] = 0x2018;
+    bg[(left + 1) + 32 * (top + 3)] = 0x2019;
+    bg[(left + 2) + 32 * (top + 3)] = 0x2419;
+    bg[(left + 3) + 32 * (top + 3)] = 0x201B;
+    bg[(left + 0) + 32 * (top + 4)] = 0x2028;
+    bg[(left + 1) + 32 * (top + 4)] = 0x2029;
+    bg[(left + 2) + 32 * (top + 4)] = 0x2429;
+    bg[(left + 3) + 32 * (top + 4)] = 0x202B;
+    bg[(left + 0) + 32 * (top + 5)] = 0x2038;
+    bg[(left + 1) + 32 * (top + 5)] = 0x2039;
+    bg[(left + 2) + 32 * (top + 5)] = 0x2439;
+    bg[(left + 3) + 32 * (top + 5)] = 0x203B;
 }
 
 static void BattleTransitionTest_DrawScene()
@@ -155,6 +186,11 @@ static void BattleTransitionTest_DrawScene()
         u16* bg = (u16*) BG_SCREEN_ADDR(30);
         bg[i] = v;
     }
+
+    BattleTransitionTest_DrawATree(20, 18);
+    BattleTransitionTest_DrawATree(20 - 4 - 2, 18);
+    BattleTransitionTest_DrawATree(20, 2);
+    BattleTransitionTest_DrawATree(20 - 4 - 2, 2);
 
     // draw a dialog box on BG0
     LoadMessageBoxAndBorderGfx();
