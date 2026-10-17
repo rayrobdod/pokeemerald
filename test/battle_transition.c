@@ -5,6 +5,7 @@
 #include "battle_transition.h"
 #include "bg.h"
 #include "decompress.h"
+#include "field_camera.h"
 #include "field_effect.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -137,12 +138,11 @@ static void BattleTransitionTest_InitScreen()
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(13, 7));
     ChangeBgX(0, 0 << 8, BG_COORD_SET);
     ChangeBgY(0, 0 << 8, BG_COORD_SET);
-    ChangeBgX(1, 160 << 8, BG_COORD_SET);
-    ChangeBgY(1, 160 << 8, BG_COORD_SET);
-    ChangeBgX(2, 160 << 8, BG_COORD_SET);
-    ChangeBgY(2, 160 << 8, BG_COORD_SET);
-    ChangeBgX(3, 160 << 8, BG_COORD_SET);
-    ChangeBgY(3, 160 << 8, BG_COORD_SET);
+
+    ResetFieldCamera();
+    SetCameraPanning(160, 160);
+    CameraUpdate();
+    FieldUpdateBgTilemapScroll();
 }
 
 static void BattleTransitionTest_DrawATree(u32 left, u32 top)
@@ -187,10 +187,10 @@ static void BattleTransitionTest_DrawScene()
         bg[i] = v;
     }
 
-    BattleTransitionTest_DrawATree(20, 18);
-    BattleTransitionTest_DrawATree(20 - 4 - 2, 18);
-    BattleTransitionTest_DrawATree(20, 2);
-    BattleTransitionTest_DrawATree(20 - 4 - 2, 2);
+    BattleTransitionTest_DrawATree(20, 23);
+    BattleTransitionTest_DrawATree(20 - 4 - 2, 23);
+    BattleTransitionTest_DrawATree(20, 7);
+    BattleTransitionTest_DrawATree(20 - 4 - 2, 7);
 
     // draw a dialog box on BG0
     LoadMessageBoxAndBorderGfx();
