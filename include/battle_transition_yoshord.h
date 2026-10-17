@@ -26,5 +26,6 @@ void Task_GalarGymGrass(u8 taskId);
 void Task_GalarGymWater(u8 taskId);
 void Task_GalarGymRock(u8 taskId);
 void Task_PokeballGrowSplit(u8 taskId);
+void Task_EnvironmentShrink(u8 taskId);
 
 #endif
