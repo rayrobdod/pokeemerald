@@ -329,6 +329,8 @@ static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
     [B_TRANSITION_GALAR_GYM_ROCK] = &Task_Intro,
     [B_TRANSITION_POKEBALL_GROW_SPLIT] = &Task_IntroWithClearBg0,
     [B_TRANSITION_ENVIRONMENT_SHRINK] = &Task_IntroWithClearBg0,
+    [B_TRANSITION_SQUARE5X5_CHECKER_DOUBLE_CLOCK] = &Task_Intro,
+    [B_TRANSITION_SQUARE5X5_LAYERED_QUARTERCLOCK] = &Task_Intro,
 
     // end yoshord transitions
 };
@@ -405,6 +407,8 @@ static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
     [B_TRANSITION_GALAR_GYM_ROCK] = &Task_GalarGymRock,
     [B_TRANSITION_POKEBALL_GROW_SPLIT] = &Task_PokeballGrowSplit,
     [B_TRANSITION_ENVIRONMENT_SHRINK] = &Task_EnvironmentShrink,
+    [B_TRANSITION_SQUARE5X5_CHECKER_DOUBLE_CLOCK] = &Task_Square5X5CheckerDoubleClock,
+    [B_TRANSITION_SQUARE5X5_LAYERED_QUARTERCLOCK] = &Task_Square5X5LayeredQuarterClock,
 
     // end yoshord transitions
 };

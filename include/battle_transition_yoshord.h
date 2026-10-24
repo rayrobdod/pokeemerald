@@ -27,5 +27,7 @@ void Task_GalarGymWater(u8 taskId);
 void Task_GalarGymRock(u8 taskId);
 void Task_PokeballGrowSplit(u8 taskId);
 void Task_EnvironmentShrink(u8 taskId);
+void Task_Square5X5CheckerDoubleClock(u8 taskId);
+void Task_Square5X5LayeredQuarterClock(u8 taskId);
 
 #endif
