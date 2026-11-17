@@ -22,6 +22,7 @@ void Task_TriangleTessellationZARoyale(u8 taskId);
 void Task_DoubleClockWipePokeball(u8 taskId);
 void Task_WaterDpp(u8 taskId);
 void Task_AirbrushTile(u8 taskId);
+void Task_IntroWithRedTintAndGscPokeball(u8 taskId);
 void Task_GalarGymGrass(u8 taskId);
 void Task_GalarGymWater(u8 taskId);
 void Task_GalarGymRock(u8 taskId);
